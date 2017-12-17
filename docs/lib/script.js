@@ -176,11 +176,11 @@ var calculateAll = function () {
             var last = fightResults[fightResults.length - 1]
             if(switched ){
             var result = last.source.hp ? (last.target.hp ? "even" :"lose") : "win"
-            tr.append('<td class="' + result+'"><span class="enemyHp">'+last.source.hp + '</span> - <span class="myHp">' + last.target.hp + "</span><br />" + resultText + "</td>")
+            tr.append('<td class="' + result+'"><span class="myHp">'+last.target.hp + '</span> - <span class="enemyHp">' + last.source.hp + "</span><br />" + resultText + "</td>")
             }
             else {
             var result = last.source.hp ? (last.target.hp ? "even" :"win") : "lose"
-                tr.append('<td class="' + result+'"><span class="enemyHp">' + last.target.hp + '</span> - <span class="myHp">' + last.source.hp + "</span><br />"  + resultText + "</td>")
+                tr.append('<td class="' + result+'"><span class="myHp">' + last.source.hp + '</span> - <span class="enemyHp">' + last.target.hp + "</span><br />"  + resultText + "</td>")
             }
 //            results.push(fightResults)
         })
