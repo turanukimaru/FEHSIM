@@ -1,17 +1,15 @@
 if (typeof kotlin === 'undefined') {
-  throw new Error("Error loading module 'js'. Its dependency 'kotlin' was not found. Please, check whether 'kotlin' is loaded prior to 'js'.");
+  throw new Error("Error loading module 'FEHSIM'. Its dependency 'kotlin' was not found. Please, check whether 'kotlin' is loaded prior to 'FEHSIM'.");
 }
-var js = function (_, Kotlin) {
+var FEHSIM = function (_, Kotlin) {
   'use strict';
-  var Kind_CLASS = Kotlin.Kind.CLASS;
-  var Enum = Kotlin.kotlin.Enum;
-  var throwISE = Kotlin.throwISE;
   var equals = Kotlin.equals;
   var listOfNotNull = Kotlin.kotlin.collections.listOfNotNull_jurz7g$;
   var Pair = Kotlin.kotlin.Pair;
   var listOf = Kotlin.kotlin.collections.listOf_i5x0yv$;
   var plus = Kotlin.kotlin.collections.plus_qloxvw$;
   var until = Kotlin.kotlin.ranges.until_dqglrj$;
+  var Kind_CLASS = Kotlin.Kind.CLASS;
   var ensureNotNull = Kotlin.ensureNotNull;
   var union = Kotlin.kotlin.collections.union_q4559j$;
   var toList = Kotlin.kotlin.collections.toList_7wnvza$;
@@ -21,6 +19,8 @@ var js = function (_, Kotlin) {
   var IntRange = Kotlin.kotlin.ranges.IntRange;
   var to = Kotlin.kotlin.to_ujzrz7$;
   var mapOf = Kotlin.kotlin.collections.mapOf_qfcya0$;
+  var Enum = Kotlin.kotlin.Enum;
+  var throwISE = Kotlin.throwISE;
   var arrayListOf = Kotlin.kotlin.collections.arrayListOf_i5x0yv$;
   var Kind_INTERFACE = Kotlin.Kind.INTERFACE;
   var ArrayList_init = Kotlin.kotlin.collections.ArrayList_init_ww73n8$;
@@ -29,8 +29,6 @@ var js = function (_, Kotlin) {
   var Exception = Kotlin.kotlin.Exception;
   var toString = Kotlin.toString;
   var toInt = Kotlin.kotlin.text.toInt_pdl1vz$;
-  Priority.prototype = Object.create(Enum.prototype);
-  Priority.prototype.constructor = Priority;
   WeaponType.prototype = Object.create(Enum.prototype);
   WeaponType.prototype.constructor = WeaponType;
   MoveType.prototype = Object.create(Enum.prototype);
@@ -633,84 +631,6 @@ var js = function (_, Kotlin) {
   Weapon$LightningBreath.prototype.constructor = Weapon$LightningBreath;
   Weapon$LightningBreath2.prototype = Object.create(Weapon.prototype);
   Weapon$LightningBreath2.prototype.constructor = Weapon$LightningBreath2;
-  function Message(text, priority) {
-    this.text = text;
-    this.priority = priority;
-  }
-  Message.$metadata$ = {
-    kind: Kind_CLASS,
-    simpleName: 'Message',
-    interfaces: []
-  };
-  Message.prototype.component1 = function () {
-    return this.text;
-  };
-  Message.prototype.component2 = function () {
-    return this.priority;
-  };
-  Message.prototype.copy_6kbm8l$ = function (text, priority) {
-    return new Message(text === void 0 ? this.text : text, priority === void 0 ? this.priority : priority);
-  };
-  Message.prototype.toString = function () {
-    return 'Message(text=' + Kotlin.toString(this.text) + (', priority=' + Kotlin.toString(this.priority)) + ')';
-  };
-  Message.prototype.hashCode = function () {
-    var result = 0;
-    result = result * 31 + Kotlin.hashCode(this.text) | 0;
-    result = result * 31 + Kotlin.hashCode(this.priority) | 0;
-    return result;
-  };
-  Message.prototype.equals = function (other) {
-    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.text, other.text) && Kotlin.equals(this.priority, other.priority)))));
-  };
-  function Priority(name, ordinal) {
-    Enum.call(this);
-    this.name$ = name;
-    this.ordinal$ = ordinal;
-  }
-  function Priority_initFields() {
-    Priority_initFields = function () {
-    };
-    Priority$MINOR_instance = new Priority('MINOR', 0);
-    Priority$NORMAL_instance = new Priority('NORMAL', 1);
-    Priority$MAJOR_instance = new Priority('MAJOR', 2);
-  }
-  var Priority$MINOR_instance;
-  function Priority$MINOR_getInstance() {
-    Priority_initFields();
-    return Priority$MINOR_instance;
-  }
-  var Priority$NORMAL_instance;
-  function Priority$NORMAL_getInstance() {
-    Priority_initFields();
-    return Priority$NORMAL_instance;
-  }
-  var Priority$MAJOR_instance;
-  function Priority$MAJOR_getInstance() {
-    Priority_initFields();
-    return Priority$MAJOR_instance;
-  }
-  Priority.$metadata$ = {
-    kind: Kind_CLASS,
-    simpleName: 'Priority',
-    interfaces: [Enum]
-  };
-  function Priority$values() {
-    return [Priority$MINOR_getInstance(), Priority$NORMAL_getInstance(), Priority$MAJOR_getInstance()];
-  }
-  Priority.values = Priority$values;
-  function Priority$valueOf(name) {
-    switch (name) {
-      case 'MINOR':
-        return Priority$MINOR_getInstance();
-      case 'NORMAL':
-        return Priority$NORMAL_getInstance();
-      case 'MAJOR':
-        return Priority$MAJOR_getInstance();
-      default:throwISE('No enum constant com.hadihariri.multiplatform.common.data.Priority.' + name);
-    }
-  }
-  Priority.valueOf_61zpoe$ = Priority$valueOf;
   function ArmedHero(baseHero, name, baseWeapon, refinedWeapon, assist, special, aSkill, bSkill, cSkill, seal, rarity, levelBoost, boon, bane, defensiveTerrain, atkBuff, spdBuff, defBuff, resBuff, atkSpur, spdSpur, defSpur, resSpur) {
     if (name === void 0)
       name = '';
@@ -1372,9 +1292,9 @@ var js = function (_, Kotlin) {
   AttackResult.prototype.detailsShort_4ylgoe$ = function (baseSide, locale) {
     var tmp$;
     if (equals(baseSide, this.side))
-      tmp$ = '\u2193 ' + this.damage + ' ';
+      tmp$ = '\u2193' + this.damage + ' ';
     else
-      tmp$ = '\u2191 ' + this.damage + ' ';
+      tmp$ = '\u2191' + this.damage + ' ';
     return tmp$ + (this.sourceSpecial != null ? '\u2606' + this.sourceSpecial.localeName_miixs2$(locale) + ' ' : '') + (this.targetSpecial != null ? '\u2606' + this.targetSpecial.localeName_miixs2$(locale) + ' ' : '');
   };
   AttackResult.$metadata$ = {
@@ -1817,7 +1737,7 @@ var js = function (_, Kotlin) {
     return new AttackResult(this, target, preventedDamage.first, damage.second, preventedDamage.second);
   };
   BattleUnit.prototype.damage_dayeuq$ = function (target, results) {
-    //println('level / cooldown ' + this.armedHero.special.level + '  ' + this.armedHero.reduceSpecialCooldown);
+    println('level / cooldown ' + this.armedHero.special.level + '  ' + this.armedHero.reduceSpecialCooldown);
     if (this.specialCount === this.armedHero.specialCoolDownTime) {
       var damage = this.armedHero.special.damage_96237r$(this, target, results);
       this.specialCount = damage.second != null ? 0 : this.specialCount;
@@ -1837,7 +1757,7 @@ var js = function (_, Kotlin) {
         tmp$ = damage;
       return tmp$;
     }
-    //println('level / cooldown ' + this.armedHero.special.level + '  ' + this.armedHero.reduceSpecialCooldown);
+    println('level / cooldown ' + this.armedHero.special.level + '  ' + this.armedHero.reduceSpecialCooldown);
     this.specialCount = this.specialCount + ((this.accelerateAttackCooldown + 1 | 0) > this.InflictCooldown ? this.accelerateAttackCooldown + 1 - this.InflictCooldown | 0 : 0) | 0;
     this.specialCount = this.specialCount > this.armedHero.specialCoolDownTime ? this.armedHero.specialCoolDownTime : this.specialCount;
     return Skill$Companion_getInstance().NONE.damage_96237r$(this, target, results, null);
@@ -2661,7 +2581,7 @@ var js = function (_, Kotlin) {
     }
   };
   FightPlan.prototype.log_za3rmp$ = function (text) {
-    //println(text);
+    println(text);
   };
   function FightPlan$firstAttack$lambda(pair, results) {
     return pair.first.attack_dayeuq$(pair.second, results);
@@ -2688,18 +2608,18 @@ var js = function (_, Kotlin) {
   function Locale_initFields() {
     Locale_initFields = function () {
     };
-    Locale$JAPAN_instance = new Locale('JAPAN', 0);
-    Locale$JAPANESE_instance = new Locale('JAPANESE', 1);
-  }
-  var Locale$JAPAN_instance;
-  function Locale$JAPAN_getInstance() {
-    Locale_initFields();
-    return Locale$JAPAN_instance;
+    Locale$JAPANESE_instance = new Locale('JAPANESE', 0);
+    Locale$JAPAN_instance = new Locale('JAPAN', 1);
   }
   var Locale$JAPANESE_instance;
   function Locale$JAPANESE_getInstance() {
     Locale_initFields();
     return Locale$JAPANESE_instance;
+  }
+  var Locale$JAPAN_instance;
+  function Locale$JAPAN_getInstance() {
+    Locale_initFields();
+    return Locale$JAPAN_instance;
   }
   Locale.$metadata$ = {
     kind: Kind_CLASS,
@@ -2707,15 +2627,15 @@ var js = function (_, Kotlin) {
     interfaces: [Enum]
   };
   function Locale$values() {
-    return [Locale$JAPAN_getInstance(), Locale$JAPANESE_getInstance()];
+    return [Locale$JAPANESE_getInstance(), Locale$JAPAN_getInstance()];
   }
   Locale.values = Locale$values;
   function Locale$valueOf(name) {
     switch (name) {
-      case 'JAPAN':
-        return Locale$JAPAN_getInstance();
       case 'JAPANESE':
         return Locale$JAPANESE_getInstance();
+      case 'JAPAN':
+        return Locale$JAPAN_getInstance();
       default:throwISE('No enum constant jp.blogspot.turanukimaru.fehs.Locale.' + name);
     }
   }
@@ -4306,7 +4226,7 @@ var js = function (_, Kotlin) {
     return RefineSkill$DeathlyDagger_instance;
   }
   RefineSkill.prototype.equip_yukhz7$$default = function (armedHero, lv) {
-    //println(this.jp + ' hp:' + this.hp);
+    println(this.jp + ' hp:' + this.hp);
     this.equipHp_yukhz7$(armedHero, this.hp);
     this.equipAtk_yukhz7$(armedHero, this.atk);
     this.equipSpd_yukhz7$(armedHero, this.spd);
@@ -4386,7 +4306,7 @@ var js = function (_, Kotlin) {
             this.itemMap.put_xwzc9p$(element.value, element);
           }
         }
-        //println(key);
+        println(key);
         return (tmp$ = this.itemMap.get_11rb$(key)) != null ? tmp$ : RefineSkill$valueOf(key);
       }
        catch (e) {
@@ -5140,7 +5060,7 @@ var js = function (_, Kotlin) {
       }
        catch (e) {
         if (Kotlin.isType(e, Exception)) {
-          //println(e);
+          println(e);
           return Skill$Companion_getInstance().NONE;
         }
          else
@@ -5533,7 +5453,7 @@ var js = function (_, Kotlin) {
     return armedHero;
   };
   Skill.prototype.log_za3rmp$ = function (s) {
-    //println(s);
+    println(s);
   };
   Skill.prototype.equipHp_yukhz7$ = function (armedHero, lv) {
     armedHero.hpEqp = armedHero.hpEqp + lv | 0;
@@ -7013,7 +6933,7 @@ var js = function (_, Kotlin) {
       }
        catch (e) {
         if (Kotlin.isType(e, Exception)) {
-          //println(e);
+          println(e);
           return Skill$Companion_getInstance().NONE;
         }
          else
@@ -7885,7 +7805,7 @@ var js = function (_, Kotlin) {
       }
        catch (e) {
         if (Kotlin.isType(e, Exception)) {
-          //println(e);
+          println(e);
           return Skill$Companion_getInstance().NONE;
         }
          else
@@ -8470,7 +8390,7 @@ var js = function (_, Kotlin) {
       }
        catch (e) {
         if (Kotlin.isType(e, Exception)) {
-          //println(e);
+          println(e);
           return Skill$Companion_getInstance().NONE;
         }
          else
@@ -13492,58 +13412,6 @@ var js = function (_, Kotlin) {
     }
   }
   Weapon.valueOf_61zpoe$ = Weapon$valueOf;
-  function Date_0() {
-  }
-  var NotImplementedError_init = Kotlin.kotlin.NotImplementedError;
-  Date_0.prototype.getDate = function () {
-    throw new NotImplementedError_init('An operation is not implemented: ' + 'not implemented');
-  };
-  Date_0.prototype.getMonth = function () {
-    throw new NotImplementedError_init('An operation is not implemented: ' + 'not implemented');
-  };
-  Date_0.prototype.getFullYear = function () {
-    throw new NotImplementedError_init('An operation is not implemented: ' + 'not implemented');
-  };
-  Date_0.prototype.getHours = function () {
-    throw new NotImplementedError_init('An operation is not implemented: ' + 'not implemented');
-  };
-  Date_0.prototype.getMinutes = function () {
-    throw new NotImplementedError_init('An operation is not implemented: ' + 'not implemented');
-  };
-  Date_0.prototype.getTime = function () {
-    throw new NotImplementedError_init('An operation is not implemented: ' + 'not implemented');
-  };
-  Date_0.$metadata$ = {
-    kind: Kind_CLASS,
-    simpleName: 'Date',
-    interfaces: []
-  };
-  function platformMessage(message) {
-    println('(JS) [' + message.priority + '] ' + message.text);
-  }
-  function broadcastMessage(message) {
-    println('[' + message.priority + '] ' + message.text);
-  }
-  function main(args) {
-    broadcastMessage(new Message('Initiating Server', Priority$NORMAL_getInstance()));
-    platformMessage(new Message('Initiating Server', Priority$MAJOR_getInstance()));
-  }
-  var package$com = _.com || (_.com = {});
-  var package$hadihariri = package$com.hadihariri || (package$com.hadihariri = {});
-  var package$multiplatform = package$hadihariri.multiplatform || (package$hadihariri.multiplatform = {});
-  var package$common = package$multiplatform.common || (package$multiplatform.common = {});
-  var package$data = package$common.data || (package$common.data = {});
-  package$data.Message = Message;
-  Object.defineProperty(Priority, 'MINOR', {
-    get: Priority$MINOR_getInstance
-  });
-  Object.defineProperty(Priority, 'NORMAL', {
-    get: Priority$NORMAL_getInstance
-  });
-  Object.defineProperty(Priority, 'MAJOR', {
-    get: Priority$MAJOR_getInstance
-  });
-  package$data.Priority = Priority;
   var package$jp = _.jp || (_.jp = {});
   var package$blogspot = package$jp.blogspot || (package$jp.blogspot = {});
   var package$turanukimaru = package$blogspot.turanukimaru || (package$blogspot.turanukimaru = {});
@@ -13661,11 +13529,11 @@ var js = function (_, Kotlin) {
   });
   package$fehs.EffectiveAgainst = EffectiveAgainst;
   package$fehs.FightPlan = FightPlan;
-  Object.defineProperty(Locale, 'JAPAN', {
-    get: Locale$JAPAN_getInstance
-  });
   Object.defineProperty(Locale, 'JAPANESE', {
     get: Locale$JAPANESE_getInstance
+  });
+  Object.defineProperty(Locale, 'JAPAN', {
+    get: Locale$JAPAN_getInstance
   });
   package$fehs.Locale = Locale;
   package$fehs.ModelObjectRepository = ModelObjectRepository;
@@ -15502,11 +15370,6 @@ var js = function (_, Kotlin) {
     get: Weapon$Companion_getInstance
   });
   package$skill.Weapon = Weapon;
-  package$common.Date = Date_0;
-  package$common.platformMessage_pf0ooo$ = platformMessage;
-  var package$js = package$multiplatform.js || (package$multiplatform.js = {});
-  package$js.broadcastMessage_pf0ooo$ = broadcastMessage;
-  package$js.main_kand9s$ = main;
   Object.defineProperty(Assist.prototype, 'maxLevel', Object.getOwnPropertyDescriptor(Skill.prototype, 'maxLevel'));
   Assist.prototype.bothEffect_sv9jhu$ = Skill.prototype.bothEffect_sv9jhu$;
   Assist.prototype.bothEffect_sv9jhu$$default = Skill.prototype.bothEffect_sv9jhu$$default;
@@ -16371,7 +16234,6 @@ var js = function (_, Kotlin) {
   Weapon.prototype.attackHeal_sv9jhu$ = Skill.prototype.attackHeal_sv9jhu$;
   nullifiesUs = "Nullifies foe's bonuses";
   nullifiesJp = '\u7279\u52B9\u5BFE\u8C61\u306E\u5F37\u5316\u306E+\u3092\u7121\u52B9\u306B\u3059\u308B';
-  main([]);
-  Kotlin.defineModule('js', _);
+  Kotlin.defineModule('FEHSIM', _);
   return _;
-}(typeof js === 'undefined' ? {} : js, kotlin);
+}(typeof FEHSIM === 'undefined' ? {} : FEHSIM, kotlin);
