@@ -20,7 +20,7 @@
         <thead>
         <tr>
             <th>
-                →選択したユニットが受け<input type="checkbox" id="switch" value="true" onchange="calculateAll()"/><br />
+                →選択したユニットが受け<input type="checkbox" id="switch" value="true" onchange="calculateAll()"/><br>
 
                 敵のフィルタ
                 <select id="enemyWeaponType" onchange="calculateAll()">
@@ -43,10 +43,10 @@
                     <option value="FLIER">飛行</option>
                     <option value="ARMORED">重装</option>
                 </select>
-                <br/>
+                <br>
                 <span id="CustomParams">
                 バフ表示<input type="checkbox" value="true"
-                           onchange="if(this.checked){$('#Buffs').show();$('.Buffs').show()}else{$('#Buffs').hide();$('.Buffs').hide()}"/><br/>
+                           onchange="if(this.checked){$('#Buffs').show();$('.Buffs').show()}else{$('#Buffs').hide();$('.Buffs').hide()}"/><br>
                 <span id="Params">
                     HP<span class="hp">　</span>
                     攻撃<span class="atk">　</span>
@@ -54,21 +54,21 @@
                     守備<span class="def">　</span>
                     魔防<span class="res">　</span>
                 </span>
-                <br/>
+                <br>
                 <span id="Buffs">
                 バフ　:
                 <input class="atkBuff" type="text" value="0" size="2" onchange="calculateAll()"/>
                 <input class="spdBuff" type="text" value="0" size="2" onchange="calculateAll()"/>
                 <input class="defBuff" type="text" value="0" size="2" onchange="calculateAll()"/>
                 <input class="resBuff" type="text" value="0" size="2" onchange="calculateAll()"/>
-                <br/>
+                <br>
                     <!-- そういや作てなかったなデバフ
                     デバフ:
                     <input class="atkDebuff" type="text" value="0" size="2"/>
                     <input class="spdDebuff" type="text" value="0" size="2"/>
                     <input class="defDebuff" type="text" value="0" size="2"/>
                     <input class="resDebuff" type="text" value="0" size="2"/>
-                    <br/>
+                    <br>
                     -->
                 紋章　:
                 <input class="atkSpur" type="text" value="0" size="2" onchange="calculateAll()"/>
@@ -76,7 +76,7 @@
                 <input class="defSpur" type="text" value="0" size="2" onchange="calculateAll()"/>
                 <input class="resSpur" type="text" value="0" size="2" onchange="calculateAll()"/>
                 </span>
-                <br/>
+                <br>
                 <span id="BoonBane">
                     防御地形<input type="checkbox" class="defensive" value="true" onchange="calculateAll()"/>
                 <select class="boon" onchange="calculateAll()">
@@ -116,25 +116,25 @@
                     <option value="10">10</option>
                 </select>
 </span>
-                <br/>
+                <br>
                 スキル表示<input type="checkbox"
-                            onchange="if(this.checked){$('#Skills').show();$('.Skills').show()}else{$('#Skills').hide();$('.Skills').hide()}"/><br/>
+                            onchange="if(this.checked){$('#Skills').show();$('.Skills').show()}else{$('#Skills').hide();$('.Skills').hide()}"/><br>
                 <span id="Skills">
-                <select class="weapon" onchange="calculateAll()"></select><br/>
-                <select class="assist" onchange="calculateAll()"></select><br/>
-                <select class="special" onchange="calculateAll()"></select><br/>
-                <select class="skillA" onchange="calculateAll()"></select><br/>
-                <select class="skillB" onchange="calculateAll()"></select><br/>
-                <select class="skillC" onchange="calculateAll()"></select><br/>
-                <select class="seal" onchange="calculateAll()"></select><br/>
-                <select class="refine" onchange="calculateAll()"></select><br/>
+                <select class="weapon" onchange="calculateAll()"></select><br>
+                <select class="assist" onchange="calculateAll()"></select><br>
+                <select class="special" onchange="calculateAll()"></select><br>
+                <select class="skillA" onchange="calculateAll()"></select><br>
+                <select class="skillB" onchange="calculateAll()"></select><br>
+                <select class="skillC" onchange="calculateAll()"></select><br>
+                <select class="seal" onchange="calculateAll()"></select><br>
+                <select class="refine" onchange="calculateAll()"></select><br>
 
 </span></span>
             </th>
             <td class="hero">
                 <span class="add" onclick="cloneHero(this)">追加+</span>
                 <span class="delete" onclick="closeHero(this)">削除-</span>
-                <br/>
+                <br>
                 フィルタ
                 <select class="weaponType" onchange="filterHeroes(this)">
                     <option value="">武器</option>
@@ -156,12 +156,12 @@
                     <option value="FLIER">飛行</option>
                     <option value="ARMORED">重装</option>
                 </select>
-                <br/>
-                <select class="attacker" onchange="calculateAll()"></select><br/>
-                <span class="Params"></span><br/>
+                <br>
+                <select class="attacker" onchange="calculateAll()"></select><br>
+                <span class="Params"></span><br>
                 <span class="CustomParams">
-                <span class="Buffs"></span><br/>
-                <span class="BoonBane"></span><br/><br/>
+                <span class="Buffs"></span><br>
+                <span class="BoonBane"></span><br><br>
                 <span class="Skills"></span>
                 </span>
             </td>
