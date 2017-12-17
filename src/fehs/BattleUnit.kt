@@ -289,13 +289,13 @@ data class BattleUnit(val armedHero: ArmedHero
     }
 
     fun damage(target: BattleUnit, results: List<AttackResult>): Pair<Int, Skill?> {
-        println("level / cooldown ${armedHero.special.level}  ${armedHero.reduceSpecialCooldown}")
+//        println("level / cooldown ${armedHero.special.level}  ${armedHero.reduceSpecialCooldown}")
         if (specialCount == armedHero.specialCoolDownTime) {
             val damage = armedHero.special.damage(this, target, results)
             specialCount = if (damage.second != null) 0 else specialCount
             return if (damage.second != null) Pair(damage.first + armedHero.skills.fold(0, { d, skill -> skill.specialTriggered(this, d) }), damage.second) else damage
         }
-        println("level / cooldown ${armedHero.special.level}  ${armedHero.reduceSpecialCooldown}")
+        //println("level / cooldown ${armedHero.special.level}  ${armedHero.reduceSpecialCooldown}")
         specialCount += if (accelerateAttackCooldown + 1 > InflictCooldown) accelerateAttackCooldown + 1 - InflictCooldown else 0
         specialCount = if (specialCount > armedHero.specialCoolDownTime) armedHero.specialCoolDownTime else specialCount
         //ここにレイプトがかかってくるのか・・・どうすっかなあこれ。

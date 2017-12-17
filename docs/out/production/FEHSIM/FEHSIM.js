@@ -15,7 +15,6 @@ var FEHSIM = function (_, Kotlin) {
   var toList = Kotlin.kotlin.collections.toList_7wnvza$;
   var Kind_OBJECT = Kotlin.Kind.OBJECT;
   var last = Kotlin.kotlin.collections.last_2p1efm$;
-  var println = Kotlin.kotlin.io.println_s8jyv4$;
   var IntRange = Kotlin.kotlin.ranges.IntRange;
   var to = Kotlin.kotlin.to_ujzrz7$;
   var mapOf = Kotlin.kotlin.collections.mapOf_qfcya0$;
@@ -29,6 +28,7 @@ var FEHSIM = function (_, Kotlin) {
   var Exception = Kotlin.kotlin.Exception;
   var toString = Kotlin.toString;
   var toInt = Kotlin.kotlin.text.toInt_pdl1vz$;
+  var println = Kotlin.kotlin.io.println_s8jyv4$;
   WeaponType.prototype = Object.create(Enum.prototype);
   WeaponType.prototype.constructor = WeaponType;
   MoveType.prototype = Object.create(Enum.prototype);
@@ -1737,7 +1737,6 @@ var FEHSIM = function (_, Kotlin) {
     return new AttackResult(this, target, preventedDamage.first, damage.second, preventedDamage.second);
   };
   BattleUnit.prototype.damage_dayeuq$ = function (target, results) {
-    println('level / cooldown ' + this.armedHero.special.level + '  ' + this.armedHero.reduceSpecialCooldown);
     if (this.specialCount === this.armedHero.specialCoolDownTime) {
       var damage = this.armedHero.special.damage_96237r$(this, target, results);
       this.specialCount = damage.second != null ? 0 : this.specialCount;
@@ -1757,7 +1756,6 @@ var FEHSIM = function (_, Kotlin) {
         tmp$ = damage;
       return tmp$;
     }
-    println('level / cooldown ' + this.armedHero.special.level + '  ' + this.armedHero.reduceSpecialCooldown);
     this.specialCount = this.specialCount + ((this.accelerateAttackCooldown + 1 | 0) > this.InflictCooldown ? this.accelerateAttackCooldown + 1 - this.InflictCooldown | 0 : 0) | 0;
     this.specialCount = this.specialCount > this.armedHero.specialCoolDownTime ? this.armedHero.specialCoolDownTime : this.specialCount;
     return Skill$Companion_getInstance().NONE.damage_96237r$(this, target, results, null);
@@ -2581,7 +2579,6 @@ var FEHSIM = function (_, Kotlin) {
     }
   };
   FightPlan.prototype.log_za3rmp$ = function (text) {
-    println(text);
   };
   function FightPlan$firstAttack$lambda(pair, results) {
     return pair.first.attack_dayeuq$(pair.second, results);
@@ -4226,7 +4223,6 @@ var FEHSIM = function (_, Kotlin) {
     return RefineSkill$DeathlyDagger_instance;
   }
   RefineSkill.prototype.equip_yukhz7$$default = function (armedHero, lv) {
-    println(this.jp + ' hp:' + this.hp);
     this.equipHp_yukhz7$(armedHero, this.hp);
     this.equipAtk_yukhz7$(armedHero, this.atk);
     this.equipSpd_yukhz7$(armedHero, this.spd);
@@ -4306,7 +4302,6 @@ var FEHSIM = function (_, Kotlin) {
             this.itemMap.put_xwzc9p$(element.value, element);
           }
         }
-        println(key);
         return (tmp$ = this.itemMap.get_11rb$(key)) != null ? tmp$ : RefineSkill$valueOf(key);
       }
        catch (e) {
@@ -5453,7 +5448,6 @@ var FEHSIM = function (_, Kotlin) {
     return armedHero;
   };
   Skill.prototype.log_za3rmp$ = function (s) {
-    println(s);
   };
   Skill.prototype.equipHp_yukhz7$ = function (armedHero, lv) {
     armedHero.hpEqp = armedHero.hpEqp + lv | 0;

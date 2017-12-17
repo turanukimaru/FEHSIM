@@ -268,7 +268,7 @@ interface Skill {
     }
 
     fun log(s: Any) {
-        println(s)
+        //println(s)
     }
 
     fun equipHp(armedHero: ArmedHero, lv: Int): ArmedHero {

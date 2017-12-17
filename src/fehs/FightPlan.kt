@@ -113,7 +113,7 @@ class FightPlan(val attacker: BattleUnit, val target: BattleUnit) {
      * androidじゃないからLogは使えないわ・・・なんか用意しないと
      */
     fun log(text: Any) {
-        println(text)
+        //println(text)
     }
 }
 

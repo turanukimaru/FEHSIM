@@ -133,7 +133,7 @@ enum class RefineSkill(val us: String = "", override val jp: String, val hp: Int
     ;
 
     override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero {
-        println("$jp hp:$hp")
+        //println("$jp hp:$hp")
         equipHp(armedHero, hp)
         equipAtk(armedHero, atk)
         equipSpd(armedHero, spd)
@@ -173,7 +173,7 @@ enum class RefineSkill(val us: String = "", override val jp: String, val hp: Int
             if (itemMap.isEmpty()) {
                 values().forEach { e -> itemMap.put(e.jp, e); itemMap.put(e.us, e);itemMap.put(e.value, e) }
             }
-            println(key)
+            //println(key)
             itemMap[key] ?: valueOf(key)
         } catch (e: Exception) {
             Skill.NONE
