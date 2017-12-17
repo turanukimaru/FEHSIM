@@ -5,6 +5,63 @@
     <title>Console Output</title>
     <style type="text/css">
 
+table {
+font-family: sans-serif;
+    border-collapse: collapse;
+    text-align: left;
+    line-height: 1.5;
+}
+table thead th {
+    padding: 10px;
+    font-weight: bold;
+    vertical-align: top;
+    background: #fff0f0;
+    border-radius: 10px 10px 0px 10px;
+}
+table thead td {
+    padding: 10px;
+    font-weight:bold;
+    vertical-align: top;
+    background: #f0f0ff;
+    border-radius: 10px 10px 0px 0px;
+}
+table tbody th {
+    padding-left: 10px;
+    font-weight:normal;
+    vertical-align: top;
+    background: #fff0f0;
+    border-radius: 10px 0px 00px 10px;
+    border-top: 2px solid #ffa0a0;
+}
+table tbody td.win {
+    padding-left: 8px;
+    vertical-align: top;
+    background: #f0f0ff;
+    border: 2px solid #d0c0e0;
+}
+table tbody td.lose {
+    padding-left: 8px;
+    vertical-align: top;
+    background: #fff0f0;
+    border: 2px solid #d0c0e0;
+}
+table tbody td.even {
+    padding-left: 8px;
+    vertical-align: top;
+    background: #fffdff;
+    border: 2px solid #d0c0e0;
+}
+span.name {
+font-weight:bold;
+}
+span.myHp {
+font-weight:bold;
+color:#0101fe;
+}
+span.enemyHp {
+font-weight:bold;
+color:#fe0101;
+}
     </style>
     <script type="text/javascript" src="out/production/FEHSIM/lib/kotlin.js"></script>
     <script type="text/javascript" src="out/production/FEHSIM/FEHSIM.js"></script>
@@ -78,7 +135,7 @@
                 </span>
                 <br>
                 <span id="BoonBane">
-                    防御地形<input type="checkbox" class="defensive" value="true" onchange="calculateAll()"/>
+                    防御地形<input type="checkbox" class="defensive" value="true" onchange="calculateAll()"/><br>
                 <select class="boon" onchange="calculateAll()">
                     <option value="">得意　</option>
                     <option value="HP">HP</option>
@@ -132,8 +189,8 @@
 </span></span>
             </th>
             <td class="hero">
-                <span class="add" onclick="cloneHero(this)">追加+</span>
-                <span class="delete" onclick="closeHero(this)">削除-</span>
+                <input type="button" class="add" onclick="cloneHero(this)" value="追加→">
+                <input type="button" class="delete" onclick="closeHero(this)" value="削除×">
                 <br>
                 フィルタ
                 <select class="weaponType" onchange="filterHeroes(this)">

@@ -146,7 +146,7 @@ var calculateAll = function () {
     var results = []
     enemies.forEach(function (e) {
         var tr = $("<tr>")
-        tr.append("<th>" + e.baseHero.name + "<br /></th>")
+        tr.append('<th><span class="name">' + e.baseHero.name + "<br /></th>")
         tr.find("th").append(paramSpan(e))
         heroes.forEach(function (h) {
             var hero = new fehs.BattleUnit(h, h.maxHp,0,h.atkBuff,h.spdBuff,h.defBuff,h.resBuff,0,0,0,0,h.atkSpur,h.spdSpur,h.defSpur,h.resSpur)
@@ -161,10 +161,12 @@ var calculateAll = function () {
             })
             var last = fightResults[fightResults.length - 1]
             if(switched ){
-            tr.append("<td>" + last.source.hp + " - " + last.target.hp + "<br />" + resultText + "</td>")
+            var result = last.source.hp ? (last.target.hp ? "even" :"lose") : "win"
+            tr.append('<td class="' + result+'"><span class="enemyHp">'+last.source.hp + '</span> - <span class="myHp">' + last.target.hp + "</span><br />" + resultText + "</td>")
             }
             else {
-                tr.append("<td>" + last.target.hp + " - " + last.source.hp + "<br />" + resultText + "</td>")
+            var result = last.source.hp ? (last.target.hp ? "even" :"win") : "lose"
+                tr.append('<td class="' + result+'"><span class="enemyHp">' + last.target.hp + '</span> - <span class="myHp">' + last.source.hp + "</span><br />"  + resultText + "</td>")
             }
 //            results.push(fightResults)
         })
