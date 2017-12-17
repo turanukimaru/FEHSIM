@@ -18,7 +18,7 @@ table thead th {
     font-weight: bold;
     vertical-align: top;
     background: #fff0f0;
-    border-radius: 10px 10px 0px 10px;
+    border-radius: 10px 10px 10px 0px;
 }
 table thead td {
     padding: 10px;
@@ -32,7 +32,7 @@ table tbody th {
     font-weight:normal;
     vertical-align: top;
     background: #fff0f0;
-    border-radius: 10px 0px 00px 10px;
+    border-radius: 0px 10px 10px 0px;
     border-top: 2px solid #ffa0a0;
 }
 table tbody td.win {
@@ -64,6 +64,8 @@ span.enemyHp {
 font-weight:bold;
 color:#fe0101;
 }
+
+
     </style>
     <script type="text/javascript" src="out/production/FEHSIM/lib/kotlin.js"></script>
     <script type="text/javascript" src="out/production/FEHSIM/FEHSIM.js"></script>
@@ -78,10 +80,43 @@ color:#fe0101;
     <table id="heroes">
         <thead>
         <tr>
+            <td class="hero">
+                <input type="button" class="add" onclick="cloneHero(this)" value="追加→">
+                <input type="button" class="delete" onclick="closeHero(this)" value="削除×">
+                <br>
+                フィルタ
+                <select class="weaponType" onchange="filterHeroes(this)">
+                    <option value="">武器</option>
+                    <option value="SWORD">剣</option>
+                    <option value="LANCE">槍</option>
+                    <option value="AXE">斧</option>
+                    <option value="DRAGON">竜石</option>
+                    <option value="RTOME">赤魔</option>
+                    <option value="BTOME">青魔</option>
+                    <option value="GTOME">緑魔</option>
+                    <option value="BOW">弓</option>
+                    <option value="DAGGER">暗器</option>
+                    <option value="STAFF">杖</option>
+                </select>
+                <select class="moveType" onchange="filterHeroes(this)">
+                    <option value="">移動</option>
+                    <option value="INFANTRY">歩行</option>
+                    <option value="CAVALRY">騎兵</option>
+                    <option value="FLIER">飛行</option>
+                    <option value="ARMORED">重装</option>
+                </select>
+                <br>
+                <select class="attacker" onchange="calculateAll()"></select><br>
+                <span class="Params"></span><br>
+                <span class="CustomParams">
+                <span class="Buffs"></span><br>
+                <span class="BoonBane"></span><br><br>
+                <span class="Skills"></span>
+                </span>
+            </td>
             <th>
-                →選択したユニットが受け<input type="checkbox" id="switch" value="true" onchange="calculateAll()"/><br>
-
-                敵のフィルタ
+                ←青ユニットが受け<input type="checkbox" id="switch" value="true" onchange="calculateAll()"/><br>
+                敵
                 <select id="enemyWeaponType" onchange="calculateAll()">
                     <option value="">武器</option>
                     <option value="SWORD">剣</option>
@@ -102,6 +137,7 @@ color:#fe0101;
                     <option value="FLIER">飛行</option>
                     <option value="ARMORED">重装</option>
                 </select>
+                <select id="enemyAttacker" onchange="calculateAll()"></select>
                 <br>
                 <span id="CustomParams">
                 バフ表示<input type="checkbox" value="true"
@@ -175,6 +211,7 @@ color:#fe0101;
                     <option value="10">10</option>
                 </select>
 </span>
+
                 <br>
                 スキル表示<input type="checkbox"
                             onchange="if(this.checked){$('#Skills').show();$('.Skills').show()}else{$('#Skills').hide();$('.Skills').hide()}"/><br>
@@ -190,40 +227,6 @@ color:#fe0101;
 
 </span></span>
             </th>
-            <td class="hero">
-                <input type="button" class="add" onclick="cloneHero(this)" value="追加→">
-                <input type="button" class="delete" onclick="closeHero(this)" value="削除×">
-                <br>
-                フィルタ
-                <select class="weaponType" onchange="filterHeroes(this)">
-                    <option value="">武器</option>
-                    <option value="SWORD">剣</option>
-                    <option value="LANCE">槍</option>
-                    <option value="AXE">斧</option>
-                    <option value="DRAGON">竜石</option>
-                    <option value="RTOME">赤魔</option>
-                    <option value="BTOME">青魔</option>
-                    <option value="GTOME">緑魔</option>
-                    <option value="BOW">弓</option>
-                    <option value="DAGGER">暗器</option>
-                    <option value="STAFF">杖</option>
-                </select>
-                <select class="moveType" onchange="filterHeroes(this)">
-                    <option value="">移動</option>
-                    <option value="INFANTRY">歩行</option>
-                    <option value="CAVALRY">騎兵</option>
-                    <option value="FLIER">飛行</option>
-                    <option value="ARMORED">重装</option>
-                </select>
-                <br>
-                <select class="attacker" onchange="calculateAll()"></select><br>
-                <span class="Params"></span><br>
-                <span class="CustomParams">
-                <span class="Buffs"></span><br>
-                <span class="BoonBane"></span><br><br>
-                <span class="Skills"></span>
-                </span>
-            </td>
         </tr>
 
         </thead>
@@ -236,12 +239,12 @@ color:#fe0101;
         </tbody>
     </table>
 </div>
-    <div>
+<div>
     ※スキル変更時には制限を無視して全てのユニットのスキルを変更します。<br>
     ※Android用の1キャラのみの簡易版（ただし編集したキャラが保存できる）もあります。<br>
-        <a href="https://play.google.com/store/apps/details?id=jp.blogspot.turanukimaru.fehbs" title="Android app" >
-            https://play.google.com/store/apps/details?id=jp.blogspot.turanukimaru.fehbs
-        </a>
+    <a href="https://play.google.com/store/apps/details?id=jp.blogspot.turanukimaru.fehbs" title="Android app">
+        https://play.google.com/store/apps/details?id=jp.blogspot.turanukimaru.fehbs
+    </a>
 </div>
 </body>
 </html>

@@ -19,33 +19,33 @@ $(document).ready(function () {
 
 //とりあえず名前でソート。どうせフィルタかけるんだし
     var heroNames = allHeroes.map(function (e, i, a) {
-        return $('<option>', {value: e.name, text: e.name});
+        return $('<option>', {value: e.name, text: e.name})
     })
 
     var weapons = fehs.skill.Weapon.values().map(function (e, i, a) {
-        return $('<option>', {value: e.name, text: e.jp});
+        return $('<option>', {value: e.name, text: e.jp})
     })
 
     var assists = fehs.skill.Assist.values().map(function (e, i, a) {
-        return $('<option>', {value: e.name, text: e.jp});
+        return $('<option>', {value: e.name, text: e.jp})
     })
     var specials = fehs.skill.Special.values().map(function (e, i, a) {
-        return $('<option>', {value: e.name, text: e.jp});
+        return $('<option>', {value: e.name, text: e.jp})
     })
     var skillAs = fehs.skill.SkillA.Companion.spreadItems().toArray().map(function (e, i, a) {
-        return $('<option>', {value: e.value, text: e.jp + e.level});
+        return $('<option>', {value: e.value, text: e.jp + e.level})
     })
     var skillBs = fehs.skill.SkillB.Companion.spreadItems().toArray().map(function (e, i, a) {
-        return $('<option>', {value: e.value, text: e.jp + e.level});
+        return $('<option>', {value: e.value, text: e.jp + e.level})
     })
     var skillCs = fehs.skill.SkillC.Companion.spreadItems().toArray().map(function (e, i, a) {
-        return $('<option>', {value: e.value, text: e.jp + e.level});
+        return $('<option>', {value: e.value, text: e.jp + e.level})
     })
     var seals = fehs.skill.Seal.Companion.spreadItems().toArray().map(function (e, i, a) {
-        return $('<option>', {value: e.value, text: e.jp + e.level});
+        return $('<option>', {value: e.value, text: e.jp + e.level})
     })
     var refines = fehs.skill.RefineSkill.values().map(function (e, i, a) {
-        return $('<option>', {value: e.name, text: e.jp});
+        return $('<option>', {value: e.name, text: e.jp})
     })
 
     $(".attacker").append(heroNames)
@@ -115,6 +115,7 @@ var calculateAll = function () {
     var switched = !!$("#switch:checked").val()
     var enemyWeaponType = $("#enemyWeaponType").val()
     var enemyMoveType = $("#enemyMoveType").val()
+    var enemyName = $("#enemyAttacker").val()
     var body = $("#heroes tbody")
     body.children().remove()
 //    console.log(enemyWeaponType)
@@ -129,6 +130,21 @@ var calculateAll = function () {
         return new fehs.ArmedHero(base, "new hero", params.weapon ? params.weapon : base.weapon, params.refine, params.assist ? params.assist : base.assist, params.special ? params.special : base.special
             , params.skillA ? params.skillA : base.aSkill, params.skillB ? params.skillB : base.bSkill, params.skillC ? params.skillC : base.cSkill, params.seal, params.rarity, params.level, params.boon, params.bane, params.defensive, params.atkBuff, params.spdBuff, params.defBuff, params.resBuff, params.atkSpur, params.spdSpur, params.defSpur, params.resSpur)
     })
+    var heroNames = enemies.map(function (e, i, a) {
+        return $('<option>', {value: e.baseHero.name, text: e.baseHero.name})
+    })
+    $("#enemyAttacker").children().remove()
+    $("#enemyAttacker").append($('<option>', {value: "", text: "敵選択"})).append(heroNames)
+    if(enemyName){
+        var target = enemies.filter(function (e, i, a) {
+            //コンパニオンオブジェクトはあてにならない。ローカライズの命名ルール統一しておくんだったな・・・
+            return e.baseHero.name == enemyName
+        })
+        if(target.length > 0){
+            enemies = target
+            $("#enemyAttacker").val(target[0].baseHero.name)
+        }
+    }
 
     var heroes = $("#heroes .attacker").map(function () {
             var base = fehs.StandardBaseHero.get_61zpoe$(this.value)
@@ -146,8 +162,6 @@ var calculateAll = function () {
     var results = []
     enemies.forEach(function (e) {
         var tr = $("<tr>")
-        tr.append('<th><span class="name">' + e.baseHero.name + "<br /></th>")
-        tr.find("th").append(paramSpan(e))
         heroes.forEach(function (h) {
             var hero = new fehs.BattleUnit(h, h.maxHp,0,h.atkBuff,h.spdBuff,h.defBuff,h.resBuff,0,0,0,0,h.atkSpur,h.spdSpur,h.defSpur,h.resSpur)
             hero.defensiveTerrain = h.defensiveTerrain
@@ -170,6 +184,8 @@ var calculateAll = function () {
             }
 //            results.push(fightResults)
         })
+        tr.append('<th><span class="name">' + e.baseHero.name + "<br /></th>")
+        tr.find("th").append(paramSpan(e))
         body.append(tr)
     })
 //    console.log(results)
