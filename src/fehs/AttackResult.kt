@@ -2,7 +2,6 @@ package jp.blogspot.turanukimaru.fehs
 
 import jp.blogspot.turanukimaru.fehs.skill.Skill
 
-
 /**
  * 戦闘結果
  */

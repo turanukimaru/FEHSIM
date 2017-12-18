@@ -2,16 +2,15 @@ package jp.blogspot.turanukimaru.fehs.skill
 
 import jp.blogspot.turanukimaru.fehs.Locale
 
-
 class LappedSkill(val skill: Skill, override val level: Int) : Skill by skill {
 
-    override fun localeName(locale: Locale): String {
-        return when (locale) {
-            Locale.JAPAN -> skill.jp + if (level > 0) " " + level else ""
-            Locale.JAPANESE -> skill.jp + if (level > 0) " " + level else ""
-            else -> skill.value + if (level > 0) " " + level else ""
-        }
-    }
+    override fun localeName(locale: Locale): String =
+            when (locale) {
+                Locale.JAPAN -> skill.jp + if (level > 0) " " + level else ""
+                Locale.JAPANESE -> skill.jp + if (level > 0) " " + level else ""
+                else -> skill.value + if (level > 0) " " + level else ""
+
+            }
 
     /**
      * スキル名
@@ -21,9 +20,7 @@ class LappedSkill(val skill: Skill, override val level: Int) : Skill by skill {
     /**
      * スキル名＋あればレベル
      */
-    override fun toString(): String {
-        return value
-    }
+    override fun toString(): String = value
 
     /**
      * スキルとレベルが等しいときはequal.Skills側でガードはしているがついで。

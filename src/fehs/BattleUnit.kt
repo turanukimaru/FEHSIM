@@ -167,47 +167,37 @@ data class BattleUnit(val armedHero: ArmedHero
     /**
      * 戦闘効果。スキルの攻撃効果を再帰でなめて攻撃時効果を計算する。主に能力値変化
      */
-    fun bothEffect(): BattleUnit {
-        return armedHero.bothEffect(this)
-    }
+    fun bothEffect(): BattleUnit = armedHero.bothEffect(this)
 
     /**
      * 攻撃側戦闘効果。スキルの攻撃効果を再帰でなめて攻撃時効果を計算する。主に能力値変化
      */
-    fun attackEffect(): BattleUnit {
-        return armedHero.attackEffect(this)
-    }
+    fun attackEffect(): BattleUnit = armedHero.attackEffect(this)
 
     /**
      * 受け側戦闘効果。スキルの反撃効果を再帰でなめて受け時効果を計算する。主に能力値変化
      */
-    fun counterEffect(): BattleUnit {
-        return armedHero.counterEffect(this)
-    }
+    fun counterEffect(): BattleUnit = armedHero.counterEffect(this)
 
     /**
      * 能力値計算後に適応する必要のある攻撃側戦闘効果。
      */
-    fun effectedAttackEffect(): BattleUnit {
-        return armedHero.effectedAttackEffect(this)
-    }
+    fun effectedAttackEffect(): BattleUnit = armedHero.effectedAttackEffect(this)
 
     /**
      * 能力値計算後に適応する必要のある受け側戦闘効果
      */
-    fun effectedCcounterEffect(): BattleUnit {
-        return armedHero.effectedCcounterEffect(this)
-    }
+    fun effectedCcounterEffect(): BattleUnit = armedHero.effectedCcounterEffect(this)
 
     fun afterFightEffect() {
         lossHp(hpLossAtEndOfFight)
         armedHero.afterFightEffect(this)
     }
 
-    fun reducedDamage(damage:Int) {
+    fun reducedDamage(damage: Int) {
         //初期化
         oneTimeOnlyAdditionalDamage = 0
-        armedHero.reducedDamage(this,damage)
+        armedHero.reducedDamage(this, damage)
     }
 
 
@@ -237,16 +227,12 @@ data class BattleUnit(val armedHero: ArmedHero
     /**
      * 攻撃側戦闘プラン。スキルの攻撃プランを再帰でなめて攻撃時効果を計算する。主に行動順の制御
      */
-    fun attackPlan(fightPlan: FightPlan): FightPlan {
-        return if (disableChangePlan) fightPlan else armedHero.attackPlan(fightPlan)
-    }
+    fun attackPlan(fightPlan: FightPlan): FightPlan = if (disableChangePlan) fightPlan else armedHero.attackPlan(fightPlan)
 
     /**
      * 受け側戦闘プラン。スキルの反撃プランを再帰でなめて受け時効果を計算する。主に行動順の制御
      */
-    fun counterPlan(fightPlan: FightPlan): FightPlan {
-        return if (disableChangePlan) fightPlan else armedHero.counterPlan(fightPlan)
-    }
+    fun counterPlan(fightPlan: FightPlan): FightPlan = if (disableChangePlan) fightPlan else armedHero.counterPlan(fightPlan)
 
     fun fightAndAfterEffect(targetUnit: BattleUnit): List<AttackResult> {
         val result = fight(targetUnit)
@@ -276,7 +262,7 @@ data class BattleUnit(val armedHero: ArmedHero
         val preventedDamage = target.preventBySkill(damage.first, results)
 
         //氷鏡のによる追加。簡単に済んで良かった。
-        target.reducedDamage( damage.first - preventedDamage.first)
+        target.reducedDamage(damage.first - preventedDamage.first)
         //スキルが発動していたら吸収効果を発動する。九州のないスキルは何も起こらない
         damage.second?.absorb(this, target, if (target.hp > preventedDamage.first) preventedDamage.first else target.hp)
         target.hp = if (target.hp > preventedDamage.first) {
@@ -289,7 +275,7 @@ data class BattleUnit(val armedHero: ArmedHero
     }
 
     fun damage(target: BattleUnit, results: List<AttackResult>): Pair<Int, Skill?> {
-//        println("level / cooldown ${armedHero.special.level}  ${armedHero.reduceSpecialCooldown}")
+        //println("level / cooldown ${armedHero.special.level}  ${armedHero.reduceSpecialCooldown}")
         if (specialCount == armedHero.specialCoolDownTime) {
             val damage = armedHero.special.damage(this, target, results)
             specialCount = if (damage.second != null) 0 else specialCount
@@ -305,7 +291,7 @@ data class BattleUnit(val armedHero: ArmedHero
     fun effectedPrevent(weaponType: Skill.SkillType) = if (weaponType == Skill.SkillType.REFINED_DRAGON && armedHero.baseHero.weaponType.range == 2) if (effectedDef < effectedRes) effectedDef else effectedRes
     else if (weaponType.weaponType!!.isMaterial) effectedDef else effectedRes
 
-    fun halfByStaff(damage: Int):Int = damage - if(armedHero.baseHero.weaponType == WeaponType.STAFF && !wrathfulStaff) damage / 2 else 0
+    fun halfByStaff(damage: Int): Int = damage - if (armedHero.baseHero.weaponType == WeaponType.STAFF && !wrathfulStaff) damage / 2 else 0
     /**
      * スキル・奥義によるダメージ減少.
      */

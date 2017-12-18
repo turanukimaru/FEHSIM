@@ -73,17 +73,17 @@ class FightPlan(val attacker: BattleUnit, val target: BattleUnit) {
         attacker.side = SIDES.ATTACKER
         target.side = SIDES.COUNTER
         //速度が足りないか追撃不可の時は追撃梨
-        log("attack")
-        log(attacker.armedHero.baseHero)
-        log(attacker)
-        log(attacker.effectedSpd)
+//        log("attack")
+//        log(attacker.armedHero.baseHero)
+//        log(attacker)
+//        log(attacker.effectedSpd)
         if ((attacker.followupable == attacker.antiFollowup && attacker.effectedSpd - target.effectedSpd < 5) || (!attacker.followupable && attacker.antiFollowup)) {
 
             plan.remove(secondAttack)
         }
-        log(target.armedHero.baseHero)
-        log(target)
-        log(target.effectedSpd)
+//        log(target.armedHero.baseHero)
+//        log(target)
+//        log(target.effectedSpd)
         if ((target.followupable == target.antiFollowup && target.effectedSpd - attacker.effectedSpd < 5) || (!target.followupable && target.antiFollowup)) {
 
             plan.remove(secondCounter)
@@ -108,12 +108,12 @@ class FightPlan(val attacker: BattleUnit, val target: BattleUnit) {
             }
         }
     }
-
-    /**
-     * androidじゃないからLogは使えないわ・・・なんか用意しないと
-     */
-    fun log(text: Any) {
-        //println(text)
-    }
+//
+//    /**
+//     * androidじゃないからLogは使えないわ・・・なんか用意しないと
+//     */
+//    fun log(text: Any) {
+////        println(text)
+//    }
 }
 

@@ -2,7 +2,6 @@ package jp.blogspot.turanukimaru.fehs.skill
 
 import jp.blogspot.turanukimaru.fehs.*
 
-
 interface Skill {
     val level: Int get() = 0
     val type: SkillType get() = SkillType.NONE
@@ -32,65 +31,47 @@ interface Skill {
     /**
      * 攻撃時の効果。基本的にunitの能力値を上下したり
      */
-    fun attackEffect(battleUnit: BattleUnit, lv: Int = level): BattleUnit {
-        return battleUnit
-    }
+    fun attackEffect(battleUnit: BattleUnit, lv: Int = level): BattleUnit = battleUnit
 
     /**
      * 反撃時の効果
      */
-    fun counterEffect(battleUnit: BattleUnit, lv: Int = level): BattleUnit {
-        return battleUnit
-    }
+    fun counterEffect(battleUnit: BattleUnit, lv: Int = level): BattleUnit = battleUnit
 
     /**
      * 攻撃時の効果。基本的にunitの能力値が上下した後参照したいとき
      */
-    fun effectedAttackEffect(battleUnit: BattleUnit, lv: Int = level): BattleUnit {
-        return battleUnit
-    }
+    fun effectedAttackEffect(battleUnit: BattleUnit, lv: Int = level): BattleUnit = battleUnit
 
     /**
      * 反撃時の効果。基本的にunitの能力値が上下した後参照したいとき
      */
-    fun effectedCounterEffect(battleUnit: BattleUnit, lv: Int = level): BattleUnit {
-        return battleUnit
-    }
+    fun effectedCounterEffect(battleUnit: BattleUnit, lv: Int = level): BattleUnit = battleUnit
 
     /**
      * 攻撃時の効果。基本的にunitの能力値を上下したり攻撃の順番を変える
      */
-    fun attackPlan(fightPlan: FightPlan, lv: Int = level): FightPlan {
-        return fightPlan
-    }
+    fun attackPlan(fightPlan: FightPlan, lv: Int = level): FightPlan = fightPlan
 
     /**
      * 反撃時の効果として用意したけどuni内に攻撃側かどうかが入ってるので削除するべきか
      */
-    fun counterPlan(fightPlan: FightPlan, lv: Int = level): FightPlan {
-        return fightPlan
-    }
+    fun counterPlan(fightPlan: FightPlan, lv: Int = level): FightPlan = fightPlan
 
     /**
      * ダメージ減少。連撃防御
      */
-    fun prevent(battleUnit: BattleUnit, damage: Int, results: List<AttackResult>, lv: Int = level): Int {
-        return damage
-    }
+    fun prevent(battleUnit: BattleUnit, damage: Int, results: List<AttackResult>, lv: Int = level): Int = damage
 
     /**
      * ダメージ減少。奥義や連撃防御.奥義が2回発動するようなことになりませんように・・・
      */
-    fun specialPrevent(battleUnit: BattleUnit, damage: Int, lv: Int = level): Pair<Int, Skill?> {
-        return Pair(damage, null)
-    }
+    fun specialPrevent(battleUnit: BattleUnit, damage: Int, lv: Int = level): Pair<Int, Skill?> = Pair(damage, null)
 
     /**
      * 奥義発動時の追加効果。ほぼダメージ＋１０のスキル用
      */
-    fun specialTriggered(battleUnit: BattleUnit, damage: Int, lv: Int = level): Int {
-        return damage
-    }
+    fun specialTriggered(battleUnit: BattleUnit, damage: Int, lv: Int = level): Int = damage
 
     /**
      * ほぼ奥義専用。攻撃時のダメージ計算。デフォルトで奥義なしのダメージ
@@ -102,9 +83,7 @@ interface Skill {
         return Pair(if (damage > 0) damage else 0, skill)
     }
 
-    fun absorb(battleUnit: BattleUnit, target: BattleUnit, damage: Int): Int {
-        return damage
-    }
+    fun absorb(battleUnit: BattleUnit, target: BattleUnit, damage: Int): Int = damage
 
     /**
      * 装備時の能力値変化
@@ -119,23 +98,17 @@ interface Skill {
     /**
      * ターン開始時。鼓舞や自己バフ
      */
-    fun turnStart(battleUnit: BattleUnit, lv: Int = level): BattleUnit {
-        return battleUnit
-    }
+    fun turnStart(battleUnit: BattleUnit, lv: Int = level): BattleUnit = battleUnit
 
     /**
      * 先頭終了後のダメージとかバフとか。画面にエフェクトを出す処理を追加する必要があるな
      */
-    fun afterFightEffect(battleUnit: BattleUnit, lv: Int = level): BattleUnit {
-        return battleUnit
-    }
+    fun afterFightEffect(battleUnit: BattleUnit, lv: Int = level): BattleUnit = battleUnit
 
     /**
      * スキルによるダメージ軽減のあとそれをどうするか。氷鏡専用
      */
-    fun reducedDamage(battleUnit: BattleUnit, damage: Int = 0, lv: Int = level): BattleUnit {
-        return battleUnit
-    }
+    fun reducedDamage(battleUnit: BattleUnit, damage: Int = 0, lv: Int = level): BattleUnit = battleUnit
 
     //ここからスキル効果
 //   試しに作ったけど〇〇の覚醒ってターン開始時効果だから今は要らなかったんじゃ・・・？
@@ -268,7 +241,7 @@ interface Skill {
     }
 
     fun log(s: Any) {
-        //println(s)
+//        println(s)
     }
 
     fun equipHp(armedHero: ArmedHero, lv: Int): ArmedHero {
@@ -324,7 +297,8 @@ interface Skill {
     }
 
     fun doubleAttack(battleUnit: BattleUnit): BattleUnit {
-        battleUnit.doubleAttack = true;return battleUnit
+        battleUnit.doubleAttack = true
+        return battleUnit
     }
 
     fun colorAdvantage(battleUnit: BattleUnit, lv: Int): BattleUnit {
@@ -366,10 +340,7 @@ interface Skill {
     }
 
     fun desperation(fightPlan: FightPlan, lv: Int): FightPlan {
-//        log(fightPlan.attacker.armedHero.maxHp * (25 * lv) / 100)
-//        log(fightPlan.attacker.hitPoint <= fightPlan.attacker.armedHero.maxHp * (25 * lv) / 100)
         if (fightPlan.attacker.hp <= fightPlan.attacker.armedHero.maxHp * (25 * lv) / 100 && fightPlan.plan.contains(fightPlan.secondAttack)) {
-//            log("desperation triggered")
             fightPlan.plan.remove(fightPlan.secondAttack)
             fightPlan.plan.add(fightPlan.plan.indexOf(fightPlan.firstAttack) + 1, fightPlan.secondAttack)
         }
@@ -463,6 +434,14 @@ interface Skill {
         return battleUnit
     }
 
+    fun allBonus(battleUnit: BattleUnit, i: Int): BattleUnit {
+        battleUnit.atkEffect += i
+        battleUnit.spdEffect += i
+        battleUnit.defEffect += i
+        battleUnit.resEffect += i
+        return battleUnit
+    }
+
     fun enemyFullHpBonus(battleUnit: BattleUnit, i: Int): BattleUnit {
         if (battleUnit.enemy!!.hp == battleUnit.enemy!!.armedHero.maxHp) {
             battleUnit.atkEffect += 2
@@ -525,6 +504,14 @@ interface Skill {
         return battleUnit
     }
 
+    fun accelerateAttackCooldown(battleUnit: BattleUnit, lv: Int): BattleUnit {
+        if (battleUnit.hp * 10 >= battleUnit.armedHero.maxHp * (11 - lv)) {
+
+            battleUnit.accelerateAttackCooldown = 1
+        }
+        return battleUnit
+    }
+
     fun antiEffectiveAgainst(battleUnit: BattleUnit, type: EffectiveAgainst): BattleUnit {
         if (battleUnit.effectiveAgainst == type) {
             battleUnit.effectiveAgainst = EffectiveAgainst.NONE
@@ -553,6 +540,34 @@ interface Skill {
 
     fun attackHeal(battleUnit: BattleUnit, lv: Int): BattleUnit {
         battleUnit.hpLossAtEndOfFight -= lv
+        return battleUnit
+    }
+
+    fun brazenAtk(battleUnit: BattleUnit, lv: Int): BattleUnit {
+        if (battleUnit.hp * 10 <= battleUnit.armedHero.maxHp * 8) {
+            battleUnit.atkEffect += lv
+        }
+        return battleUnit
+    }
+
+    fun brazenSpd(battleUnit: BattleUnit, lv: Int): BattleUnit {
+        if (battleUnit.hp * 10 <= battleUnit.armedHero.maxHp * 8) {
+            battleUnit.spdEffect += lv
+        }
+        return battleUnit
+    }
+
+    fun brazenDef(battleUnit: BattleUnit, lv: Int): BattleUnit {
+        if (battleUnit.hp * 10 <= battleUnit.armedHero.maxHp * 8) {
+            battleUnit.defEffect += lv
+        }
+        return battleUnit
+    }
+
+    fun brazenRes(battleUnit: BattleUnit, lv: Int): BattleUnit {
+        if (battleUnit.hp * 10 <= battleUnit.armedHero.maxHp * 8) {
+            battleUnit.resEffect += lv
+        }
         return battleUnit
     }
 

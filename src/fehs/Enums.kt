@@ -1,12 +1,5 @@
 package jp.blogspot.turanukimaru.fehs
 
-import jp.blogspot.turanukimaru.fehs.skill.Skill
-
-
-/**
- * Created by turanukimaru on 2017/11/15.
- */
-
 /**
  * 武器種類
  */
@@ -60,28 +53,7 @@ enum class MoveType(val steps: Int) {
 
     }
 }
-//
-///**
-// * 移動タイプ
-// */
-//enum class RefineType(val equip:(a:ArmedHero)->ArmedHero = {a->a}){
-//    SPECIAL({a:ArmedHero->a}),
-//    ATK,
-//    SPD,
-//    DEF,
-//    RES,
-//    ;
-//
-//    companion object {
-//        val refineryTypeMap = mapOf("歩行" to MoveType.INFANTRY, "飛行" to MoveType.FLIER, "騎馬" to MoveType.CAVALRY, "重装" to MoveType.ARMORED)
-//        fun refineryTypeOf(key: String) = when {
-//            refineryTypeMap.containsKey(key) -> refineryTypeMap[key]
-//            RefineType.values().any { e -> e.name == key } -> RefineType.valueOf(key)
-//            else -> null
-//        }
-//
-//    }
-//}
+
 enum class BoonType(val jp: String) {
     NONE("-"),
     HP("HP"),
@@ -91,13 +63,13 @@ enum class BoonType(val jp: String) {
     RES("魔防")
     ;
 
-    fun localeName(locale: Locale): CharSequence {
-        return when (locale) {
-            Locale.JAPAN -> jp
-            Locale.JAPANESE -> jp
-            else -> name
-        }
-    }
+    fun localeName(locale: Locale): CharSequence =
+            when (locale) {
+                Locale.JAPAN -> jp
+                Locale.JAPANESE -> jp
+                else -> name
+
+            }
 
     companion object {
         val boonTypeMap = mapOf("HP" to BoonType.HP, "攻撃" to BoonType.ATK, "速さ" to BoonType.SPD, "守備" to BoonType.DEF, "魔防" to BoonType.RES)

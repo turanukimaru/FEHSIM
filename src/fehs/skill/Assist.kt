@@ -45,16 +45,15 @@ enum class Assist(override val jp: String, override val type: Skill.SkillType, o
      */
     override val value get() = name.replace("2", "+")
 
-    override fun localeName(locale: Locale): String {
-        return when (locale) {
+    override fun localeName(locale: Locale): String =
+         when (locale) {
             Locale.JAPAN -> jp
             Locale.JAPANESE -> jp
             else -> value
         }
-    }
 
     companion object {
-        val itemMap = mutableMapOf<String, Skill>()
+       private val itemMap = mutableMapOf<String, Skill>()
         fun spreadItems(): List<Skill> = values().fold(arrayListOf<Skill>(Skill.NONE), { list, e -> list.add(e);list })
 
         fun valueOfOrNONE(key: String?): Skill = if (key == null) Skill.NONE else try {

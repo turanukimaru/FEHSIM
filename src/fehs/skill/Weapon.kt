@@ -2,7 +2,6 @@ package jp.blogspot.turanukimaru.fehs.skill
 
 import jp.blogspot.turanukimaru.fehs.*
 
-
 /**
  * スキル。武器/補助/奥義
  */
@@ -118,10 +117,8 @@ enum class Weapon(override val jp: String, override val type: Skill.SkillType, o
     },
     DivineTyrfing("聖剣ティルフィング", Skill.SkillType.SWORD, 16, SilverSword) {
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = super.equip(equipRes(armedHero, 3), lv)
-        override fun prevent(battleUnit: BattleUnit, damage: Int, results: List<AttackResult>, lv: Int): Int {
-            return if (results.isEmpty() && battleUnit.enemy!!.armedHero.effectiveRange == 2 && battleUnit.enemy!!.armedHero.isMagicWeapon()) damage - damage / 2 else damage
-
-        }
+        override fun prevent(battleUnit: BattleUnit, damage: Int, results: List<AttackResult>, lv: Int): Int =
+                if (results.isEmpty() && battleUnit.enemy!!.armedHero.effectiveRange == 2 && battleUnit.enemy!!.armedHero.isMagicWeapon()) damage - damage / 2 else damage
     },
     RegalBlade("リガルブレイド", Skill.SkillType.SWORD, 16, SilverSword) {
         override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = enemyFullHpBonus(battleUnit, lv * 2)
@@ -134,7 +131,7 @@ enum class Weapon(override val jp: String, override val type: Skill.SkillType, o
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipKiller(equipRes(armedHero, 5), lv)
     },
     DarkGreatsword("黒き血の大剣", Skill.SkillType.SWORD, 16, SilverSword) {
-        override fun attackEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = blowSpd(blowAtk(battleUnit,4),4)
+        override fun attackEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = blowSpd(blowAtk(battleUnit, 4), 4)
     },
     FiresweepSword("火薙ぎの槍", Skill.SkillType.SWORD, 11, SteelSword) {
         override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = disableEachCounter(battleUnit, 0)
@@ -240,8 +237,17 @@ enum class Weapon(override val jp: String, override val type: Skill.SkillType, o
         override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = counterAllRange(battleUnit)
     },
     BrightNaginata("白き血の薙刀", Skill.SkillType.LANCE, 16, SilverLance) {
-        override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = blowDef(blowAtk(battleUnit,4),4)
+        override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = blowDef(blowAtk(battleUnit, 4), 4)
     },
+
+
+    Tannenboom("聖樹", Skill.SkillType.LANCE, 10, SteelLance) {
+        override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = allBonus(battleUnit, 2)
+    },
+    Tannenboom2("聖樹＋", Skill.SkillType.LANCE, 14, Tannenboom) {
+        override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = allBonus(battleUnit, 2)
+    },
+
 
     IronAxe("鉄の斧", Skill.SkillType.AXE, 6),
     SteelAxe("鋼の斧", Skill.SkillType.AXE, 8, IronAxe),
@@ -304,9 +310,8 @@ enum class Weapon(override val jp: String, override val type: Skill.SkillType, o
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipKiller(armedHero, lv)
     },
     Armoads("アルマーズ", Skill.SkillType.AXE, 16, SilverAxe) {
-        override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = followupable(battleUnit, lv)
+        override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = followupable(battleUnit, 2)
     },
-
     Urvan("ウルヴァン", Skill.SkillType.AXE, 16, SilverAxe) {
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipKiller(armedHero, lv)
         override fun prevent(battleUnit: BattleUnit, damage: Int, results: List<AttackResult>, lv: Int): Int =
@@ -315,6 +320,19 @@ enum class Weapon(override val jp: String, override val type: Skill.SkillType, o
     Uror("ウルズ", Skill.SkillType.AXE, 16, SilverAxe),
     StoutTomahawk("剛斧トマホーク", Skill.SkillType.AXE, 16, SilverAxe) {
         override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = counterAllRange(battleUnit)
+    },
+    SackOGifts("プレゼント袋", Skill.SkillType.AXE, 10, SteelAxe) {
+        override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = allBonus(battleUnit, 2)
+    },
+    SackOGifts2("プレゼント袋＋", Skill.SkillType.AXE, 14, SackOGifts) {
+        override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = allBonus(battleUnit, 2)
+    },
+
+    Handbell("ハンドベル", Skill.SkillType.AXE, 10, SteelAxe) {
+        override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = allBonus(battleUnit, 2)
+    },
+    Handbell2("ハンドベル＋", Skill.SkillType.AXE, 14, Handbell) {
+        override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = allBonus(battleUnit, 2)
     },
 
 
@@ -475,6 +493,13 @@ enum class Weapon(override val jp: String, override val type: Skill.SkillType, o
     },
     Valflame("ファラフレイム", Skill.SkillType.RTOME, 14, Bolganone),
     Grimoire("グリモワール", Skill.SkillType.RTOME, 14, Bolganone),
+    Candelabra("燭台", Skill.SkillType.RTOME, 8, Elfire) {
+        override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = allBonus(battleUnit, 2)
+    },
+    Candelabra2("燭台＋", Skill.SkillType.RTOME, 12, Candelabra) {
+        override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = allBonus(battleUnit, 2)
+    },
+
 
     Thunder("サンダー", Skill.SkillType.BTOME, 4),
     Elthunder("エルサンダー", Skill.SkillType.BTOME, 6, Thunder),
@@ -607,16 +632,15 @@ enum class Weapon(override val jp: String, override val type: Skill.SkillType, o
      */
     override val value get() = name.replace("2", "+")
 
-    override fun localeName(locale: Locale): String {
-        return when (locale) {
-            Locale.JAPAN -> jp
-            Locale.JAPANESE -> jp
-            else -> value
-        }
+    override fun localeName(locale: Locale): String
+            = when (locale) {
+        Locale.JAPAN -> jp
+        Locale.JAPANESE -> jp
+        else -> value
     }
 
     companion object {
-        val itemMap = mutableMapOf<String, Skill>()
+        private val itemMap = mutableMapOf<String, Skill>()
         fun spreadItems(): List<Skill> = values().fold(arrayListOf<Skill>(Skill.NONE), { list, e -> list.add(e);list })
 
         fun valueOfOrNONE(key: String?): Skill = if (key == null) Skill.NONE else try {

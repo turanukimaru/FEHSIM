@@ -3,9 +3,8 @@ package jp.blogspot.turanukimaru.fehs
 import jp.blogspot.turanukimaru.fehs.skill.RefineSkill
 import jp.blogspot.turanukimaru.fehs.skill.Skill
 
-
 /**
- * Created by turanukimaru on 2017/11/13.
+ * 装備状態のユニット。バフや紋章は保存用に残しているが使っているのはBattleUnitの方
  */
 data class ArmedHero(
         val baseHero: BaseHero,
@@ -32,7 +31,7 @@ data class ArmedHero(
         var defSpur: Int = 0,
         var resSpur: Int = 0
 ) {
-    val weapon get()= if (refinedWeapon != Skill.NONE) RefineSkill.valueOfWeapon(baseWeapon) ?: baseWeapon else baseWeapon
+    val weapon get() = if (refinedWeapon != Skill.NONE) RefineSkill.valueOfWeapon(baseWeapon) ?: baseWeapon else baseWeapon
     /**
      * スキルのリスト。戦闘時などにすべてのスキルをなめるのに使う。読み取り専用プロパティにすることで毎回その時のプロパティからリストを作れるはず
      * 個体が編集されているときは編集後のスキルを使う
@@ -107,7 +106,7 @@ data class ArmedHero(
      */
     val growths = baseHero.growths
     val specialCoolDownTime: Int get() = special.level - reduceSpecialCooldown
-    //val statusText: String get() = "H%2sA%2sS%2sD%2sR%2s".format(maxHp, atk, spd, def, res)
+//    val statusText: String get() = "H%2sA%2sS%2sD%2sR%2s".format(maxHp, atk, spd, def, res)
 
     init {
         //名前が無いときは変更なしとして扱い、ベースになるクラスの装備を使う
@@ -128,73 +127,55 @@ data class ArmedHero(
     /**
      * 戦闘効果。スキルの攻撃効果を再帰でなめて攻撃時効果を計算する。主に能力値変化
      */
-    fun bothEffect(battleUnit: BattleUnit): BattleUnit {
-        return skills.fold(battleUnit, { b, skill -> skill.bothEffect(b) })
-    }
+    fun bothEffect(battleUnit: BattleUnit): BattleUnit =
+            skills.fold(battleUnit, { b, skill -> skill.bothEffect(b) })
+
 
     /**
      * 攻撃側戦闘効果。スキルの攻撃効果を再帰でなめて攻撃時効果を計算する。主に能力値変化
      */
-    fun attackEffect(battleUnit: BattleUnit): BattleUnit {
-        return skills.fold(battleUnit, { b, skill -> skill.attackEffect(b) })
-    }
+    fun attackEffect(battleUnit: BattleUnit): BattleUnit = skills.fold(battleUnit, { b, skill -> skill.attackEffect(b) })
 
     /**
      * 受け側戦闘効果。スキルの反撃効果を再帰でなめて受け時効果を計算する。主に能力値変化
      */
-    fun counterEffect(battleUnit: BattleUnit): BattleUnit {
-        return skills.fold(battleUnit, { b, skill -> skill.counterEffect(b) })
-    }
+    fun counterEffect(battleUnit: BattleUnit): BattleUnit = skills.fold(battleUnit, { b, skill -> skill.counterEffect(b) })
 
     /**
      * 能力値計算後に適応する必要のある攻撃側戦闘効果。
      */
-    fun effectedAttackEffect(battleUnit: BattleUnit): BattleUnit {
-        return skills.fold(battleUnit, { b, skill -> skill.effectedAttackEffect(b) })
-    }
+    fun effectedAttackEffect(battleUnit: BattleUnit): BattleUnit = skills.fold(battleUnit, { b, skill -> skill.effectedAttackEffect(b) })
 
     /**
      * 能力値計算後に適応する必要のある受け側戦闘効果
      */
-    fun effectedCcounterEffect(battleUnit: BattleUnit): BattleUnit {
-        return skills.fold(battleUnit, { b, skill -> skill.effectedCounterEffect(b) })
-    }
+    fun effectedCcounterEffect(battleUnit: BattleUnit): BattleUnit = skills.fold(battleUnit, { b, skill -> skill.effectedCounterEffect(b) })
 
     /**
      * 攻撃側戦闘プラン。スキルの攻撃プランを再帰でなめて攻撃時効果を計算する。主に行動順の制御
      */
-    fun attackPlan(fightPlan: FightPlan): FightPlan {
-        return skills.fold(fightPlan, { fP, skill -> skill.attackPlan(fP) })
-    }
+    fun attackPlan(fightPlan: FightPlan): FightPlan = skills.fold(fightPlan, { fP, skill -> skill.attackPlan(fP) })
 
     /**
      * 受け側戦闘プラン。スキルの反撃プランを再帰でなめて受け時効果を計算する。主に行動順の制御
      */
-    fun counterPlan(fightPlan: FightPlan): FightPlan {
-        return skills.fold(fightPlan, { fP, skill -> skill.counterPlan(fP) })
-    }
+    fun counterPlan(fightPlan: FightPlan): FightPlan = skills.fold(fightPlan, { fP, skill -> skill.counterPlan(fP) })
 
     /**
      * 攻撃側戦闘効果。スキルの攻撃効果を再帰でなめて攻撃時効果を計算する。主に能力値変化
      */
-    fun afterFightEffect(battleUnit: BattleUnit): BattleUnit {
-        return skills.fold(battleUnit, { b, skill -> skill.afterFightEffect(b) })
-    }
+    fun afterFightEffect(battleUnit: BattleUnit): BattleUnit = skills.fold(battleUnit, { b, skill -> skill.afterFightEffect(b) })
 
     /**
      * スキルにより減少したダメージ。
      */
-    fun reducedDamage(battleUnit: BattleUnit,damage:Int): BattleUnit {
-        return skills.fold(battleUnit, { b, skill -> skill.reducedDamage(b,damage) })
-    }
+    fun reducedDamage(battleUnit: BattleUnit, damage: Int): BattleUnit = skills.fold(battleUnit, { b, skill -> skill.reducedDamage(b, damage) })
 
 
     /**
      * 攻撃が物理か。物理でないなら魔法。武器種類側に持たせるのもあり
      */
-    fun isMaterialWeapon(): Boolean {
-        return baseHero.weaponType.isMaterial
-    }
+//    fun isMaterialWeapon(): Boolean = baseHero.weaponType.isMaterial
 
     /**
      * 攻撃が魔法か。魔法特効って杖にも効くのかな？
@@ -204,12 +185,12 @@ data class ArmedHero(
     /**
      * 攻撃が魔法か。魔法特効って杖にも効くのかな？
      */
-    fun isMeleeWeapon(): Boolean = baseHero.isMeleeWeapon()
+//    fun isMeleeWeapon(): Boolean = baseHero.isMeleeWeapon()
 
     /**
      * 攻撃が魔法か。魔法特効って杖にも効くのかな？
      */
-    fun isMissileWeapon(): Boolean = baseHero.isMissileWeapon()
+//    fun isMissileWeapon(): Boolean = baseHero.isMissileWeapon()
 
     fun have(weaponType: WeaponType?, moveType: MoveType?): Boolean = (weaponType == null || baseHero.weaponType == weaponType) && (moveType == null || baseHero.moveType == moveType)
 
@@ -228,7 +209,8 @@ data class ArmedHero(
                     BoonType.SPD -> spdBoost++
                     BoonType.DEF -> defBoost++
                     BoonType.RES -> resBoost++
-                    else -> null
+                    BoonType.NONE -> {
+                    }
                 }
             })
             hpBoost -= 2
@@ -245,7 +227,8 @@ data class ArmedHero(
                 BoonType.SPD -> spdBoost++
                 BoonType.DEF -> defBoost++
                 BoonType.RES -> resBoost++
-                else -> null
+                BoonType.NONE -> {
+                }
             }
 
         })

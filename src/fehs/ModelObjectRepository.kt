@@ -1,7 +1,7 @@
 package jp.blogspot.turanukimaru.fehs
 
 /**
- * Created by turanukimaru on 2017/09/28.
+ * リポジトリのインタフェース
  */
 interface ModelObjectRepository<T> {
     /**

@@ -2,7 +2,6 @@ package jp.blogspot.turanukimaru.fehs.skill
 
 import jp.blogspot.turanukimaru.fehs.Locale
 
-
 /**
  * スキル。C
  */
@@ -42,28 +41,29 @@ enum class SkillC(override val jp: String, override val type: Skill.SkillType, o
     WardFliers("飛盾の紋章", Skill.SkillType.C, maxLevel = 0),
     SavageBlow("死の吐息", Skill.SkillType.C),
     BreathOfLife("生の息吹", Skill.SkillType.C),
+    SwordExperience("剣の経験", Skill.SkillType.C),
     AxeExperience("斧の経験", Skill.SkillType.C),
     BowExperience("弓の経験", Skill.SkillType.C),
     BTomeExperience("青魔の経験", Skill.SkillType.C),
-    SwordExperience("剣の経験", Skill.SkillType.C),
+    SwordValor("剣の技量", Skill.SkillType.C),
     LanceValor("槍の技量", Skill.SkillType.C),
     AxeValor("斧の技量", Skill.SkillType.C),
-    SwordValor("剣の技量", Skill.SkillType.C),
     DaggerValor("暗器の技量", Skill.SkillType.C),
-    GTomeValor("緑魔の技量", Skill.SkillType.C),
+    RTomeValor("赤魔の技量", Skill.SkillType.C),
     BTomeValor("青魔の技量", Skill.SkillType.C),
-    AtkPloy("攻撃の謀策", Skill.SkillType.C),
+    GTomeValor("緑魔の技量", Skill.SkillType.C),
     PanicPloy("恐慌の奇策", Skill.SkillType.C),
+    AtkPloy("攻撃の謀策", Skill.SkillType.C),
+    SpdPloy("速さの謀策", Skill.SkillType.C),
     DefPloy("守備の謀策", Skill.SkillType.C),
     ResPloy("魔防の謀策", Skill.SkillType.C),
-    SpdPloy("速さの謀策", Skill.SkillType.C),
     InfantryPulse("歩行の鼓動", Skill.SkillType.C),
     AtkSmoke("攻撃の紫煙", Skill.SkillType.C),
     SpdSmoke("速さの紫煙", Skill.SkillType.C),
     ArmorMarch("重装の行軍", Skill.SkillType.C),
     Guidance("空からの先導", Skill.SkillType.C),
-    DefTactic("守備の指揮", Skill.SkillType.C),
     AtkTactic("攻撃の指揮", Skill.SkillType.C),
+    DefTactic("守備の指揮", Skill.SkillType.C),
 
     ;
 
@@ -78,17 +78,17 @@ enum class SkillC(override val jp: String, override val type: Skill.SkillType, o
      */
     override val value get() = name
 
-    override fun localeName(locale: Locale): String {
-        return when (locale) {
-            Locale.JAPAN -> jp
-            Locale.JAPANESE -> jp
-            else -> value
-        }
-    }
+    override fun localeName(locale: Locale): String =
+            when (locale) {
+                Locale.JAPAN -> jp
+                Locale.JAPANESE -> jp
+                else -> value
+
+            }
 
     companion object {
         fun spreadItems(): List<Skill> = values().fold(arrayListOf<Skill>(Skill.NONE), { list, e -> (1..e.maxLevel).forEach({ i -> list.add(e.lv(i)) });list })
-        val itemMap = mutableMapOf<String, SkillC>()
+        private val itemMap = mutableMapOf<String, SkillC>()
 
         fun valueOfOrNONE(key: String?): Skill = if (key == null) Skill.NONE
         else {

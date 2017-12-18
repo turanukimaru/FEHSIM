@@ -2,7 +2,6 @@ package jp.blogspot.turanukimaru.fehs.skill
 
 import jp.blogspot.turanukimaru.fehs.*
 
-
 /**
  * スキル。B
  */
@@ -37,7 +36,12 @@ enum class SkillB(override val jp: String, override val type: Skill.SkillType, o
     },
     WaryFighter("守備隊形", Skill.SkillType.B) {
         override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = eachNofollowupable(battleUnit, lv)
-
+    },
+    BoldFighter("攻撃隊形", Skill.SkillType.B) {
+        override fun attackEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = accelerateAttackCooldown(followupable(battleUnit, 10), 11)
+    },
+    VengefulFighter("迎撃隊形", Skill.SkillType.B) {
+        override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = accelerateAttackCooldown(followupable(battleUnit, 5), 6)
     },
     Desperation("攻め立て", Skill.SkillType.B) {
         override fun attackPlan(fightPlan: FightPlan, lv: Int): FightPlan = desperation(fightPlan, lv)
@@ -75,8 +79,8 @@ enum class SkillB(override val jp: String, override val type: Skill.SkillType, o
         override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = antiAccelerateCooldown(battleUnit, lv)
     },
     ShieldPulse("盾の鼓動", Skill.SkillType.B),
-    WrathfulStaff("神罰の杖", Skill.SkillType.B){
-        override  fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = wrathfulStaff(battleUnit, lv)
+    WrathfulStaff("神罰の杖", Skill.SkillType.B) {
+        override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = wrathfulStaff(battleUnit, lv)
     },
     DazzlingStaff("幻惑の杖", Skill.SkillType.B) {
         override fun attackEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = dazzling(battleUnit, lv)
@@ -149,17 +153,16 @@ enum class SkillB(override val jp: String, override val type: Skill.SkillType, o
      */
     override val value get() = name
 
-    override fun localeName(locale: Locale): String {
-        return when (locale) {
-            Locale.JAPAN -> jp
-            Locale.JAPANESE -> jp
-            else -> value
-        }
+    override fun localeName(locale: Locale): String
+            = when (locale) {
+        Locale.JAPAN -> jp
+        Locale.JAPANESE -> jp
+        else -> value
     }
 
     companion object {
         fun spreadItems(): List<Skill> = values().fold(arrayListOf<Skill>(Skill.NONE), { list, e -> (1..e.maxLevel).forEach({ i -> list.add(e.lv(i)) });list })
-        val itemMap = mutableMapOf<String, SkillB>()
+        private val itemMap = mutableMapOf<String, SkillB>()
 
         fun valueOfOrNONE(key: String?): Skill = if (key == null) Skill.NONE
         else {

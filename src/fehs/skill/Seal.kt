@@ -123,17 +123,16 @@ enum class Seal(override val jp: String, override val type: Skill.SkillType, ove
      */
     override val value get() = name
 
-    override fun localeName(locale: Locale): String {
-        return when (locale) {
-            Locale.JAPAN -> jp
-            Locale.JAPANESE -> jp
-            else -> value
-        }
+    override fun localeName(locale: Locale): String
+            = when (locale) {
+        Locale.JAPAN -> jp
+        Locale.JAPANESE -> jp
+        else -> value
     }
 
     companion object {
         fun spreadItems(): List<Skill> = values().fold(arrayListOf<Skill>(Skill.NONE), { list, e -> (1..e.maxLevel).forEach({ i -> list.add(e.lv(i)) });list })
-        val itemMap = mutableMapOf<String, Seal>()
+        private val itemMap = mutableMapOf<String, Seal>()
 
         fun valueOfOrNONE(key: String?): Skill = if (key == null) Skill.NONE
         else {

@@ -5,19 +5,18 @@ import jp.blogspot.turanukimaru.fehs.BattleUnit
 import jp.blogspot.turanukimaru.fehs.EffectiveAgainst
 import jp.blogspot.turanukimaru.fehs.Locale
 
-
 /**
  * スキル。A/B/C/聖印。聖印は未実装
  */
 enum class SkillA(override val jp: String, override val type: Skill.SkillType, override val level: Int = 0, override val preSkill: Skill = Skill.Companion.NONE, override val maxLevel: Int = 3) : Skill {
     Hp("HP", Skill.SkillType.A) {
-        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipHp(armedHero, lv+2)
+        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipHp(armedHero, lv + 2)
     },
     HpSpd("HP速さ", Skill.SkillType.A, maxLevel = 2) {
-        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipSpd(equipHp(armedHero, lv+2), lv)
+        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipSpd(equipHp(armedHero, lv + 2), lv)
     },
     HpRes("HP魔防", Skill.SkillType.A, maxLevel = 2) {
-        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipRes(equipHp(armedHero, lv+2), lv)
+        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipRes(equipHp(armedHero, lv + 2), lv)
     },
     Attack("攻撃", Skill.SkillType.A) {
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipAtk(armedHero, lv)
@@ -44,7 +43,7 @@ enum class SkillA(override val jp: String, override val type: Skill.SkillType, o
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipDef(equipAtk(armedHero, lv), lv)
     },
     HpDef("HP守備", Skill.SkillType.A, maxLevel = 2) {
-        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipDef(equipHp(armedHero, lv+2), lv)
+        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipDef(equipHp(armedHero, lv + 2), lv)
     },
     Resistance("魔防", Skill.SkillType.A) {
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipRes(armedHero, lv)
@@ -182,6 +181,12 @@ enum class SkillA(override val jp: String, override val type: Skill.SkillType, o
     AtkDefBond("攻撃守備の絆", Skill.SkillType.A, maxLevel = 3),
     AtkResBond("攻撃魔防の絆", Skill.SkillType.A, maxLevel = 3),
 
+    BrazenAtkDef("攻撃守備の大覚醒3", Skill.SkillType.A) {
+        override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = brazenDef(brazenAtk(battleUnit, lv * 2 + 1), lv * 2 + 1)
+    },
+    BrazenAtkSpd("攻撃速さの大覚醒3", Skill.SkillType.A) {
+        override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = brazenSpd(brazenAtk(battleUnit, lv * 2 + 1), lv * 2 + 1)
+    },
 
     ;
 
@@ -196,17 +201,16 @@ enum class SkillA(override val jp: String, override val type: Skill.SkillType, o
      */
     override val value get() = name
 
-    override fun localeName(locale: Locale): String {
-        return when (locale) {
-            Locale.JAPAN -> jp
-            Locale.JAPANESE -> jp
-            else -> value
-        }
-    }
+    override fun localeName(locale: Locale): String =
+            when (locale) {
+                Locale.JAPAN -> jp
+                Locale.JAPANESE -> jp
+                else -> value
+            }
 
     companion object {
         fun spreadItems(): List<Skill> = values().fold(arrayListOf<Skill>(Skill.NONE), { list, e -> (1..e.maxLevel).forEach({ i -> list.add(e.lv(i)) });list })
-        val itemMap = mutableMapOf<String, SkillA>()
+        private val itemMap = mutableMapOf<String, SkillA>()
 
         fun valueOfOrNONE(key: String?): Skill = if (key == null) Skill.NONE
         else {

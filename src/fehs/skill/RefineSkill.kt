@@ -146,25 +146,24 @@ enum class RefineSkill(val us: String = "", override val jp: String, val hp: Int
      * nameは誤動作するので共通処理としてはvalueを使う。ただしこのスキルに限りスキル名はそのままは使わない
      */
     override val value get() = name
-    private val paramString = "${if (hp > 0) "HP+$hp " else ""}${if (spd > 0) "速さ+$spd " else ""}${if (def > 0) "守備+$def " else ""}${if (res > 0) "魔防+$res " else ""}"
-    val paramStringJp = paramString + jp
-    val paramStringUs = paramString + us
+    //private val paramString = "${if (hp > 0) "HP+$hp " else ""}${if (spd > 0) "速さ+$spd " else ""}${if (def > 0) "守備+$def " else ""}${if (res > 0) "魔防+$res " else ""}"
+    //val paramStringJp = paramString + jp
+    //val paramStringUs = paramString + us
     /**
      * 武器名は使えないのでUSを格納してそれを使う
      */
-    override fun localeName(locale: Locale): String {
-        return when (locale) {
-            Locale.JAPAN -> jp
-            Locale.JAPANESE -> jp
-            else -> us
-        }
+    override fun localeName(locale: Locale): String
+            = when (locale) {
+        Locale.JAPAN -> jp
+        Locale.JAPANESE -> jp
+        else -> us
     }
 
 //    fun totalAtk(weapon: Skill): String = "威力" + (weapon.level  + atk).toString() + " "
 
     companion object {
 
-        val itemMap = mutableMapOf<String, Skill>()
+        private val itemMap = mutableMapOf<String, Skill>()
         fun spreadItems(weapon: Skill, range: RefineType = (weapon as? Weapon)?.refineSkillType ?: RefineType.NOT_WEAPON): List<Skill>
                 = values().fold(arrayListOf<Skill>(Skill.NONE), { list, e -> if (e.refineSkillType == range || (e.refineSkillType == RefineType.DependWeapon && (e.preSkill == weapon || e.preSkill == weapon.preSkill))) list.add(e);list })
 
