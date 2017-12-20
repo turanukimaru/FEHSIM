@@ -489,6 +489,13 @@ interface Skill {
         battleUnit.enemy!!.antiBuffBonus = true
         return battleUnit
     }
+    fun antiMagicBuffBonus(battleUnit: BattleUnit): BattleUnit {
+        if (battleUnit.enemy!!.armedHero.baseHero.isMagicWeapon()) {
+            battleUnit.enemy!!.antiBuffBonus = true
+        }
+        return battleUnit
+    }
+
 
     fun heavyBlade(battleUnit: BattleUnit, lv: Int): BattleUnit {
         if (battleUnit.effectedAtk - battleUnit.enemy!!.effectedAtk > lv) {

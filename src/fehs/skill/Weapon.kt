@@ -388,8 +388,8 @@ enum class Weapon(override val jp: String, override val type: Skill.SkillType, o
     FujinYumi("風神弓", Skill.SkillType.BOW, 14, SilverBow, RefineSkill.RefineType.Range2),
     Nidhogg("ニーズヘッグ", Skill.SkillType.BOW, 14, SilverBow),
     Mulagir("ミュルグレ", Skill.SkillType.BOW, 14, SilverBow) {
-        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = super.equip(equipDef(armedHero, 3), lv)
-        override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = super.bothEffect(antiBuffBonus(battleUnit), lv)
+        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = super.equip(equipSpd(armedHero, 3), lv)
+        override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = super.bothEffect(antiMagicBuffBonus(battleUnit), lv)
     },
     MonstrousBow("怪物の弓", Skill.SkillType.BOW, 8, SteelBow),
     MonstrousBow2("怪物の弓＋", Skill.SkillType.BOW, 12, MonstrousBow, RefineSkill.RefineType.Range2),

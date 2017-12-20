@@ -106,7 +106,7 @@ data class ArmedHero(
      */
     val growths = baseHero.growths
     val specialCoolDownTime: Int get() = special.level - reduceSpecialCooldown
-//    val statusText: String get() = "H%2sA%2sS%2sD%2sR%2s".format(maxHp, atk, spd, def, res)
+    val statusText: String get() = "H"+maxHp+"A"+atk+"S"+spd+"D"+def+"R"+res
 
     init {
         //名前が無いときは変更なしとして扱い、ベースになるクラスの装備を使う
@@ -288,8 +288,8 @@ data class ArmedHero(
     }
 
     /**
-     * 簡易ステータス。ロケールの扱いは本当に困るな
+     * 簡易ステータス。ロケールの扱いは本当に困るな.
      */
-//    fun statusSkillText(locale: Locale) = "HP:%2sA:%2sS:%2sD:%2sR%2sW:%8s".format(maxHp, atk, spd, def, res, skills.fold("", { string, e -> string + e.localeName(locale) + " " }))
+    fun statusSkillText(locale: Locale) = "HP" + maxHp + " A" + atk + " S" + spd + " D" + def + " R" + spd + " W:" + (skills.fold("", { string, e -> string + e.localeName(locale) + " " }))
 
 }

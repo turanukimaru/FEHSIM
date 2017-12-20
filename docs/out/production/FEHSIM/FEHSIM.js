@@ -5,6 +5,7 @@ var FEHSIM = function (_, Kotlin) {
   'use strict';
   var equals = Kotlin.equals;
   var listOfNotNull = Kotlin.kotlin.collections.listOfNotNull_jurz7g$;
+  var toString = Kotlin.toString;
   var Pair = Kotlin.kotlin.Pair;
   var listOf = Kotlin.kotlin.collections.listOf_i5x0yv$;
   var plus = Kotlin.kotlin.collections.plus_qloxvw$;
@@ -26,7 +27,6 @@ var FEHSIM = function (_, Kotlin) {
   var HashMap_init = Kotlin.kotlin.collections.HashMap_init_q3lmfv$;
   var replace = Kotlin.kotlin.text.replace_680rmw$;
   var Exception = Kotlin.kotlin.Exception;
-  var toString = Kotlin.toString;
   var toInt = Kotlin.kotlin.text.toInt_pdl1vz$;
   var println = Kotlin.kotlin.io.println_s8jyv4$;
   WeaponType.prototype = Object.create(Enum.prototype);
@@ -871,6 +871,11 @@ var FEHSIM = function (_, Kotlin) {
       return this.special.level - this.reduceSpecialCooldown | 0;
     }
   });
+  Object.defineProperty(ArmedHero.prototype, 'statusText', {
+    get: function () {
+      return 'H' + toString(this.maxHp) + 'A' + toString(this.atk) + 'S' + toString(this.spd) + 'D' + toString(this.def) + 'R' + toString(this.res);
+    }
+  });
   ArmedHero.prototype.toString = function () {
     return this.name + ' MaxHP:' + this.maxHp + ' , totalAtk:' + this.atk + ' , spd:' + this.spd + ' , def:' + this.def + ' , res:' + this.res + ' ,weapon:' + this.weapon + ', refinedWeapon:' + this.refinedWeapon + ', assist:' + this.assist + ', special:' + this.special + ', skillA,' + this.aSkill + ', skillB:' + this.bSkill + ', skillC:' + this.cSkill + ', seal:' + this.seal + ', hpEqp:' + this.hpEqp + ' , atkEqp:' + this.atkEqp + ' , spdEqp:' + this.spdEqp + ' , defEqp:' + this.defEqp + ' , resEqp:' + this.resEqp;
   };
@@ -1125,6 +1130,17 @@ var FEHSIM = function (_, Kotlin) {
     else
       tmp$ = this.baseHero.usName;
     return tmp$;
+  };
+  ArmedHero.prototype.statusSkillText_miixs2$ = function (locale) {
+    var tmp$ = 'HP' + toString(this.maxHp) + ' A' + toString(this.atk) + ' S' + toString(this.spd) + ' D' + toString(this.def) + ' R' + toString(this.spd) + ' W:';
+    var tmp$_0;
+    var accumulator = '';
+    tmp$_0 = this.skills.iterator();
+    while (tmp$_0.hasNext()) {
+      var element = tmp$_0.next();
+      accumulator = accumulator + element.localeName_miixs2$(locale) + ' ';
+    }
+    return tmp$ + accumulator;
   };
   ArmedHero.$metadata$ = {
     kind: Kind_CLASS,
@@ -3366,6 +3382,9 @@ var FEHSIM = function (_, Kotlin) {
   };
   LappedSkill.prototype.antiEffectiveAgainst_ut57va$ = function (battleUnit, type) {
     return this.skill.antiEffectiveAgainst_ut57va$(battleUnit, type);
+  };
+  LappedSkill.prototype.antiMagicBuffBonus_trfvk0$ = function (battleUnit) {
+    return this.skill.antiMagicBuffBonus_trfvk0$(battleUnit);
   };
   LappedSkill.prototype.attackEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.skill.attackEffect_sv9jhu$$default(battleUnit, lv);
@@ -5666,6 +5685,12 @@ var FEHSIM = function (_, Kotlin) {
   };
   Skill.prototype.antiBuffBonus_trfvk0$ = function (battleUnit) {
     ensureNotNull(battleUnit.enemy).antiBuffBonus = true;
+    return battleUnit;
+  };
+  Skill.prototype.antiMagicBuffBonus_trfvk0$ = function (battleUnit) {
+    if (ensureNotNull(battleUnit.enemy).armedHero.baseHero.isMagicWeapon()) {
+      ensureNotNull(battleUnit.enemy).antiBuffBonus = true;
+    }
     return battleUnit;
   };
   Skill.prototype.heavyBlade_sv9jhu$ = function (battleUnit, lv) {
@@ -11868,10 +11893,10 @@ var FEHSIM = function (_, Kotlin) {
     Weapon.call(this, 'Mulagir', 136, '\u30DF\u30E5\u30EB\u30B0\u30EC', Skill$SkillType$BOW_getInstance(), 14, Weapon$SilverBow_getInstance());
   }
   Weapon$Mulagir.prototype.equip_yukhz7$$default = function (armedHero, lv) {
-    return this.equip_yukhz7$(this.equipDef_yukhz7$(armedHero, 3), lv, Weapon.prototype.equip_yukhz7$$default.bind(this));
+    return this.equip_yukhz7$(this.equipSpd_yukhz7$(armedHero, 3), lv, Weapon.prototype.equip_yukhz7$$default.bind(this));
   };
   Weapon$Mulagir.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
-    return this.bothEffect_sv9jhu$(this.antiBuffBonus_trfvk0$(battleUnit), lv, Weapon.prototype.bothEffect_sv9jhu$$default.bind(this));
+    return this.bothEffect_sv9jhu$(this.antiMagicBuffBonus_trfvk0$(battleUnit), lv, Weapon.prototype.bothEffect_sv9jhu$$default.bind(this));
   };
   Weapon$Mulagir.$metadata$ = {
     kind: Kind_CLASS,
@@ -15768,6 +15793,7 @@ var FEHSIM = function (_, Kotlin) {
   Assist.prototype.bladeEffect_trfvk0$ = Skill.prototype.bladeEffect_trfvk0$;
   Assist.prototype.fullHpAtkSpdBonus_sv9jhu$ = Skill.prototype.fullHpAtkSpdBonus_sv9jhu$;
   Assist.prototype.antiBuffBonus_trfvk0$ = Skill.prototype.antiBuffBonus_trfvk0$;
+  Assist.prototype.antiMagicBuffBonus_trfvk0$ = Skill.prototype.antiMagicBuffBonus_trfvk0$;
   Assist.prototype.heavyBlade_sv9jhu$ = Skill.prototype.heavyBlade_sv9jhu$;
   Assist.prototype.flashingBlade_sv9jhu$ = Skill.prototype.flashingBlade_sv9jhu$;
   Assist.prototype.accelerateAttackCooldown_sv9jhu$ = Skill.prototype.accelerateAttackCooldown_sv9jhu$;
@@ -15881,6 +15907,7 @@ var FEHSIM = function (_, Kotlin) {
   RefineSkill.prototype.bladeEffect_trfvk0$ = Skill.prototype.bladeEffect_trfvk0$;
   RefineSkill.prototype.fullHpAtkSpdBonus_sv9jhu$ = Skill.prototype.fullHpAtkSpdBonus_sv9jhu$;
   RefineSkill.prototype.antiBuffBonus_trfvk0$ = Skill.prototype.antiBuffBonus_trfvk0$;
+  RefineSkill.prototype.antiMagicBuffBonus_trfvk0$ = Skill.prototype.antiMagicBuffBonus_trfvk0$;
   RefineSkill.prototype.heavyBlade_sv9jhu$ = Skill.prototype.heavyBlade_sv9jhu$;
   RefineSkill.prototype.flashingBlade_sv9jhu$ = Skill.prototype.flashingBlade_sv9jhu$;
   RefineSkill.prototype.accelerateAttackCooldown_sv9jhu$ = Skill.prototype.accelerateAttackCooldown_sv9jhu$;
@@ -15981,6 +16008,7 @@ var FEHSIM = function (_, Kotlin) {
   Seal.prototype.bladeEffect_trfvk0$ = Skill.prototype.bladeEffect_trfvk0$;
   Seal.prototype.fullHpAtkSpdBonus_sv9jhu$ = Skill.prototype.fullHpAtkSpdBonus_sv9jhu$;
   Seal.prototype.antiBuffBonus_trfvk0$ = Skill.prototype.antiBuffBonus_trfvk0$;
+  Seal.prototype.antiMagicBuffBonus_trfvk0$ = Skill.prototype.antiMagicBuffBonus_trfvk0$;
   Seal.prototype.heavyBlade_sv9jhu$ = Skill.prototype.heavyBlade_sv9jhu$;
   Seal.prototype.flashingBlade_sv9jhu$ = Skill.prototype.flashingBlade_sv9jhu$;
   Seal.prototype.accelerateAttackCooldown_sv9jhu$ = Skill.prototype.accelerateAttackCooldown_sv9jhu$;
@@ -16087,6 +16115,7 @@ var FEHSIM = function (_, Kotlin) {
   Skill$None.prototype.bladeEffect_trfvk0$ = Skill.prototype.bladeEffect_trfvk0$;
   Skill$None.prototype.fullHpAtkSpdBonus_sv9jhu$ = Skill.prototype.fullHpAtkSpdBonus_sv9jhu$;
   Skill$None.prototype.antiBuffBonus_trfvk0$ = Skill.prototype.antiBuffBonus_trfvk0$;
+  Skill$None.prototype.antiMagicBuffBonus_trfvk0$ = Skill.prototype.antiMagicBuffBonus_trfvk0$;
   Skill$None.prototype.heavyBlade_sv9jhu$ = Skill.prototype.heavyBlade_sv9jhu$;
   Skill$None.prototype.flashingBlade_sv9jhu$ = Skill.prototype.flashingBlade_sv9jhu$;
   Skill$None.prototype.accelerateAttackCooldown_sv9jhu$ = Skill.prototype.accelerateAttackCooldown_sv9jhu$;
@@ -16186,6 +16215,7 @@ var FEHSIM = function (_, Kotlin) {
   SkillA.prototype.bladeEffect_trfvk0$ = Skill.prototype.bladeEffect_trfvk0$;
   SkillA.prototype.fullHpAtkSpdBonus_sv9jhu$ = Skill.prototype.fullHpAtkSpdBonus_sv9jhu$;
   SkillA.prototype.antiBuffBonus_trfvk0$ = Skill.prototype.antiBuffBonus_trfvk0$;
+  SkillA.prototype.antiMagicBuffBonus_trfvk0$ = Skill.prototype.antiMagicBuffBonus_trfvk0$;
   SkillA.prototype.heavyBlade_sv9jhu$ = Skill.prototype.heavyBlade_sv9jhu$;
   SkillA.prototype.flashingBlade_sv9jhu$ = Skill.prototype.flashingBlade_sv9jhu$;
   SkillA.prototype.accelerateAttackCooldown_sv9jhu$ = Skill.prototype.accelerateAttackCooldown_sv9jhu$;
@@ -16285,6 +16315,7 @@ var FEHSIM = function (_, Kotlin) {
   SkillB.prototype.bladeEffect_trfvk0$ = Skill.prototype.bladeEffect_trfvk0$;
   SkillB.prototype.fullHpAtkSpdBonus_sv9jhu$ = Skill.prototype.fullHpAtkSpdBonus_sv9jhu$;
   SkillB.prototype.antiBuffBonus_trfvk0$ = Skill.prototype.antiBuffBonus_trfvk0$;
+  SkillB.prototype.antiMagicBuffBonus_trfvk0$ = Skill.prototype.antiMagicBuffBonus_trfvk0$;
   SkillB.prototype.heavyBlade_sv9jhu$ = Skill.prototype.heavyBlade_sv9jhu$;
   SkillB.prototype.flashingBlade_sv9jhu$ = Skill.prototype.flashingBlade_sv9jhu$;
   SkillB.prototype.accelerateAttackCooldown_sv9jhu$ = Skill.prototype.accelerateAttackCooldown_sv9jhu$;
@@ -16384,6 +16415,7 @@ var FEHSIM = function (_, Kotlin) {
   SkillC.prototype.bladeEffect_trfvk0$ = Skill.prototype.bladeEffect_trfvk0$;
   SkillC.prototype.fullHpAtkSpdBonus_sv9jhu$ = Skill.prototype.fullHpAtkSpdBonus_sv9jhu$;
   SkillC.prototype.antiBuffBonus_trfvk0$ = Skill.prototype.antiBuffBonus_trfvk0$;
+  SkillC.prototype.antiMagicBuffBonus_trfvk0$ = Skill.prototype.antiMagicBuffBonus_trfvk0$;
   SkillC.prototype.heavyBlade_sv9jhu$ = Skill.prototype.heavyBlade_sv9jhu$;
   SkillC.prototype.flashingBlade_sv9jhu$ = Skill.prototype.flashingBlade_sv9jhu$;
   SkillC.prototype.accelerateAttackCooldown_sv9jhu$ = Skill.prototype.accelerateAttackCooldown_sv9jhu$;
@@ -16484,6 +16516,7 @@ var FEHSIM = function (_, Kotlin) {
   Special.prototype.bladeEffect_trfvk0$ = Skill.prototype.bladeEffect_trfvk0$;
   Special.prototype.fullHpAtkSpdBonus_sv9jhu$ = Skill.prototype.fullHpAtkSpdBonus_sv9jhu$;
   Special.prototype.antiBuffBonus_trfvk0$ = Skill.prototype.antiBuffBonus_trfvk0$;
+  Special.prototype.antiMagicBuffBonus_trfvk0$ = Skill.prototype.antiMagicBuffBonus_trfvk0$;
   Special.prototype.heavyBlade_sv9jhu$ = Skill.prototype.heavyBlade_sv9jhu$;
   Special.prototype.flashingBlade_sv9jhu$ = Skill.prototype.flashingBlade_sv9jhu$;
   Special.prototype.accelerateAttackCooldown_sv9jhu$ = Skill.prototype.accelerateAttackCooldown_sv9jhu$;
@@ -16584,6 +16617,7 @@ var FEHSIM = function (_, Kotlin) {
   Weapon.prototype.bladeEffect_trfvk0$ = Skill.prototype.bladeEffect_trfvk0$;
   Weapon.prototype.fullHpAtkSpdBonus_sv9jhu$ = Skill.prototype.fullHpAtkSpdBonus_sv9jhu$;
   Weapon.prototype.antiBuffBonus_trfvk0$ = Skill.prototype.antiBuffBonus_trfvk0$;
+  Weapon.prototype.antiMagicBuffBonus_trfvk0$ = Skill.prototype.antiMagicBuffBonus_trfvk0$;
   Weapon.prototype.heavyBlade_sv9jhu$ = Skill.prototype.heavyBlade_sv9jhu$;
   Weapon.prototype.flashingBlade_sv9jhu$ = Skill.prototype.flashingBlade_sv9jhu$;
   Weapon.prototype.accelerateAttackCooldown_sv9jhu$ = Skill.prototype.accelerateAttackCooldown_sv9jhu$;
