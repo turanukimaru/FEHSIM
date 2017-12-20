@@ -159,8 +159,11 @@ var calculateAll = function () {
             para.contents().remove()
             para.append(paramSpan(hero))
 
-                 $(this).closest("td").find(".refine").children().remove()
-                 $(this).closest("td").find(".refine").append($('<option>', {value: "", text: "錬成"})).append(spreadRefines(hero.baseWeapon))
+var weapon = params.find()
+            var refined = params.find(".refine").val()
+            params.find(".refine").children().remove()
+            params.find(".refine").append($('<option>', {value: "", text: "錬成"})).append(spreadRefines(hero.baseWeapon))
+            params.find(".refine").val(refined)
 
             return hero
         }
