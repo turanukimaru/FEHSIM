@@ -4263,6 +4263,14 @@ var FEHSIM = function (_, Kotlin) {
     RefineSkill_initFields();
     return RefineSkill$DeathlyDagger_instance;
   }
+  RefineSkill.prototype.equipBlade_yukhz7$ = function (armedHero, lv) {
+    this.equipHp_yukhz7$(armedHero, this.hp);
+    this.equipAtk_yukhz7$(armedHero, this.atk);
+    this.equipSpd_yukhz7$(armedHero, this.spd);
+    this.equipDef_yukhz7$(armedHero, this.def);
+    this.equipRes_yukhz7$(armedHero, this.res);
+    return Skill.prototype.equipBlade_yukhz7$.call(this, armedHero, lv);
+  };
   RefineSkill.prototype.equip_yukhz7$$default = function (armedHero, lv) {
     this.equipHp_yukhz7$(armedHero, this.hp);
     this.equipAtk_yukhz7$(armedHero, this.atk);
@@ -15902,7 +15910,6 @@ var FEHSIM = function (_, Kotlin) {
   RefineSkill.prototype.allBonus_sv9jhu$ = Skill.prototype.allBonus_sv9jhu$;
   RefineSkill.prototype.enemyFullHpBonus_sv9jhu$ = Skill.prototype.enemyFullHpBonus_sv9jhu$;
   RefineSkill.prototype.equipBrave_yukhz7$ = Skill.prototype.equipBrave_yukhz7$;
-  RefineSkill.prototype.equipBlade_yukhz7$ = Skill.prototype.equipBlade_yukhz7$;
   RefineSkill.prototype.equipRaven_trfvk0$ = Skill.prototype.equipRaven_trfvk0$;
   RefineSkill.prototype.bladeEffect_trfvk0$ = Skill.prototype.bladeEffect_trfvk0$;
   RefineSkill.prototype.fullHpAtkSpdBonus_sv9jhu$ = Skill.prototype.fullHpAtkSpdBonus_sv9jhu$;

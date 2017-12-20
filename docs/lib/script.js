@@ -105,6 +105,16 @@ var readParams = function (target) {
 var spreadRefines = function(weapon){return fehs.skill.RefineSkill.Companion.spreadItems_3o6c2a$(weapon).toArray().map(function (e, i, a) {
         return $('<option>', {value: e.name, text: e.jp})
 })}
+var spreadWeapons = function(weaponType){
+    if(weaponType){
+        return fehs.skill.Weapon.values().filter(function (e, i, a){
+//        console.log(e.type.name+"/"+weaponType)
+          return e.type.name == weaponType}).map(function (e, i, a) {return $('<option>', {value: e.name, text: e.jp})
+    })
+    }
+    return fehs.skill.Weapon.values().map(function (e, i, a) {
+        return $('<option>', {value: e.name, text: e.jp})})
+}
 
 var paramSpan = function (hero) {
     var params = $("#Params").clone()
@@ -159,11 +169,17 @@ var calculateAll = function () {
             para.contents().remove()
             para.append(paramSpan(hero))
 
-var weapon = params.find()
-            var refined = params.find(".refine").val()
-            params.find(".refine").children().remove()
-            params.find(".refine").append($('<option>', {value: "", text: "錬成"})).append(spreadRefines(hero.baseWeapon))
-            params.find(".refine").val(refined)
+            var weaponSelector=$(this).closest("td").find(".weapon")
+            var weapon = weaponSelector.val()
+            weaponSelector.children().remove()
+            weaponSelector.append($('<option>', {value: "", text: "武器"})).append(spreadWeapons(hero.baseHero.weaponType))
+            weaponSelector.val(weapon)
+
+            var refineSelector=$(this).closest("td").find(".refine")
+            var refined = refineSelector.val()
+            refineSelector.children().remove()
+            refineSelector.append($('<option>', {value: "", text: "錬成"})).append(spreadRefines(hero.baseWeapon))
+            refineSelector.val(refined)
 
             return hero
         }
