@@ -1,5 +1,7 @@
 //何度も使うのでグローバル
 var fehs = FEHSIM.jp.blogspot.turanukimaru.fehs
+
+//全てのヒーローを取り出してソートする。toArray()でJSのArrayになる。
 var allHeroes = fehs.StandardBaseHero.allItems().toArray().sort(function (a, b) {
     if (a.name > b.name) {
         return 1
@@ -44,9 +46,6 @@ $(document).ready(function () {
     var seals = fehs.skill.Seal.Companion.spreadItems().toArray().map(function (e, i, a) {
         return $('<option>', {value: e.value, text: e.jp + e.level})
     })
-    var refines = fehs.skill.RefineSkill.values().map(function (e, i, a) {
-        return $('<option>', {value: e.name, text: e.jp})
-    })
 
     $(".attacker").append(heroNames)
     $(".weapon").append($('<option>', {value: "", text: "武器"})).append(weapons)
@@ -56,7 +55,7 @@ $(document).ready(function () {
     $(".skillB").append($('<option>', {value: "", text: "B"})).append(skillBs)
     $(".skillC").append($('<option>', {value: "", text: "C"})).append(skillCs)
     $(".seal").append($('<option>', {value: "", text: "聖印"})).append(seals)
-    $(".refine").append($('<option>', {value: "", text: "錬成"})).append(refines)
+//    $(".refine").append($('<option>', {value: "", text: "錬成"})).append(refines)
 
     calculateAll()
 })
@@ -102,6 +101,11 @@ var readParams = function (target) {
     }
 
 }
+
+var spreadRefines = function(weapon){return fehs.skill.RefineSkill.Companion.spreadItems_3o6c2a$(weapon).toArray().map(function (e, i, a) {
+        return $('<option>', {value: e.name, text: e.jp})
+})}
+
 var paramSpan = function (hero) {
     var params = $("#Params").clone()
     params.find(".hp").text(hero.maxHp)
@@ -154,6 +158,10 @@ var calculateAll = function () {
             var para = $(this).closest("td").find(".Params")
             para.contents().remove()
             para.append(paramSpan(hero))
+
+                 $(this).closest("td").find(".refine").children().remove()
+                 $(this).closest("td").find(".refine").append($('<option>', {value: "", text: "錬成"})).append(spreadRefines(hero.baseWeapon))
+
             return hero
         }
     ).get()

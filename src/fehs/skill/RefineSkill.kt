@@ -132,6 +132,16 @@ enum class RefineSkill(val us: String = "", override val jp: String, val hp: Int
     },
     ;
 
+    //装備効果がある武器に必要になるのか・・・しくじったかな？
+    override fun equipBlade(armedHero: ArmedHero, lv: Int): ArmedHero {
+        //println("$jp hp:$hp")
+        equipHp(armedHero, hp)
+        equipAtk(armedHero, atk)
+        equipSpd(armedHero, spd)
+        equipDef(armedHero, def)
+        equipRes(armedHero, res)
+        return super.equipBlade(armedHero, lv)
+    }
     override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero {
         //println("$jp hp:$hp")
         equipHp(armedHero, hp)
