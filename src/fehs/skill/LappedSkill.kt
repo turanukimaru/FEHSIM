@@ -4,13 +4,7 @@ import jp.blogspot.turanukimaru.fehs.Locale
 
 class LappedSkill(val skill: Skill, override val level: Int) : Skill by skill {
 
-    override fun localeName(locale: Locale): String =
-            when (locale) {
-                Locale.JAPAN -> skill.jp + if (level > 0) " " + level else ""
-                Locale.JAPANESE -> skill.jp + if (level > 0) " " + level else ""
-                else -> skill.value + if (level > 0) " " + level else ""
-
-            }
+    override fun localeName(locale: Locale): String =                skill.jp.localeName(locale) + if (level > 0) " " + level else ""
 
     /**
      * スキル名
@@ -30,4 +24,9 @@ class LappedSkill(val skill: Skill, override val level: Int) : Skill by skill {
         is LappedSkill -> other.skill == skill && other.level == level
         else -> false
     }
+
+    /**
+     * ハッシュコードは単純にレベルが0でないときはレベルのハッシュを足す。レベルが0の時は元のスキル（デフォルトでレベル0）と同じだから
+     */
+    override fun hashCode(): Int =if (level == 0) skill.hashCode() else skill.hashCode() + level.hashCode()
 }

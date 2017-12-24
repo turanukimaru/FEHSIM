@@ -69,7 +69,7 @@ class FightPlan(val attacker: BattleUnit, val target: BattleUnit) {
     /**
      * 戦闘順序の最終調整。追撃の可否など
      */
-    fun buildFightPlan(attacker: BattleUnit, target: BattleUnit) {
+    private fun buildFightPlan(attacker: BattleUnit, target: BattleUnit) {
         attacker.side = SIDES.ATTACKER
         target.side = SIDES.COUNTER
         //速度が足りないか追撃不可の時は追撃梨

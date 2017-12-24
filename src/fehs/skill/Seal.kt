@@ -1,61 +1,58 @@
 package jp.blogspot.turanukimaru.fehs.skill
 
-import jp.blogspot.turanukimaru.fehs.ArmedHero
-import jp.blogspot.turanukimaru.fehs.AttackResult
-import jp.blogspot.turanukimaru.fehs.BattleUnit
-import jp.blogspot.turanukimaru.fehs.Locale
+import jp.blogspot.turanukimaru.fehs.*
 
 /**
  * 聖印
  */
-enum class Seal(override val jp: String, override val type: Skill.SkillType, override val level: Int = 0, override val preSkill: Skill = Skill.NONE, override val maxLevel: Int = 3) : Skill {
+enum class Seal(override val jp: Name, override val type: SkillType, override val level: Int = 0, override val preSkill: Skill = Skill.NONE, override val maxLevel: Int = 3) : Skill {
 
-    Hp("HP", Skill.SkillType.A) {
+    Hp(Name. Hp  , SkillType.A) {
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipHp(armedHero, lv)
     },
-    SquadAceA("第1迷宮の覇者", Skill.SkillType.A) {
+    SquadAceA( Name.SquadAceA  , SkillType.A) {
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipHp(armedHero, lv)
     },
-    Attack("攻撃", Skill.SkillType.A) {
+    Attack( Name. Attack , SkillType.A) {
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipAtk(armedHero, lv)
     },
-    Speed("速さ", Skill.SkillType.A) {
+    Speed( Name.Speed  , SkillType.A) {
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipSpd(armedHero, lv)
     },
-    SquadAceD("第4迷宮の覇者", Skill.SkillType.A) {
+    SquadAceD( Name.SquadAceD  , SkillType.A) {
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipSpd(armedHero, lv)
     },
-    Defense("守備", Skill.SkillType.A) {
+    Defense( Name.Defense  , SkillType.A) {
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipDef(armedHero, lv)
     },
-    SquadAceB("第3迷宮の覇者", Skill.SkillType.A) {
+    SquadAceB( Name.SquadAceB  , SkillType.A) {
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipDef(armedHero, lv)
     },
-    Resistance("魔防", Skill.SkillType.A) {
+    Resistance(Name. Resistance  , SkillType.A) {
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipRes(armedHero, lv)
     },
-    SquadAceC("第3迷宮の覇者", Skill.SkillType.A) {
+    SquadAceC(Name.SquadAceC   , SkillType.A) {
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipRes(armedHero, lv)
     },
-    DistantDef("遠距離防御", Skill.SkillType.A) {
+    DistantDef( Name.DistantDef  , SkillType.A) {
         override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = distantDef(battleUnit, lv * 2)
     },
-    BrashAssault("差し違え", Skill.SkillType.B) {
+    BrashAssault( Name.BrashAssault  , SkillType.B) {
         override fun attackEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = brashAssault(battleUnit, lv)
     },
-    SpurAtk("攻撃の紋章", Skill.SkillType.SEAL),
-    SpurSpd("速さの紋章", Skill.SkillType.SEAL),
-    SpurDef("守備の紋章", Skill.SkillType.SEAL),
-    SpurRes("魔防の紋章", Skill.SkillType.SEAL),
-    FortifyDef("守備の鼓舞", Skill.SkillType.SEAL),
-    FortifyRes("魔防の鼓舞", Skill.SkillType.SEAL),
-    BreathOfLife("生命の息吹", Skill.SkillType.SEAL),
-    Guidance("空からの先導", Skill.SkillType.SEAL),
-    AttackSmoke("攻撃の紫煙", Skill.SkillType.SEAL),
-    AttackPloy("攻撃の謀策", Skill.SkillType.SEAL),
+    SpurAtk( Name. SpurAtk , SkillType.SEAL),
+    SpurSpd( Name. SpurSpd , SkillType.SEAL),
+    SpurDef( Name.SpurDef  , SkillType.SEAL),
+    SpurRes( Name. SpurRes , SkillType.SEAL),
+    FortifyDef(Name.FortifyDef   , SkillType.SEAL),
+    FortifyRes( Name.FortifyRes  , SkillType.SEAL),
+    BreathOfLife(Name. BreathOfLife  , SkillType.SEAL),
+    Guidance(Name. Guidance  , SkillType.SEAL),
+    AttackSmoke( Name.AtkSmoke  , SkillType.SEAL),
+    AttackPloy( Name. AtkPloy , SkillType.SEAL),
 
-    PanicPloy("恐慌の奇策", Skill.SkillType.SEAL),
-    HardyBearing("不動の姿勢", Skill.SkillType.SEAL) {
+    PanicPloy(  Name.PanicPloy , SkillType.SEAL),
+    HardyBearing( Name. HardyBearing , SkillType.SEAL) {
         override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit {
             battleUnit.disableChangePlan = true
             if (battleUnit.hp >= battleUnit.armedHero.maxHp * (150 - lv * 50) / 100) {
@@ -65,7 +62,7 @@ enum class Seal(override val jp: String, override val type: Skill.SkillType, ove
         }
 
     },
-    PhantomSpeed("速さの虚勢", Skill.SkillType.SEAL) {
+    PhantomSpeed(  Name. PhantomSpeed, SkillType.SEAL) {
         override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit {
             battleUnit.phantomSpeed = when (lv) {1 -> 5
                 2 -> 8
@@ -75,12 +72,12 @@ enum class Seal(override val jp: String, override val type: Skill.SkillType, ove
             return super.bothEffect(battleUnit, lv)
         }
     },
-    QuickenedPulse("奥義の鼓動", Skill.SkillType.SEAL, maxLevel = 0),
+    QuickenedPulse( Name.QuickenedPulse  , SkillType.SEAL, maxLevel = 0),
 
     /**
      * 連撃防御。武器の種類はなんか定数に定数を持たせるべきか…
      */
-    DeflectMagic("連撃防御・魔", Skill.SkillType.SEAL) {
+    DeflectMagic( Name.DeflectMagic  , SkillType.SEAL) {
         override fun prevent(battleUnit: BattleUnit, damage: Int, results: List<AttackResult>, lv: Int): Int
                 = if (results.isNotEmpty() && results.last().side != battleUnit.side && battleUnit.enemy!!.armedHero.isMagicWeapon()) damage - damage * when (lv) {
             1 -> 3
@@ -90,7 +87,7 @@ enum class Seal(override val jp: String, override val type: Skill.SkillType, ove
         } / 10 else damage
     },
 
-    DeflectMelee("連撃防御・剣槍斧", Skill.SkillType.SEAL) {
+    DeflectMelee(Name. DeflectMelee  , SkillType.SEAL) {
         override fun prevent(battleUnit: BattleUnit, damage: Int, results: List<AttackResult>, lv: Int): Int
                 = if (results.isNotEmpty() && results.last().side != battleUnit.side && battleUnit.enemy!!.armedHero.isMagicWeapon()) damage - damage * when (lv) {
             1 -> 3
@@ -99,7 +96,7 @@ enum class Seal(override val jp: String, override val type: Skill.SkillType, ove
             else -> 0
         } / 10 else damage
     },
-    DeflectMissile("連撃防御・弓暗器", Skill.SkillType.SEAL) {
+    DeflectMissile( Name. DeflectMissile , SkillType.SEAL) {
         override fun prevent(battleUnit: BattleUnit, damage: Int, results: List<AttackResult>, lv: Int): Int
                 = if (results.isNotEmpty() && results.last().side != battleUnit.side && battleUnit.enemy!!.armedHero.isMagicWeapon()) damage - damage * when (lv) {
             1 -> 3
@@ -123,23 +120,17 @@ enum class Seal(override val jp: String, override val type: Skill.SkillType, ove
      */
     override val value get() = name
 
-    override fun localeName(locale: Locale): String
-            = when (locale) {
-        Locale.JAPAN -> jp
-        Locale.JAPANESE -> jp
-        else -> value
-    }
+  //  override fun localeName(locale: Locale): String = jp.localeName (locale)
 
     companion object {
-        fun spreadItems(): List<Skill> = values().fold(arrayListOf<Skill>(Skill.NONE), { list, e -> (1..e.maxLevel).forEach({ i -> list.add(e.lv(i)) });list })
+        fun spreadItems(none:Boolean = false): List<Skill> = values().fold(if(none) arrayListOf<Skill>(Skill.NONE) else arrayListOf(), { list, e -> (1..e.maxLevel).forEach({ i -> list.add(e.lv(i)) });list })
         private val itemMap = mutableMapOf<String, Seal>()
 
         fun valueOfOrNONE(key: String?): Skill = if (key == null) Skill.NONE
         else {
             try {
                 if (itemMap.isEmpty()) {
-                    values().forEach { e -> itemMap.put(e.jp, e) }
-                    values().forEach { e -> itemMap.put(e.value, e) }
+                    values().forEach { e -> itemMap.put(e.value, e);itemMap.put(e.jp.jp, e);itemMap.put(e.jp.us, e);itemMap.put(e.jp.tw, e) }
                 }
                 val regex = " \\d".toRegex()
 

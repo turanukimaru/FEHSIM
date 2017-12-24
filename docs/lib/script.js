@@ -11,41 +11,49 @@ var allHeroes = fehs.StandardBaseHero.allItems().toArray().sort(function (a, b) 
         return 0
     }
 })
-$(document).ready(function () {
-    $(".BoonBane").append($("#BoonBane").contents().clone())
-    $(".Buffs").append($("#Buffs").contents().clone()).hide()
-    $(".Skills").append($("#Skills").contents().clone()).hide()
-    $("#Buffs").hide()
-    $("#Skills").hide()
-    $("#heroes .delete").hide()
+var locale = fehs.Locale.JAPANESE
+var changeLanguage = function(){
+var val =$('input[name=language]:checked').val()
+locale=fehs.Locale.valueOf_61zpoe$(val)
 
-//とりあえず名前でソート。どうせフィルタかけるんだし
     var heroNames = allHeroes.map(function (e, i, a) {
-        return $('<option>', {value: e.name, text: e.name})
+        return $('<option>', {value: e.name, text: e.name.localeName_miixs2$(locale)})
     })
 
     var weapons = fehs.skill.Weapon.values().map(function (e, i, a) {
-        return $('<option>', {value: e.name, text: e.jp})
+        return $('<option>', {value: e.name, text: e.jp.localeName_miixs2$(locale)})
     })
 
     var assists = fehs.skill.Assist.values().map(function (e, i, a) {
-        return $('<option>', {value: e.name, text: e.jp})
+        return $('<option>', {value: e.name, text: e.jp.localeName_miixs2$(locale)})
     })
     var specials = fehs.skill.Special.values().map(function (e, i, a) {
-        return $('<option>', {value: e.name, text: e.jp})
+        return $('<option>', {value: e.name, text: e.jp.localeName_miixs2$(locale)})
     })
-    var skillAs = fehs.skill.SkillA.Companion.spreadItems().toArray().map(function (e, i, a) {
-        return $('<option>', {value: e.value, text: e.jp + e.level})
+    var skillAs = fehs.skill.SkillA.Companion.spreadItems_6taknv$().toArray().map(function (e, i, a) {
+        return $('<option>', {value: e.value, text: e.jp.localeName_miixs2$(locale)})
     })
-    var skillBs = fehs.skill.SkillB.Companion.spreadItems().toArray().map(function (e, i, a) {
-        return $('<option>', {value: e.value, text: e.jp + e.level})
+    var skillBs = fehs.skill.SkillB.Companion.spreadItems_6taknv$().toArray().map(function (e, i, a) {
+        return $('<option>', {value: e.value, text: e.jp.localeName_miixs2$(locale)})
     })
-    var skillCs = fehs.skill.SkillC.Companion.spreadItems().toArray().map(function (e, i, a) {
-        return $('<option>', {value: e.value, text: e.jp + e.level})
+    var skillCs = fehs.skill.SkillC.Companion.spreadItems_6taknv$().toArray().map(function (e, i, a) {
+        return $('<option>', {value: e.value, text: e.jp.localeName_miixs2$(locale)})
     })
-    var seals = fehs.skill.Seal.Companion.spreadItems().toArray().map(function (e, i, a) {
-        return $('<option>', {value: e.value, text: e.jp + e.level})
+    var seals = fehs.skill.Seal.Companion.spreadItems_6taknv$().toArray().map(function (e, i, a) {
+        return $('<option>', {value: e.value, text: e.jp.localeName_miixs2$(locale)})
     })
+
+    $(".attacker").children().remove()
+    $(".weapon").children().remove()
+    $(".assist").children().remove()
+    $(".special").children().remove()
+    $(".skillA").children().remove()
+    $(".skillB").children().remove()
+    $(".skillC").children().remove()
+    $(".seal").children().remove()
+$(".BoonBane").children().remove()
+$(".Buffs").children().remove()
+$(".Skills").children().remove()
 
     $(".attacker").append(heroNames)
     $(".weapon").append($('<option>', {value: "", text: "武器"})).append(weapons)
@@ -56,9 +64,16 @@ $(document).ready(function () {
     $(".skillC").append($('<option>', {value: "", text: "C"})).append(skillCs)
     $(".seal").append($('<option>', {value: "", text: "聖印"})).append(seals)
 //    $(".refine").append($('<option>', {value: "", text: "錬成"})).append(refines)
-
+    $(".BoonBane").append($("#BoonBane").contents().clone())
+    $(".Buffs").append($("#Buffs").contents().clone()).hide()
+    $(".Skills").append($("#Skills").contents().clone()).hide()
+    $("#Buffs").hide()
+    $("#Skills").hide()
+    $("#heroes .delete").hide()
+$("#showSkillOptions").prop("checked",false)
     calculateAll()
-})
+}
+$(document).ready(function(){changeLanguage()})
 
 var readParams = function (target) {
     var wp = target.find(".weapon").val()
@@ -103,17 +118,17 @@ var readParams = function (target) {
 }
 
 var spreadRefines = function(weapon){return fehs.skill.RefineSkill.Companion.spreadItems_3o6c2a$(weapon).toArray().map(function (e, i, a) {
-        return $('<option>', {value: e.name, text: e.jp})
+        return $('<option>', {value: e.name, text: e.jp.localeName_miixs2$(locale)})
 })}
 var spreadWeapons = function(weaponType){
     if(weaponType){
         return fehs.skill.Weapon.values().filter(function (e, i, a){
 //        console.log(e.type.name+"/"+weaponType)
-          return e.type.name == weaponType}).map(function (e, i, a) {return $('<option>', {value: e.name, text: e.jp})
+          return e.type.name == weaponType}).map(function (e, i, a) {return $('<option>', {value: e.name, text: e.jp.localeName_miixs2$(locale)})
     })
     }
     return fehs.skill.Weapon.values().map(function (e, i, a) {
-        return $('<option>', {value: e.name, text: e.jp})})
+        return $('<option>', {value: e.name, text: e.jp.localeName_miixs2$(locale)})})
 }
 
 var paramSpan = function (hero) {
@@ -145,7 +160,7 @@ var calculateAll = function () {
             , params.skillA ? params.skillA : base.aSkill, params.skillB ? params.skillB : base.bSkill, params.skillC ? params.skillC : base.cSkill, params.seal, params.rarity, params.level, params.boon, params.bane, params.defensive, params.atkBuff, params.spdBuff, params.defBuff, params.resBuff, params.atkSpur, params.spdSpur, params.defSpur, params.resSpur)
     })
     var heroNames = enemies.map(function (e, i, a) {
-        return $('<option>', {value: e.baseHero.name, text: e.baseHero.name})
+        return $('<option>', {value: e.baseHero.name, text: e.baseHero.name.localeName_miixs2$(locale)})
     })
     $("#enemyAttacker").children().remove()
     $("#enemyAttacker").append($('<option>', {value: "", text: "敵選択"})).append(heroNames)
@@ -156,7 +171,7 @@ var calculateAll = function () {
         })
         if(target.length > 0){
             enemies = target
-            $("#enemyAttacker").val(target[0].baseHero.name)
+            $("#enemyAttacker").val(target[0].baseHero.name.localeName_miixs2$(locale))
         }
     }
 
@@ -198,7 +213,7 @@ var calculateAll = function () {
 
             var resultText = ""
             fightResults.forEach(function (r) {
-                resultText += r.detailsShort_4ylgoe$(switched? fehs.SIDES.COUNTER:fehs.SIDES.ATTACKER, fehs.Locale.JAPAN)
+                resultText += r.detailsShort_4ylgoe$(switched? fehs.SIDES.COUNTER:fehs.SIDES.ATTACKER, locale)
             })
             var last = fightResults[fightResults.length - 1]
             if(switched ){
@@ -211,7 +226,7 @@ var calculateAll = function () {
             }
 //            results.push(fightResults)
         })
-        tr.append('<th><span class="name">' + e.baseHero.name + "<br /></th>")
+        tr.append('<th><span class="name">' + e.baseHero.name.localeName_miixs2$(locale)+ "<br /></th>")
         tr.find("th").append(paramSpan(e))
         body.append(tr)
     })

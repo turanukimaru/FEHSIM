@@ -288,14 +288,14 @@ data class BattleUnit(val armedHero: ArmedHero
         return Skill.NONE.damage(this, target, results, null)
     }
 
-    fun effectedPrevent(weaponType: Skill.SkillType) = if (weaponType == Skill.SkillType.REFINED_DRAGON && armedHero.baseHero.weaponType.range == 2) if (effectedDef < effectedRes) effectedDef else effectedRes
+    fun effectedPrevent(weaponType: SkillType) = if (weaponType == SkillType.REFINED_DRAGON && armedHero.baseHero.weaponType.range == 2) if (effectedDef < effectedRes) effectedDef else effectedRes
     else if (weaponType.weaponType!!.isMaterial) effectedDef else effectedRes
 
     fun halfByStaff(damage: Int): Int = damage - if (armedHero.baseHero.weaponType == WeaponType.STAFF && !wrathfulStaff) damage / 2 else 0
     /**
      * スキル・奥義によるダメージ減少.
      */
-    fun preventByDefResTerrain(damage: Int, weaponType: Skill.SkillType, mitModPercent: Int = 0): Int =
+    fun preventByDefResTerrain(damage: Int, weaponType: SkillType, mitModPercent: Int = 0): Int =
             damage - effectedPrevent(weaponType) * (if (defensiveTerrain) 130 else 100) / 100 + (effectedPrevent(weaponType) * mitModPercent) / 100
 
     /**

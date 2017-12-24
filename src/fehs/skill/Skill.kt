@@ -6,7 +6,7 @@ interface Skill {
     val level: Int get() = 0
     val type: SkillType get() = SkillType.NONE
     val value: String get() = ""
-    val jp: String get() = ""
+    val jp: Name get() = Name.NONE
     val maxLevel: Int get() = 0
 
     // nullオブジェクト。もっといいやり方があればいいのだが
@@ -17,7 +17,7 @@ interface Skill {
         val NONE = None()
     }
 
-    fun localeName(locale: Locale): String = ""
+    fun localeName(locale: Locale): String = jp.localeName(locale)
 
     /**
      * 戦闘時の効果。基本的にunitの能力値を上下したり
@@ -579,31 +579,4 @@ interface Skill {
     }
 
 
-    enum class SkillType(val jp: String, val weaponType: WeaponType? = null) {
-        NONE(""),
-        A(""),
-        B(""),
-        C(""),
-        SWORD("剣", WeaponType.SWORD),
-        LANCE("槍", WeaponType.LANCE),
-        AXE("斧", WeaponType.AXE),
-        DRAGON("竜", WeaponType.DRAGON),
-        REFINED_DRAGON("竜", WeaponType.DRAGON),
-        RTOME("赤魔", WeaponType.RTOME),
-        BTOME("青魔", WeaponType.BTOME),
-        GTOME("緑魔", WeaponType.GTOME),
-        BOW("弓", WeaponType.BOW),
-        DAGGER("暗器", WeaponType.DAGGER),
-        STAFF("杖", WeaponType.STAFF),
-        ASSIST(""),
-        SPECIAL_A(""),
-        SPECIAL_B(""),
-        SPECIAL_C(""),
-        SPECIAL_D(""),
-        SEAL(""),
-        REFINERY("")
-        ;
-
-        val isWeapon get() = weaponType != null
-    }
 }

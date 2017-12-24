@@ -80,6 +80,15 @@ color:#fe0101;
 <body>
 
 <div>
+    <div>
+        言語選択
+        <input type="radio" id="JAPANESE" name="language" class="language" onclick="changeLanguage()" value="JAPANESE" checked>
+        <label for="JAPANESE" >日本語</label>
+        <input type="radio" id="ENGLISH" name="language" class="language" onclick="changeLanguage()" value="OTHER">
+        <label for="ENGLISH" >English</label>
+        <input type="radio" id="TAIWAN" name="language" class="language" onclick="changeLanguage()" value="TAIWAN">
+        <label for="TAIWAN">繫体</label>
+    </div>
     <table id="heroes">
         <thead>
         <tr>
@@ -216,7 +225,7 @@ color:#fe0101;
 </span>
 
                 <br>
-                スキル表示<input type="checkbox"
+                スキル表示<input id="showSkillOptions" type="checkbox"
                             onchange="if(this.checked){$('#Skills').show();$('.Skills').show()}else{$('#Skills').hide();$('.Skills').hide()}"/><br>
                 <span id="Skills">
                 <select class="weapon" onchange="calculateAll()"></select><br>

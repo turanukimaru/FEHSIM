@@ -65,7 +65,6 @@ enum class BoonType(val jp: String) {
 
     fun localeName(locale: Locale): CharSequence =
             when (locale) {
-                Locale.JAPAN -> jp
                 Locale.JAPANESE -> jp
                 else -> name
 
@@ -119,4 +118,32 @@ enum class EffectiveAgainst {
             else -> NONE
         }
     }
+}
+
+enum class SkillType(val jp: String, val weaponType: WeaponType? = null) {
+    NONE(""),
+    A(""),
+    B(""),
+    C(""),
+    SWORD("剣", WeaponType.SWORD),
+    LANCE("槍", WeaponType.LANCE),
+    AXE("斧", WeaponType.AXE),
+    DRAGON("竜", WeaponType.DRAGON),
+    REFINED_DRAGON("竜", WeaponType.DRAGON),
+    RTOME("赤魔", WeaponType.RTOME),
+    BTOME("青魔", WeaponType.BTOME),
+    GTOME("緑魔", WeaponType.GTOME),
+    BOW("弓", WeaponType.BOW),
+    DAGGER("暗器", WeaponType.DAGGER),
+    STAFF("杖", WeaponType.STAFF),
+    ASSIST(""),
+    SPECIAL_A(""),
+    SPECIAL_B(""),
+    SPECIAL_C(""),
+    SPECIAL_D(""),
+    SEAL(""),
+    REFINERY("")
+    ;
+
+    val isWeapon get() = weaponType != null
 }

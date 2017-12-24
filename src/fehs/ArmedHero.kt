@@ -279,12 +279,7 @@ data class ArmedHero(
 
     fun localeName(locale: Locale): String {
         if (name.isNotEmpty()) return name
-        return when (locale) {
-            Locale.JAPAN -> baseHero.name
-            Locale.JAPANESE -> baseHero.name
-            else -> baseHero.usName
-        }
-
+        return baseHero.name.localeName(locale)
     }
 
     /**
