@@ -201,7 +201,7 @@ enum class SkillA(override val jp: Name, override val type: SkillType, override 
    // override fun localeName(locale: Locale): String = jp.localeName(locale)
 
     companion object {
-        fun spreadItems(none: Boolean = false): List<Skill> = values().fold(if (none) arrayListOf<Skill>(Skill.NONE) else arrayListOf(), { list, e -> (1..e.maxLevel).forEach({ i -> list.add(e.lv(i)) });list })
+        fun spreadItems(none: Boolean = false): List<Skill> = values().fold(if (none) arrayListOf<Skill>(Skill.NONE) else arrayListOf(), { list, e -> if(e.maxLevel == 0){list.add(e)} else (1..e.maxLevel).forEach({ i -> list.add(e.lv(i)) });list })
         private val itemMap = mutableMapOf<String, SkillA>()
 
         fun valueOfOrNONE(key: String?): Skill = if (key == null) Skill.NONE

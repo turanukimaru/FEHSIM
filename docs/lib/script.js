@@ -21,26 +21,26 @@ locale=fehs.Locale.valueOf_61zpoe$(val)
     })
 
     var weapons = fehs.skill.Weapon.values().map(function (e, i, a) {
-        return $('<option>', {value: e.name, text: e.jp.localeName_miixs2$(locale)})
+        return $('<option>', {value: e.name, text: e.localeName_miixs2$(locale)})
     })
 
     var assists = fehs.skill.Assist.values().map(function (e, i, a) {
-        return $('<option>', {value: e.name, text: e.jp.localeName_miixs2$(locale)})
+        return $('<option>', {value: e.name, text: e.localeName_miixs2$(locale)})
     })
     var specials = fehs.skill.Special.values().map(function (e, i, a) {
-        return $('<option>', {value: e.name, text: e.jp.localeName_miixs2$(locale)})
+        return $('<option>', {value: e.name, text: e.localeName_miixs2$(locale)})
     })
     var skillAs = fehs.skill.SkillA.Companion.spreadItems_6taknv$().toArray().map(function (e, i, a) {
-        return $('<option>', {value: e.value, text: e.jp.localeName_miixs2$(locale)})
+        return $('<option>', {value: e.value, text: e.localeName_miixs2$(locale)})
     })
     var skillBs = fehs.skill.SkillB.Companion.spreadItems_6taknv$().toArray().map(function (e, i, a) {
-        return $('<option>', {value: e.value, text: e.jp.localeName_miixs2$(locale)})
+        return $('<option>', {value: e.value, text: e.localeName_miixs2$(locale)})
     })
     var skillCs = fehs.skill.SkillC.Companion.spreadItems_6taknv$().toArray().map(function (e, i, a) {
-        return $('<option>', {value: e.value, text: e.jp.localeName_miixs2$(locale)})
+        return $('<option>', {value: e.value, text: e.localeName_miixs2$(locale)})
     })
     var seals = fehs.skill.Seal.Companion.spreadItems_6taknv$().toArray().map(function (e, i, a) {
-        return $('<option>', {value: e.value, text: e.jp.localeName_miixs2$(locale)})
+        return $('<option>', {value: e.value, text: e.localeName_miixs2$(locale)})
     })
 
     $(".attacker").children().remove()
@@ -128,7 +128,7 @@ var spreadWeapons = function(weaponType){
     })
     }
     return fehs.skill.Weapon.values().map(function (e, i, a) {
-        return $('<option>', {value: e.name, text: e.jp.localeName_miixs2$(locale)})})
+        return $('<option>', {value: e.name, text: e.localeName_miixs2$(locale)})})
 }
 
 var paramSpan = function (hero) {

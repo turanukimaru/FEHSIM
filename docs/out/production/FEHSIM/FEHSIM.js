@@ -11133,11 +11133,16 @@ var FEHSIM = function (_, Kotlin) {
     for (tmp$_0 = 0; tmp$_0 !== tmp$.length; ++tmp$_0) {
       var element = tmp$[tmp$_0];
       var list = accumulator;
-      var tmp$_1;
-      tmp$_1 = (new IntRange(1, element.maxLevel)).iterator();
-      while (tmp$_1.hasNext()) {
-        var element_0 = tmp$_1.next();
-        list.add_11rb$(element.lv_za3lpa$(element_0));
+      if (element.maxLevel === 0) {
+        list.add_11rb$(element);
+      }
+       else {
+        var tmp$_1;
+        tmp$_1 = (new IntRange(1, element.maxLevel)).iterator();
+        while (tmp$_1.hasNext()) {
+          var element_0 = tmp$_1.next();
+          list.add_11rb$(element.lv_za3lpa$(element_0));
+        }
       }
       accumulator = list;
     }
@@ -12867,11 +12872,16 @@ var FEHSIM = function (_, Kotlin) {
     for (tmp$_0 = 0; tmp$_0 !== tmp$.length; ++tmp$_0) {
       var element = tmp$[tmp$_0];
       var list = accumulator;
-      var tmp$_1;
-      tmp$_1 = (new IntRange(1, element.maxLevel)).iterator();
-      while (tmp$_1.hasNext()) {
-        var element_0 = tmp$_1.next();
-        list.add_11rb$(element.lv_za3lpa$(element_0));
+      if (element.maxLevel === 0) {
+        list.add_11rb$(element);
+      }
+       else {
+        var tmp$_1;
+        tmp$_1 = (new IntRange(1, element.maxLevel)).iterator();
+        while (tmp$_1.hasNext()) {
+          var element_0 = tmp$_1.next();
+          list.add_11rb$(element.lv_za3lpa$(element_0));
+        }
       }
       accumulator = list;
     }
@@ -13768,11 +13778,16 @@ var FEHSIM = function (_, Kotlin) {
     for (tmp$_0 = 0; tmp$_0 !== tmp$.length; ++tmp$_0) {
       var element = tmp$[tmp$_0];
       var list = accumulator;
-      var tmp$_1;
-      tmp$_1 = (new IntRange(1, element.maxLevel)).iterator();
-      while (tmp$_1.hasNext()) {
-        var element_0 = tmp$_1.next();
-        list.add_11rb$(element.lv_za3lpa$(element_0));
+      if (element.maxLevel === 0) {
+        list.add_11rb$(element);
+      }
+       else {
+        var tmp$_1;
+        tmp$_1 = (new IntRange(1, element.maxLevel)).iterator();
+        while (tmp$_1.hasNext()) {
+          var element_0 = tmp$_1.next();
+          list.add_11rb$(element.lv_za3lpa$(element_0));
+        }
       }
       accumulator = list;
     }
@@ -14352,11 +14367,16 @@ var FEHSIM = function (_, Kotlin) {
     for (tmp$_0 = 0; tmp$_0 !== tmp$.length; ++tmp$_0) {
       var element = tmp$[tmp$_0];
       var list = accumulator;
-      var tmp$_1;
-      tmp$_1 = (new IntRange(1, element.maxLevel)).iterator();
-      while (tmp$_1.hasNext()) {
-        var element_0 = tmp$_1.next();
-        list.add_11rb$(element.lv_za3lpa$(element_0));
+      if (element.maxLevel === 0) {
+        list.add_11rb$(element);
+      }
+       else {
+        var tmp$_1;
+        tmp$_1 = (new IntRange(1, element.maxLevel)).iterator();
+        while (tmp$_1.hasNext()) {
+          var element_0 = tmp$_1.next();
+          list.add_11rb$(element.lv_za3lpa$(element_0));
+        }
       }
       accumulator = list;
     }
