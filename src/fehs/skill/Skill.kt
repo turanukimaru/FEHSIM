@@ -88,7 +88,7 @@ interface Skill {
     /**
      * 装備時の能力値変化
      */
-    fun equip(armedHero: ArmedHero, lv: Int = level): ArmedHero {
+    fun equip(armedHero: ArmedHero, level: Int = this.level): ArmedHero {
         if (type.isWeapon) {
             armedHero.atkEqp += level
         }
@@ -485,6 +485,11 @@ interface Skill {
         return battleUnit
     }
 
+    fun debuffBonus(battleUnit: BattleUnit): BattleUnit {
+        val enemy = battleUnit.enemy!!
+        battleUnit.debuffBonus = enemy.atkDebuff + enemy.spdDebuff + enemy.defBuff + enemy.resDebuff
+        return battleUnit
+    }
     fun antiBuffBonus(battleUnit: BattleUnit): BattleUnit {
         battleUnit.enemy!!.antiBuffBonus = true
         return battleUnit

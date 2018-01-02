@@ -522,9 +522,9 @@ enum class Name(val jp: String, val us: String, val tw: String) {
     Bonfire("緋炎", "Bonfire", "緋炎"),
     Buckler("小盾", "Buckler", "小盾"),
     ChillingWind("氷点", "Chilling Wind", "冰點"),
-    DraconicAura("伏竜", "Draconic Aura", "臥龍"),
+    DragonGaze("伏竜", "Dragon Gaze", "臥龍"),
     DragonFang("竜穿", "Dragon Fang", "竜穿"),
-    DragonGaze("竜裂", "Dragon Gaze", "竜裂"),
+    DraconicAura("竜裂", "Draconic Aura", "竜裂"),
     Escutcheon("長盾", "Escutcheon", "長盾"),
     Galeforce("疾風迅雷", "Galeforce", "疾風迅雷"),
     Glacies("氷華", "Glacies", "氷華"),
@@ -751,6 +751,25 @@ enum class Name(val jp: String, val us: String, val tw: String) {
     Follow("追従", "Follow", "可移動至周圍2格"),
     MagicSuppression("魔法は反撃不能", "MagicSuppression", "魔法無法反擊"),
     Nullify("特効対象の強化の+を無効にする", "Nullifies foe's bonuses", "抵鋿敵人的＋強化狀態"),
+
+    スリーズ("スリーズ","Gunnthrá","斯利茲"),
+    アクア__正月_("アクア（正月）","Azura (Happy New Year!)","阿庫婭 (Happy New Year!)"),
+    カミラ__正月_("カミラ（正月）","Camilla (Happy New Year!)","卡美拉 (Happy New Year!)"),
+    タクミ__正月_("タクミ（正月）","Takumi (Happy New Year!)","拓海 (Happy New Year!)"),
+
+    Blizzard("ブリザード","Blizzard","暴風雪"),
+    ChillingSeal("冰の封印","Chilling Seal",""),
+    EarthDance("大地の舞","EarthDance","大地之舞"),
+    SpdDefBond("速さ守備の絆","Spd Def Bond","速度防守的羈絆"),
+    Hagoita("羽子板","Hagoita","Hagoita"),
+    Hagoita2("羽子板＋","Hagoita+","Hagoita+"),
+    Kadomatsu("門松","Kadomatsu","Kadomatsu"),
+    Kadomatsu2("門松＋","Kadomatsu+","Kadomatsu+"),
+    KagamiMochi("鏡餅","Kagami Mochi","Kagami Mochi"),
+    KagamiMochi2("鏡餅＋","Kagami Mochi+","Kagami Mochi+"),
+
+
+
 
 
     ;

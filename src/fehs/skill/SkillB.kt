@@ -25,7 +25,7 @@ enum class SkillB(override val jp: Name, override val type: SkillType, override 
         override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = weaponBreaker(battleUnit, WeaponType.RTOME, lv)
     },
     GTomeBreaker(Name.GTomeBreaker, SkillType.B) {
-        override fun attackEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = weaponBreaker(battleUnit, WeaponType.GTOME, lv)
+        override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = weaponBreaker(battleUnit, WeaponType.GTOME, lv)
     },
     BTomeBreaker(Name.BTomeBreaker, SkillType.B) {
         override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = weaponBreaker(battleUnit, WeaponType.BTOME, lv)
@@ -111,6 +111,7 @@ enum class SkillB(override val jp: Name, override val type: SkillType, override 
     BlazeDance(Name.BlazeDance, SkillType.B),
     GaleDance(Name.GaleDance, SkillType.B),
     TorrentDance(Name.TorrentDance, SkillType.B),
+    EarthDance(Name.EarthDance, SkillType.B),
     GeyserDance(Name.GeyserDance, SkillType.B, maxLevel = 2),
     KnockBack(Name.KnockBack, SkillType.B, maxLevel = 0),
     DragBack(Name.DragBack, SkillType.B, maxLevel = 0),
@@ -139,6 +140,7 @@ enum class SkillB(override val jp: Name, override val type: SkillType, override 
         override fun attackEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = attackPain(battleUnit, lv * 3 + 1)
     },
 
+    ChillingSeal(Name.ChillingSeal, SkillType.B),
 
     ;
 

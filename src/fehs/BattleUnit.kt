@@ -109,6 +109,11 @@ data class BattleUnit(val armedHero: ArmedHero
          * 一回だけダメージを追加する。今のところ氷の聖鏡専用。
          */
                       , var oneTimeOnlyAdditionalDamage: Int = 0
+        /**
+         * debuffで強化されるダメージ量。今のところブリザード専用
+         */
+                      , var debuffBonus: Int = 0
+
 
 ) {
     /**
@@ -128,7 +133,7 @@ data class BattleUnit(val armedHero: ArmedHero
     val effectedSpd: Int get() = spd + spdEffect
     val effectedDef: Int get() = def + defEffect
     val effectedRes: Int get() = res + resEffect
-    val effectedBladeAtk: Int get() = effectedAtk + if (blade && !antiBuffBonus) atkBuff + spdBuff + defBuff + resBuff else 0
+    val effectedBladeAtk: Int get() = effectedAtk + if (blade && !antiBuffBonus) atkBuff + spdBuff + defBuff + resBuff else 0 + debuffBonus
     val effectedPhantomSpd: Int get() = effectedSpd + phantomSpeed
 
     /** マップ上で戦う際には必要になると思われる*/

@@ -285,6 +285,6 @@ data class ArmedHero(
     /**
      * 簡易ステータス。ロケールの扱いは本当に困るな.
      */
-    fun statusSkillText(locale: Locale) = "HP" + maxHp + " A" + atk + " S" + spd + " D" + def + " R" + spd + " W:" + (skills.fold("", { string, e -> string + e.localeName(locale) + " " }))
+    fun statusSkillText(locale: Locale) = "HP" + maxHp + " A" + atk + " S" + spd + " D" + def + " R" + res + " W:" + (skills.fold("", { string, e -> string + e.localeName(locale) + " " }))
 
 }

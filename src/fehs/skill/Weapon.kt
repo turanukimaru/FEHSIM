@@ -139,6 +139,8 @@ enum class Weapon(override val jp: Name, override val type: SkillType, override 
     FiresweepSword2(Name.FiresweepSword2, SkillType.SWORD, 15, FiresweepSword){
         override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = disableEachCounter(battleUnit, 0)
     },
+    Kadomatsu(Name.Kadomatsu, SkillType.SWORD, 10, SteelSword,RefineSkill.RefineType.Range1),
+    Kadomatsu2(Name.Kadomatsu2, SkillType.SWORD, 14, Kadomatsu,RefineSkill.RefineType.Range1),
 
     IronLance(Name.IronLance, SkillType.LANCE, 6),
     SteelLance(Name.SteelLance, SkillType.LANCE, 8, IronLance),
@@ -331,6 +333,8 @@ enum class Weapon(override val jp: Name, override val type: SkillType, override 
     Handbell2(Name.Handbell2, SkillType.AXE, 14, Handbell,RefineSkill.RefineType.Range1){
         override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = allBonus(battleUnit, 2)
     },
+    Hagoita(Name.Hagoita, SkillType.AXE, 10, SteelAxe,RefineSkill.RefineType.Range1),
+    Hagoita2(Name.Hagoita2, SkillType.AXE, 14, Hagoita,RefineSkill.RefineType.Range1),
 
 
     IronBow(Name.IronBow, SkillType.BOW, 4),
@@ -423,7 +427,8 @@ enum class Weapon(override val jp: Name, override val type: SkillType, override 
     KittyPaddle2(Name.KittyPaddle2, SkillType.DAGGER, 8, KittyPaddle){
         override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = effectiveAgainstMagic(battleUnit)
     },
-
+    KagamiMochi(Name.KagamiMochi, SkillType.DAGGER, 8, SteelDagger,RefineSkill.RefineType.Range2),
+    KagamiMochi2(Name.KagamiMochi2, SkillType.DAGGER, 12, KagamiMochi,RefineSkill.RefineType.Range2),
     Assault(Name.Assault, SkillType.STAFF, 10),
     Absorb(Name.Absorb, SkillType.STAFF, 4, Assault){
         override fun absorb(battleUnit: BattleUnit, target: BattleUnit, damage: Int): Int = battleUnit.heal(damage * 5 / 10)
@@ -603,6 +608,10 @@ Absorb2(Name.Absorb2, SkillType.STAFF, 7, Absorb,RefineSkill.RefineType.Staff){
     },
     SpectralTome(Name.SpectralTome, SkillType.GTOME, 8, Elwind),
     SpectralTome2(Name.SpectralTome2, SkillType.GTOME, 12, SpectralTome,RefineSkill.RefineType.Range2),
+    Blizzard(Name.Blizzard, SkillType.GTOME, 14, Rexcalibur){
+        override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = debuffBonus(battleUnit)
+    },
+
     FireBreath(Name.FireBreath, SkillType.DRAGON, 6),
     FireBreath2(Name.FireBreath2, SkillType.DRAGON, 8, FireBreath),
     LightningBreath(Name.LightningBreath, SkillType.DRAGON, 8, FireBreath2){

@@ -55,12 +55,12 @@ enum class Special(override val jp: Name, override val type: SkillType, override
                 = if (battleUnit.hp in 2..damage) Pair(battleUnit.hp - 1, this) else super.specialPrevent(battleUnit, damage, lv)
 
     },
-    DraconicAura(Name.DraconicAura, SkillType.SPECIAL_A, 4) {
+    DraconicAura(Name.DraconicAura, SkillType.SPECIAL_A, 3) {
         override fun damage(battleUnit: BattleUnit, target: BattleUnit, results: List<AttackResult>, skill: Skill?): Pair<Int, Skill?>
                 = Pair(battleUnit.halfByStaff(target.preventByDefResTerrain(battleUnit.colorAttack() + battleUnit.effectedAtk * 3 / 10, battleUnit.armedHero.baseHero.weapon.type))
                 , this)
     },
-    DragonGaze(Name.DragonGaze, SkillType.SPECIAL_A, 3) {
+    DragonGaze(Name.DragonGaze, SkillType.SPECIAL_A, 4) {
         override fun damage(battleUnit: BattleUnit, target: BattleUnit, results: List<AttackResult>, skill: Skill?): Pair<Int, Skill?>
                 = Pair(battleUnit.halfByStaff(target.preventByDefResTerrain(battleUnit.colorAttack() + battleUnit.effectedAtk * 3 / 10, battleUnit.armedHero.baseHero.weapon.type))
                 , this)

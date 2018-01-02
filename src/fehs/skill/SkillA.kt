@@ -177,6 +177,7 @@ enum class SkillA(override val jp: Name, override val type: SkillType, override 
     },
     AtkDefBond(Name.AtkDefBond, SkillType.A, maxLevel = 3),
     AtkResBond(Name.AtkResBond, SkillType.A, maxLevel = 3),
+    SpdDefBond(Name.SpdDefBond, SkillType.A, maxLevel = 3),
 
     BrazenAtkDef(Name.BrazenAtkDef, SkillType.A) {
         override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = brazenDef(brazenAtk(battleUnit, lv * 2 + 1), lv * 2 + 1)
