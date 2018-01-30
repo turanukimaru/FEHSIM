@@ -121,7 +121,7 @@ enum class Weapon(override val jp: Name, override val type: SkillType, override 
                 if (results.isEmpty() && battleUnit.enemy!!.armedHero.effectiveRange == 2 && battleUnit.enemy!!.armedHero.isMagicWeapon()) damage - damage / 2 else damage
     },
     RegalBlade(Name.RegalBlade, SkillType.SWORD, 16, SilverSword){
-        override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = enemyFullHpBonus(battleUnit, lv * 2)
+        override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = enemyFullHpBonus(battleUnit, 2)
     },
     ResoluteBlade(Name.ResoluteBlade, SkillType.SWORD, 16, WaoDao){
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = super.equip(equipAtk(armedHero, 3), lv)
@@ -394,6 +394,8 @@ enum class Weapon(override val jp: Name, override val type: SkillType, override 
     },
     MonstrousBow(Name.MonstrousBow, SkillType.BOW, 8, SteelBow),
         MonstrousBow2(Name.MonstrousBow2, SkillType.BOW, 12, MonstrousBow,RefineSkill.RefineType.Range2),
+    HamaYa(Name.HamaYa, SkillType.BOW, 8, SteelBow,RefineSkill.RefineType.Range2),
+    HamaYa2(Name.HamaYa2, SkillType.BOW, 12, HamaYa,RefineSkill.RefineType.Range2),
 
 
     IronDagger(Name.IronDagger, SkillType.DAGGER, 3),
@@ -501,6 +503,13 @@ Absorb2(Name.Absorb2, SkillType.STAFF, 7, Absorb,RefineSkill.RefineType.Staff){
     Candelabra2(Name.Candelabra2, SkillType.RTOME, 12, Candelabra,RefineSkill.RefineType.Range2){
         override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = allBonus(battleUnit, 2)
     },
+    Gleipnir(Name.Gleipnir, SkillType.RTOME, 14, Bolganone){
+        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = super.equip(equipRes(armedHero, 3),lv)
+        override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = enemyFullHpBonus(battleUnit, 3)
+    },
+    Naglfar(Name.Naglfar, SkillType.RTOME, 14, Bolganone){
+        override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = equipRaven(battleUnit)
+    },
 
 
     Thunder(Name.Thunder, SkillType.BTOME, 4),
@@ -551,6 +560,10 @@ Absorb2(Name.Absorb2, SkillType.STAFF, 7, Absorb,RefineSkill.RefineType.Staff){
     },
     WeirdingTome(Name.WeirdingTome, SkillType.BTOME, 14, Thoron){
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = super.equip(equipSpd(armedHero, 3), lv)
+    },
+    Ivaldi(Name.Ivaldi, SkillType.BTOME, 14, Bolganone){
+        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = super.equip(equipDef(armedHero, 3),lv)
+        override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = enemyFullHpBonus(battleUnit, 3)
     },
 
     Wind(Name.Wind, SkillType.GTOME, 4),
@@ -628,6 +641,10 @@ Absorb2(Name.Absorb2, SkillType.STAFF, 7, Absorb,RefineSkill.RefineType.Staff){
     LightBreath2(Name.LightBreath2, SkillType.DRAGON, 13, LightBreath,RefineSkill.RefineType.Range1),
     DarkBreath(Name.DarkBreath, SkillType.DRAGON, 9, FireBreath),
     DarkBreath2(Name.DarkBreath2, SkillType.DRAGON, 13, DarkBreath,RefineSkill.RefineType.Range1),
+    GreatFlame(Name.GreatFlame, SkillType.REFINED_DRAGON, 16, Flametongue){
+        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = super.equip(equipAtk(armedHero, 3),lv)
+        override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = antiFollowupDef(battleUnit,5)
+    },
     ;
 
     /**

@@ -7,51 +7,48 @@ import jp.blogspot.turanukimaru.fehs.*
  */
 enum class Seal(override val jp: Name, override val type: SkillType, override val level: Int = 0, override val preSkill: Skill = Skill.NONE, override val maxLevel: Int = 3) : Skill {
 
-    Hp(Name. Hp  , SkillType.A) {
+    Hp(Name. Hp  , SkillType.SEAL) {
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipHp(armedHero, lv)
     },
-    SquadAceA( Name.SquadAceA  , SkillType.A) {
-        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipHp(armedHero, lv)
-    },
-    Attack( Name. Attack , SkillType.A) {
+    Attack( Name. Attack , SkillType.SEAL) {
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipAtk(armedHero, lv)
     },
-    Speed( Name.Speed  , SkillType.A) {
+    Speed( Name.Speed  , SkillType.SEAL) {
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipSpd(armedHero, lv)
     },
-    SquadAceD( Name.SquadAceD  , SkillType.A) {
+    Defense( Name.Defense  , SkillType.SEAL) {
+        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipDef(armedHero, lv)
+    },
+    Resistance(Name. Resistance  , SkillType.SEAL) {
+        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipRes(armedHero, lv)
+    },
+    SquadAceA( Name.SquadAceA  , SkillType.SEAL) {
+        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipHp(armedHero, lv)
+    },
+    SquadAceB( Name.SquadAceB  , SkillType.SEAL) {
+        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipDef(armedHero, lv)
+    },
+    SquadAceC(Name.SquadAceC   , SkillType.SEAL) {
+        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipRes(armedHero, lv)
+    },
+    SquadAceD( Name.SquadAceD  , SkillType.SEAL) {
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipSpd(armedHero, lv)
     },
-    Defense( Name.Defense  , SkillType.A) {
-        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipDef(armedHero, lv)
+    SquadAceE(Name.SquadAceC   , SkillType.SEAL) {
+        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipAtk(armedHero, lv)
     },
-    SquadAceB( Name.SquadAceB  , SkillType.A) {
-        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipDef(armedHero, lv)
+    SquadAceF(Name.SquadAceC   , SkillType.SEAL) {
+        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipHp(armedHero, lv)
     },
-    Resistance(Name. Resistance  , SkillType.A) {
-        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipRes(armedHero, lv)
+    CloseDef( Name.CloseDef  , SkillType.SEAL) {
+        override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = closeDef(battleUnit, lv * 2)
     },
-    SquadAceC(Name.SquadAceC   , SkillType.A) {
-        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipRes(armedHero, lv)
-    },
-    DistantDef( Name.DistantDef  , SkillType.A) {
+    DistantDef( Name.DistantDef  , SkillType.SEAL) {
         override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = distantDef(battleUnit, lv * 2)
     },
-    BrashAssault( Name.BrashAssault  , SkillType.B) {
+    BrashAssault( Name.BrashAssault  , SkillType.SEAL) {
         override fun attackEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = brashAssault(battleUnit, lv)
     },
-    SpurAtk( Name. SpurAtk , SkillType.SEAL),
-    SpurSpd( Name. SpurSpd , SkillType.SEAL),
-    SpurDef( Name.SpurDef  , SkillType.SEAL),
-    SpurRes( Name. SpurRes , SkillType.SEAL),
-    FortifyDef(Name.FortifyDef   , SkillType.SEAL),
-    FortifyRes( Name.FortifyRes  , SkillType.SEAL),
-    BreathOfLife(Name. BreathOfLife  , SkillType.SEAL),
-    Guidance(Name. Guidance  , SkillType.SEAL),
-    AttackSmoke( Name.AtkSmoke  , SkillType.SEAL),
-    AttackPloy( Name. AtkPloy , SkillType.SEAL),
-
-    PanicPloy(  Name.PanicPloy , SkillType.SEAL),
     HardyBearing( Name. HardyBearing , SkillType.SEAL) {
         override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit {
             battleUnit.disableChangePlan = true
@@ -62,6 +59,10 @@ enum class Seal(override val jp: Name, override val type: SkillType, override va
         }
 
     },
+    HeavyBlade( Name.BrashAssault  , SkillType.B) {
+        override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = heavyBlade(battleUnit, lv)
+    },
+
     PhantomSpeed(  Name. PhantomSpeed, SkillType.SEAL) {
         override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit {
             battleUnit.phantomSpeed = when (lv) {1 -> 5
@@ -72,7 +73,12 @@ enum class Seal(override val jp: Name, override val type: SkillType, override va
             return super.bothEffect(battleUnit, lv)
         }
     },
+
+    PanicPloy(  Name.PanicPloy , SkillType.SEAL),
     QuickenedPulse( Name.QuickenedPulse  , SkillType.SEAL, maxLevel = 0),
+    QuickRiposte( Name.QuickRiposte  , SkillType.SEAL) {
+        override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = followupable(battleUnit, lv)
+    },
 
     /**
      * 連撃防御。武器の種類はなんか定数に定数を持たせるべきか…
@@ -105,7 +111,20 @@ enum class Seal(override val jp: Name, override val type: SkillType, override va
             else -> 0
         } / 10 else damage
     },
-
+    SpurAtk( Name. SpurAtk , SkillType.SEAL),
+    SpurSpd( Name. SpurSpd , SkillType.SEAL),
+    SpurDef( Name.SpurDef  , SkillType.SEAL),
+    SpurRes( Name. SpurRes , SkillType.SEAL),
+    AttackPloy( Name. AtkPloy , SkillType.SEAL),
+    AttackSmoke( Name.AtkSmoke  , SkillType.SEAL),
+    BreathOfLife(Name. BreathOfLife  , SkillType.SEAL),
+    FortifyDef(Name.FortifyDef   , SkillType.SEAL),
+    FortifyRes( Name.FortifyRes  , SkillType.SEAL),
+    Guidance(Name. Guidance  , SkillType.SEAL),
+    HoneSpd( Name.HoneSpd  , SkillType.SEAL),
+    IotesShield( Name.IotesShield  , SkillType.SEAL),
+    SavageBlow(Name. SavageBlow  , SkillType.SEAL),
+    ThreatenSpd(Name. ThreatenSpd  , SkillType.SEAL),
     ;
 
 

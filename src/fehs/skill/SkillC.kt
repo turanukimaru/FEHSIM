@@ -34,6 +34,7 @@ enum class SkillC(override val jp: Name, override val type: SkillType, override 
     DriveRes(Name. DriveRes  , SkillType.C, maxLevel = 2),
     HoneArmor(Name.HoneArmor   , SkillType.C, maxLevel = 0),
     HoneCavalry(Name. HoneCavalry  , SkillType.C, maxLevel = 0),
+    HoneDragons(Name. HoneDragons  , SkillType.C, maxLevel = 0),
     HoneFliers(Name.   HoneFliers, SkillType.C, maxLevel = 0),
     GoadArmor(Name. GoadArmor  , SkillType.C, maxLevel = 0),
     GoadCavalry(Name.GoadCavalry   , SkillType.C, maxLevel = 0),
@@ -52,6 +53,7 @@ enum class SkillC(override val jp: Name, override val type: SkillType, override 
     AxeValor(Name.  AxeValor , SkillType.C),
     DaggerValor(Name.  DaggerValor , SkillType.C),
     RTomeValor(Name.  RTomeValor , SkillType.C),
+    RTomeExperience(Name.RTomeExperience , SkillType.C),
     BTomeValor(Name. BTomeValor  , SkillType.C),
     GTomeValor(Name.GTomeValor   , SkillType.C),
     PanicPloy(Name.PanicPloy   , SkillType.C),
@@ -66,6 +68,7 @@ enum class SkillC(override val jp: Name, override val type: SkillType, override 
     Guidance(Name. Guidance  , SkillType.C),
     AtkTactic(Name.AtkTactic   , SkillType.C),
     DefTactic(Name.  DefTactic , SkillType.C),
+    ResTactic(Name.  ResTactic , SkillType.C),
 
     ;
 

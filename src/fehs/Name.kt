@@ -374,6 +374,8 @@ enum class Name(val jp: String, val us: String, val tw: String) {
     MelonCrusher2("スイカ割りの棍棒＋", "MelonCrusher+", "打西瓜的棍棒＋"),
     MonstrousBow("怪物の弓", "Monstrous Bow", "怪物弓"),
     MonstrousBow2("怪物の弓＋", "Monstrous Bow+", "怪物弓＋"),
+    HamaYa("破魔矢", "Hama Ya", "Hama Ya"),
+    HamaYa2("破魔矢＋", "Hama Ya+", "Hama Ya+"),
     Mulagir("ミュルグレ", "Mulagir", "妙爾葛雷"),
     Mystletainn("ミストルティン", "Mystletainn", "米斯特汀"),
     Naga("ナーガ", "Naga", "那迦"),
@@ -675,6 +677,8 @@ enum class Name(val jp: String, val us: String, val tw: String) {
     AtkTactic("攻撃の指揮", "Atk Tactic", "攻擊指揮"),
     AxeExperience("斧の経験", "Axe Experience", "斧之經驗"),
     AxeValor("斧の技量", "Axe Valor", "斧之技巧"),
+    RTomeExperience("赤魔の経験", "R Tome Experience", "赤魔之經驗"),
+    RTomeValor("赤魔の技量", "R Tome Valor", "赤魔之技巧"),
     BTomeExperience("青魔の経験", "B Tome Experience", "青魔之經驗"),
     BTomeValor("青魔の技量", "B Tome Valor", "青魔之技巧"),
     BowExperience("弓の経験", "Bow Experience", "弓之經驗"),
@@ -682,6 +686,7 @@ enum class Name(val jp: String, val us: String, val tw: String) {
     DaggerValor("暗器の技量", "Dagger Valor", "暗器之技巧"),
     DefPloy("守備の謀策", "Def Ploy", "防守謀策"),
     DefTactic("守備の指揮", "Def Tactic", "防守の指揮"),
+    ResTactic("魔防の指揮", "Res Tactic", "魔防の指揮"),
     DriveAtk("攻撃の大紋章", "Drive Atk", "攻擊大紋章"),
     DriveDef("守備の大紋章", "Drive Def", "防守大紋章"),
     DriveRes("魔防の大紋章", "Drive Res", "魔防大紋章"),
@@ -700,12 +705,12 @@ enum class Name(val jp: String, val us: String, val tw: String) {
     HoneArmor("重刃の鼓舞", "Hone Armor", "重刃鼓舞"),
     HoneAtk("攻撃の鼓舞", "Hone Atk", "攻擊鼓舞"),
     HoneCavalry("騎刃の鼓舞", "Hone Cavalry", "騎刃鼓舞"),
+    HoneDragons("竜刃の鼓舞", "Hone Dragons", "竜刃鼓舞"),
     HoneFliers("飛刃の鼓舞", "Hone Fliers", "飛刃鼓舞"),
     HoneSpd("速さの鼓舞", "Hone Spd", "速度鼓舞"),
     InfantryPulse("歩行の鼓動", "Infantry Pulse", "歩行躍動"),
     LanceValor("槍の技量", "LanceValor", "槍之技巧"),
     PanicPloy("恐慌の奇策", "Panic Ploy", "恐慌奇策"),
-    RTomeValor("赤魔の技量", "R Tome Valor", "赤魔之技巧"),
     ResPloy("魔防の謀策", "Res Ploy", "魔防謀策"),
     SavageBlow("死の吐息", "Savage Blow", "死亡氣息"),
     SpdPloy("速さの謀策", "Spd Ploy", "速度謀策"),
@@ -756,6 +761,7 @@ enum class Name(val jp: String, val us: String, val tw: String) {
     アクア__正月_("アクア（正月）","Azura (Happy New Year!)","阿庫婭 (Happy New Year!)"),
     カミラ__正月_("カミラ（正月）","Camilla (Happy New Year!)","卡美拉 (Happy New Year!)"),
     タクミ__正月_("タクミ（正月）","Takumi (Happy New Year!)","拓海 (Happy New Year!)"),
+    カムイ__正月_("カムイ（正月）","Corrin (Happy New Year!)","神威 (Happy New Year!)"),
 
     Blizzard("ブリザード","Blizzard","暴風雪"),
     ChillingSeal("冰の封印","Chilling Seal",""),
@@ -766,6 +772,19 @@ enum class Name(val jp: String, val us: String, val tw: String) {
     Kadomatsu("門松","Kadomatsu","Kadomatsu"),
     Kadomatsu2("門松＋","Kadomatsu+","Kadomatsu+"),
     KagamiMochi("鏡餅","Kagami Mochi","Kagami Mochi"),
+    エイリーク__追憶_("エイリーク（追憶）","Eirika (Sacred Memories)","艾莉可 (Sacred Memories)"),
+
+    ラーチェル("ラーチェル","L'Arachel","拉切爾"),
+
+    ミルラ("ミルラ","Myrrh","梅爾"),
+
+    リオン("リオン","Lyon","利昂"),
+
+    Gleipnir("グレイプニル","Gleipnir","Gleipnir"),
+    Ivaldi("イヴァルディ","Ivaldi","Ivaldi"),
+    GreatFlame("神炎","GreatFlame","GreatFlame"),
+    Naglfar("ナグルファル","Naglfar","Naglfar"),
+
     KagamiMochi2("鏡餅＋","Kagami Mochi+","Kagami Mochi+"),
 
 

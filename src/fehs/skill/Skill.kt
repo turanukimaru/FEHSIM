@@ -398,6 +398,13 @@ interface Skill {
         return battleUnit
     }
 
+    fun antiFollowupDef(battleUnit: BattleUnit, thisLevel: Int): BattleUnit {
+        if (battleUnit.def - thisLevel >= battleUnit.enemy!!.def) {
+            battleUnit.enemy!!.antiFollowup = true
+        }
+        return battleUnit
+    }
+
     fun sacasBlessing(battleUnit: BattleUnit, thisLevel: Int): BattleUnit {
         val enemyType = battleUnit.enemy!!.armedHero.baseHero.weaponType
         if (enemyType == WeaponType.SWORD || enemyType == WeaponType.LANCE || enemyType == WeaponType.AXE) {
@@ -444,8 +451,8 @@ interface Skill {
 
     fun enemyFullHpBonus(battleUnit: BattleUnit, i: Int): BattleUnit {
         if (battleUnit.enemy!!.hp == battleUnit.enemy!!.armedHero.maxHp) {
-            battleUnit.atkEffect += 2
-            battleUnit.spdEffect += 2
+            battleUnit.atkEffect += i
+            battleUnit.spdEffect += i
         }
         return battleUnit
     }
@@ -490,10 +497,12 @@ interface Skill {
         battleUnit.debuffBonus = enemy.atkDebuff + enemy.spdDebuff + enemy.defBuff + enemy.resDebuff
         return battleUnit
     }
+
     fun antiBuffBonus(battleUnit: BattleUnit): BattleUnit {
         battleUnit.enemy!!.antiBuffBonus = true
         return battleUnit
     }
+
     fun antiMagicBuffBonus(battleUnit: BattleUnit): BattleUnit {
         if (battleUnit.enemy!!.armedHero.baseHero.isMagicWeapon()) {
             battleUnit.enemy!!.antiBuffBonus = true
