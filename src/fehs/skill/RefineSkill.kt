@@ -54,6 +54,12 @@ enum class RefineSkill(override val jp: Name, val hp: Int, val atk: Int, val spd
             return battleUnit
         }
     },
+    Parthia2(Name.AntiRangedWeapon, 0, 0, 0, 0, 0, RefineType.DependWeapon, Weapon.Parthia) {
+        override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = blowAtk(battleUnit, if (battleUnit.enemy!!.armedHero.baseHero.weaponType.range == 2) 6 else 0)
+    },
+    Cymbeline(Name.BondFlyingAlly, 0, 0, 0, 0, 0, RefineType.DependWeapon, Weapon.Cymbeline) {
+        override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = if (battleUnit.adjacentUnits > 0) blowRes(blowAtk(battleUnit, 5), 5) else battleUnit
+    },
     //特効武器はバフ無効を持つ
     Armorsmasher(Name.Nullify, 3, 0, 0, 0, 0, RefineType.DependWeapon, Weapon.Armorsmasher2) {
         override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = antiBuffBonus(effectiveAgainst(MoveType.ARMORED, battleUnit))
@@ -90,9 +96,16 @@ enum class RefineSkill(override val jp: Name, val hp: Int, val atk: Int, val spd
     Fenrir2(Name.Fenrir2, 0, 1, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.Fenrir2, 14, SkillType.RTOME),
     Thoron2(Name.Thoron2, 0, 1, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.Thoron2, 14, SkillType.BTOME),
     Rexcalibur2(Name.Rexcalibur2, 0, 1, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.Rexcalibur2, 14, SkillType.GTOME),
-    Rauorowl2(Name.Rauorowl2, 0, 1, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.Rauorowl2, 10, SkillType.RTOME),
-    Blarowl2(Name.Blarowl2, 0, 1, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.Blarowl2, 10, SkillType.BTOME),
-    Gronnowl2(Name.Gronnowl2, 0, 1, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.Gronnowl2, 10, SkillType.GTOME),
+    Rauorowl2(Name.Rauorowl2, 0, 1, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.Rauorowl2, 10, SkillType.RTOME) {
+        override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = allBonus(battleUnit, battleUnit.adjacentUnits * 2)
+    },
+    Blarowl2(Name.Blarowl2, 0, 1, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.Blarowl2, 10, SkillType.BTOME) {
+        override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = allBonus(battleUnit, battleUnit.adjacentUnits * 2)
+    },
+    Gronnowl2(Name.Gronnowl2, 0, 1, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.Gronnowl2, 10, SkillType.GTOME) {
+        override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = allBonus(battleUnit, battleUnit.adjacentUnits * 2)
+    },
+
     SmokeDagger2(Name.SmokeDagger2, 0, 3, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.SmokeDagger2, 9, SkillType.DAGGER),
     RogueDagger2(Name.RogueDagger2, 0, 5, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.Gronnowl2, 6, SkillType.DAGGER),
     Flametongue2(Name.Flametongue2, 0, 1, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.Flametongue2, 15, SkillType.REFINED_DRAGON),
@@ -125,6 +138,11 @@ enum class RefineSkill(override val jp: Name, val hp: Int, val atk: Int, val spd
     },
     DeathlyDagger(Name.DeathlyDagger, 0, 3, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.DeathlyDagger, 11, SkillType.DAGGER) {
         override fun attackEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = attackPain(battleUnit, 10)
+    },
+    Parthia(Name.Parthia, 0, 0, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.Parthia, 14, SkillType.BOW) {
+        override fun prevent(battleUnit: BattleUnit, damage: Int, results: List<AttackResult>, lv: Int): Int =
+                if (battleUnit.enemy!!.armedHero.isMagicWeapon()
+                && (!results.any{r-> r.side != battleUnit.side})) damage - damage * 3 / 10 else damage
     },
     ;
 
@@ -159,15 +177,15 @@ enum class RefineSkill(override val jp: Name, val hp: Int, val atk: Int, val spd
     /**
      * 武器名は使えないのでUSを格納してそれを使う
      */
-   // override fun localeName(locale: Locale): String = jp.localeName(locale)
+    // override fun localeName(locale: Locale): String = jp.localeName(locale)
 
 //    fun totalAtk(weapon: Skill): String = "威力" + (weapon.level  + atk).toString() + " "
 
     companion object {
 
         private val itemMap = mutableMapOf<String, Skill>()
-        fun spreadItems(weapon: Skill, range: RefineType = (weapon as? Weapon)?.refineSkillType ?: RefineType.NOT_WEAPON): List<Skill>
-                = values().fold(arrayListOf<Skill>(Skill.NONE), { list, e -> if (e.refineSkillType == range || (e.refineSkillType == RefineType.DependWeapon && (e.preSkill == weapon || e.preSkill == weapon.preSkill))) list.add(e);list })
+        fun spreadItems(weapon: Skill, range: RefineType = (weapon as? Weapon)?.refineSkillType
+                ?: RefineType.NOT_WEAPON): List<Skill> = values().fold(arrayListOf<Skill>(Skill.NONE), { list, e -> if (e.refineSkillType == range || (e.refineSkillType == RefineType.DependWeapon && (e.preSkill == weapon || e.preSkill == weapon.preSkill))) list.add(e);list })
 
         fun valueOfWeapon(weapon: Skill) = values().find { e -> e.refineSkillType == RefineType.ReplaceWeapon && e.preSkill == weapon }
         fun valueOfOrNONE(key: String?): Skill = if (key == null || key.isEmpty()) Skill.NONE else try {

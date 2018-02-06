@@ -106,7 +106,7 @@ data class ArmedHero(
      */
     val growths = baseHero.growths
     val specialCoolDownTime: Int get() = special.level - reduceSpecialCooldown
-    val statusText: String get() = "H"+maxHp+"A"+atk+"S"+spd+"D"+def+"R"+res
+    val statusText: String get() = "H"+maxHp+" A"+atk+" S"+spd+" D"+def+" R"+res
 
     init {
         //名前が無いときは変更なしとして扱い、ベースになるクラスの装備を使う

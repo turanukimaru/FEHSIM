@@ -152,21 +152,6 @@ interface Skill {
         return battleUnit
     }
 
-    fun steadyDef(battleUnit: BattleUnit, lv: Int): BattleUnit {
-        battleUnit.defEffect += lv
-        return battleUnit
-    }
-
-    fun steadyRes(battleUnit: BattleUnit, lv: Int): BattleUnit {
-        battleUnit.resEffect += lv
-        return battleUnit
-    }
-
-    fun steadyAtk(battleUnit: BattleUnit, lv: Int): BattleUnit {
-        battleUnit.atkEffect += lv
-        return battleUnit
-    }
-
     fun closeDef(battleUnit: BattleUnit, lv: Int): BattleUnit {
         if (battleUnit.enemy!!.armedHero.baseHero.weaponType.range == 1) {
             battleUnit.defEffect += lv

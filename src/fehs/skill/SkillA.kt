@@ -115,20 +115,25 @@ enum class SkillA(override val jp: Name, override val type: SkillType, override 
     },
 
     FierceStance(Name.FierceStance, SkillType.A) {
-        override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = steadyAtk(battleUnit, lv * 2)
+        override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = blowAtk(battleUnit, lv * 2)
     },
     SteadyStance(Name.SteadyStance, SkillType.A) {
-        override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = steadyDef(battleUnit, lv * 2)
+        override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = blowDef(battleUnit, lv * 2)
     },
     WardingStance(Name.WardingStance, SkillType.A) {
-        override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = steadyRes(battleUnit, lv * 2)
+        override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = blowRes(battleUnit, lv * 2)
+    },
+    WardingBreath(Name.WardingBreath, SkillType.A, maxLevel = 0) {
+        override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit {
+            battleUnit.accelerateAttackCooldown = 1
+            return blowRes(battleUnit, 4)
+        }
     },
     SteadyBreath(Name.SteadyBreath, SkillType.A, maxLevel = 0) {
         override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit {
             battleUnit.accelerateAttackCooldown = 1
-            return steadyDef(battleUnit, 2)
+            return blowDef(battleUnit, 4)
         }
-
     },
 
     EarthBoost(Name.EarthBoost, SkillType.A) {
@@ -175,9 +180,15 @@ enum class SkillA(override val jp: Name, override val type: SkillType, override 
         override fun effectedAttackEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = antiEffectiveAgainst(battleUnit, EffectiveAgainst.CAVALRY)
         override fun effectedCounterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = antiEffectiveAgainst(battleUnit, EffectiveAgainst.CAVALRY)
     },
-    AtkDefBond(Name.AtkDefBond, SkillType.A, maxLevel = 3),
-    AtkResBond(Name.AtkResBond, SkillType.A, maxLevel = 3),
-    SpdDefBond(Name.SpdDefBond, SkillType.A, maxLevel = 3),
+    AtkDefBond(Name.AtkDefBond, SkillType.A) {
+        override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = if (battleUnit.adjacentUnits > 0) blowAtk(blowDef(battleUnit, lv + 2), lv + 2) else battleUnit
+    },
+    AtkResBond(Name.AtkResBond, SkillType.A) {
+        override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = if (battleUnit.adjacentUnits > 0) blowAtk(blowRes(battleUnit, lv + 2), lv + 2) else battleUnit
+    },
+    SpdDefBond(Name.SpdDefBond, SkillType.A) {
+        override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = if (battleUnit.adjacentUnits > 0) blowSpd(blowDef(battleUnit, lv + 2), lv + 2) else battleUnit
+    },
 
     BrazenAtkDef(Name.BrazenAtkDef, SkillType.A) {
         override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = brazenDef(brazenAtk(battleUnit, lv * 2 + 1), lv * 2 + 1)
@@ -199,10 +210,15 @@ enum class SkillA(override val jp: Name, override val type: SkillType, override 
      */
     override val value get() = name
 
-   // override fun localeName(locale: Locale): String = jp.localeName(locale)
+    // override fun localeName(locale: Locale): String = jp.localeName(locale)
 
     companion object {
-        fun spreadItems(none: Boolean = false): List<Skill> = values().fold(if (none) arrayListOf<Skill>(Skill.NONE) else arrayListOf(), { list, e -> if(e.maxLevel == 0){list.add(e)} else (1..e.maxLevel).forEach({ i -> list.add(e.lv(i)) });list })
+        fun spreadItems(none: Boolean = false): List<Skill> = values().fold(if (none) arrayListOf<Skill>(Skill.NONE) else arrayListOf(), { list, e ->
+            if (e.maxLevel == 0) {
+                list.add(e)
+            } else (1..e.maxLevel).forEach({ i -> list.add(e.lv(i)) });list
+        })
+
         private val itemMap = mutableMapOf<String, SkillA>()
 
         fun valueOfOrNONE(key: String?): Skill = if (key == null) Skill.NONE

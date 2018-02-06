@@ -24,6 +24,7 @@ data class BattleUnit(val armedHero: ArmedHero
                       , var side: SIDES = SIDES.NONE
 //虚勢どうすんだこれ…
                       , var phantomSpeed: Int = 0
+        , var adjacentUnits:Int  = 0
 
 
         //スキルの効果

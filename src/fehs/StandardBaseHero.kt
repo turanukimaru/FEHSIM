@@ -19,7 +19,6 @@ object StandardBaseHero {
     }
 
     fun creates() {
-        // Add a person
         createItem(Name.アイク, 1, WeaponType.SWORD, MoveType.INFANTRY,  5, 18, 9, 7, 8, 5, 7, 8, 7, 7, 2,
                 Weapon.Ragnell, null, Special.Aether, SkillA.HeavyBlade.lv(3), SkillB.SwordBreaker.lv(3), Skill.NONE)
         createItem(Name.アイラ, 1, WeaponType.SWORD, MoveType.INFANTRY,  4, 19, 7, 11, 7, 4, 6, 8, 8, 7, 4,
@@ -442,6 +441,9 @@ object StandardBaseHero {
                 Weapon.GreatFlame, null, Special.Bonfire, SkillA.Furry.lv(3), Skill.NONE, SkillC.HoneDragons)
         createItem(Name.リオン, 1, WeaponType.RTOME, MoveType.INFANTRY,  3, 19, 10, 4, 4, 8, 6, 7, 4, 6, 6,
                 Weapon.Naglfar, null, Special.Retribution, SkillA.AtkRes.lv(2), Skill.NONE, SkillC.DriveRes.lv(2))
+
+        createItem(Name.アイク__伝承英雄_, 1, WeaponType.SWORD, MoveType.INFANTRY,  5, 19, 10, 6, 9, 4, 6, 8, 7, 8, 4,
+                Weapon.Ragnell, null, Special.RadiantAether, SkillA.WardingBreath, SkillB.SealAtkDef.lv(2), SkillC.DefTactic.lv(3))
     }
 
     private fun createItem(

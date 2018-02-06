@@ -9,6 +9,7 @@ enum class Name(val jp: String, val us: String, val tw: String) {
     NONE("", "", ""),
     アイク("アイク", "Ike", "艾克"),
     アイク__総選挙_("アイク（総選挙）", "Ike (Brave Heroes)", "艾克 (Brave Heroes)"),
+    アイク__伝承英雄_("アイク（伝承英雄）", "Ike (Vanguard Legend)", "艾克 (Vanguard Legend)"),
     アイラ("アイラ", "Ayra", "艾伊拉"),
     アクア("アクア", "Azura", "阿庫婭"),
     アクア__舞踏祭_("アクア（舞踏祭）", "Azura (Performing Arts)", "阿庫婭 (Performing Arts)"),
@@ -515,6 +516,7 @@ enum class Name(val jp: String, val us: String, val tw: String) {
     Daylight("陽影", "Daylight", "黎明"),
     Aegis("聖盾", "Aegis", "聖盾"),
     Aether("天空", "Aether", "天空"),
+    RadiantAether("蒼の天空", "Radiant Aether", "蒼藍天空"),
     Astra("流星", "Astra", "流星"),
     BlackLuna("黒の月光", "Black Luna", "黒の月光"),
     BlazingFlame("烈火", "Blazing Flame", "烈火"),
@@ -614,6 +616,7 @@ enum class Name(val jp: String, val us: String, val tw: String) {
     SwiftStrike("飛燕明鏡の一撃", "Swift Strike", "飛燕明鏡擊"),
     TriangleAdept("相性激化", "Triangle Adept", "強化互克"),
     WardingBlow("明鏡の一撃", "Warding Blow", "明鏡一撃"),
+    WardingBreath("明鏡の呼吸", "Warding Breath", "明鏡の呼吸*"),
     WardingStance("明鏡の構え", "Warding Stance", "明鏡架勢"),
     WaterBoost("生命の静水", "Water Boost", "生命的靜水"),
     WindBoost("生命の疾風", "Wind Boost", "生命的疾風"),
@@ -755,6 +758,8 @@ enum class Name(val jp: String, val us: String, val tw: String) {
     SpecialDamage("奥義ダメージ＋10", "SpecialDamage", "奥義傷害+10"),
     Follow("追従", "Follow", "可移動至周圍2格"),
     MagicSuppression("魔法は反撃不能", "MagicSuppression", "魔法無法反擊"),
+    AntiRangedWeapon("遠距離武器に対し攻撃+6", "Atk+6 if foe uses ranged weapon", "Atk+6 if foe uses ranged weapon"),
+    BondFlyingAlly("飛行の味方がいる時攻撃魔防+5", "Atk/Res+5 with flying ally", "Atk/Res+5 with flying ally"),
     Nullify("特効対象の強化の+を無効にする", "Nullifies foe's bonuses", "抵鋿敵人的＋強化狀態"),
 
     スリーズ("スリーズ","Gunnthrá","斯利茲"),
@@ -764,14 +769,15 @@ enum class Name(val jp: String, val us: String, val tw: String) {
     カムイ__正月_("カムイ（正月）","Corrin (Happy New Year!)","神威 (Happy New Year!)"),
 
     Blizzard("ブリザード","Blizzard","暴風雪"),
-    ChillingSeal("冰の封印","Chilling Seal",""),
+    ChillingSeal("冰の封印","Chilling Seal","Chilling Seal"),
     EarthDance("大地の舞","EarthDance","大地之舞"),
     SpdDefBond("速さ守備の絆","Spd Def Bond","速度防守的羈絆"),
-    Hagoita("羽子板","Hagoita","Hagoita"),
-    Hagoita2("羽子板＋","Hagoita+","Hagoita+"),
-    Kadomatsu("門松","Kadomatsu","Kadomatsu"),
-    Kadomatsu2("門松＋","Kadomatsu+","Kadomatsu+"),
-    KagamiMochi("鏡餅","Kagami Mochi","Kagami Mochi"),
+    Hagoita("羽子板","Hagoita","羽子板"),
+    Hagoita2("羽子板＋","Hagoita+","羽子板＋"),
+    Kadomatsu("門松","Kadomatsu","門松"),
+    Kadomatsu2("門松＋","Kadomatsu+","門松＋"),
+    KagamiMochi("鏡餅","Kagami Mochi","鏡餅麻糬"),
+    KagamiMochi2("鏡餅＋","Kagami Mochi+","鏡餅麻糬＋"),
     エイリーク__追憶_("エイリーク（追憶）","Eirika (Sacred Memories)","艾莉可 (Sacred Memories)"),
 
     ラーチェル("ラーチェル","L'Arachel","拉切爾"),
@@ -780,12 +786,11 @@ enum class Name(val jp: String, val us: String, val tw: String) {
 
     リオン("リオン","Lyon","利昂"),
 
-    Gleipnir("グレイプニル","Gleipnir","Gleipnir"),
-    Ivaldi("イヴァルディ","Ivaldi","Ivaldi"),
-    GreatFlame("神炎","GreatFlame","GreatFlame"),
-    Naglfar("ナグルファル","Naglfar","Naglfar"),
+    Gleipnir("グレイプニル","Gleipnir","格萊普尼爾"),
+    Ivaldi("イヴァルディ","Ivaldi","伊瓦爾蒂"),
+    GreatFlame("神炎","GreatFlame","神炎吐息"),
+    Naglfar("ナグルファル","Naglfar","納吉爾法"),
 
-    KagamiMochi2("鏡餅＋","Kagami Mochi+","Kagami Mochi+"),
 
 
 

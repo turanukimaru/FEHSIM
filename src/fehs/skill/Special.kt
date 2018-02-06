@@ -111,6 +111,16 @@ enum class Special(override val jp: Name, override val type: SkillType, override
             return damage
         }
     },
+    RadiantAether(Name.RadiantAether, SkillType.SPECIAL_A, 4) {
+        override fun damage(battleUnit: BattleUnit, target: BattleUnit, results: List<AttackResult>, skill: Skill?): Pair<Int, Skill?>
+                = Pair(battleUnit.halfByStaff(target.preventByDefResTerrain(battleUnit.colorAttack(), battleUnit.armedHero.baseHero.weapon.type, 50))
+                , this)
+
+        override fun absorb(battleUnit: BattleUnit, target: BattleUnit, damage: Int): Int {
+            battleUnit.heal(damage * 5 / 10)
+            return damage
+        }
+    },
     NewMoon(Name.NewMoon, SkillType.SPECIAL_A, 3) {
         override fun damage(battleUnit: BattleUnit, target: BattleUnit, results: List<AttackResult>, skill: Skill?): Pair<Int, Skill?>
                 = Pair(battleUnit.halfByStaff(target.preventByDefResTerrain(battleUnit.colorAttack(), battleUnit.armedHero.baseHero.weapon.type, 30))
