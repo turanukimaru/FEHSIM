@@ -32,7 +32,6 @@ enum class WeaponType(val range: Int, val isMaterial: Boolean, val sortOrder: In
     }
 
 }
-
 /**
  * 移動タイプ
  */
@@ -120,7 +119,14 @@ enum class EffectiveAgainst {
     }
 }
 
-enum class SkillType(val jp: String, val weaponType: WeaponType? = null) {
+object PreventType{
+    val materialPrevent:(BattleUnit) -> Int= {battleUnit->battleUnit.effectedDef}
+    val magicPrevent:(BattleUnit) -> Int= {battleUnit->battleUnit.effectedRes}
+    val dragonPrevent:(BattleUnit) -> Int= {battleUnit->if(battleUnit.effectiveRange != 2) battleUnit.effectedRes else if(battleUnit.effectedDef < battleUnit.effectedRes) battleUnit.effectedDef else battleUnit.effectedRes}
+    val feliciaPrevent:(BattleUnit) -> Int= {battleUnit->if(battleUnit.effectedDef < battleUnit.effectedRes) battleUnit.effectedDef else battleUnit.effectedRes}
+}
+
+enum class SkillType(val jp: String, val weaponType: WeaponType? = null,val prevent:(BattleUnit) -> Int=PreventType.materialPrevent) {
     NONE(""),
     A(""),
     B(""),
@@ -129,13 +135,14 @@ enum class SkillType(val jp: String, val weaponType: WeaponType? = null) {
     LANCE("槍", WeaponType.LANCE),
     AXE("斧", WeaponType.AXE),
     DRAGON("竜", WeaponType.DRAGON),
-    REFINED_DRAGON("竜", WeaponType.DRAGON),
-    RTOME("赤魔", WeaponType.RTOME),
-    BTOME("青魔", WeaponType.BTOME),
-    GTOME("緑魔", WeaponType.GTOME),
+    PENETRATE_DRAGON("竜", WeaponType.DRAGON, PreventType.dragonPrevent),
+    PENETRATE_DAGGER("竜", WeaponType.DRAGON, PreventType.feliciaPrevent),
+    RTOME("赤魔", WeaponType.RTOME,PreventType.magicPrevent),
+    BTOME("青魔", WeaponType.BTOME,PreventType.magicPrevent),
+    GTOME("緑魔", WeaponType.GTOME,PreventType.magicPrevent),
     BOW("弓", WeaponType.BOW),
     DAGGER("暗器", WeaponType.DAGGER),
-    STAFF("杖", WeaponType.STAFF),
+    STAFF("杖", WeaponType.STAFF,PreventType.magicPrevent),
     ASSIST(""),
     SPECIAL_A(""),
     SPECIAL_B(""),
@@ -144,6 +151,5 @@ enum class SkillType(val jp: String, val weaponType: WeaponType? = null) {
     SEAL(""),
     REFINERY("")
     ;
-
     val isWeapon get() = weaponType != null
 }

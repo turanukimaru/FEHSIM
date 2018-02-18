@@ -6,7 +6,7 @@ import jp.blogspot.turanukimaru.fehs.*
  * スキル。B
  */
 enum class SkillB(override val jp: Name, override val type: SkillType, override val level: Int = 0, override val preSkill: Skill = Skill.Companion.NONE, override val maxLevel: Int = 3) : Skill {
-    SwordBreaker(Name. SwordBreaker, SkillType.B) {
+    SwordBreaker(Name.SwordBreaker, SkillType.B) {
         override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = weaponBreaker(battleUnit, WeaponType.SWORD, lv)
     },
     LanceBreaker(Name.LanceBreaker, SkillType.B) {
@@ -106,7 +106,9 @@ enum class SkillB(override val jp: Name, override val type: SkillType, override 
             return battleUnit
         }
     },
-    Wrath(Name.Wrath, SkillType.B),
+    Wrath(Name.Wrath, SkillType.B) {
+        override fun specialTriggered(battleUnit: BattleUnit, damage: Int, lv: Int): Int = wrath(battleUnit, damage, lv * 25)
+    },
     FlierFormation(Name.FlierFormation, SkillType.B),
     BlazeDance(Name.BlazeDance, SkillType.B),
     GaleDance(Name.GaleDance, SkillType.B),
@@ -155,10 +157,15 @@ enum class SkillB(override val jp: Name, override val type: SkillType, override 
      */
     override val value get() = name
 
- //   override fun localeName(locale: Locale): String=jp.localeName(locale)
+    //   override fun localeName(locale: Locale): String=jp.localeName(locale)
 
     companion object {
-        fun spreadItems(none: Boolean = false): List<Skill> = values().fold(if (none) arrayListOf<Skill>(Skill.NONE) else arrayListOf(), { list, e -> if(e.maxLevel == 0){list.add(e)} else (1..e.maxLevel).forEach({ i -> list.add(e.lv(i)) });list })
+        fun spreadItems(none: Boolean = false): List<Skill> = values().fold(if (none) arrayListOf<Skill>(Skill.NONE) else arrayListOf(), { list, e ->
+            if (e.maxLevel == 0) {
+                list.add(e)
+            } else (1..e.maxLevel).forEach({ i -> list.add(e.lv(i)) });list
+        })
+
         private val itemMap = mutableMapOf<String, SkillB>()
 
         fun valueOfOrNONE(key: String?): Skill = if (key == null) Skill.NONE

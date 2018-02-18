@@ -294,8 +294,8 @@ data class BattleUnit(val armedHero: ArmedHero
         return Skill.NONE.damage(this, target, results, null)
     }
 
-    fun effectedPrevent(weaponType: SkillType) = if (weaponType == SkillType.REFINED_DRAGON && armedHero.baseHero.weaponType.range == 2) if (effectedDef < effectedRes) effectedDef else effectedRes
-    else if (weaponType.weaponType!!.isMaterial) effectedDef else effectedRes
+    //相手の武器に合わせてこちらの守備・魔防で軽減
+    fun effectedPrevent(weaponType: SkillType) = weaponType.prevent(this)
 
     fun halfByStaff(damage: Int): Int = damage - if (armedHero.baseHero.weaponType == WeaponType.STAFF && !wrathfulStaff) damage / 2 else 0
     /**

@@ -51,6 +51,7 @@ enum class SkillC(override val jp: Name, override val type: SkillType, override 
     SwordValor(Name.SwordValor   , SkillType.C),
     LanceValor(Name.LanceValor   , SkillType.C),
     AxeValor(Name.  AxeValor , SkillType.C),
+    BowValor(Name.  BowValor , SkillType.C),
     DaggerValor(Name.  DaggerValor , SkillType.C),
     RTomeValor(Name.  RTomeValor , SkillType.C),
     RTomeExperience(Name.RTomeExperience , SkillType.C),

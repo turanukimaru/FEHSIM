@@ -108,8 +108,8 @@ enum class RefineSkill(override val jp: Name, val hp: Int, val atk: Int, val spd
 
     SmokeDagger2(Name.SmokeDagger2, 0, 3, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.SmokeDagger2, 9, SkillType.DAGGER),
     RogueDagger2(Name.RogueDagger2, 0, 5, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.Gronnowl2, 6, SkillType.DAGGER),
-    Flametongue2(Name.Flametongue2, 0, 1, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.Flametongue2, 15, SkillType.REFINED_DRAGON),
-    LightBreath2(Name.LightBreath2, 0, 1, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.LightBreath2, 13, SkillType.REFINED_DRAGON),
+    Flametongue2(Name.Flametongue2, 0, 1, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.Flametongue2, 15, SkillType.PENETRATE_DRAGON),
+    LightBreath2(Name.LightBreath2, 0, 1, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.LightBreath2, 13, SkillType.PENETRATE_DRAGON),
 
     CarrotLance2(Name.CarrotLance2, 0, 1, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.CarrotLance2, 13, SkillType.LANCE) {
         override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = attackHeal(battleUnit, 4)
@@ -125,24 +125,49 @@ enum class RefineSkill(override val jp: Name, val hp: Int, val atk: Int, val spd
     },
     DancersFan2(Name.DancersFan2, 0, 2, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.DancersFan2, 10, SkillType.DAGGER),
 
-    LightningBreath2(Name.LightningBreath2, 0, 1, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.LightningBreath2, 11, SkillType.REFINED_DRAGON) {
+    LightningBreath2(Name.LightningBreath2, 0, 1, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.LightningBreath2, 11, SkillType.PENETRATE_DRAGON) {
         override fun equip(armedHero: ArmedHero, level: Int): ArmedHero = equipBlade(armedHero, level)
         override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = counterAllRange(battleUnit)
     },
-    DarkBreath2(Name.DarkBreath2, 0, 1, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.DarkBreath2, 13, SkillType.REFINED_DRAGON),
+    DarkBreath2(Name.DarkBreath2, 0, 1, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.DarkBreath2, 13, SkillType.PENETRATE_DRAGON),
     BerkutsLance2(Name.BerkutsLance2, 0, 1, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.BerkutsLance2, 16, SkillType.LANCE) {
         override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = blowRes(battleUnit, 4)
     },
-    GuardBow2(Name.GuardBow2, 0, 1, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.AssassinsBow2, 11, SkillType.BOW) {
-        override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = distantDef(battleUnit, 6)
-    },
+    //錬成時じゃなくてグレードアップする奴だから錬成枠から外す。今頃開発側もルールが統一できなくて焦ってるに違いない
+//    GuardBow2(Name.GuardBow2, 0, 1, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.AssassinsBow2, 11, SkillType.BOW) {
+//        override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = distantDef(battleUnit, 6)
+//    },
     DeathlyDagger(Name.DeathlyDagger, 0, 3, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.DeathlyDagger, 11, SkillType.DAGGER) {
         override fun attackEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = attackPain(battleUnit, 10)
     },
     Parthia(Name.Parthia, 0, 0, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.Parthia, 14, SkillType.BOW) {
         override fun prevent(battleUnit: BattleUnit, damage: Int, results: List<AttackResult>, lv: Int): Int =
                 if (battleUnit.enemy!!.armedHero.isMagicWeapon()
-                && (!results.any{r-> r.side != battleUnit.side})) damage - damage * 3 / 10 else damage
+                        && (!results.any { r -> r.side != battleUnit.side })) damage - damage * 3 / 10 else damage
+    },
+
+    FalchionM(Name.AtkSpdDefRes2ToAllies, 3, 0, 0, 0, 0, RefineType.DependWeapon, Weapon.FalchionM) {
+        override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = effectiveAgainst(WeaponType.DRAGON, battleUnit)
+    },
+    FalchionA(Name.doubleAttack, 3, 0, 0, 0, 0, RefineType.DependWeapon, Weapon.FalchionA) {
+        override fun attackEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = if (battleUnit.hp == battleUnit.armedHero.maxHp) doubleAttack(battleUnit) else battleUnit
+        override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = effectiveAgainst(WeaponType.DRAGON, battleUnit)
+    },
+    FalchionC(Name.AtkSpdDefRes4, 3, 0, 0, 0, 0, RefineType.DependWeapon, Weapon.FalchionC) {
+        override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = effectiveAgainst(WeaponType.DRAGON, if (battleUnit.adjacentUnits > 0) allBonus(battleUnit, 4) else battleUnit)
+    },
+    WingSword(Name.WingSword, 3, 0, 0, 0, 0, RefineType.DependWeapon, Weapon.WingSword) {
+        override fun effectedAttackEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = flashingBlade(battleUnit, 1)
+        override fun effectedCounterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = flashingBlade(battleUnit, 1)
+    },
+    HinokasSpear(Name.HinokasSpear, 3, 0, 0, 0, 0, RefineType.DependWeapon, Weapon.HinokasSpear) {
+        override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = if (battleUnit.adjacentUnits > 0) blowAtk(blowSpd(battleUnit, 4), 4) else battleUnit
+    },
+    Basilikos(Name.Basilikos, 3, 0, 0, 0, 0, RefineType.DependWeapon, Weapon.Basilikos) {
+        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = lifeAndDeath(equipKiller(armedHero, lv), lv + 2)
+    },
+    FeliciasPlate(Name.FeliciasBlade, 0, 0, 0, 0, 0, RefineType.DependWeapon, Weapon.FeliciasPlate) {
+        override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = feliciasBlade(battleUnit)
     },
     ;
 
@@ -156,6 +181,17 @@ enum class RefineSkill(override val jp: Name, val hp: Int, val atk: Int, val spd
         equipRes(armedHero, res)
         return super.equipBlade(armedHero, level)
     }
+
+    override fun equipKiller(armedHero: ArmedHero, level: Int): ArmedHero {
+        //println("$jp hp:$hp")
+        equipHp(armedHero, hp)
+        equipAtk(armedHero, atk)
+        equipSpd(armedHero, spd)
+        equipDef(armedHero, def)
+        equipRes(armedHero, res)
+        return super.equipKiller(armedHero, level)
+    }
+
 
     override fun equip(armedHero: ArmedHero, level: Int): ArmedHero {
         //println("$jp hp:$hp")

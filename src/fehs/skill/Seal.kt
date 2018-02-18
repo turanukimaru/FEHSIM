@@ -46,6 +46,9 @@ enum class Seal(override val jp: Name, override val type: SkillType, override va
     DistantDef( Name.DistantDef  , SkillType.SEAL) {
         override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = distantDef(battleUnit, lv * 2)
     },
+    FortressRes(Name.FortressRes, SkillType.SEAL) {
+        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipAtk(equipRes(armedHero, lv + 2), -3)
+    },
     BrashAssault( Name.BrashAssault  , SkillType.SEAL) {
         override fun attackEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = brashAssault(battleUnit, lv)
     },
@@ -124,7 +127,10 @@ enum class Seal(override val jp: Name, override val type: SkillType, override va
     HoneSpd( Name.HoneSpd  , SkillType.SEAL),
     IotesShield( Name.IotesShield  , SkillType.SEAL),
     SavageBlow(Name. SavageBlow  , SkillType.SEAL),
+    ThreatenAtk(Name. ThreatenAtk  , SkillType.SEAL),
     ThreatenSpd(Name. ThreatenSpd  , SkillType.SEAL),
+
+    ArmoredBoots(Name. ArmoredBoots  , SkillType.SEAL),
     ;
 
 

@@ -496,6 +496,13 @@ interface Skill {
     }
 
 
+    fun antiRangedWeaponBuffBonus(battleUnit: BattleUnit): BattleUnit {
+        if (battleUnit.enemy!!.armedHero.baseHero.weaponType.range == 2) {
+            battleUnit.enemy!!.antiBuffBonus = true
+        }
+        return battleUnit
+    }
+
     fun heavyBlade(battleUnit: BattleUnit, lv: Int): BattleUnit {
         if (battleUnit.effectedAtk - battleUnit.enemy!!.effectedAtk > lv) {
             battleUnit.accelerateAttackCooldown = 1
@@ -506,6 +513,15 @@ interface Skill {
     fun flashingBlade(battleUnit: BattleUnit, lv: Int): BattleUnit {
         if (battleUnit.effectedPhantomSpd - battleUnit.enemy!!.effectedPhantomSpd > lv) {
             battleUnit.accelerateAttackCooldown = 1
+        }
+        return battleUnit
+    }
+
+    fun feliciasBlade(battleUnit: BattleUnit): BattleUnit {
+        if (battleUnit.enemy!!.armedHero.isMagicWeapon()) {
+            //攻撃で儲けでも加速
+            battleUnit.accelerateAttackCooldown = 1
+            battleUnit.accelerateTargetCooldown = 1
         }
         return battleUnit
     }
@@ -577,5 +593,6 @@ interface Skill {
         return battleUnit
     }
 
+    fun wrath(battleUnit: BattleUnit, damage: Int, percentile: Int): Int = if (battleUnit.hp * 100 <= battleUnit.armedHero.maxHp * percentile) damage + 10 else damage
 
 }

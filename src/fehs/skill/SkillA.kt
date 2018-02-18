@@ -36,11 +36,14 @@ enum class SkillA(override val jp: Name, override val type: SkillType, override 
     Defense(Name.Defense, SkillType.A) {
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipDef(armedHero, lv)
     },
+    HpAtk(Name.HpAtk, SkillType.A, maxLevel = 2) {
+        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipHp(equipAtk(armedHero, lv), lv+2)
+    },
     AtkDef(Name.AtkDef, SkillType.A, maxLevel = 2) {
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipDef(equipAtk(armedHero, lv), lv)
     },
     HpDef(Name.HpDef, SkillType.A, maxLevel = 2) {
-        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipDef(equipHp(armedHero, lv + 2), lv)
+        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipHp(equipDef(armedHero, lv), lv+2)
     },
     Resistance(Name.Resistance, SkillType.A) {
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipRes(armedHero, lv)
@@ -179,6 +182,9 @@ enum class SkillA(override val jp: Name, override val type: SkillType, override 
     GranisShield(Name.GranisShield, SkillType.A, maxLevel = 0) {
         override fun effectedAttackEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = antiEffectiveAgainst(battleUnit, EffectiveAgainst.CAVALRY)
         override fun effectedCounterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = antiEffectiveAgainst(battleUnit, EffectiveAgainst.CAVALRY)
+    },
+    AtkSpdBond(Name.AtkSpdBond, SkillType.A) {
+        override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = if (battleUnit.adjacentUnits > 0) blowAtk(blowSpd(battleUnit, lv + 2), lv + 2) else battleUnit
     },
     AtkDefBond(Name.AtkDefBond, SkillType.A) {
         override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = if (battleUnit.adjacentUnits > 0) blowAtk(blowDef(battleUnit, lv + 2), lv + 2) else battleUnit
