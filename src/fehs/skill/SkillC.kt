@@ -16,6 +16,7 @@ enum class SkillC(override val jp: Name, override val type: SkillType, override 
     SpurRes(Name.  SpurRes , SkillType.C),
     SpurDefRes(Name.  SpurDefRes , SkillType.C, maxLevel = 2),
     SpurSpdDef(Name.  SpurSpdDef , SkillType.C, maxLevel = 2),
+    SpurAtkSpd(Name.  SpurAtkSpd , SkillType.C, maxLevel = 2),
     ThreatenAtk(Name. ThreatenAtk  , SkillType.C),
     ThreatenSpd(Name.  ThreatenSpd , SkillType.C),
     ThreatenDef(Name. ThreatenDef  , SkillType.C),

@@ -469,6 +469,7 @@ enum class Weapon(override val jp: Name, override val type: SkillType, override 
     KagamiMochi2(Name.KagamiMochi2, SkillType.DAGGER, 12, KagamiMochi, RefineSkill.RefineType.Range2),
     FeliciasPlate(Name.FeliciasPlate, SkillType.PENETRATE_DAGGER, 14, SilverDagger2, RefineSkill.RefineType.Range2),
 
+    Peshkatz(Name.Peshkatz, SkillType.DAGGER, 14, SilverDagger),
     Assault(Name.Assault, SkillType.STAFF, 10),
     Absorb(Name.Absorb, SkillType.STAFF, 4, Assault) {
         override fun absorb(battleUnit: BattleUnit, target: BattleUnit, damage: Int): Int = battleUnit.heal(damage * 5 / 10)
@@ -527,9 +528,9 @@ enum class Weapon(override val jp: Name, override val type: SkillType, override 
         override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = allBonus(battleUnit, battleUnit.adjacentUnits * 2)
     },
     Fenrir(Name.Fenrir, SkillType.RTOME, 9, Elfire),
-    Fenrir2(Name.Fenrir2, SkillType.RTOME, 14, Fenrir, RefineSkill.RefineType.Range2),
+    Fenrir2(Name.Fenrir2, SkillType.RTOME, 13, Fenrir, RefineSkill.RefineType.Range2),
     Bolganone(Name.Bolganone, SkillType.RTOME, 9, Elfire),
-    Bolganone2(Name.Bolganone2, SkillType.RTOME, 14, Bolganone, RefineSkill.RefineType.Range2),
+    Bolganone2(Name.Bolganone2, SkillType.RTOME, 13, Bolganone, RefineSkill.RefineType.Range2),
     TomatoTome(Name.TomatoTome, SkillType.RTOME, 8, Elfire),
     TomatoTome2(Name.TomatoTome2, SkillType.RTOME, 12, TomatoTome, RefineSkill.RefineType.Range2),
     Brynhildr(Name.Brynhildr, SkillType.RTOME, 14, Bolganone),
@@ -607,6 +608,14 @@ enum class Weapon(override val jp: Name, override val type: SkillType, override 
     WeirdingTome(Name.WeirdingTome, SkillType.BTOME, 14, Thoron) {
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = super.equip(equipSpd(armedHero, 3), lv)
     },
+    Thani (Name.Thani, SkillType.BTOME, 14, Thoron) {
+        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = super.equip(equipRes(armedHero, 3), lv)
+        override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = effectiveAgainst(MoveType.ARMORED, effectiveAgainst(MoveType.CAVALRY, battleUnit))
+        override fun prevent(battleUnit: BattleUnit, damage: Int, results: List<AttackResult>, lv: Int): Int =
+                if ((battleUnit.enemy!!.armedHero.baseHero.moveType == MoveType.ARMORED || battleUnit.enemy!!.armedHero.baseHero.moveType == MoveType.CAVALRY)
+                        && battleUnit.enemy!!.armedHero.effectiveRange == 2
+                        && (!results.any { r -> r.side != battleUnit.side })) damage - damage * 3 / 10 else damage
+    },
     Ivaldi(Name.Ivaldi, SkillType.BTOME, 14, Thoron) {
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = super.equip(equipDef(armedHero, 3), lv)
         override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = enemyFullHpBonus(battleUnit, 3)
@@ -621,7 +630,7 @@ enum class Weapon(override val jp: Name, override val type: SkillType, override 
     Wind(Name.Wind, SkillType.GTOME, 4),
     Elwind(Name.Elwind, SkillType.GTOME, 6, Wind),
     Rexcalibur(Name.Rexcalibur, SkillType.GTOME, 9, Elwind),
-    Rexcalibur2(Name.Rexcalibur2, SkillType.GTOME, 14, Rexcalibur, RefineSkill.RefineType.Range2),
+    Rexcalibur2(Name.Rexcalibur2, SkillType.GTOME, 13, Rexcalibur, RefineSkill.RefineType.Range2),
     Gronnwolf(Name.Gronnwolf, SkillType.GTOME, 6, Elwind) {
         override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = effectiveAgainst(MoveType.CAVALRY, battleUnit)
     },
@@ -678,6 +687,7 @@ enum class Weapon(override val jp: Name, override val type: SkillType, override 
     SpectralTome(Name.SpectralTome, SkillType.GTOME, 8, Elwind),
     SpectralTome2(Name.SpectralTome2, SkillType.GTOME, 12, SpectralTome, RefineSkill.RefineType.Range2),
     Blizzard(Name.Blizzard, SkillType.GTOME, 14, Rexcalibur) {
+        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = super.equip(equipRes(armedHero, 3), lv)
         override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = debuffBonus(battleUnit)
     },
     GreenGift(Name.GreenGift, SkillType.GTOME, 8, Elwind) {

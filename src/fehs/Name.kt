@@ -827,6 +827,16 @@ enum class Name(val jp: String, val us: String, val tw: String) {
     Basilikos("バシリコス","Basilikos","Basilikos"),
     WingSword("ウィングソード","Wing Sword","Wing Sword"),
     FeliciasPlate("フェリシアの氷皿","Felicia's Plate","Felicia's Plate"),
+
+    __ゼルギウス_("ゼルギウス","Zelgius","塞爾吉烏斯"),
+    __ミカヤ_("ミカヤ","Micaiah","米卡雅"),
+    __サザ_("サザ","Sothe","薩札"),
+    WarpPowder("転移の粉","WarpPowder","轉移粉末"),
+    Thani("セイニー","Thani","賽尼"),
+    Sacrifice("癒しの手","Sacrifice","治癒之手"),
+    Peshkatz("ペシュカド","Peshkatz","佩修卡特"),
+    SpurAtkSpd("攻撃速さの紋章","Spur Atk Spd","攻擊速度紋章"),
+
     FeliciasBlade("奥義カウント+1","Special cooldown charge +1 if foe uses magic","Special cooldown charge +1 if foe uses magic"),
     ;
 

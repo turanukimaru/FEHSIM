@@ -36,6 +36,7 @@ enum class Assist(override val jp: Name, override val type: SkillType, override 
     Pivot(Name.Pivot, SkillType.ASSIST),
     Reposition(Name.Reposition, SkillType.ASSIST),
     DrawBack(Name.DrawBack, SkillType.ASSIST),
+    Sacrifice(Name.Shove, SkillType.ASSIST),
     Shove(Name.Shove, SkillType.ASSIST),
     Smite(Name.Smite, SkillType.ASSIST),
     HarshCommand(Name.HarshCommand, SkillType.ASSIST),

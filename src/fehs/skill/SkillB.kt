@@ -142,6 +142,7 @@ enum class SkillB(override val jp: Name, override val type: SkillType, override 
         override fun attackEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = attackPain(battleUnit, lv * 3 + 1)
     },
 
+    WarpPowder(Name.WarpPowder, SkillType.B),
     ChillingSeal(Name.ChillingSeal, SkillType.B),
 
     ;

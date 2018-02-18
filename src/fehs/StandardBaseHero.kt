@@ -431,7 +431,7 @@ object StandardBaseHero {
                 Weapon.Candelabra2, null, Special.Iceberg, SkillA.CloseCounter, SkillB.VengefulFighter.lv(3), SkillC.RTomeValor.lv(3))
 
         createItem(Name.スリーズ, 3, WeaponType.GTOME, MoveType.CAVALRY,  5, 15, 7, 9, 6, 6, 6, 7, 7, 2, 5,
-                Weapon.Blizzard, null, Special.Glacies, SkillA.FortressRes, SkillB.ChillingSeal, SkillC.ResPloy.lv(3))
+                Weapon.Blizzard, null, Special.Glacies, SkillA.FortressRes.lv(3), SkillB.ChillingSeal, SkillC.ResPloy.lv(3))
         createItem(Name.アクア__正月_, 3, WeaponType.AXE, MoveType.FLIER,  5, 15, 6, 9, 5, 4, 6, 7, 8, 4, 6,
                 Weapon.Hagoita2, Assist.Sing, null, Skill.NONE, SkillB.EarthDance.lv(3), SkillC.HoneFliers)
         createItem(Name.カミラ__正月_, 1, WeaponType.SWORD, MoveType.FLIER,  5, 18, 9, 9, 7, 4, 6, 7, 8, 7, 5,
@@ -464,6 +464,12 @@ object StandardBaseHero {
         createItem(Name.エリウッド__バレンタイン_, 2, WeaponType.LANCE, MoveType.ARMORED,  4, 23, 10, 8, 7, 7, 7, 9, 7, 6, 6,
                 Weapon.CasaBlanca2, Assist.RallyAtkDef, null, SkillA.FireBoost.lv(3), Skill.NONE, SkillC.GoadArmor)
 
+        createItem(Name.__ゼルギウス_, 1, WeaponType.SWORD, MoveType.ARMORED,  5, 22, 10, 7, 10, 6, 7, 8, 8, 9, 3,
+                Weapon.Alondite, null, Special.BlackLuna	, SkillA.FierceStance.lv(3), SkillB.WarpPowder, SkillC.PanicPloy.lv(3))
+        createItem(Name.__ミカヤ_, 2, WeaponType.BTOME, MoveType.INFANTRY,  5, 16, 9, 6, 5, 9, 5, 8, 6, 2, 8,
+                Weapon.Thani, Assist.Sacrifice	, null, SkillA.DistantDef.lv(3), SkillB.Guard.lv(3), SkillC.DriveAtk.lv(2))
+        createItem(Name.__サザ_, 0, WeaponType.DAGGER, MoveType.INFANTRY,  4,17, 10, 9, 5, 4, 6, 8, 7, 4, 4,
+                Weapon.Peshkatz	, null, Special.Glimmer, SkillA.LifeAndDeath.lv(3), Skill.NONE, SkillC.SpurAtkSpd.lv(2))
 //        createItem(Name.___, 1, WeaponType., MoveType.,  5, , , , , , , , , , ,
 //                Weapon., Assist., Special., SkillA..lv(), SkillB..lv(), SkillC..lv())
     }
