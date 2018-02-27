@@ -78,7 +78,9 @@ enum class SkillB(override val jp: Name, override val type: SkillType, override 
     Guard(Name.Guard, SkillType.B) {
         override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = antiAccelerateCooldown(battleUnit, lv)
     },
-    ShieldPulse(Name.ShieldPulse, SkillType.B),
+    ShieldPulse(Name.ShieldPulse, SkillType.B) {
+        override fun specialTriggered(battleUnit: BattleUnit, damage: Int, lv: Int): Int = if (battleUnit.armedHero.special.type == SkillType.SPECIAL_C) damage - 5 else damage
+    },
     WrathfulStaff(Name.WrathfulStaff, SkillType.B) {
         override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = wrathfulStaff(battleUnit, lv)
     },
@@ -144,7 +146,7 @@ enum class SkillB(override val jp: Name, override val type: SkillType, override 
 
     WarpPowder(Name.WarpPowder, SkillType.B),
     ChillingSeal(Name.ChillingSeal, SkillType.B),
-
+    ChillSpd(Name.ChillSpd, SkillType.B),
     ;
 
     /**
@@ -175,7 +177,7 @@ enum class SkillB(override val jp: Name, override val type: SkillType, override 
                 if (itemMap.isEmpty()) {
                     values().forEach { e -> itemMap.put(e.value, e);itemMap.put(e.jp.jp, e);itemMap.put(e.jp.us, e);itemMap.put(e.jp.tw, e) }
                 }
-                val regex = " \\d".toRegex()
+                val regex = " \\baseDamage".toRegex()
 
                 val lv = regex.find(key)
                 if (lv != null) {

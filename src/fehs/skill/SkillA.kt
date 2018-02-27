@@ -37,13 +37,13 @@ enum class SkillA(override val jp: Name, override val type: SkillType, override 
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipDef(armedHero, lv)
     },
     HpAtk(Name.HpAtk, SkillType.A, maxLevel = 2) {
-        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipHp(equipAtk(armedHero, lv), lv+2)
+        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipHp(equipAtk(armedHero, lv), lv + 2)
     },
     AtkDef(Name.AtkDef, SkillType.A, maxLevel = 2) {
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipDef(equipAtk(armedHero, lv), lv)
     },
     HpDef(Name.HpDef, SkillType.A, maxLevel = 2) {
-        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipHp(equipDef(armedHero, lv), lv+2)
+        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipHp(equipDef(armedHero, lv), lv + 2)
     },
     Resistance(Name.Resistance, SkillType.A) {
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipRes(armedHero, lv)
@@ -197,12 +197,14 @@ enum class SkillA(override val jp: Name, override val type: SkillType, override 
     },
 
     BrazenAtkDef(Name.BrazenAtkDef, SkillType.A) {
-        override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = brazenDef(brazenAtk(battleUnit, lv * 2 + 1), lv * 2 + 1)
+        override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = brazenAtk(brazenDef(battleUnit, lv * 2 + 1), lv * 2 + 1)
     },
     BrazenAtkSpd(Name.BrazenAtkSpd, SkillType.A) {
-        override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = brazenSpd(brazenAtk(battleUnit, lv * 2 + 1), lv * 2 + 1)
+        override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = brazenAtk(brazenSpd(battleUnit, lv * 2 + 1), lv * 2 + 1)
     },
-
+    BrazenDefRes(Name.BrazenAtkSpd, SkillType.A) {
+        override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = brazenDef(brazenRes(battleUnit, lv * 2 + 1), lv * 2 + 1)
+    },
     ;
 
     /**
@@ -233,7 +235,7 @@ enum class SkillA(override val jp: Name, override val type: SkillType, override 
                 if (itemMap.isEmpty()) {
                     values().forEach { e -> itemMap.put(e.value, e);itemMap.put(e.jp.jp, e);itemMap.put(e.jp.us, e);itemMap.put(e.jp.tw, e) }
                 }
-                val regex = " \\d".toRegex()
+                val regex = " \\baseDamage".toRegex()
 
                 val lv = regex.find(key)
                 if (lv != null) {

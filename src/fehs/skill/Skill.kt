@@ -8,7 +8,7 @@ interface Skill {
     val value: String get() = ""
     val jp: Name get() = Name.NONE
     val maxLevel: Int get() = 0
-
+    val penetrate: Int get() = 0
     // nullオブジェクト。もっといいやり方があればいいのだが
     val preSkill: Skill get() = Skill.NONE
 
@@ -76,12 +76,12 @@ interface Skill {
     /**
      * ほぼ奥義専用。攻撃時のダメージ計算。デフォルトで奥義なしのダメージ
      */
-    fun damage(battleUnit: BattleUnit, target: BattleUnit, results: List<AttackResult>, skill: Skill? = null): Pair<Int, Skill?> {
-        val damage = battleUnit.halfByStaff(target.preventByDefResTerrain(battleUnit.colorAttack() + battleUnit.oneTimeOnlyAdditionalDamage, battleUnit.armedHero.weapon.type))
-        //一回限りの追加ダメージ。氷の聖鏡専用だが今後増えそう※奥義には追加していない（複数の奥義は持てないため）が普通のスキル効果で増えたなら奥義にも追加する必要がある
-        battleUnit.oneTimeOnlyAdditionalDamage = 0
-        return Pair(if (damage > 0) damage else 0, skill)
-    }
+    fun damage(source: BattleUnit, prevent: Int): Int = handmaidMath.max(baseDamage(source) - prevent, 0)
+
+    /**
+     * 基本ダメージ。奥義でダメージを追加するときはここ
+     */
+    fun baseDamage(source: BattleUnit): Int = source.colorAttack()
 
     fun absorb(battleUnit: BattleUnit, target: BattleUnit, damage: Int): Int = damage
 
@@ -108,7 +108,7 @@ interface Skill {
     /**
      * スキルによるダメージ軽減のあとそれをどうするか。氷鏡専用
      */
-    fun reducedDamage(battleUnit: BattleUnit, damage: Int = 0, lv: Int = level): BattleUnit = battleUnit
+    fun preventedDamage(battleUnit: BattleUnit, damage: Int = 0, lv: Int = level): BattleUnit = battleUnit
 
     //ここからスキル効果
 //   試しに作ったけど〇〇の覚醒ってターン開始時効果だから今は要らなかったんじゃ・・・？
@@ -471,6 +471,20 @@ interface Skill {
             battleUnit.spdEffect += 5
             if (battleUnit.side == SIDES.ATTACKER) {
                 battleUnit.hpLossAtEndOfFight += 5
+            }
+
+        }
+        return battleUnit
+    }
+
+    fun fullHpAllBonus(battleUnit: BattleUnit, i: Int): BattleUnit {
+        if (battleUnit.hp == battleUnit.armedHero.maxHp) {
+            battleUnit.atkEffect += i
+            battleUnit.spdEffect += i
+            battleUnit.defEffect += i
+            battleUnit.resEffect += i
+            if (battleUnit.side == SIDES.ATTACKER) {
+                battleUnit.hpLossAtEndOfFight += i
             }
 
         }

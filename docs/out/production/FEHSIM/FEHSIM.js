@@ -284,6 +284,8 @@ var FEHSIM = function (_, Kotlin) {
   SkillA$BrazenAtkDef.prototype.constructor = SkillA$BrazenAtkDef;
   SkillA$BrazenAtkSpd.prototype = Object.create(SkillA.prototype);
   SkillA$BrazenAtkSpd.prototype.constructor = SkillA$BrazenAtkSpd;
+  SkillA$BrazenDefRes.prototype = Object.create(SkillA.prototype);
+  SkillA$BrazenDefRes.prototype.constructor = SkillA$BrazenDefRes;
   SkillB.prototype = Object.create(Enum.prototype);
   SkillB.prototype.constructor = SkillB;
   SkillB$SwordBreaker.prototype = Object.create(SkillB.prototype);
@@ -322,6 +324,8 @@ var FEHSIM = function (_, Kotlin) {
   SkillB$Watersweep.prototype.constructor = SkillB$Watersweep;
   SkillB$Guard.prototype = Object.create(SkillB.prototype);
   SkillB$Guard.prototype.constructor = SkillB$Guard;
+  SkillB$ShieldPulse.prototype = Object.create(SkillB.prototype);
+  SkillB$ShieldPulse.prototype.constructor = SkillB$ShieldPulse;
   SkillB$WrathfulStaff.prototype = Object.create(SkillB.prototype);
   SkillB$WrathfulStaff.prototype.constructor = SkillB$WrathfulStaff;
   SkillB$DazzlingStaff.prototype = Object.create(SkillB.prototype);
@@ -358,8 +362,6 @@ var FEHSIM = function (_, Kotlin) {
   Special$Astra.prototype.constructor = Special$Astra;
   Special$RegnalAstra.prototype = Object.create(Special.prototype);
   Special$RegnalAstra.prototype.constructor = Special$RegnalAstra;
-  Special$Miracle.prototype = Object.create(Special.prototype);
-  Special$Miracle.prototype.constructor = Special$Miracle;
   Special$DraconicAura.prototype = Object.create(Special.prototype);
   Special$DraconicAura.prototype.constructor = Special$DraconicAura;
   Special$DragonGaze.prototype = Object.create(Special.prototype);
@@ -396,6 +398,8 @@ var FEHSIM = function (_, Kotlin) {
   Special$Reprisal.prototype.constructor = Special$Reprisal;
   Special$Vengeance.prototype = Object.create(Special.prototype);
   Special$Vengeance.prototype.constructor = Special$Vengeance;
+  Special$Miracle.prototype = Object.create(Special.prototype);
+  Special$Miracle.prototype.constructor = Special$Miracle;
   Special$HolyVestments.prototype = Object.create(Special.prototype);
   Special$HolyVestments.prototype.constructor = Special$HolyVestments;
   Special$SacredCowl.prototype = Object.create(Special.prototype);
@@ -492,6 +496,8 @@ var FEHSIM = function (_, Kotlin) {
   Weapon$FiresweepSword2.prototype.constructor = Weapon$FiresweepSword2;
   Weapon$WingSword.prototype = Object.create(Weapon.prototype);
   Weapon$WingSword.prototype.constructor = Weapon$WingSword;
+  Weapon$BelovedZofia.prototype = Object.create(Weapon.prototype);
+  Weapon$BelovedZofia.prototype.constructor = Weapon$BelovedZofia;
   Weapon$KillerLance.prototype = Object.create(Weapon.prototype);
   Weapon$KillerLance.prototype.constructor = Weapon$KillerLance;
   Weapon$KillerLance2.prototype = Object.create(Weapon.prototype);
@@ -766,6 +772,8 @@ var FEHSIM = function (_, Kotlin) {
   Weapon$LightningBreath2.prototype.constructor = Weapon$LightningBreath2;
   Weapon$GreatFlame.prototype = Object.create(Weapon.prototype);
   Weapon$GreatFlame.prototype.constructor = Weapon$GreatFlame;
+  Weapon$Expiration.prototype = Object.create(Weapon.prototype);
+  Weapon$Expiration.prototype.constructor = Weapon$Expiration;
   function ArmedHero(baseHero, name, baseWeapon, refinedWeapon, assist, special, aSkill, bSkill, cSkill, seal, rarity, levelBoost, boon, bane, defensiveTerrain, atkBuff, spdBuff, defBuff, resBuff, atkSpur, spdSpur, defSpur, resSpur) {
     if (name === void 0)
       name = '';
@@ -1076,7 +1084,7 @@ var FEHSIM = function (_, Kotlin) {
     tmp$ = this.skills.iterator();
     while (tmp$.hasNext()) {
       var element = tmp$.next();
-      accumulator = element.reducedDamage_upjsjk$(accumulator, damage);
+      accumulator = element.preventedDamage_upjsjk$(accumulator, damage);
     }
     return accumulator;
   };
@@ -1427,9 +1435,9 @@ var FEHSIM = function (_, Kotlin) {
   AttackResult.prototype.details = function () {
     var tmp$, tmp$_0, tmp$_1, tmp$_2, tmp$_3;
     if (equals(this.side, SIDES$ATTACKER_getInstance()))
-      tmp$ = this.source.armedHero.name + ' attacks ' + this.damage + ' damage';
+      tmp$ = this.source.armedHero.name + ' attacks ' + this.damage + ' buildDamage';
     else
-      tmp$ = this.target.armedHero.name + ' attacks ' + this.damage + ' damage';
+      tmp$ = this.target.armedHero.name + ' attacks ' + this.damage + ' buildDamage';
     return tmp$ + (this.sourceSpecial != null || this.targetSpecial != null ? ' wakeup ' + ((tmp$_1 = (tmp$_0 = this.sourceSpecial) != null ? tmp$_0.value : null) != null ? tmp$_1 : '') + ' ' + ((tmp$_3 = (tmp$_2 = this.targetSpecial) != null ? tmp$_2.value : null) != null ? tmp$_3 : '') : '');
   };
   AttackResult.prototype.detailsShort_4ylgoe$ = function (baseSide, locale) {
@@ -1438,7 +1446,7 @@ var FEHSIM = function (_, Kotlin) {
       tmp$ = '\u2193' + this.damage + ' ';
     else
       tmp$ = '\u2191' + this.damage + ' ';
-    return tmp$ + (this.sourceSpecial != null ? '\u2606' + this.sourceSpecial.localeName_miixs2$(locale) + ' ' : '') + (this.targetSpecial != null ? '\u2606' + this.targetSpecial.localeName_miixs2$(locale) + ' ' : '');
+    return tmp$ + (this.sourceSpecial != null && !equals(this.sourceSpecial, Skill$Companion_getInstance().NONE) ? '\u2606' + this.sourceSpecial.localeName_miixs2$(locale) + ' ' : '') + (this.targetSpecial != null && !equals(this.targetSpecial, Skill$Companion_getInstance().NONE) ? '\u2606' + this.targetSpecial.localeName_miixs2$(locale) + ' ' : '');
   };
   AttackResult.$metadata$ = {
     kind: Kind_CLASS,
@@ -1829,10 +1837,6 @@ var FEHSIM = function (_, Kotlin) {
     this.lossHp_za3lpa$(this.hpLossAtEndOfFight);
     this.armedHero.afterFightEffect_trfvk0$(this);
   };
-  BattleUnit.prototype.reducedDamage_za3lpa$ = function (damage) {
-    this.oneTimeOnlyAdditionalDamage = 0;
-    this.armedHero.reducedDamage_sv9jhu$(this, damage);
-  };
   BattleUnit.prototype.fight_trfvk0$ = function (targetUnit) {
     var source = this.copy_90pgao$();
     var target = targetUnit.copy_90pgao$();
@@ -1859,56 +1863,38 @@ var FEHSIM = function (_, Kotlin) {
     return result;
   };
   BattleUnit.prototype.attack_dayeuq$ = function (target, results) {
-    var tmp$, tmp$_0;
-    var damage = this.damage_dayeuq$(target, results);
-    var preventedDamage = target.preventBySkill_hqdydw$(damage.first, results);
-    target.reducedDamage_za3lpa$(damage.first - preventedDamage.first | 0);
-    (tmp$ = damage.second) != null ? tmp$.absorb_6zcyla$(this, target, target.hp > preventedDamage.first ? preventedDamage.first : target.hp) : null;
-    if (target.hp > preventedDamage.first) {
-      tmp$_0 = target.hp - preventedDamage.first | 0;
-    }
-     else {
-      tmp$_0 = 0;
-    }
-    target.hp = tmp$_0;
-    return new AttackResult(this, target, preventedDamage.first, damage.second, preventedDamage.second);
+    var damage = this.buildDamage_nd0i3m$(results);
+    var preventedDamage = damage.deal(target);
+    damage.special.absorb_6zcyla$(this, target, target.hp > preventedDamage.first ? preventedDamage.first : target.hp);
+    return new AttackResult(this, target, preventedDamage.first, damage.special, preventedDamage.second);
   };
-  BattleUnit.prototype.damage_dayeuq$ = function (target, results) {
-    if (this.specialCount === this.armedHero.specialCoolDownTime) {
-      var damage = this.armedHero.special.damage_96237r$(this, target, results);
-      this.specialCount = damage.second != null ? 0 : this.specialCount;
-      var tmp$;
-      if (damage.second != null) {
-        var tmp$_0 = damage.first;
-        var tmp$_1;
-        var accumulator = 0;
-        tmp$_1 = this.armedHero.skills.iterator();
-        while (tmp$_1.hasNext()) {
-          var element = tmp$_1.next();
-          accumulator = element.specialTriggered_upjsjk$(this, accumulator);
-        }
-        tmp$ = new Pair(tmp$_0 + accumulator | 0, damage.second);
+  BattleUnit.prototype.buildDamage_nd0i3m$ = function (results) {
+    if (this.specialCount >= this.armedHero.specialCoolDownTime && this.armedHero.special.type === SkillType$SPECIAL_A_getInstance()) {
+      this.specialCount = 0;
+      var tmp$ = this.armedHero.special;
+      var tmp$_0 = this.armedHero.weapon.type;
+      var tmp$_1;
+      var accumulator = this.oneTimeOnlyAdditionalDamage;
+      tmp$_1 = this.armedHero.skills.iterator();
+      while (tmp$_1.hasNext()) {
+        var element = tmp$_1.next();
+        accumulator = element.specialTriggered_upjsjk$(this, accumulator);
       }
-       else
-        tmp$ = damage;
-      return tmp$;
+      return new Damage(this, tmp$, tmp$_0, accumulator, this.halfByStaff_0, results);
     }
     this.specialCount = this.specialCount + ((this.accelerateAttackCooldown + 1 | 0) > this.InflictCooldown ? this.accelerateAttackCooldown + 1 - this.InflictCooldown | 0 : 0) | 0;
     this.specialCount = this.specialCount > this.armedHero.specialCoolDownTime ? this.armedHero.specialCoolDownTime : this.specialCount;
-    return Skill$Companion_getInstance().NONE.damage_96237r$(this, target, results, null);
+    return new Damage(this, Skill$Companion_getInstance().NONE, this.armedHero.weapon.type, this.oneTimeOnlyAdditionalDamage, this.halfByStaff_0, results);
   };
-  BattleUnit.prototype.effectedPrevent_65ntdl$ = function (weaponType) {
-    return weaponType.prevent(this);
+  Object.defineProperty(BattleUnit.prototype, 'halfByStaff_0', {
+    get: function () {
+      return this.armedHero.baseHero.weaponType === WeaponType$STAFF_getInstance() && !this.wrathfulStaff ? 2 : 1;
+    }
+  });
+  BattleUnit.prototype.preventByDefResTerrain_3isy3r$ = function (weaponType, specialPenetrate) {
+    return (Kotlin.imul(weaponType.prevent(this), this.defensiveTerrain ? 130 : 100) / 100 | 0) - (Kotlin.imul(weaponType.prevent(this), specialPenetrate) / 100 | 0) | 0;
   };
-  BattleUnit.prototype.halfByStaff_za3lpa$ = function (damage) {
-    return damage - (this.armedHero.baseHero.weaponType === WeaponType$STAFF_getInstance() && !this.wrathfulStaff ? damage / 2 | 0 : 0) | 0;
-  };
-  BattleUnit.prototype.preventByDefResTerrain_yqyiwh$ = function (damage, weaponType, mitModPercent) {
-    if (mitModPercent === void 0)
-      mitModPercent = 0;
-    return damage - (Kotlin.imul(this.effectedPrevent_65ntdl$(weaponType), this.defensiveTerrain ? 130 : 100) / 100 | 0) + (Kotlin.imul(this.effectedPrevent_65ntdl$(weaponType), mitModPercent) / 100 | 0) | 0;
-  };
-  BattleUnit.prototype.preventBySkill_hqdydw$ = function (damage, results) {
+  BattleUnit.prototype.damaged_hqdydw$ = function (damage, results) {
     var tmp$;
     var accumulator = damage;
     tmp$ = this.armedHero.skills.iterator();
@@ -1917,14 +1903,42 @@ var FEHSIM = function (_, Kotlin) {
       accumulator = element.prevent_w6mj9q$(this, accumulator, results);
     }
     var prevented = accumulator;
+    this.oneTimeOnlyAdditionalDamage = 0;
+    this.armedHero.reducedDamage_sv9jhu$(this, damage - prevented | 0);
     if (this.specialCount === this.armedHero.specialCoolDownTime) {
-      var specialPrevented = this.armedHero.special.specialPrevent_upjsjk$(this, prevented);
+      var tmp$_0 = this.armedHero.special;
+      var tmp$_1;
+      var accumulator_0 = 0;
+      tmp$_1 = this.armedHero.skills.iterator();
+      while (tmp$_1.hasNext()) {
+        var element_0 = tmp$_1.next();
+        accumulator_0 = element_0.specialTriggered_upjsjk$(this, accumulator_0);
+      }
+      var specialPrevented = tmp$_0.specialPrevent_upjsjk$(this, prevented, accumulator_0);
       this.specialCount = specialPrevented.second != null ? 0 : this.specialCount;
+      this.damageToHp_0(specialPrevented.first);
+      var tmp$_2;
+      tmp$_2 = this.armedHero.skills.iterator();
+      while (tmp$_2.hasNext()) {
+        var element_1 = tmp$_2.next();
+        element_1.preventedDamage_upjsjk$(this, prevented - specialPrevented.first | 0);
+      }
       return specialPrevented;
     }
     this.specialCount = this.specialCount + ((this.accelerateTargetCooldown + 1 | 0) > this.InflictCooldown ? this.accelerateTargetCooldown + 1 - this.InflictCooldown | 0 : 0) | 0;
     this.specialCount = this.specialCount > this.armedHero.specialCoolDownTime ? this.armedHero.specialCoolDownTime : this.specialCount;
+    this.damageToHp_0(prevented);
     return new Pair(prevented, null);
+  };
+  BattleUnit.prototype.damageToHp_0 = function (damage) {
+    var tmp$;
+    if (this.hp > damage) {
+      tmp$ = this.hp - damage | 0;
+    }
+     else {
+      tmp$ = 0;
+    }
+    this.hp = tmp$;
   };
   BattleUnit.prototype.colorAdvantage = function () {
     var colorDiff = ensureNotNull(this.enemy).armedHero.baseHero.color - this.armedHero.baseHero.color | 0;
@@ -3034,6 +3048,24 @@ var FEHSIM = function (_, Kotlin) {
     }
   }
   Locale.valueOf_61zpoe$ = Locale$valueOf;
+  function handmaidMath() {
+    handmaidMath_instance = this;
+  }
+  handmaidMath.prototype.max_vux9f0$ = function (x, y) {
+    return x > y ? x : y;
+  };
+  handmaidMath.$metadata$ = {
+    kind: Kind_OBJECT,
+    simpleName: 'handmaidMath',
+    interfaces: []
+  };
+  var handmaidMath_instance = null;
+  function handmaidMath_getInstance() {
+    if (handmaidMath_instance === null) {
+      new handmaidMath();
+    }
+    return handmaidMath_instance;
+  }
   function ModelObjectRepository() {
   }
   ModelObjectRepository.$metadata$ = {
@@ -3621,8 +3653,8 @@ var FEHSIM = function (_, Kotlin) {
     Name$AtkSpd_instance = new Name('AtkSpd', 566, '\u653B\u6483\u901F\u3055', 'Atk Spd', '\u653B\u64CA\u901F\u5EA6');
     Name$Attack_instance = new Name('Attack', 567, '\u653B\u6483', 'Attack', '\u653B\u64CA');
     Name$BracingBlow_instance = new Name('BracingBlow', 568, '\u91D1\u525B\u660E\u93E1\u306E\u4E00\u6483', 'Bracing Blow', '\u91D1\u525B\u660E\u93E1\u64CA');
-    Name$BrazenAtkDef_instance = new Name('BrazenAtkDef', 569, '\u653B\u6483\u5B88\u5099\u306E\u5927\u899A\u91923', 'Brazen Atk Def', '\u653B\u6483\u9632\u5B88\u5927\u89BA\u91923');
-    Name$BrazenAtkSpd_instance = new Name('BrazenAtkSpd', 570, '\u653B\u6483\u901F\u3055\u306E\u5927\u899A\u91923', 'Brazen Atk Spd', '\u653B\u6483\u901F\u5EA6\u5927\u89BA\u91923');
+    Name$BrazenAtkDef_instance = new Name('BrazenAtkDef', 569, '\u653B\u6483\u5B88\u5099\u306E\u5927\u899A\u9192', 'Brazen Atk Def', '\u653B\u6483\u9632\u5B88\u5927\u89BA\u9192');
+    Name$BrazenAtkSpd_instance = new Name('BrazenAtkSpd', 570, '\u653B\u6483\u901F\u3055\u306E\u5927\u899A\u9192', 'Brazen Atk Spd', '\u653B\u6483\u901F\u5EA6\u5927\u89BA\u9192');
     Name$CloseCounter_instance = new Name('CloseCounter', 571, '\u8FD1\u8DDD\u96E2\u53CD\u6483', 'Close Counter', '\u8FD1\u8DDD\u96E2\u53CD\u64CA');
     Name$CloseDef_instance = new Name('CloseDef', 572, '\u8FD1\u8DDD\u96E2\u9632\u5FA1', 'Close Def', '\u8FD1\u8DDD\u96E2\u9632\u79A6');
     Name$DartingBlow_instance = new Name('DartingBlow', 573, '\u98DB\u71D5\u306E\u4E00\u6483', 'Darting Blow', '\u98DB\u71D5\u4E00\u64CA');
@@ -3777,90 +3809,98 @@ var FEHSIM = function (_, Kotlin) {
     Name$ThreatenSpd_instance = new Name('ThreatenSpd', 722, '\u901F\u3055\u306E\u5A01\u5687', 'Threaten Spd', '\u901F\u5EA6\u5A01\u5687');
     Name$WardArmor_instance = new Name('WardArmor', 723, '\u91CD\u76FE\u306E\u7D0B\u7AE0', 'Ward Armor', '\u91CD\u76FE\u7D0B\u7AE0');
     Name$WardCavalry_instance = new Name('WardCavalry', 724, '\u9A0E\u76FE\u306E\u7D0B\u7AE0', 'Ward Cavalry', '\u9A0E\u76FE\u7D0B\u7AE0');
-    Name$WardFliers_instance = new Name('WardFliers', 725, '\u98DB\u76FE\u306E\u7D0B\u7AE0', 'Ward Fliers', '\u98DB\u76FE\u7D0B\u7AE0');
-    Name$SquadAceA_instance = new Name('SquadAceA', 726, '\u7B2C1\u8FF7\u5BAE\u306E\u8987\u8005', 'Squad Ace A', '\u7B2C1\u8FF7\u5BAE\u7684\u9738\u738B');
-    Name$SquadAceB_instance = new Name('SquadAceB', 727, '\u7B2C2\u8FF7\u5BAE\u306E\u8987\u8005', 'Squad Ace B', '\u7B2C2\u8FF7\u5BAE\u7684\u9738\u738B');
-    Name$SquadAceC_instance = new Name('SquadAceC', 728, '\u7B2C3\u8FF7\u5BAE\u306E\u8987\u8005', 'Squad Ace C', '\u7B2C3\u8FF7\u5BAE\u7684\u9738\u738B');
-    Name$SquadAceD_instance = new Name('SquadAceD', 729, '\u7B2C4\u8FF7\u5BAE\u306E\u8987\u8005', 'Squad Ace D', '\u7B2C4\u8FF7\u5BAE\u7684\u9738\u738B');
-    Name$HardyBearing_instance = new Name('HardyBearing', 730, '\u4E0D\u52D5\u306E\u59FF\u52E2', 'Hardy Bearing', '\u4E0D\u52D5\u5982\u5C71');
-    Name$PhantomSpeed_instance = new Name('PhantomSpeed', 731, '\u901F\u3055\u306E\u865A\u52E2', 'Phantom Speed', '\u901F\u5EA6\u8A87\u98FE');
-    Name$QuickenedPulse_instance = new Name('QuickenedPulse', 732, '\u5965\u7FA9\u306E\u9F13\u52D5', 'Quickened Pulse', '\u5965\u7FA9\u4E4B\u8E8D\u52D5');
-    Name$DeflectMagic_instance = new Name('DeflectMagic', 733, '\u9023\u6483\u9632\u5FA1\u30FB\u9B54', 'Deflect Magic', '\u9023\u64CA\u9632\u5FA1\u30FB\u9B54');
-    Name$DeflectMelee_instance = new Name('DeflectMelee', 734, '\u9023\u6483\u9632\u5FA1\u30FB\u5263\u69CD\u65A7', 'Deflect Melee', '\u9023\u64CA\u9632\u79A6\u30FB\u5263\u69CD\u65A7');
-    Name$DeflectMissile_instance = new Name('DeflectMissile', 735, '\u9023\u6483\u9632\u5FA1\u30FB\u5F13\u6697\u5668', 'Deflect Missile', '\u9023\u64CA\u9632\u79A6\u30FB\u5F13\u6697\u5668');
-    Name$Range1Atk_instance = new Name('Range1Atk', 736, '\u653B\u6483(\u8FD1)', 'Atk(melee)', '\u653B\u64CA(\u8FD1)');
-    Name$Range1Spd_instance = new Name('Range1Spd', 737, '\u901F\u3055(\u8FD1)', 'Spd(melee)', '\u901F\u5EA6(\u8FD1)');
-    Name$Range1Def_instance = new Name('Range1Def', 738, '\u5B88\u5099(\u8FD1)', 'Def(melee)', '\u9632\u5B88(\u8FD1)');
-    Name$Range1Res_instance = new Name('Range1Res', 739, '\u9B54\u9632(\u8FD1)', 'Res(melee)', '\u9B54\u9632(\u8FD1)');
-    Name$Range2Atk_instance = new Name('Range2Atk', 740, '\u653B\u6483(\u9060)', 'Atk(Ranged)', '\u653B\u64CA(\u9060)');
-    Name$Range2Spd_instance = new Name('Range2Spd', 741, '\u901F\u3055(\u9060)', 'Spd(Ranged)', '\u901F\u5EA6(\u9060)');
-    Name$Range2Def_instance = new Name('Range2Def', 742, '\u5B88\u5099(\u9060)', 'Def(Ranged)', '\u9632\u5B88(\u9060)');
-    Name$Range2Res_instance = new Name('Range2Res', 743, '\u9B54\u9632(\u9060)', 'Res(Ranged)', '\u9B54\u9632(\u9060)');
-    Name$Pursuit_instance = new Name('Pursuit', 744, '\u8FFD\u6483', 'Pursuit', '\u8FFD\u6483');
-    Name$SpecialDamage_instance = new Name('SpecialDamage', 745, '\u5965\u7FA9\u30C0\u30E1\u30FC\u30B8\uFF0B10', 'SpecialDamage', '\u5965\u7FA9\u50B7\u5BB3+10');
-    Name$Follow_instance = new Name('Follow', 746, '\u8FFD\u5F93', 'Follow', '\u53EF\u79FB\u52D5\u81F3\u5468\u570D2\u683C');
-    Name$MagicSuppression_instance = new Name('MagicSuppression', 747, '\u9B54\u6CD5\u306F\u53CD\u6483\u4E0D\u80FD', 'MagicSuppression', '\u9B54\u6CD5\u7121\u6CD5\u53CD\u64CA');
-    Name$AntiRangedWeapon_instance = new Name('AntiRangedWeapon', 748, '\u9060\u8DDD\u96E2\u6B66\u5668\u306B\u5BFE\u3057\u653B\u6483+6', 'Atk+6 if foe uses ranged weapon', 'Atk+6 if foe uses ranged weapon');
-    Name$BondFlyingAlly_instance = new Name('BondFlyingAlly', 749, '\u98DB\u884C\u306E\u5473\u65B9\u304C\u3044\u308B\u6642\u653B\u6483\u9B54\u9632+5', 'Atk/Res+5 with flying ally', 'Atk/Res+5 with flying ally');
-    Name$Nullify_instance = new Name('Nullify', 750, '\u7279\u52B9\u5BFE\u8C61\u306E\u5F37\u5316\u306E+\u3092\u7121\u52B9\u306B\u3059\u308B', "Nullifies foe's bonuses", '\u62B5\u92FF\u6575\u4EBA\u7684\uFF0B\u5F37\u5316\u72C0\u614B');
-    Name$スリーズ_instance = new Name('\u30B9\u30EA\u30FC\u30BA', 751, '\u30B9\u30EA\u30FC\u30BA', 'Gunnthr\xE1', '\u65AF\u5229\u8332');
-    Name$アクア__正月__instance = new Name('\u30A2\u30AF\u30A2__\u6B63\u6708_', 752, '\u30A2\u30AF\u30A2\uFF08\u6B63\u6708\uFF09', 'Azura (Happy New Year!)', '\u963F\u5EAB\u5A6D (Happy New Year!)');
-    Name$カミラ__正月__instance = new Name('\u30AB\u30DF\u30E9__\u6B63\u6708_', 753, '\u30AB\u30DF\u30E9\uFF08\u6B63\u6708\uFF09', 'Camilla (Happy New Year!)', '\u5361\u7F8E\u62C9 (Happy New Year!)');
-    Name$タクミ__正月__instance = new Name('\u30BF\u30AF\u30DF__\u6B63\u6708_', 754, '\u30BF\u30AF\u30DF\uFF08\u6B63\u6708\uFF09', 'Takumi (Happy New Year!)', '\u62D3\u6D77 (Happy New Year!)');
-    Name$カムイ__正月__instance = new Name('\u30AB\u30E0\u30A4__\u6B63\u6708_', 755, '\u30AB\u30E0\u30A4\uFF08\u6B63\u6708\uFF09', 'Corrin (Happy New Year!)', '\u795E\u5A01 (Happy New Year!)');
-    Name$Blizzard_instance = new Name('Blizzard', 756, '\u30D6\u30EA\u30B6\u30FC\u30C9', 'Blizzard', '\u66B4\u98A8\u96EA');
-    Name$ChillingSeal_instance = new Name('ChillingSeal', 757, '\u51B0\u306E\u5C01\u5370', 'Chilling Seal', 'Chilling Seal');
-    Name$EarthDance_instance = new Name('EarthDance', 758, '\u5927\u5730\u306E\u821E', 'EarthDance', '\u5927\u5730\u4E4B\u821E');
-    Name$SpdDefBond_instance = new Name('SpdDefBond', 759, '\u901F\u3055\u5B88\u5099\u306E\u7D46', 'Spd Def Bond', '\u901F\u5EA6\u9632\u5B88\u7684\u7F88\u7D46');
-    Name$Hagoita_instance = new Name('Hagoita', 760, '\u7FBD\u5B50\u677F', 'Hagoita', '\u7FBD\u5B50\u677F');
-    Name$Hagoita2_instance = new Name('Hagoita2', 761, '\u7FBD\u5B50\u677F\uFF0B', 'Hagoita+', '\u7FBD\u5B50\u677F\uFF0B');
-    Name$Kadomatsu_instance = new Name('Kadomatsu', 762, '\u9580\u677E', 'Kadomatsu', '\u9580\u677E');
-    Name$Kadomatsu2_instance = new Name('Kadomatsu2', 763, '\u9580\u677E\uFF0B', 'Kadomatsu+', '\u9580\u677E\uFF0B');
-    Name$KagamiMochi_instance = new Name('KagamiMochi', 764, '\u93E1\u9905', 'Kagami Mochi', '\u93E1\u9905\u9EBB\u7CEC');
-    Name$KagamiMochi2_instance = new Name('KagamiMochi2', 765, '\u93E1\u9905\uFF0B', 'Kagami Mochi+', '\u93E1\u9905\u9EBB\u7CEC\uFF0B');
-    Name$エイリーク__追憶__instance = new Name('\u30A8\u30A4\u30EA\u30FC\u30AF__\u8FFD\u61B6_', 766, '\u30A8\u30A4\u30EA\u30FC\u30AF\uFF08\u8FFD\u61B6\uFF09', 'Eirika (Sacred Memories)', '\u827E\u8389\u53EF (Sacred Memories)');
-    Name$ラーチェル_instance = new Name('\u30E9\u30FC\u30C1\u30A7\u30EB', 767, '\u30E9\u30FC\u30C1\u30A7\u30EB', "L'Arachel", '\u62C9\u5207\u723E');
-    Name$ミルラ_instance = new Name('\u30DF\u30EB\u30E9', 768, '\u30DF\u30EB\u30E9', 'Myrrh', '\u6885\u723E');
-    Name$リオン_instance = new Name('\u30EA\u30AA\u30F3', 769, '\u30EA\u30AA\u30F3', 'Lyon', '\u5229\u6602');
-    Name$Gleipnir_instance = new Name('Gleipnir', 770, '\u30B0\u30EC\u30A4\u30D7\u30CB\u30EB', 'Gleipnir', '\u683C\u840A\u666E\u5C3C\u723E');
-    Name$Ivaldi_instance = new Name('Ivaldi', 771, '\u30A4\u30F4\u30A1\u30EB\u30C7\u30A3', 'Ivaldi', '\u4F0A\u74E6\u723E\u8482');
-    Name$GreatFlame_instance = new Name('GreatFlame', 772, '\u795E\u708E', 'GreatFlame', '\u795E\u708E\u5410\u606F');
-    Name$Naglfar_instance = new Name('Naglfar', 773, '\u30CA\u30B0\u30EB\u30D5\u30A1\u30EB', 'Naglfar', '\u7D0D\u5409\u723E\u6CD5');
-    Name$ヘクトル__バレンタイン__instance = new Name('\u30D8\u30AF\u30C8\u30EB__\u30D0\u30EC\u30F3\u30BF\u30A4\u30F3_', 774, '\u30D8\u30AF\u30C8\u30EB\uFF08\u30D0\u30EC\u30F3\u30BF\u30A4\u30F3\uFF09', 'Hector (Love Abounds)', '\u6D77\u514B\u6258\u723E (Love Abounds)');
-    Name$リリーナ__バレンタイン__instance = new Name('\u30EA\u30EA\u30FC\u30CA__\u30D0\u30EC\u30F3\u30BF\u30A4\u30F3_', 775, '\u30EA\u30EA\u30FC\u30CA\uFF08\u30D0\u30EC\u30F3\u30BF\u30A4\u30F3\uFF09', 'Lilina (Love Abounds)', '\u8389\u8389\u5A1C (Love Abounds)');
-    Name$リン__バレンタイン__instance = new Name('\u30EA\u30F3__\u30D0\u30EC\u30F3\u30BF\u30A4\u30F3_', 776, '\u30EA\u30F3\uFF08\u30D0\u30EC\u30F3\u30BF\u30A4\u30F3\uFF09', 'Lyn (Love Abounds)', '\u7433 (Love Abounds)');
-    Name$ロイ__バレンタイン__instance = new Name('\u30ED\u30A4__\u30D0\u30EC\u30F3\u30BF\u30A4\u30F3_', 777, '\u30ED\u30A4\uFF08\u30D0\u30EC\u30F3\u30BF\u30A4\u30F3\uFF09', 'Roy (Love Abounds)', '\u7F85\u4F0A (Love Abounds)');
-    Name$エリウッド__バレンタイン__instance = new Name('\u30A8\u30EA\u30A6\u30C3\u30C9__\u30D0\u30EC\u30F3\u30BF\u30A4\u30F3_', 778, '\u30A8\u30EA\u30A6\u30C3\u30C9\uFF08\u30D0\u30EC\u30F3\u30BF\u30A4\u30F3\uFF09', 'Eliwood (Love Abounds)', '\u827E\u5229\u70CF\u5FB7 (Love Abounds)');
-    Name$BerserkArmads_instance = new Name('BerserkArmads', 779, '\u72C2\u65A7\u30A2\u30EB\u30DE\u30FC\u30BA', 'BerserkArmads', 'BerserkArmads');
-    Name$GreenGift_instance = new Name('GreenGift', 780, '\u7DD1\u306E\u30D7\u30EC\u30BC\u30F3\u30C8\u7BB1', 'GreenGift', 'GreenGift');
-    Name$GreenGift2_instance = new Name('GreenGift2', 781, '\u7DD1\u306E\u30D7\u30EC\u30BC\u30F3\u30C8\u7BB1\uFF0B', 'GreenGift+', 'GreenGift');
-    Name$BlueGift_instance = new Name('BlueGift', 782, '\u9752\u306E\u30D7\u30EC\u30BC\u30F3\u30C8\u7BB1', 'BlueGift', 'BlueGift');
-    Name$BlueGift2_instance = new Name('BlueGift2', 783, '\u9752\u306E\u30D7\u30EC\u30BC\u30F3\u30C8\u7BB1\uFF0B', 'BlueGift+', 'BlueGift');
-    Name$Gratia_instance = new Name('Gratia', 784, '\u30B0\u30E9\u30FC\u30C6\u30A3\u30A2', 'Gratia', 'Gratia');
-    Name$Gratia2_instance = new Name('Gratia2', 785, '\u30B0\u30E9\u30FC\u30C6\u30A3\u30A2\uFF0B', 'Gratia+', 'Gratia+');
-    Name$CasaBlanca_instance = new Name('CasaBlanca', 786, '\u30AB\u30B5\u30D6\u30E9\u30F3\u30AB', 'CasaBlanca', 'CasaBlanca');
-    Name$CasaBlanca2_instance = new Name('CasaBlanca2', 787, '\u30AB\u30B5\u30D6\u30E9\u30F3\u30AB\uFF0B', 'CasaBlanca+', 'CasaBlanca+');
-    Name$HpAtk_instance = new Name('HpAtk', 788, 'HP\u653B\u6483', 'HpAtk', 'HP\u653B\u6483');
-    Name$AtkSpdBond_instance = new Name('AtkSpdBond', 789, '\u653B\u6483\u901F\u3055\u306E\u7D46', 'AtkSpdBond', '\u653B\u6483\u901F\u5EA6\u7684\u7F88\u7D46');
-    Name$BowValor_instance = new Name('BowValor', 790, '\u5F13\u306E\u6280\u91CF', 'BowValor', '\u5F13\u4E4B\u6280\u5DE7');
-    Name$ArmoredBoots_instance = new Name('ArmoredBoots', 791, '\u91CD\u88C5\u306E\u30D6\u30FC\u30C4', 'ArmoredBoots', 'ArmoredBoots');
-    Name$AtkSpdDefRes2ToAllies_instance = new Name('AtkSpdDefRes2ToAllies', 792, '\u5473\u65B9\u306E\u653B\u6483\u901F\u3055\u5B88\u5099\u9B54\u9632+2', 'Atk/Spd/Def/Res+2 to allies', 'Atk/Spd/Def/Res+2 to allies');
-    Name$AtkSpdDefRes4_instance = new Name('AtkSpdDefRes4', 793, '\u653B\u6483\u901F\u3055\u5B88\u5099\u9B54\u9632+4', 'Atk/Spd/Def/Res+4 if unit is adjacent to an ally', 'Atk/Spd/Def/Res+4 if unit is adjacent to an ally');
-    Name$doubleAttack_instance = new Name('doubleAttack', 794, '2\u56DE\u653B\u6483', 'Double Attack', 'Double Attack');
-    Name$HinokasSpear_instance = new Name('HinokasSpear', 795, '\u30D2\u30CE\u30AB\u306E\u7D05\u8599\u5200', "Hinoka's Spear", "Hinoka's Spear");
-    Name$HinokasGuidance_instance = new Name('HinokasGuidance', 796, '\u5148\u5C0E', 'Guidance', '\u524D\u5C0E');
-    Name$Basilikos_instance = new Name('Basilikos', 797, '\u30D0\u30B7\u30EA\u30B3\u30B9', 'Basilikos', 'Basilikos');
-    Name$WingSword_instance = new Name('WingSword', 798, '\u30A6\u30A3\u30F3\u30B0\u30BD\u30FC\u30C9', 'Wing Sword', 'Wing Sword');
-    Name$FeliciasPlate_instance = new Name('FeliciasPlate', 799, '\u30D5\u30A7\u30EA\u30B7\u30A2\u306E\u6C37\u76BF', "Felicia's Plate", "Felicia's Plate");
-    Name$__ゼルギウス__instance = new Name('__\u30BC\u30EB\u30AE\u30A6\u30B9_', 800, '\u30BC\u30EB\u30AE\u30A6\u30B9', 'Zelgius', '\u585E\u723E\u5409\u70CF\u65AF');
-    Name$__ミカヤ__instance = new Name('__\u30DF\u30AB\u30E4_', 801, '\u30DF\u30AB\u30E4', 'Micaiah', '\u7C73\u5361\u96C5');
-    Name$__サザ__instance = new Name('__\u30B5\u30B6_', 802, '\u30B5\u30B6', 'Sothe', '\u85A9\u672D');
-    Name$WarpPowder_instance = new Name('WarpPowder', 803, '\u8EE2\u79FB\u306E\u7C89', 'WarpPowder', '\u8F49\u79FB\u7C89\u672B');
-    Name$Thani_instance = new Name('Thani', 804, '\u30BB\u30A4\u30CB\u30FC', 'Thani', '\u8CFD\u5C3C');
-    Name$Sacrifice_instance = new Name('Sacrifice', 805, '\u7652\u3057\u306E\u624B', 'Sacrifice', '\u6CBB\u7652\u4E4B\u624B');
-    Name$Peshkatz_instance = new Name('Peshkatz', 806, '\u30DA\u30B7\u30E5\u30AB\u30C9', 'Peshkatz', '\u4F69\u4FEE\u5361\u7279');
-    Name$SpurAtkSpd_instance = new Name('SpurAtkSpd', 807, '\u653B\u6483\u901F\u3055\u306E\u7D0B\u7AE0', 'Spur Atk Spd', '\u653B\u64CA\u901F\u5EA6\u7D0B\u7AE0');
-    Name$FeliciasBlade_instance = new Name('FeliciasBlade', 808, '\u5965\u7FA9\u30AB\u30A6\u30F3\u30C8+1', 'Special cooldown charge +1 if foe uses magic', 'Special cooldown charge +1 if foe uses magic');
+    Name$WardDragons_instance = new Name('WardDragons', 725, '\u7ADC\u76FE\u306E\u7D0B\u7AE0', 'Ward Dragons', '\u7ADC\u76FE\u7D0B\u7AE0');
+    Name$WardFliers_instance = new Name('WardFliers', 726, '\u98DB\u76FE\u306E\u7D0B\u7AE0', 'Ward Fliers', '\u98DB\u76FE\u7D0B\u7AE0');
+    Name$SquadAceA_instance = new Name('SquadAceA', 727, '\u7B2C1\u8FF7\u5BAE\u306E\u8987\u8005', 'Squad Ace A', '\u7B2C1\u8FF7\u5BAE\u7684\u9738\u738B');
+    Name$SquadAceB_instance = new Name('SquadAceB', 728, '\u7B2C2\u8FF7\u5BAE\u306E\u8987\u8005', 'Squad Ace B', '\u7B2C2\u8FF7\u5BAE\u7684\u9738\u738B');
+    Name$SquadAceC_instance = new Name('SquadAceC', 729, '\u7B2C3\u8FF7\u5BAE\u306E\u8987\u8005', 'Squad Ace C', '\u7B2C3\u8FF7\u5BAE\u7684\u9738\u738B');
+    Name$SquadAceD_instance = new Name('SquadAceD', 730, '\u7B2C4\u8FF7\u5BAE\u306E\u8987\u8005', 'Squad Ace D', '\u7B2C4\u8FF7\u5BAE\u7684\u9738\u738B');
+    Name$HardyBearing_instance = new Name('HardyBearing', 731, '\u4E0D\u52D5\u306E\u59FF\u52E2', 'Hardy Bearing', '\u4E0D\u52D5\u5982\u5C71');
+    Name$PhantomSpeed_instance = new Name('PhantomSpeed', 732, '\u901F\u3055\u306E\u865A\u52E2', 'Phantom Speed', '\u901F\u5EA6\u8A87\u98FE');
+    Name$QuickenedPulse_instance = new Name('QuickenedPulse', 733, '\u5965\u7FA9\u306E\u9F13\u52D5', 'Quickened Pulse', '\u5965\u7FA9\u4E4B\u8E8D\u52D5');
+    Name$DeflectMagic_instance = new Name('DeflectMagic', 734, '\u9023\u6483\u9632\u5FA1\u30FB\u9B54', 'Deflect Magic', '\u9023\u64CA\u9632\u5FA1\u30FB\u9B54');
+    Name$DeflectMelee_instance = new Name('DeflectMelee', 735, '\u9023\u6483\u9632\u5FA1\u30FB\u5263\u69CD\u65A7', 'Deflect Melee', '\u9023\u64CA\u9632\u79A6\u30FB\u5263\u69CD\u65A7');
+    Name$DeflectMissile_instance = new Name('DeflectMissile', 736, '\u9023\u6483\u9632\u5FA1\u30FB\u5F13\u6697\u5668', 'Deflect Missile', '\u9023\u64CA\u9632\u79A6\u30FB\u5F13\u6697\u5668');
+    Name$Range1Atk_instance = new Name('Range1Atk', 737, '\u653B\u6483(\u8FD1)', 'Atk(melee)', '\u653B\u64CA(\u8FD1)');
+    Name$Range1Spd_instance = new Name('Range1Spd', 738, '\u901F\u3055(\u8FD1)', 'Spd(melee)', '\u901F\u5EA6(\u8FD1)');
+    Name$Range1Def_instance = new Name('Range1Def', 739, '\u5B88\u5099(\u8FD1)', 'Def(melee)', '\u9632\u5B88(\u8FD1)');
+    Name$Range1Res_instance = new Name('Range1Res', 740, '\u9B54\u9632(\u8FD1)', 'Res(melee)', '\u9B54\u9632(\u8FD1)');
+    Name$Range2Atk_instance = new Name('Range2Atk', 741, '\u653B\u6483(\u9060)', 'Atk(Ranged)', '\u653B\u64CA(\u9060)');
+    Name$Range2Spd_instance = new Name('Range2Spd', 742, '\u901F\u3055(\u9060)', 'Spd(Ranged)', '\u901F\u5EA6(\u9060)');
+    Name$Range2Def_instance = new Name('Range2Def', 743, '\u5B88\u5099(\u9060)', 'Def(Ranged)', '\u9632\u5B88(\u9060)');
+    Name$Range2Res_instance = new Name('Range2Res', 744, '\u9B54\u9632(\u9060)', 'Res(Ranged)', '\u9B54\u9632(\u9060)');
+    Name$Pursuit_instance = new Name('Pursuit', 745, '\u8FFD\u6483', 'Pursuit', '\u8FFD\u6483');
+    Name$SpecialDamage_instance = new Name('SpecialDamage', 746, '\u5965\u7FA9\u30C0\u30E1\u30FC\u30B8\uFF0B10', 'SpecialDamage', '\u5965\u7FA9\u50B7\u5BB3+10');
+    Name$Follow_instance = new Name('Follow', 747, '\u8FFD\u5F93', 'Follow', '\u53EF\u79FB\u52D5\u81F3\u5468\u570D2\u683C');
+    Name$MagicSuppression_instance = new Name('MagicSuppression', 748, '\u9B54\u6CD5\u306F\u53CD\u6483\u4E0D\u80FD', 'MagicSuppression', '\u9B54\u6CD5\u7121\u6CD5\u53CD\u64CA');
+    Name$AntiRangedWeapon_instance = new Name('AntiRangedWeapon', 749, '\u9060\u8DDD\u96E2\u6B66\u5668\u306B\u5BFE\u3057\u653B\u6483+6', 'Atk+6 if foe uses ranged weapon', 'Atk+6 if foe uses ranged weapon');
+    Name$BondFlyingAlly_instance = new Name('BondFlyingAlly', 750, '\u98DB\u884C\u306E\u5473\u65B9\u304C\u3044\u308B\u6642\u653B\u6483\u9B54\u9632+5', 'Atk/Res+5 with flying ally', 'Atk/Res+5 with flying ally');
+    Name$Nullify_instance = new Name('Nullify', 751, '\u7279\u52B9\u5BFE\u8C61\u306E\u5F37\u5316\u306E+\u3092\u7121\u52B9\u306B\u3059\u308B', "Nullifies foe's bonuses", '\u62B5\u92FF\u6575\u4EBA\u7684\uFF0B\u5F37\u5316\u72C0\u614B');
+    Name$スリーズ_instance = new Name('\u30B9\u30EA\u30FC\u30BA', 752, '\u30B9\u30EA\u30FC\u30BA', 'Gunnthr\xE1', '\u65AF\u5229\u8332');
+    Name$アクア__正月__instance = new Name('\u30A2\u30AF\u30A2__\u6B63\u6708_', 753, '\u30A2\u30AF\u30A2\uFF08\u6B63\u6708\uFF09', 'Azura (Happy New Year!)', '\u963F\u5EAB\u5A6D (Happy New Year!)');
+    Name$カミラ__正月__instance = new Name('\u30AB\u30DF\u30E9__\u6B63\u6708_', 754, '\u30AB\u30DF\u30E9\uFF08\u6B63\u6708\uFF09', 'Camilla (Happy New Year!)', '\u5361\u7F8E\u62C9 (Happy New Year!)');
+    Name$タクミ__正月__instance = new Name('\u30BF\u30AF\u30DF__\u6B63\u6708_', 755, '\u30BF\u30AF\u30DF\uFF08\u6B63\u6708\uFF09', 'Takumi (Happy New Year!)', '\u62D3\u6D77 (Happy New Year!)');
+    Name$カムイ__正月__instance = new Name('\u30AB\u30E0\u30A4__\u6B63\u6708_', 756, '\u30AB\u30E0\u30A4\uFF08\u6B63\u6708\uFF09', 'Corrin (Happy New Year!)', '\u795E\u5A01 (Happy New Year!)');
+    Name$Blizzard_instance = new Name('Blizzard', 757, '\u30D6\u30EA\u30B6\u30FC\u30C9', 'Blizzard', '\u66B4\u98A8\u96EA');
+    Name$ChillingSeal_instance = new Name('ChillingSeal', 758, '\u51B0\u306E\u5C01\u5370', 'Chilling Seal', 'Chilling Seal');
+    Name$EarthDance_instance = new Name('EarthDance', 759, '\u5927\u5730\u306E\u821E', 'EarthDance', '\u5927\u5730\u4E4B\u821E');
+    Name$SpdDefBond_instance = new Name('SpdDefBond', 760, '\u901F\u3055\u5B88\u5099\u306E\u7D46', 'Spd Def Bond', '\u901F\u5EA6\u9632\u5B88\u7684\u7F88\u7D46');
+    Name$Hagoita_instance = new Name('Hagoita', 761, '\u7FBD\u5B50\u677F', 'Hagoita', '\u7FBD\u5B50\u677F');
+    Name$Hagoita2_instance = new Name('Hagoita2', 762, '\u7FBD\u5B50\u677F\uFF0B', 'Hagoita+', '\u7FBD\u5B50\u677F\uFF0B');
+    Name$Kadomatsu_instance = new Name('Kadomatsu', 763, '\u9580\u677E', 'Kadomatsu', '\u9580\u677E');
+    Name$Kadomatsu2_instance = new Name('Kadomatsu2', 764, '\u9580\u677E\uFF0B', 'Kadomatsu+', '\u9580\u677E\uFF0B');
+    Name$KagamiMochi_instance = new Name('KagamiMochi', 765, '\u93E1\u9905', 'Kagami Mochi', '\u93E1\u9905\u9EBB\u7CEC');
+    Name$KagamiMochi2_instance = new Name('KagamiMochi2', 766, '\u93E1\u9905\uFF0B', 'Kagami Mochi+', '\u93E1\u9905\u9EBB\u7CEC\uFF0B');
+    Name$エイリーク__追憶__instance = new Name('\u30A8\u30A4\u30EA\u30FC\u30AF__\u8FFD\u61B6_', 767, '\u30A8\u30A4\u30EA\u30FC\u30AF\uFF08\u8FFD\u61B6\uFF09', 'Eirika (Sacred Memories)', '\u827E\u8389\u53EF (Sacred Memories)');
+    Name$ラーチェル_instance = new Name('\u30E9\u30FC\u30C1\u30A7\u30EB', 768, '\u30E9\u30FC\u30C1\u30A7\u30EB', "L'Arachel", '\u62C9\u5207\u723E');
+    Name$ミルラ_instance = new Name('\u30DF\u30EB\u30E9', 769, '\u30DF\u30EB\u30E9', 'Myrrh', '\u6885\u723E');
+    Name$リオン_instance = new Name('\u30EA\u30AA\u30F3', 770, '\u30EA\u30AA\u30F3', 'Lyon', '\u5229\u6602');
+    Name$Gleipnir_instance = new Name('Gleipnir', 771, '\u30B0\u30EC\u30A4\u30D7\u30CB\u30EB', 'Gleipnir', '\u683C\u840A\u666E\u5C3C\u723E');
+    Name$Ivaldi_instance = new Name('Ivaldi', 772, '\u30A4\u30F4\u30A1\u30EB\u30C7\u30A3', 'Ivaldi', '\u4F0A\u74E6\u723E\u8482');
+    Name$GreatFlame_instance = new Name('GreatFlame', 773, '\u795E\u708E', 'GreatFlame', '\u795E\u708E\u5410\u606F');
+    Name$Naglfar_instance = new Name('Naglfar', 774, '\u30CA\u30B0\u30EB\u30D5\u30A1\u30EB', 'Naglfar', '\u7D0D\u5409\u723E\u6CD5');
+    Name$ヘクトル__バレンタイン__instance = new Name('\u30D8\u30AF\u30C8\u30EB__\u30D0\u30EC\u30F3\u30BF\u30A4\u30F3_', 775, '\u30D8\u30AF\u30C8\u30EB\uFF08\u30D0\u30EC\u30F3\u30BF\u30A4\u30F3\uFF09', 'Hector (Love Abounds)', '\u6D77\u514B\u6258\u723E (Love Abounds)');
+    Name$リリーナ__バレンタイン__instance = new Name('\u30EA\u30EA\u30FC\u30CA__\u30D0\u30EC\u30F3\u30BF\u30A4\u30F3_', 776, '\u30EA\u30EA\u30FC\u30CA\uFF08\u30D0\u30EC\u30F3\u30BF\u30A4\u30F3\uFF09', 'Lilina (Love Abounds)', '\u8389\u8389\u5A1C (Love Abounds)');
+    Name$リン__バレンタイン__instance = new Name('\u30EA\u30F3__\u30D0\u30EC\u30F3\u30BF\u30A4\u30F3_', 777, '\u30EA\u30F3\uFF08\u30D0\u30EC\u30F3\u30BF\u30A4\u30F3\uFF09', 'Lyn (Love Abounds)', '\u7433 (Love Abounds)');
+    Name$ロイ__バレンタイン__instance = new Name('\u30ED\u30A4__\u30D0\u30EC\u30F3\u30BF\u30A4\u30F3_', 778, '\u30ED\u30A4\uFF08\u30D0\u30EC\u30F3\u30BF\u30A4\u30F3\uFF09', 'Roy (Love Abounds)', '\u7F85\u4F0A (Love Abounds)');
+    Name$エリウッド__バレンタイン__instance = new Name('\u30A8\u30EA\u30A6\u30C3\u30C9__\u30D0\u30EC\u30F3\u30BF\u30A4\u30F3_', 779, '\u30A8\u30EA\u30A6\u30C3\u30C9\uFF08\u30D0\u30EC\u30F3\u30BF\u30A4\u30F3\uFF09', 'Eliwood (Love Abounds)', '\u827E\u5229\u70CF\u5FB7 (Love Abounds)');
+    Name$BerserkArmads_instance = new Name('BerserkArmads', 780, '\u72C2\u65A7\u30A2\u30EB\u30DE\u30FC\u30BA', 'BerserkArmads', 'BerserkArmads');
+    Name$GreenGift_instance = new Name('GreenGift', 781, '\u7DD1\u306E\u30D7\u30EC\u30BC\u30F3\u30C8\u7BB1', 'GreenGift', 'GreenGift');
+    Name$GreenGift2_instance = new Name('GreenGift2', 782, '\u7DD1\u306E\u30D7\u30EC\u30BC\u30F3\u30C8\u7BB1\uFF0B', 'GreenGift+', 'GreenGift');
+    Name$BlueGift_instance = new Name('BlueGift', 783, '\u9752\u306E\u30D7\u30EC\u30BC\u30F3\u30C8\u7BB1', 'BlueGift', 'BlueGift');
+    Name$BlueGift2_instance = new Name('BlueGift2', 784, '\u9752\u306E\u30D7\u30EC\u30BC\u30F3\u30C8\u7BB1\uFF0B', 'BlueGift+', 'BlueGift');
+    Name$Gratia_instance = new Name('Gratia', 785, '\u30B0\u30E9\u30FC\u30C6\u30A3\u30A2', 'Gratia', 'Gratia');
+    Name$Gratia2_instance = new Name('Gratia2', 786, '\u30B0\u30E9\u30FC\u30C6\u30A3\u30A2\uFF0B', 'Gratia+', 'Gratia+');
+    Name$CasaBlanca_instance = new Name('CasaBlanca', 787, '\u30AB\u30B5\u30D6\u30E9\u30F3\u30AB', 'CasaBlanca', 'CasaBlanca');
+    Name$CasaBlanca2_instance = new Name('CasaBlanca2', 788, '\u30AB\u30B5\u30D6\u30E9\u30F3\u30AB\uFF0B', 'CasaBlanca+', 'CasaBlanca+');
+    Name$HpAtk_instance = new Name('HpAtk', 789, 'HP\u653B\u6483', 'HpAtk', 'HP\u653B\u6483');
+    Name$AtkSpdBond_instance = new Name('AtkSpdBond', 790, '\u653B\u6483\u901F\u3055\u306E\u7D46', 'AtkSpdBond', '\u653B\u6483\u901F\u5EA6\u7684\u7F88\u7D46');
+    Name$BowValor_instance = new Name('BowValor', 791, '\u5F13\u306E\u6280\u91CF', 'BowValor', '\u5F13\u4E4B\u6280\u5DE7');
+    Name$ArmoredBoots_instance = new Name('ArmoredBoots', 792, '\u91CD\u88C5\u306E\u30D6\u30FC\u30C4', 'ArmoredBoots', 'ArmoredBoots');
+    Name$AtkSpdDefRes2ToAllies_instance = new Name('AtkSpdDefRes2ToAllies', 793, '\u5473\u65B9\u306E\u653B\u6483\u901F\u3055\u5B88\u5099\u9B54\u9632+2', 'Atk/Spd/Def/Res+2 to allies', 'Atk/Spd/Def/Res+2 to allies');
+    Name$AtkSpdDefRes4_instance = new Name('AtkSpdDefRes4', 794, '\u653B\u6483\u901F\u3055\u5B88\u5099\u9B54\u9632+4', 'Atk/Spd/Def/Res+4 if unit is adjacent to an ally', 'Atk/Spd/Def/Res+4 if unit is adjacent to an ally');
+    Name$doubleAttack_instance = new Name('doubleAttack', 795, '2\u56DE\u653B\u6483', 'Double Attack', 'Double Attack');
+    Name$HinokasSpear_instance = new Name('HinokasSpear', 796, '\u30D2\u30CE\u30AB\u306E\u7D05\u8599\u5200', "Hinoka's Spear", "Hinoka's Spear");
+    Name$HinokasGuidance_instance = new Name('HinokasGuidance', 797, '\u5148\u5C0E', 'Guidance', '\u524D\u5C0E');
+    Name$Basilikos_instance = new Name('Basilikos', 798, '\u30D0\u30B7\u30EA\u30B3\u30B9', 'Basilikos', 'Basilikos');
+    Name$WingSword_instance = new Name('WingSword', 799, '\u30A6\u30A3\u30F3\u30B0\u30BD\u30FC\u30C9', 'Wing Sword', 'Wing Sword');
+    Name$FeliciasPlate_instance = new Name('FeliciasPlate', 800, '\u30D5\u30A7\u30EA\u30B7\u30A2\u306E\u6C37\u76BF', "Felicia's Plate", "Felicia's Plate");
+    Name$ゼルギウス_instance = new Name('\u30BC\u30EB\u30AE\u30A6\u30B9', 801, '\u30BC\u30EB\u30AE\u30A6\u30B9', 'Zelgius', '\u585E\u723E\u5409\u70CF\u65AF');
+    Name$ミカヤ_instance = new Name('\u30DF\u30AB\u30E4', 802, '\u30DF\u30AB\u30E4', 'Micaiah', '\u7C73\u5361\u96C5');
+    Name$サザ_instance = new Name('\u30B5\u30B6', 803, '\u30B5\u30B6', 'Sothe', '\u85A9\u672D');
+    Name$WarpPowder_instance = new Name('WarpPowder', 804, '\u8EE2\u79FB\u306E\u7C89', 'WarpPowder', '\u8F49\u79FB\u7C89\u672B');
+    Name$Thani_instance = new Name('Thani', 805, '\u30BB\u30A4\u30CB\u30FC', 'Thani', '\u8CFD\u5C3C');
+    Name$Sacrifice_instance = new Name('Sacrifice', 806, '\u7652\u3057\u306E\u624B', 'Sacrifice', '\u6CBB\u7652\u4E4B\u624B');
+    Name$Peshkatz_instance = new Name('Peshkatz', 807, '\u30DA\u30B7\u30E5\u30AB\u30C9', 'Peshkatz', '\u4F69\u4FEE\u5361\u7279');
+    Name$SpurAtkSpd_instance = new Name('SpurAtkSpd', 808, '\u653B\u6483\u901F\u3055\u306E\u7D0B\u7AE0', 'Spur Atk Spd', '\u653B\u64CA\u901F\u5EA6\u7D0B\u7AE0');
+    Name$FeliciasBlade_instance = new Name('FeliciasBlade', 809, '\u5965\u7FA9\u30AB\u30A6\u30F3\u30C8+1', 'Special cooldown charge +1 if foe uses magic', 'Special cooldown charge +1 if foe uses magic');
+    Name$BrazenDefRes_instance = new Name('BrazenDefRes', 810, '\u5B88\u5099\u9B54\u9632\u306E\u5927\u899A\u9192', 'Brazen Def Res', '\u9632\u5B88\u9B54\u9632\u5927\u89BA\u9192');
+    Name$ChillSpd_instance = new Name('ChillSpd', 811, '\u901F\u3055\u306E\u5C01\u5370', 'Chill Spd', 'Chill Spd');
+    Name$Expiration_instance = new Name('Expiration', 812, '\u90AA\u7ADC\u306E\u30D6\u30EC\u30B9', 'Expiration', 'Expiration');
+    Name$BelovedZofia_instance = new Name('BelovedZofia', 813, '\u5B9D\u5263\u30BD\u30D5\u30A3\u30A2', 'Beloved Zofia', 'Beloved Zofia');
+    Name$セリカ__闇__instance = new Name('\u30BB\u30EA\u30AB__\u95C7_', 814, '\u30BB\u30EA\u30AB\uFF08\u95C7\uFF09', 'Celica (Fallen Heroes)', '\u8CFD\u8389\u5361 (Fallen Heroes)');
+    Name$ハーディン__闇__instance = new Name('\u30CF\u30FC\u30C7\u30A3\u30F3__\u95C7_', 815, '\u30CF\u30FC\u30C7\u30A3\u30F3\uFF08\u95C7\uFF09', 'Hardin (Fallen Heroes)', 'Hardin');
+    Name$ルフレ__闇__instance = new Name('\u30EB\u30D5\u30EC__\u95C7_', 816, '\u30EB\u30D5\u30EC\uFF08\u95C7\uFF09', 'Robin (M) (Fallen Heroes)', '\u9B6F\u5F17\u840A(M) (Fallen Heroes)');
   }
   var Name$NONE_instance;
   function Name$NONE_getInstance() {
@@ -7487,6 +7527,11 @@ var FEHSIM = function (_, Kotlin) {
     Name_initFields();
     return Name$WardCavalry_instance;
   }
+  var Name$WardDragons_instance;
+  function Name$WardDragons_getInstance() {
+    Name_initFields();
+    return Name$WardDragons_instance;
+  }
   var Name$WardFliers_instance;
   function Name$WardFliers_getInstance() {
     Name_initFields();
@@ -7862,20 +7907,20 @@ var FEHSIM = function (_, Kotlin) {
     Name_initFields();
     return Name$FeliciasPlate_instance;
   }
-  var Name$__ゼルギウス__instance;
-  function Name$__ゼルギウス__getInstance() {
+  var Name$ゼルギウス_instance;
+  function Name$ゼルギウス_getInstance() {
     Name_initFields();
-    return Name$__ゼルギウス__instance;
+    return Name$ゼルギウス_instance;
   }
-  var Name$__ミカヤ__instance;
-  function Name$__ミカヤ__getInstance() {
+  var Name$ミカヤ_instance;
+  function Name$ミカヤ_getInstance() {
     Name_initFields();
-    return Name$__ミカヤ__instance;
+    return Name$ミカヤ_instance;
   }
-  var Name$__サザ__instance;
-  function Name$__サザ__getInstance() {
+  var Name$サザ_instance;
+  function Name$サザ_getInstance() {
     Name_initFields();
-    return Name$__サザ__instance;
+    return Name$サザ_instance;
   }
   var Name$WarpPowder_instance;
   function Name$WarpPowder_getInstance() {
@@ -7907,6 +7952,41 @@ var FEHSIM = function (_, Kotlin) {
     Name_initFields();
     return Name$FeliciasBlade_instance;
   }
+  var Name$BrazenDefRes_instance;
+  function Name$BrazenDefRes_getInstance() {
+    Name_initFields();
+    return Name$BrazenDefRes_instance;
+  }
+  var Name$ChillSpd_instance;
+  function Name$ChillSpd_getInstance() {
+    Name_initFields();
+    return Name$ChillSpd_instance;
+  }
+  var Name$Expiration_instance;
+  function Name$Expiration_getInstance() {
+    Name_initFields();
+    return Name$Expiration_instance;
+  }
+  var Name$BelovedZofia_instance;
+  function Name$BelovedZofia_getInstance() {
+    Name_initFields();
+    return Name$BelovedZofia_instance;
+  }
+  var Name$セリカ__闇__instance;
+  function Name$セリカ__闇__getInstance() {
+    Name_initFields();
+    return Name$セリカ__闇__instance;
+  }
+  var Name$ハーディン__闇__instance;
+  function Name$ハーディン__闇__getInstance() {
+    Name_initFields();
+    return Name$ハーディン__闇__instance;
+  }
+  var Name$ルフレ__闇__instance;
+  function Name$ルフレ__闇__getInstance() {
+    Name_initFields();
+    return Name$ルフレ__闇__instance;
+  }
   Name.prototype.localeName_miixs2$ = function (l) {
     switch (l.name) {
       case 'JAPANESE':
@@ -7925,7 +8005,7 @@ var FEHSIM = function (_, Kotlin) {
     interfaces: [Enum]
   };
   function Name$values() {
-    return [Name$NONE_getInstance(), Name$アイク_getInstance(), Name$アイク__総選挙__getInstance(), Name$アイク__伝承英雄__getInstance(), Name$アイラ_getInstance(), Name$アクア_getInstance(), Name$アクア__舞踏祭__getInstance(), Name$アサマ_getInstance(), Name$アズール__舞踏祭__getInstance(), Name$アテナ_getInstance(), Name$アベル_getInstance(), Name$アメリア_getInstance(), Name$アルフォンス_getInstance(), Name$アルム_getInstance(), Name$アルヴィス_getInstance(), Name$アンナ_getInstance(), Name$アーダン_getInstance(), Name$ウェンディ_getInstance(), Name$ウルスラ_getInstance(), Name$エイリーク_getInstance(), Name$エスト_getInstance(), Name$エフィ_getInstance(), Name$エフラム_getInstance(), Name$エリウッド_getInstance(), Name$エリンシア_getInstance(), Name$エリーゼ_getInstance(), Name$エリーゼ__夏__getInstance(), Name$エルトシャン_getInstance(), Name$エルフィ_getInstance(), Name$オグマ_getInstance(), Name$オスカー_getInstance(), Name$オボロ_getInstance(), Name$オリヴィエ_getInstance(), Name$オリヴィエ__舞踏祭__getInstance(), Name$オルエン_getInstance(), Name$オーディン_getInstance(), Name$カイン_getInstance(), Name$カゲロウ_getInstance(), Name$カザハナ_getInstance(), Name$カタリナ_getInstance(), Name$カチュア_getInstance(), Name$カミュ_getInstance(), Name$カミラ_getInstance(), Name$カミラ__春__getInstance(), Name$カムイ__夏__getInstance(), Name$カムイ__女__getInstance(), Name$カムイ__男__getInstance(), Name$カレル_getInstance(), Name$ガイア_getInstance(), Name$ガイア__夏__getInstance(), Name$ギュンター_getInstance(), Name$クライネ_getInstance(), Name$クラリーネ_getInstance(), Name$クレア_getInstance(), Name$クレイン_getInstance(), Name$クレーベ_getInstance(), Name$クロム_getInstance(), Name$クロム__冬__getInstance(), Name$クロム__春__getInstance(), Name$グレイ_getInstance(), Name$ゴードン_getInstance(), Name$サイゾウ_getInstance(), Name$サクラ_getInstance(), Name$サクラ__収穫祭__getInstance(), Name$サナキ_getInstance(), Name$サーリャ_getInstance(), Name$サーリャ__冬__getInstance(), Name$シグルド_getInstance(), Name$シグレ__舞踏祭__getInstance(), Name$シノノメ_getInstance(), Name$シャニー_getInstance(), Name$シャラ_getInstance(), Name$シャロン_getInstance(), Name$シャーロッテ__花嫁__getInstance(), Name$シーダ_getInstance(), Name$シーダ2_getInstance(), Name$シーダ__花嫁__getInstance(), Name$シーマ_getInstance(), Name$ジェイガン_getInstance(), Name$ジェニー_getInstance(), Name$ジャファル_getInstance(), Name$ジョルジュ_getInstance(), Name$ジョーカー_getInstance(), Name$ジョーカー__収穫祭__getInstance(), Name$ジークベルト_getInstance(), Name$セシリア_getInstance(), Name$セツナ_getInstance(), Name$セツナ2_getInstance(), Name$セネリオ_getInstance(), Name$セリカ_getInstance(), Name$セリス_getInstance(), Name$セルジュ_getInstance(), Name$セーバー_getInstance(), Name$セーラ_getInstance(), Name$ゼト_getInstance(), Name$ゼフィール_getInstance(), Name$ゼロ_getInstance(), Name$ソニア_getInstance(), Name$ソフィーヤ_getInstance(), Name$ソレイユ_getInstance(), Name$ソワレ_getInstance(), Name$ソール_getInstance(), Name$タクミ_getInstance(), Name$ターナ_getInstance(), Name$チキ__夏__getInstance(), Name$チキ__大人__getInstance(), Name$チキ__幼__getInstance(), Name$ツバキ_getInstance(), Name$ティアマト_getInstance(), Name$ティアモ_getInstance(), Name$ティアモ__花嫁__getInstance(), Name$ティルテュ_getInstance(), Name$ディアドラ_getInstance(), Name$デューテ_getInstance(), Name$ドニ_getInstance(), Name$ドルカス_getInstance(), Name$ドーガ_getInstance(), Name$ナバール_getInstance(), Name$ナーシェン_getInstance(), Name$ニニアン_getInstance(), Name$ニノ_getInstance(), Name$ネフェニー_getInstance(), Name$ノノ_getInstance(), Name$ノノ__収穫祭__getInstance(), Name$ハロルド_getInstance(), Name$バアトル_getInstance(), Name$バーツ_getInstance(), Name$パオラ_getInstance(), Name$ヒナタ_getInstance(), Name$ヒノカ_getInstance(), Name$ヒノカ2_getInstance(), Name$ヒーニアス_getInstance(), Name$ピエリ_getInstance(), Name$ファ_getInstance(), Name$フィヨルム_getInstance(), Name$フィル_getInstance(), Name$フェリシア_getInstance(), Name$フェリシア2_getInstance(), Name$フレデリク_getInstance(), Name$フレデリク__夏__getInstance(), Name$フロリーナ_getInstance(), Name$プリシラ_getInstance(), Name$ヘクトル_getInstance(), Name$ヘンリー_getInstance(), Name$ヘンリー__収穫祭__getInstance(), Name$ベルカ_getInstance(), Name$ベルクト_getInstance(), Name$ホークアイ_getInstance(), Name$ボーイ_getInstance(), Name$マシュー_getInstance(), Name$マチルダ_getInstance(), Name$マリア_getInstance(), Name$マリク_getInstance(), Name$マルス_getInstance(), Name$マルス__仮面__getInstance(), Name$マークス_getInstance(), Name$マークス__夏__getInstance(), Name$マークス__春__getInstance(), Name$ミシェイル_getInstance(), Name$ミスト_getInstance(), Name$ミネルバ_getInstance(), Name$メイ_getInstance(), Name$ユリア_getInstance(), Name$ヨシュア_getInstance(), Name$ラインハルト_getInstance(), Name$ラケシス_getInstance(), Name$ラズワルド_getInstance(), Name$リズ_getInstance(), Name$リズ__冬__getInstance(), Name$リフ_getInstance(), Name$リョウマ_getInstance(), Name$リリーナ_getInstance(), Name$リン_getInstance(), Name$リンダ_getInstance(), Name$リン__総選挙__getInstance(), Name$リン__花嫁__getInstance(), Name$ルカ_getInstance(), Name$ルキナ_getInstance(), Name$ルキナ__春__getInstance(), Name$ルキナ__総選挙__getInstance(), Name$ルセア_getInstance(), Name$ルフレ__冬__getInstance(), Name$ルフレ__夏__getInstance(), Name$ルフレ__女__getInstance(), Name$ルフレ__男__getInstance(), Name$ルーク_getInstance(), Name$ルーテ_getInstance(), Name$ルーナ_getInstance(), Name$レイ_getInstance(), Name$レイヴァン_getInstance(), Name$レイヴァン2_getInstance(), Name$レオ_getInstance(), Name$レオン_getInstance(), Name$レオン__夏__getInstance(), Name$レベッカ_getInstance(), Name$ロイ_getInstance(), Name$ロイド_getInstance(), Name$ロイ__総選挙__getInstance(), Name$ロディ_getInstance(), Name$ロビン_getInstance(), Name$ロンクー_getInstance(), Name$ローロー_getInstance(), Name$ワユ_getInstance(), Name$ヴァルター_getInstance(), Name$ヴィオール_getInstance(), Name$漆黒の騎士_getInstance(), Name$Absorb_getInstance(), Name$Absorb2_getInstance(), Name$Alondite_getInstance(), Name$Amiti_getInstance(), Name$Armoads_getInstance(), Name$ArmorSlayer_getInstance(), Name$ArmorSlayer2_getInstance(), Name$Armorsmasher_getInstance(), Name$Armorsmasher2_getInstance(), Name$AssassinsBow_getInstance(), Name$AssassinsBow2_getInstance(), Name$Assault_getInstance(), Name$Audhulma_getInstance(), Name$Aura_getInstance(), Name$AyrasBlade_getInstance(), Name$BerkutsLance_getInstance(), Name$BerkutsLance2_getInstance(), Name$BindingBlade_getInstance(), Name$Blarblade_getInstance(), Name$Blarblade2_getInstance(), Name$Blarowl_getInstance(), Name$Blarowl2_getInstance(), Name$Blarraven_getInstance(), Name$Blarraven2_getInstance(), Name$Blarwolf_getInstance(), Name$Blarwolf2_getInstance(), Name$BlazingDurandal_getInstance(), Name$BlessedBouquet_getInstance(), Name$BlessedBouquet2_getInstance(), Name$BlueEgg_getInstance(), Name$BlueEgg2_getInstance(), Name$Bolganone_getInstance(), Name$Bolganone2_getInstance(), Name$BraveAxe_getInstance(), Name$BraveAxe2_getInstance(), Name$BraveBow_getInstance(), Name$BraveBow2_getInstance(), Name$BraveLance_getInstance(), Name$BraveLance2_getInstance(), Name$BraveSword_getInstance(), Name$BraveSword2_getInstance(), Name$BrightNaginata_getInstance(), Name$Brynhildr_getInstance(), Name$Candelabra_getInstance(), Name$Candelabra2_getInstance(), Name$Candlelight_getInstance(), Name$Candlelight2_getInstance(), Name$CarrotAxe_getInstance(), Name$CarrotAxe2_getInstance(), Name$CarrotLance_getInstance(), Name$CarrotLance2_getInstance(), Name$ClarissesBow_getInstance(), Name$ClarissesBow2_getInstance(), Name$CupidArrow_getInstance(), Name$CupidArrow2_getInstance(), Name$CursedLance_getInstance(), Name$Cymbeline_getInstance(), Name$DancersFan_getInstance(), Name$DancersFan2_getInstance(), Name$DancersRing_getInstance(), Name$DancersRing2_getInstance(), Name$DancersScore_getInstance(), Name$DancersScore2_getInstance(), Name$DarkAura_getInstance(), Name$DarkBreath_getInstance(), Name$DarkBreath2_getInstance(), Name$DarkExcalibur_getInstance(), Name$DarkGreatsword_getInstance(), Name$DeathlyDagger_getInstance(), Name$DeftHarpoon_getInstance(), Name$DeftHarpoon2_getInstance(), Name$DireThunder_getInstance(), Name$DivineNaga_getInstance(), Name$DivineTyrfing_getInstance(), Name$Durandal_getInstance(), Name$Eckesachs_getInstance(), Name$Elfire_getInstance(), Name$Elivagar_getInstance(), Name$Elthunder_getInstance(), Name$Elwind_getInstance(), Name$EmeraldAxe_getInstance(), Name$EmeraldAxe2_getInstance(), Name$Excalibur_getInstance(), Name$FalchionA_getInstance(), Name$FalchionC_getInstance(), Name$FalchionM_getInstance(), Name$Fear_getInstance(), Name$Fear2_getInstance(), Name$Fenrir_getInstance(), Name$Fenrir2_getInstance(), Name$Fensalir_getInstance(), Name$Fire_getInstance(), Name$FireBreath_getInstance(), Name$FireBreath2_getInstance(), Name$FiresweepBow_getInstance(), Name$FiresweepBow2_getInstance(), Name$FiresweepLance_getInstance(), Name$FiresweepLance2_getInstance(), Name$FiresweepSword_getInstance(), Name$FiresweepSword2_getInstance(), Name$FirstBite_getInstance(), Name$FirstBite2_getInstance(), Name$Flametongue_getInstance(), Name$Flametongue2_getInstance(), Name$Flux_getInstance(), Name$Folkvangr_getInstance(), Name$FujinYumi_getInstance(), Name$Geirskogul_getInstance(), Name$Gradivus_getInstance(), Name$Gravity_getInstance(), Name$Gravity2_getInstance(), Name$GreenEgg_getInstance(), Name$GreenEgg2_getInstance(), Name$Grimoire_getInstance(), Name$Gronnblade_getInstance(), Name$Gronnblade2_getInstance(), Name$Gronnowl_getInstance(), Name$Gronnowl2_getInstance(), Name$Gronnraven_getInstance(), Name$Gronnraven2_getInstance(), Name$Gronnwolf_getInstance(), Name$Gronnwolf2_getInstance(), Name$GuardBow_getInstance(), Name$GuardBow2_getInstance(), Name$Hammer_getInstance(), Name$Hammer2_getInstance(), Name$Handbell_getInstance(), Name$Handbell2_getInstance(), Name$Hauteclere_getInstance(), Name$HeavySpear_getInstance(), Name$HeavySpear2_getInstance(), Name$HibiscusTome_getInstance(), Name$HibiscusTome2_getInstance(), Name$IronAxe_getInstance(), Name$IronBow_getInstance(), Name$IronDagger_getInstance(), Name$IronLance_getInstance(), Name$IronSword_getInstance(), Name$KeenBlarwolf_getInstance(), Name$KeenBlarwolf2_getInstance(), Name$KeenGronnwolf_getInstance(), Name$KeenGronnwolf2_getInstance(), Name$KeenRauorwolf_getInstance(), Name$KeenRauorwolf2_getInstance(), Name$KillerAxe_getInstance(), Name$KillerAxe2_getInstance(), Name$KillerBow_getInstance(), Name$KillerBow2_getInstance(), Name$KillerLance_getInstance(), Name$KillerLance2_getInstance(), Name$KillingEdge_getInstance(), Name$KillingEdge2_getInstance(), Name$KittyPaddle_getInstance(), Name$KittyPaddle2_getInstance(), Name$LegionsAxe_getInstance(), Name$LegionsAxe2_getInstance(), Name$Leiptr_getInstance(), Name$LightBreath_getInstance(), Name$LightBreath2_getInstance(), Name$LightningBreath_getInstance(), Name$LightningBreath2_getInstance(), Name$LilithFloatie_getInstance(), Name$LilithFloatie2_getInstance(), Name$MelonCrusher_getInstance(), Name$MelonCrusher2_getInstance(), Name$MonstrousBow_getInstance(), Name$MonstrousBow2_getInstance(), Name$HamaYa_getInstance(), Name$HamaYa2_getInstance(), Name$Mulagir_getInstance(), Name$Mystletainn_getInstance(), Name$Naga_getInstance(), Name$Nidhogg_getInstance(), Name$Noatun_getInstance(), Name$Pain_getInstance(), Name$Pain2_getInstance(), Name$Panic_getInstance(), Name$Panic2_getInstance(), Name$Parthia_getInstance(), Name$PoisonDagger_getInstance(), Name$PoisonDagger2_getInstance(), Name$Ragnarok_getInstance(), Name$Ragnell_getInstance(), Name$Raijinto_getInstance(), Name$Rauorblade_getInstance(), Name$Rauorblade2_getInstance(), Name$Rauorowl_getInstance(), Name$Rauorowl2_getInstance(), Name$Rauorraven_getInstance(), Name$Rauorraven2_getInstance(), Name$Rauorwolf_getInstance(), Name$Rauorwolf2_getInstance(), Name$RefreshingBolt_getInstance(), Name$RefreshingBolt2_getInstance(), Name$RegalBlade_getInstance(), Name$ResoluteBlade_getInstance(), Name$Rexcalibur_getInstance(), Name$Rexcalibur2_getInstance(), Name$Ridersbane_getInstance(), Name$Ridersbane2_getInstance(), Name$RogueDagger_getInstance(), Name$RogueDagger2_getInstance(), Name$RubySword_getInstance(), Name$RubySword2_getInstance(), Name$Ruin_getInstance(), Name$SackOGifts_getInstance(), Name$SackOGifts2_getInstance(), Name$SapphireLance_getInstance(), Name$SapphireLance2_getInstance(), Name$SealifeTome_getInstance(), Name$SealifeTome2_getInstance(), Name$Seashell_getInstance(), Name$Seashell2_getInstance(), Name$Siegfried_getInstance(), Name$Sieglinde_getInstance(), Name$Siegmund_getInstance(), Name$SilverAxe_getInstance(), Name$SilverAxe2_getInstance(), Name$SilverBow_getInstance(), Name$SilverBow2_getInstance(), Name$SilverDagger_getInstance(), Name$SilverDagger2_getInstance(), Name$SilverLance_getInstance(), Name$SilverLance2_getInstance(), Name$SilverSword_getInstance(), Name$SilverSword2_getInstance(), Name$SlayingAxe_getInstance(), Name$SlayingAxe2_getInstance(), Name$SlayingBow_getInstance(), Name$SlayingBow2_getInstance(), Name$SlayingEdge_getInstance(), Name$SlayingEdge2_getInstance(), Name$SlayingHammer_getInstance(), Name$SlayingHammer2_getInstance(), Name$SlayingLance_getInstance(), Name$SlayingLance2_getInstance(), Name$SlayingSpear_getInstance(), Name$SlayingSpear2_getInstance(), Name$Slow_getInstance(), Name$Slow2_getInstance(), Name$SmokeDagger_getInstance(), Name$SmokeDagger2_getInstance(), Name$SolKatti_getInstance(), Name$SpectralTome_getInstance(), Name$SpectralTome2_getInstance(), Name$SteelAxe_getInstance(), Name$SteelBow_getInstance(), Name$SteelDagger_getInstance(), Name$SteelLance_getInstance(), Name$SteelSword_getInstance(), Name$StoutTomahawk_getInstance(), Name$Tannenboom_getInstance(), Name$Tannenboom2_getInstance(), Name$Thoron_getInstance(), Name$Thoron2_getInstance(), Name$Thunder_getInstance(), Name$TomatoTome_getInstance(), Name$TomatoTome2_getInstance(), Name$Tyrfing_getInstance(), Name$Uror_getInstance(), Name$Urvan_getInstance(), Name$Valaskjalf_getInstance(), Name$Valflame_getInstance(), Name$Vidofinir_getInstance(), Name$WaoDao_getInstance(), Name$WaoDao2_getInstance(), Name$WeirdingTome_getInstance(), Name$Wind_getInstance(), Name$Yato_getInstance(), Name$Zanbato_getInstance(), Name$Zanbato2_getInstance(), Name$ArdentSacrifice_getInstance(), Name$Dance_getInstance(), Name$DrawBack_getInstance(), Name$HarshCommand_getInstance(), Name$Heal_getInstance(), Name$Martyr_getInstance(), Name$Martyr2_getInstance(), Name$Mend_getInstance(), Name$Physic_getInstance(), Name$Physic2_getInstance(), Name$Pivot_getInstance(), Name$RallyAtkDef_getInstance(), Name$RallyAtkRes_getInstance(), Name$RallyAtkSpd_getInstance(), Name$RallyAttack_getInstance(), Name$RallyDefRes_getInstance(), Name$RallyDefense_getInstance(), Name$RallyResistance_getInstance(), Name$RallySpdDef_getInstance(), Name$RallySpdRes_getInstance(), Name$RallySpeed_getInstance(), Name$ReciprocalAid_getInstance(), Name$Reconcile_getInstance(), Name$Recover_getInstance(), Name$Recover2_getInstance(), Name$Rehabilitate_getInstance(), Name$Rehabilitate2_getInstance(), Name$Reposition_getInstance(), Name$Shove_getInstance(), Name$Sing_getInstance(), Name$Smite_getInstance(), Name$Swap_getInstance(), Name$Daylight_getInstance(), Name$Aegis_getInstance(), Name$Aether_getInstance(), Name$RadiantAether_getInstance(), Name$Astra_getInstance(), Name$BlackLuna_getInstance(), Name$BlazingFlame_getInstance(), Name$BlazingLight_getInstance(), Name$BlazingThunder_getInstance(), Name$BlazingWind_getInstance(), Name$Bonfire_getInstance(), Name$Buckler_getInstance(), Name$ChillingWind_getInstance(), Name$DragonGaze_getInstance(), Name$DragonFang_getInstance(), Name$DraconicAura_getInstance(), Name$Escutcheon_getInstance(), Name$Galeforce_getInstance(), Name$Glacies_getInstance(), Name$Glimmer_getInstance(), Name$GlowingEmber_getInstance(), Name$GrowingFlame_getInstance(), Name$GrowingLight_getInstance(), Name$GrowingThunder_getInstance(), Name$GrowingWind_getInstance(), Name$HeavenlyLight_getInstance(), Name$HolyVestments_getInstance(), Name$IceMirror_getInstance(), Name$Iceberg_getInstance(), Name$Ignis_getInstance(), Name$Imbue_getInstance(), Name$KindledFireBalm_getInstance(), Name$Luna_getInstance(), Name$Miracle_getInstance(), Name$Moonbow_getInstance(), Name$NewMoon_getInstance(), Name$NightSky_getInstance(), Name$Noontime_getInstance(), Name$Pavise_getInstance(), Name$RegnalAstra_getInstance(), Name$Reprisal_getInstance(), Name$Retribution_getInstance(), Name$RisingFlame_getInstance(), Name$RisingLight_getInstance(), Name$RisingThunder_getInstance(), Name$RisingWind_getInstance(), Name$SacredCowl_getInstance(), Name$Sol_getInstance(), Name$SolidEarthBalm_getInstance(), Name$StillWaterBalm_getInstance(), Name$SwiftWindsBalm_getInstance(), Name$Vengeance_getInstance(), Name$ArmoredBlow_getInstance(), Name$AtkDef_getInstance(), Name$AtkDefBond_getInstance(), Name$AtkRes_getInstance(), Name$AtkResBond_getInstance(), Name$AtkSpd_getInstance(), Name$Attack_getInstance(), Name$BracingBlow_getInstance(), Name$BrazenAtkDef_getInstance(), Name$BrazenAtkSpd_getInstance(), Name$CloseCounter_getInstance(), Name$CloseDef_getInstance(), Name$DartingBlow_getInstance(), Name$DeathBlow_getInstance(), Name$Defense_getInstance(), Name$DefiantAtk_getInstance(), Name$DefiantDef_getInstance(), Name$DefiantRes_getInstance(), Name$DefiantSpd_getInstance(), Name$DistantCounter_getInstance(), Name$DistantDef_getInstance(), Name$EarthBoost_getInstance(), Name$FierceStance_getInstance(), Name$FireBoost_getInstance(), Name$FlashingBlade_getInstance(), Name$FortressDef_getInstance(), Name$FortressRes_getInstance(), Name$Furry_getInstance(), Name$GranisShield_getInstance(), Name$HeavyBlade_getInstance(), Name$Hp_getInstance(), Name$HpDef_getInstance(), Name$HpRes_getInstance(), Name$HpSpd_getInstance(), Name$IotesShield_getInstance(), Name$LifeAndDeath_getInstance(), Name$MirrorStrike_getInstance(), Name$Resistance_getInstance(), Name$SpdDef_getInstance(), Name$SpdRes_getInstance(), Name$Speed_getInstance(), Name$SteadyBlow_getInstance(), Name$SteadyBreath_getInstance(), Name$SteadyStance_getInstance(), Name$SturdyBlow_getInstance(), Name$SvalinnShield_getInstance(), Name$SwiftSparrow_getInstance(), Name$SwiftStrike_getInstance(), Name$TriangleAdept_getInstance(), Name$WardingBlow_getInstance(), Name$WardingBreath_getInstance(), Name$WardingStance_getInstance(), Name$WaterBoost_getInstance(), Name$WindBoost_getInstance(), Name$AxeBreaker_getInstance(), Name$BTomeBreaker_getInstance(), Name$BeorcsBlessing_getInstance(), Name$BlazeDance_getInstance(), Name$BoldFighter_getInstance(), Name$BowBreaker_getInstance(), Name$BrashAssault_getInstance(), Name$CancelAffinity_getInstance(), Name$CrusadersWard_getInstance(), Name$DaggerBreaker_getInstance(), Name$DazzlingStaff_getInstance(), Name$Desperation_getInstance(), Name$DragBack_getInstance(), Name$EscapeRoute_getInstance(), Name$FlierFormation_getInstance(), Name$FollowUpRing_getInstance(), Name$GTomeBreaker_getInstance(), Name$GaleDance_getInstance(), Name$GeyserDance_getInstance(), Name$Guard_getInstance(), Name$HitAndRun_getInstance(), Name$KnockBack_getInstance(), Name$LanceBreaker_getInstance(), Name$LiveForBounty_getInstance(), Name$LiveForHonor_getInstance(), Name$LiveToServe_getInstance(), Name$Lunge_getInstance(), Name$Obstruct_getInstance(), Name$Pass_getInstance(), Name$PoisonStrike_getInstance(), Name$QuickRiposte_getInstance(), Name$RTomeBreaker_getInstance(), Name$RecoverRing_getInstance(), Name$Renewal_getInstance(), Name$SacaesBlessing_getInstance(), Name$SealAtk_getInstance(), Name$SealAtkDef_getInstance(), Name$SealAtkSpd_getInstance(), Name$SealDef_getInstance(), Name$SealRes_getInstance(), Name$SealSpd_getInstance(), Name$ShieldPulse_getInstance(), Name$SwordBreaker_getInstance(), Name$TorrentDance_getInstance(), Name$Vantage_getInstance(), Name$VengefulFighter_getInstance(), Name$WaryFighter_getInstance(), Name$Watersweep_getInstance(), Name$Windsweep_getInstance(), Name$WingsOfMercy_getInstance(), Name$Wrath_getInstance(), Name$WrathfulStaff_getInstance(), Name$ArmorMarch_getInstance(), Name$AtkPloy_getInstance(), Name$AtkSmoke_getInstance(), Name$AtkTactic_getInstance(), Name$AxeExperience_getInstance(), Name$AxeValor_getInstance(), Name$RTomeExperience_getInstance(), Name$RTomeValor_getInstance(), Name$BTomeExperience_getInstance(), Name$BTomeValor_getInstance(), Name$BowExperience_getInstance(), Name$BreathOfLife_getInstance(), Name$DaggerValor_getInstance(), Name$DefPloy_getInstance(), Name$DefTactic_getInstance(), Name$ResTactic_getInstance(), Name$DriveAtk_getInstance(), Name$DriveDef_getInstance(), Name$DriveRes_getInstance(), Name$DriveSpd_getInstance(), Name$FortifyArmor_getInstance(), Name$FortifyCavalry_getInstance(), Name$FortifyDef_getInstance(), Name$FortifyDragons_getInstance(), Name$FortifyFliers_getInstance(), Name$FortifyRes_getInstance(), Name$GTomeValor_getInstance(), Name$GoadArmor_getInstance(), Name$GoadCavalry_getInstance(), Name$GoadFliers_getInstance(), Name$Guidance_getInstance(), Name$HoneArmor_getInstance(), Name$HoneAtk_getInstance(), Name$HoneCavalry_getInstance(), Name$HoneDragons_getInstance(), Name$HoneFliers_getInstance(), Name$HoneSpd_getInstance(), Name$InfantryPulse_getInstance(), Name$LanceValor_getInstance(), Name$PanicPloy_getInstance(), Name$ResPloy_getInstance(), Name$SavageBlow_getInstance(), Name$SpdPloy_getInstance(), Name$SpdSmoke_getInstance(), Name$SpurAtk_getInstance(), Name$SpurDef_getInstance(), Name$SpurDefRes_getInstance(), Name$SpurRes_getInstance(), Name$SpurSpd_getInstance(), Name$SpurSpdDef_getInstance(), Name$SwordExperience_getInstance(), Name$SwordValor_getInstance(), Name$ThreatenAtk_getInstance(), Name$ThreatenDef_getInstance(), Name$ThreatenRes_getInstance(), Name$ThreatenSpd_getInstance(), Name$WardArmor_getInstance(), Name$WardCavalry_getInstance(), Name$WardFliers_getInstance(), Name$SquadAceA_getInstance(), Name$SquadAceB_getInstance(), Name$SquadAceC_getInstance(), Name$SquadAceD_getInstance(), Name$HardyBearing_getInstance(), Name$PhantomSpeed_getInstance(), Name$QuickenedPulse_getInstance(), Name$DeflectMagic_getInstance(), Name$DeflectMelee_getInstance(), Name$DeflectMissile_getInstance(), Name$Range1Atk_getInstance(), Name$Range1Spd_getInstance(), Name$Range1Def_getInstance(), Name$Range1Res_getInstance(), Name$Range2Atk_getInstance(), Name$Range2Spd_getInstance(), Name$Range2Def_getInstance(), Name$Range2Res_getInstance(), Name$Pursuit_getInstance(), Name$SpecialDamage_getInstance(), Name$Follow_getInstance(), Name$MagicSuppression_getInstance(), Name$AntiRangedWeapon_getInstance(), Name$BondFlyingAlly_getInstance(), Name$Nullify_getInstance(), Name$スリーズ_getInstance(), Name$アクア__正月__getInstance(), Name$カミラ__正月__getInstance(), Name$タクミ__正月__getInstance(), Name$カムイ__正月__getInstance(), Name$Blizzard_getInstance(), Name$ChillingSeal_getInstance(), Name$EarthDance_getInstance(), Name$SpdDefBond_getInstance(), Name$Hagoita_getInstance(), Name$Hagoita2_getInstance(), Name$Kadomatsu_getInstance(), Name$Kadomatsu2_getInstance(), Name$KagamiMochi_getInstance(), Name$KagamiMochi2_getInstance(), Name$エイリーク__追憶__getInstance(), Name$ラーチェル_getInstance(), Name$ミルラ_getInstance(), Name$リオン_getInstance(), Name$Gleipnir_getInstance(), Name$Ivaldi_getInstance(), Name$GreatFlame_getInstance(), Name$Naglfar_getInstance(), Name$ヘクトル__バレンタイン__getInstance(), Name$リリーナ__バレンタイン__getInstance(), Name$リン__バレンタイン__getInstance(), Name$ロイ__バレンタイン__getInstance(), Name$エリウッド__バレンタイン__getInstance(), Name$BerserkArmads_getInstance(), Name$GreenGift_getInstance(), Name$GreenGift2_getInstance(), Name$BlueGift_getInstance(), Name$BlueGift2_getInstance(), Name$Gratia_getInstance(), Name$Gratia2_getInstance(), Name$CasaBlanca_getInstance(), Name$CasaBlanca2_getInstance(), Name$HpAtk_getInstance(), Name$AtkSpdBond_getInstance(), Name$BowValor_getInstance(), Name$ArmoredBoots_getInstance(), Name$AtkSpdDefRes2ToAllies_getInstance(), Name$AtkSpdDefRes4_getInstance(), Name$doubleAttack_getInstance(), Name$HinokasSpear_getInstance(), Name$HinokasGuidance_getInstance(), Name$Basilikos_getInstance(), Name$WingSword_getInstance(), Name$FeliciasPlate_getInstance(), Name$__ゼルギウス__getInstance(), Name$__ミカヤ__getInstance(), Name$__サザ__getInstance(), Name$WarpPowder_getInstance(), Name$Thani_getInstance(), Name$Sacrifice_getInstance(), Name$Peshkatz_getInstance(), Name$SpurAtkSpd_getInstance(), Name$FeliciasBlade_getInstance()];
+    return [Name$NONE_getInstance(), Name$アイク_getInstance(), Name$アイク__総選挙__getInstance(), Name$アイク__伝承英雄__getInstance(), Name$アイラ_getInstance(), Name$アクア_getInstance(), Name$アクア__舞踏祭__getInstance(), Name$アサマ_getInstance(), Name$アズール__舞踏祭__getInstance(), Name$アテナ_getInstance(), Name$アベル_getInstance(), Name$アメリア_getInstance(), Name$アルフォンス_getInstance(), Name$アルム_getInstance(), Name$アルヴィス_getInstance(), Name$アンナ_getInstance(), Name$アーダン_getInstance(), Name$ウェンディ_getInstance(), Name$ウルスラ_getInstance(), Name$エイリーク_getInstance(), Name$エスト_getInstance(), Name$エフィ_getInstance(), Name$エフラム_getInstance(), Name$エリウッド_getInstance(), Name$エリンシア_getInstance(), Name$エリーゼ_getInstance(), Name$エリーゼ__夏__getInstance(), Name$エルトシャン_getInstance(), Name$エルフィ_getInstance(), Name$オグマ_getInstance(), Name$オスカー_getInstance(), Name$オボロ_getInstance(), Name$オリヴィエ_getInstance(), Name$オリヴィエ__舞踏祭__getInstance(), Name$オルエン_getInstance(), Name$オーディン_getInstance(), Name$カイン_getInstance(), Name$カゲロウ_getInstance(), Name$カザハナ_getInstance(), Name$カタリナ_getInstance(), Name$カチュア_getInstance(), Name$カミュ_getInstance(), Name$カミラ_getInstance(), Name$カミラ__春__getInstance(), Name$カムイ__夏__getInstance(), Name$カムイ__女__getInstance(), Name$カムイ__男__getInstance(), Name$カレル_getInstance(), Name$ガイア_getInstance(), Name$ガイア__夏__getInstance(), Name$ギュンター_getInstance(), Name$クライネ_getInstance(), Name$クラリーネ_getInstance(), Name$クレア_getInstance(), Name$クレイン_getInstance(), Name$クレーベ_getInstance(), Name$クロム_getInstance(), Name$クロム__冬__getInstance(), Name$クロム__春__getInstance(), Name$グレイ_getInstance(), Name$ゴードン_getInstance(), Name$サイゾウ_getInstance(), Name$サクラ_getInstance(), Name$サクラ__収穫祭__getInstance(), Name$サナキ_getInstance(), Name$サーリャ_getInstance(), Name$サーリャ__冬__getInstance(), Name$シグルド_getInstance(), Name$シグレ__舞踏祭__getInstance(), Name$シノノメ_getInstance(), Name$シャニー_getInstance(), Name$シャラ_getInstance(), Name$シャロン_getInstance(), Name$シャーロッテ__花嫁__getInstance(), Name$シーダ_getInstance(), Name$シーダ2_getInstance(), Name$シーダ__花嫁__getInstance(), Name$シーマ_getInstance(), Name$ジェイガン_getInstance(), Name$ジェニー_getInstance(), Name$ジャファル_getInstance(), Name$ジョルジュ_getInstance(), Name$ジョーカー_getInstance(), Name$ジョーカー__収穫祭__getInstance(), Name$ジークベルト_getInstance(), Name$セシリア_getInstance(), Name$セツナ_getInstance(), Name$セツナ2_getInstance(), Name$セネリオ_getInstance(), Name$セリカ_getInstance(), Name$セリス_getInstance(), Name$セルジュ_getInstance(), Name$セーバー_getInstance(), Name$セーラ_getInstance(), Name$ゼト_getInstance(), Name$ゼフィール_getInstance(), Name$ゼロ_getInstance(), Name$ソニア_getInstance(), Name$ソフィーヤ_getInstance(), Name$ソレイユ_getInstance(), Name$ソワレ_getInstance(), Name$ソール_getInstance(), Name$タクミ_getInstance(), Name$ターナ_getInstance(), Name$チキ__夏__getInstance(), Name$チキ__大人__getInstance(), Name$チキ__幼__getInstance(), Name$ツバキ_getInstance(), Name$ティアマト_getInstance(), Name$ティアモ_getInstance(), Name$ティアモ__花嫁__getInstance(), Name$ティルテュ_getInstance(), Name$ディアドラ_getInstance(), Name$デューテ_getInstance(), Name$ドニ_getInstance(), Name$ドルカス_getInstance(), Name$ドーガ_getInstance(), Name$ナバール_getInstance(), Name$ナーシェン_getInstance(), Name$ニニアン_getInstance(), Name$ニノ_getInstance(), Name$ネフェニー_getInstance(), Name$ノノ_getInstance(), Name$ノノ__収穫祭__getInstance(), Name$ハロルド_getInstance(), Name$バアトル_getInstance(), Name$バーツ_getInstance(), Name$パオラ_getInstance(), Name$ヒナタ_getInstance(), Name$ヒノカ_getInstance(), Name$ヒノカ2_getInstance(), Name$ヒーニアス_getInstance(), Name$ピエリ_getInstance(), Name$ファ_getInstance(), Name$フィヨルム_getInstance(), Name$フィル_getInstance(), Name$フェリシア_getInstance(), Name$フェリシア2_getInstance(), Name$フレデリク_getInstance(), Name$フレデリク__夏__getInstance(), Name$フロリーナ_getInstance(), Name$プリシラ_getInstance(), Name$ヘクトル_getInstance(), Name$ヘンリー_getInstance(), Name$ヘンリー__収穫祭__getInstance(), Name$ベルカ_getInstance(), Name$ベルクト_getInstance(), Name$ホークアイ_getInstance(), Name$ボーイ_getInstance(), Name$マシュー_getInstance(), Name$マチルダ_getInstance(), Name$マリア_getInstance(), Name$マリク_getInstance(), Name$マルス_getInstance(), Name$マルス__仮面__getInstance(), Name$マークス_getInstance(), Name$マークス__夏__getInstance(), Name$マークス__春__getInstance(), Name$ミシェイル_getInstance(), Name$ミスト_getInstance(), Name$ミネルバ_getInstance(), Name$メイ_getInstance(), Name$ユリア_getInstance(), Name$ヨシュア_getInstance(), Name$ラインハルト_getInstance(), Name$ラケシス_getInstance(), Name$ラズワルド_getInstance(), Name$リズ_getInstance(), Name$リズ__冬__getInstance(), Name$リフ_getInstance(), Name$リョウマ_getInstance(), Name$リリーナ_getInstance(), Name$リン_getInstance(), Name$リンダ_getInstance(), Name$リン__総選挙__getInstance(), Name$リン__花嫁__getInstance(), Name$ルカ_getInstance(), Name$ルキナ_getInstance(), Name$ルキナ__春__getInstance(), Name$ルキナ__総選挙__getInstance(), Name$ルセア_getInstance(), Name$ルフレ__冬__getInstance(), Name$ルフレ__夏__getInstance(), Name$ルフレ__女__getInstance(), Name$ルフレ__男__getInstance(), Name$ルーク_getInstance(), Name$ルーテ_getInstance(), Name$ルーナ_getInstance(), Name$レイ_getInstance(), Name$レイヴァン_getInstance(), Name$レイヴァン2_getInstance(), Name$レオ_getInstance(), Name$レオン_getInstance(), Name$レオン__夏__getInstance(), Name$レベッカ_getInstance(), Name$ロイ_getInstance(), Name$ロイド_getInstance(), Name$ロイ__総選挙__getInstance(), Name$ロディ_getInstance(), Name$ロビン_getInstance(), Name$ロンクー_getInstance(), Name$ローロー_getInstance(), Name$ワユ_getInstance(), Name$ヴァルター_getInstance(), Name$ヴィオール_getInstance(), Name$漆黒の騎士_getInstance(), Name$Absorb_getInstance(), Name$Absorb2_getInstance(), Name$Alondite_getInstance(), Name$Amiti_getInstance(), Name$Armoads_getInstance(), Name$ArmorSlayer_getInstance(), Name$ArmorSlayer2_getInstance(), Name$Armorsmasher_getInstance(), Name$Armorsmasher2_getInstance(), Name$AssassinsBow_getInstance(), Name$AssassinsBow2_getInstance(), Name$Assault_getInstance(), Name$Audhulma_getInstance(), Name$Aura_getInstance(), Name$AyrasBlade_getInstance(), Name$BerkutsLance_getInstance(), Name$BerkutsLance2_getInstance(), Name$BindingBlade_getInstance(), Name$Blarblade_getInstance(), Name$Blarblade2_getInstance(), Name$Blarowl_getInstance(), Name$Blarowl2_getInstance(), Name$Blarraven_getInstance(), Name$Blarraven2_getInstance(), Name$Blarwolf_getInstance(), Name$Blarwolf2_getInstance(), Name$BlazingDurandal_getInstance(), Name$BlessedBouquet_getInstance(), Name$BlessedBouquet2_getInstance(), Name$BlueEgg_getInstance(), Name$BlueEgg2_getInstance(), Name$Bolganone_getInstance(), Name$Bolganone2_getInstance(), Name$BraveAxe_getInstance(), Name$BraveAxe2_getInstance(), Name$BraveBow_getInstance(), Name$BraveBow2_getInstance(), Name$BraveLance_getInstance(), Name$BraveLance2_getInstance(), Name$BraveSword_getInstance(), Name$BraveSword2_getInstance(), Name$BrightNaginata_getInstance(), Name$Brynhildr_getInstance(), Name$Candelabra_getInstance(), Name$Candelabra2_getInstance(), Name$Candlelight_getInstance(), Name$Candlelight2_getInstance(), Name$CarrotAxe_getInstance(), Name$CarrotAxe2_getInstance(), Name$CarrotLance_getInstance(), Name$CarrotLance2_getInstance(), Name$ClarissesBow_getInstance(), Name$ClarissesBow2_getInstance(), Name$CupidArrow_getInstance(), Name$CupidArrow2_getInstance(), Name$CursedLance_getInstance(), Name$Cymbeline_getInstance(), Name$DancersFan_getInstance(), Name$DancersFan2_getInstance(), Name$DancersRing_getInstance(), Name$DancersRing2_getInstance(), Name$DancersScore_getInstance(), Name$DancersScore2_getInstance(), Name$DarkAura_getInstance(), Name$DarkBreath_getInstance(), Name$DarkBreath2_getInstance(), Name$DarkExcalibur_getInstance(), Name$DarkGreatsword_getInstance(), Name$DeathlyDagger_getInstance(), Name$DeftHarpoon_getInstance(), Name$DeftHarpoon2_getInstance(), Name$DireThunder_getInstance(), Name$DivineNaga_getInstance(), Name$DivineTyrfing_getInstance(), Name$Durandal_getInstance(), Name$Eckesachs_getInstance(), Name$Elfire_getInstance(), Name$Elivagar_getInstance(), Name$Elthunder_getInstance(), Name$Elwind_getInstance(), Name$EmeraldAxe_getInstance(), Name$EmeraldAxe2_getInstance(), Name$Excalibur_getInstance(), Name$FalchionA_getInstance(), Name$FalchionC_getInstance(), Name$FalchionM_getInstance(), Name$Fear_getInstance(), Name$Fear2_getInstance(), Name$Fenrir_getInstance(), Name$Fenrir2_getInstance(), Name$Fensalir_getInstance(), Name$Fire_getInstance(), Name$FireBreath_getInstance(), Name$FireBreath2_getInstance(), Name$FiresweepBow_getInstance(), Name$FiresweepBow2_getInstance(), Name$FiresweepLance_getInstance(), Name$FiresweepLance2_getInstance(), Name$FiresweepSword_getInstance(), Name$FiresweepSword2_getInstance(), Name$FirstBite_getInstance(), Name$FirstBite2_getInstance(), Name$Flametongue_getInstance(), Name$Flametongue2_getInstance(), Name$Flux_getInstance(), Name$Folkvangr_getInstance(), Name$FujinYumi_getInstance(), Name$Geirskogul_getInstance(), Name$Gradivus_getInstance(), Name$Gravity_getInstance(), Name$Gravity2_getInstance(), Name$GreenEgg_getInstance(), Name$GreenEgg2_getInstance(), Name$Grimoire_getInstance(), Name$Gronnblade_getInstance(), Name$Gronnblade2_getInstance(), Name$Gronnowl_getInstance(), Name$Gronnowl2_getInstance(), Name$Gronnraven_getInstance(), Name$Gronnraven2_getInstance(), Name$Gronnwolf_getInstance(), Name$Gronnwolf2_getInstance(), Name$GuardBow_getInstance(), Name$GuardBow2_getInstance(), Name$Hammer_getInstance(), Name$Hammer2_getInstance(), Name$Handbell_getInstance(), Name$Handbell2_getInstance(), Name$Hauteclere_getInstance(), Name$HeavySpear_getInstance(), Name$HeavySpear2_getInstance(), Name$HibiscusTome_getInstance(), Name$HibiscusTome2_getInstance(), Name$IronAxe_getInstance(), Name$IronBow_getInstance(), Name$IronDagger_getInstance(), Name$IronLance_getInstance(), Name$IronSword_getInstance(), Name$KeenBlarwolf_getInstance(), Name$KeenBlarwolf2_getInstance(), Name$KeenGronnwolf_getInstance(), Name$KeenGronnwolf2_getInstance(), Name$KeenRauorwolf_getInstance(), Name$KeenRauorwolf2_getInstance(), Name$KillerAxe_getInstance(), Name$KillerAxe2_getInstance(), Name$KillerBow_getInstance(), Name$KillerBow2_getInstance(), Name$KillerLance_getInstance(), Name$KillerLance2_getInstance(), Name$KillingEdge_getInstance(), Name$KillingEdge2_getInstance(), Name$KittyPaddle_getInstance(), Name$KittyPaddle2_getInstance(), Name$LegionsAxe_getInstance(), Name$LegionsAxe2_getInstance(), Name$Leiptr_getInstance(), Name$LightBreath_getInstance(), Name$LightBreath2_getInstance(), Name$LightningBreath_getInstance(), Name$LightningBreath2_getInstance(), Name$LilithFloatie_getInstance(), Name$LilithFloatie2_getInstance(), Name$MelonCrusher_getInstance(), Name$MelonCrusher2_getInstance(), Name$MonstrousBow_getInstance(), Name$MonstrousBow2_getInstance(), Name$HamaYa_getInstance(), Name$HamaYa2_getInstance(), Name$Mulagir_getInstance(), Name$Mystletainn_getInstance(), Name$Naga_getInstance(), Name$Nidhogg_getInstance(), Name$Noatun_getInstance(), Name$Pain_getInstance(), Name$Pain2_getInstance(), Name$Panic_getInstance(), Name$Panic2_getInstance(), Name$Parthia_getInstance(), Name$PoisonDagger_getInstance(), Name$PoisonDagger2_getInstance(), Name$Ragnarok_getInstance(), Name$Ragnell_getInstance(), Name$Raijinto_getInstance(), Name$Rauorblade_getInstance(), Name$Rauorblade2_getInstance(), Name$Rauorowl_getInstance(), Name$Rauorowl2_getInstance(), Name$Rauorraven_getInstance(), Name$Rauorraven2_getInstance(), Name$Rauorwolf_getInstance(), Name$Rauorwolf2_getInstance(), Name$RefreshingBolt_getInstance(), Name$RefreshingBolt2_getInstance(), Name$RegalBlade_getInstance(), Name$ResoluteBlade_getInstance(), Name$Rexcalibur_getInstance(), Name$Rexcalibur2_getInstance(), Name$Ridersbane_getInstance(), Name$Ridersbane2_getInstance(), Name$RogueDagger_getInstance(), Name$RogueDagger2_getInstance(), Name$RubySword_getInstance(), Name$RubySword2_getInstance(), Name$Ruin_getInstance(), Name$SackOGifts_getInstance(), Name$SackOGifts2_getInstance(), Name$SapphireLance_getInstance(), Name$SapphireLance2_getInstance(), Name$SealifeTome_getInstance(), Name$SealifeTome2_getInstance(), Name$Seashell_getInstance(), Name$Seashell2_getInstance(), Name$Siegfried_getInstance(), Name$Sieglinde_getInstance(), Name$Siegmund_getInstance(), Name$SilverAxe_getInstance(), Name$SilverAxe2_getInstance(), Name$SilverBow_getInstance(), Name$SilverBow2_getInstance(), Name$SilverDagger_getInstance(), Name$SilverDagger2_getInstance(), Name$SilverLance_getInstance(), Name$SilverLance2_getInstance(), Name$SilverSword_getInstance(), Name$SilverSword2_getInstance(), Name$SlayingAxe_getInstance(), Name$SlayingAxe2_getInstance(), Name$SlayingBow_getInstance(), Name$SlayingBow2_getInstance(), Name$SlayingEdge_getInstance(), Name$SlayingEdge2_getInstance(), Name$SlayingHammer_getInstance(), Name$SlayingHammer2_getInstance(), Name$SlayingLance_getInstance(), Name$SlayingLance2_getInstance(), Name$SlayingSpear_getInstance(), Name$SlayingSpear2_getInstance(), Name$Slow_getInstance(), Name$Slow2_getInstance(), Name$SmokeDagger_getInstance(), Name$SmokeDagger2_getInstance(), Name$SolKatti_getInstance(), Name$SpectralTome_getInstance(), Name$SpectralTome2_getInstance(), Name$SteelAxe_getInstance(), Name$SteelBow_getInstance(), Name$SteelDagger_getInstance(), Name$SteelLance_getInstance(), Name$SteelSword_getInstance(), Name$StoutTomahawk_getInstance(), Name$Tannenboom_getInstance(), Name$Tannenboom2_getInstance(), Name$Thoron_getInstance(), Name$Thoron2_getInstance(), Name$Thunder_getInstance(), Name$TomatoTome_getInstance(), Name$TomatoTome2_getInstance(), Name$Tyrfing_getInstance(), Name$Uror_getInstance(), Name$Urvan_getInstance(), Name$Valaskjalf_getInstance(), Name$Valflame_getInstance(), Name$Vidofinir_getInstance(), Name$WaoDao_getInstance(), Name$WaoDao2_getInstance(), Name$WeirdingTome_getInstance(), Name$Wind_getInstance(), Name$Yato_getInstance(), Name$Zanbato_getInstance(), Name$Zanbato2_getInstance(), Name$ArdentSacrifice_getInstance(), Name$Dance_getInstance(), Name$DrawBack_getInstance(), Name$HarshCommand_getInstance(), Name$Heal_getInstance(), Name$Martyr_getInstance(), Name$Martyr2_getInstance(), Name$Mend_getInstance(), Name$Physic_getInstance(), Name$Physic2_getInstance(), Name$Pivot_getInstance(), Name$RallyAtkDef_getInstance(), Name$RallyAtkRes_getInstance(), Name$RallyAtkSpd_getInstance(), Name$RallyAttack_getInstance(), Name$RallyDefRes_getInstance(), Name$RallyDefense_getInstance(), Name$RallyResistance_getInstance(), Name$RallySpdDef_getInstance(), Name$RallySpdRes_getInstance(), Name$RallySpeed_getInstance(), Name$ReciprocalAid_getInstance(), Name$Reconcile_getInstance(), Name$Recover_getInstance(), Name$Recover2_getInstance(), Name$Rehabilitate_getInstance(), Name$Rehabilitate2_getInstance(), Name$Reposition_getInstance(), Name$Shove_getInstance(), Name$Sing_getInstance(), Name$Smite_getInstance(), Name$Swap_getInstance(), Name$Daylight_getInstance(), Name$Aegis_getInstance(), Name$Aether_getInstance(), Name$RadiantAether_getInstance(), Name$Astra_getInstance(), Name$BlackLuna_getInstance(), Name$BlazingFlame_getInstance(), Name$BlazingLight_getInstance(), Name$BlazingThunder_getInstance(), Name$BlazingWind_getInstance(), Name$Bonfire_getInstance(), Name$Buckler_getInstance(), Name$ChillingWind_getInstance(), Name$DragonGaze_getInstance(), Name$DragonFang_getInstance(), Name$DraconicAura_getInstance(), Name$Escutcheon_getInstance(), Name$Galeforce_getInstance(), Name$Glacies_getInstance(), Name$Glimmer_getInstance(), Name$GlowingEmber_getInstance(), Name$GrowingFlame_getInstance(), Name$GrowingLight_getInstance(), Name$GrowingThunder_getInstance(), Name$GrowingWind_getInstance(), Name$HeavenlyLight_getInstance(), Name$HolyVestments_getInstance(), Name$IceMirror_getInstance(), Name$Iceberg_getInstance(), Name$Ignis_getInstance(), Name$Imbue_getInstance(), Name$KindledFireBalm_getInstance(), Name$Luna_getInstance(), Name$Miracle_getInstance(), Name$Moonbow_getInstance(), Name$NewMoon_getInstance(), Name$NightSky_getInstance(), Name$Noontime_getInstance(), Name$Pavise_getInstance(), Name$RegnalAstra_getInstance(), Name$Reprisal_getInstance(), Name$Retribution_getInstance(), Name$RisingFlame_getInstance(), Name$RisingLight_getInstance(), Name$RisingThunder_getInstance(), Name$RisingWind_getInstance(), Name$SacredCowl_getInstance(), Name$Sol_getInstance(), Name$SolidEarthBalm_getInstance(), Name$StillWaterBalm_getInstance(), Name$SwiftWindsBalm_getInstance(), Name$Vengeance_getInstance(), Name$ArmoredBlow_getInstance(), Name$AtkDef_getInstance(), Name$AtkDefBond_getInstance(), Name$AtkRes_getInstance(), Name$AtkResBond_getInstance(), Name$AtkSpd_getInstance(), Name$Attack_getInstance(), Name$BracingBlow_getInstance(), Name$BrazenAtkDef_getInstance(), Name$BrazenAtkSpd_getInstance(), Name$CloseCounter_getInstance(), Name$CloseDef_getInstance(), Name$DartingBlow_getInstance(), Name$DeathBlow_getInstance(), Name$Defense_getInstance(), Name$DefiantAtk_getInstance(), Name$DefiantDef_getInstance(), Name$DefiantRes_getInstance(), Name$DefiantSpd_getInstance(), Name$DistantCounter_getInstance(), Name$DistantDef_getInstance(), Name$EarthBoost_getInstance(), Name$FierceStance_getInstance(), Name$FireBoost_getInstance(), Name$FlashingBlade_getInstance(), Name$FortressDef_getInstance(), Name$FortressRes_getInstance(), Name$Furry_getInstance(), Name$GranisShield_getInstance(), Name$HeavyBlade_getInstance(), Name$Hp_getInstance(), Name$HpDef_getInstance(), Name$HpRes_getInstance(), Name$HpSpd_getInstance(), Name$IotesShield_getInstance(), Name$LifeAndDeath_getInstance(), Name$MirrorStrike_getInstance(), Name$Resistance_getInstance(), Name$SpdDef_getInstance(), Name$SpdRes_getInstance(), Name$Speed_getInstance(), Name$SteadyBlow_getInstance(), Name$SteadyBreath_getInstance(), Name$SteadyStance_getInstance(), Name$SturdyBlow_getInstance(), Name$SvalinnShield_getInstance(), Name$SwiftSparrow_getInstance(), Name$SwiftStrike_getInstance(), Name$TriangleAdept_getInstance(), Name$WardingBlow_getInstance(), Name$WardingBreath_getInstance(), Name$WardingStance_getInstance(), Name$WaterBoost_getInstance(), Name$WindBoost_getInstance(), Name$AxeBreaker_getInstance(), Name$BTomeBreaker_getInstance(), Name$BeorcsBlessing_getInstance(), Name$BlazeDance_getInstance(), Name$BoldFighter_getInstance(), Name$BowBreaker_getInstance(), Name$BrashAssault_getInstance(), Name$CancelAffinity_getInstance(), Name$CrusadersWard_getInstance(), Name$DaggerBreaker_getInstance(), Name$DazzlingStaff_getInstance(), Name$Desperation_getInstance(), Name$DragBack_getInstance(), Name$EscapeRoute_getInstance(), Name$FlierFormation_getInstance(), Name$FollowUpRing_getInstance(), Name$GTomeBreaker_getInstance(), Name$GaleDance_getInstance(), Name$GeyserDance_getInstance(), Name$Guard_getInstance(), Name$HitAndRun_getInstance(), Name$KnockBack_getInstance(), Name$LanceBreaker_getInstance(), Name$LiveForBounty_getInstance(), Name$LiveForHonor_getInstance(), Name$LiveToServe_getInstance(), Name$Lunge_getInstance(), Name$Obstruct_getInstance(), Name$Pass_getInstance(), Name$PoisonStrike_getInstance(), Name$QuickRiposte_getInstance(), Name$RTomeBreaker_getInstance(), Name$RecoverRing_getInstance(), Name$Renewal_getInstance(), Name$SacaesBlessing_getInstance(), Name$SealAtk_getInstance(), Name$SealAtkDef_getInstance(), Name$SealAtkSpd_getInstance(), Name$SealDef_getInstance(), Name$SealRes_getInstance(), Name$SealSpd_getInstance(), Name$ShieldPulse_getInstance(), Name$SwordBreaker_getInstance(), Name$TorrentDance_getInstance(), Name$Vantage_getInstance(), Name$VengefulFighter_getInstance(), Name$WaryFighter_getInstance(), Name$Watersweep_getInstance(), Name$Windsweep_getInstance(), Name$WingsOfMercy_getInstance(), Name$Wrath_getInstance(), Name$WrathfulStaff_getInstance(), Name$ArmorMarch_getInstance(), Name$AtkPloy_getInstance(), Name$AtkSmoke_getInstance(), Name$AtkTactic_getInstance(), Name$AxeExperience_getInstance(), Name$AxeValor_getInstance(), Name$RTomeExperience_getInstance(), Name$RTomeValor_getInstance(), Name$BTomeExperience_getInstance(), Name$BTomeValor_getInstance(), Name$BowExperience_getInstance(), Name$BreathOfLife_getInstance(), Name$DaggerValor_getInstance(), Name$DefPloy_getInstance(), Name$DefTactic_getInstance(), Name$ResTactic_getInstance(), Name$DriveAtk_getInstance(), Name$DriveDef_getInstance(), Name$DriveRes_getInstance(), Name$DriveSpd_getInstance(), Name$FortifyArmor_getInstance(), Name$FortifyCavalry_getInstance(), Name$FortifyDef_getInstance(), Name$FortifyDragons_getInstance(), Name$FortifyFliers_getInstance(), Name$FortifyRes_getInstance(), Name$GTomeValor_getInstance(), Name$GoadArmor_getInstance(), Name$GoadCavalry_getInstance(), Name$GoadFliers_getInstance(), Name$Guidance_getInstance(), Name$HoneArmor_getInstance(), Name$HoneAtk_getInstance(), Name$HoneCavalry_getInstance(), Name$HoneDragons_getInstance(), Name$HoneFliers_getInstance(), Name$HoneSpd_getInstance(), Name$InfantryPulse_getInstance(), Name$LanceValor_getInstance(), Name$PanicPloy_getInstance(), Name$ResPloy_getInstance(), Name$SavageBlow_getInstance(), Name$SpdPloy_getInstance(), Name$SpdSmoke_getInstance(), Name$SpurAtk_getInstance(), Name$SpurDef_getInstance(), Name$SpurDefRes_getInstance(), Name$SpurRes_getInstance(), Name$SpurSpd_getInstance(), Name$SpurSpdDef_getInstance(), Name$SwordExperience_getInstance(), Name$SwordValor_getInstance(), Name$ThreatenAtk_getInstance(), Name$ThreatenDef_getInstance(), Name$ThreatenRes_getInstance(), Name$ThreatenSpd_getInstance(), Name$WardArmor_getInstance(), Name$WardCavalry_getInstance(), Name$WardDragons_getInstance(), Name$WardFliers_getInstance(), Name$SquadAceA_getInstance(), Name$SquadAceB_getInstance(), Name$SquadAceC_getInstance(), Name$SquadAceD_getInstance(), Name$HardyBearing_getInstance(), Name$PhantomSpeed_getInstance(), Name$QuickenedPulse_getInstance(), Name$DeflectMagic_getInstance(), Name$DeflectMelee_getInstance(), Name$DeflectMissile_getInstance(), Name$Range1Atk_getInstance(), Name$Range1Spd_getInstance(), Name$Range1Def_getInstance(), Name$Range1Res_getInstance(), Name$Range2Atk_getInstance(), Name$Range2Spd_getInstance(), Name$Range2Def_getInstance(), Name$Range2Res_getInstance(), Name$Pursuit_getInstance(), Name$SpecialDamage_getInstance(), Name$Follow_getInstance(), Name$MagicSuppression_getInstance(), Name$AntiRangedWeapon_getInstance(), Name$BondFlyingAlly_getInstance(), Name$Nullify_getInstance(), Name$スリーズ_getInstance(), Name$アクア__正月__getInstance(), Name$カミラ__正月__getInstance(), Name$タクミ__正月__getInstance(), Name$カムイ__正月__getInstance(), Name$Blizzard_getInstance(), Name$ChillingSeal_getInstance(), Name$EarthDance_getInstance(), Name$SpdDefBond_getInstance(), Name$Hagoita_getInstance(), Name$Hagoita2_getInstance(), Name$Kadomatsu_getInstance(), Name$Kadomatsu2_getInstance(), Name$KagamiMochi_getInstance(), Name$KagamiMochi2_getInstance(), Name$エイリーク__追憶__getInstance(), Name$ラーチェル_getInstance(), Name$ミルラ_getInstance(), Name$リオン_getInstance(), Name$Gleipnir_getInstance(), Name$Ivaldi_getInstance(), Name$GreatFlame_getInstance(), Name$Naglfar_getInstance(), Name$ヘクトル__バレンタイン__getInstance(), Name$リリーナ__バレンタイン__getInstance(), Name$リン__バレンタイン__getInstance(), Name$ロイ__バレンタイン__getInstance(), Name$エリウッド__バレンタイン__getInstance(), Name$BerserkArmads_getInstance(), Name$GreenGift_getInstance(), Name$GreenGift2_getInstance(), Name$BlueGift_getInstance(), Name$BlueGift2_getInstance(), Name$Gratia_getInstance(), Name$Gratia2_getInstance(), Name$CasaBlanca_getInstance(), Name$CasaBlanca2_getInstance(), Name$HpAtk_getInstance(), Name$AtkSpdBond_getInstance(), Name$BowValor_getInstance(), Name$ArmoredBoots_getInstance(), Name$AtkSpdDefRes2ToAllies_getInstance(), Name$AtkSpdDefRes4_getInstance(), Name$doubleAttack_getInstance(), Name$HinokasSpear_getInstance(), Name$HinokasGuidance_getInstance(), Name$Basilikos_getInstance(), Name$WingSword_getInstance(), Name$FeliciasPlate_getInstance(), Name$ゼルギウス_getInstance(), Name$ミカヤ_getInstance(), Name$サザ_getInstance(), Name$WarpPowder_getInstance(), Name$Thani_getInstance(), Name$Sacrifice_getInstance(), Name$Peshkatz_getInstance(), Name$SpurAtkSpd_getInstance(), Name$FeliciasBlade_getInstance(), Name$BrazenDefRes_getInstance(), Name$ChillSpd_getInstance(), Name$Expiration_getInstance(), Name$BelovedZofia_getInstance(), Name$セリカ__闇__getInstance(), Name$ハーディン__闇__getInstance(), Name$ルフレ__闇__getInstance()];
   }
   Name.values = Name$values;
   function Name$valueOf(name) {
@@ -9380,6 +9460,8 @@ var FEHSIM = function (_, Kotlin) {
         return Name$WardArmor_getInstance();
       case 'WardCavalry':
         return Name$WardCavalry_getInstance();
+      case 'WardDragons':
+        return Name$WardDragons_getInstance();
       case 'WardFliers':
         return Name$WardFliers_getInstance();
       case 'SquadAceA':
@@ -9530,12 +9612,12 @@ var FEHSIM = function (_, Kotlin) {
         return Name$WingSword_getInstance();
       case 'FeliciasPlate':
         return Name$FeliciasPlate_getInstance();
-      case '__\u30BC\u30EB\u30AE\u30A6\u30B9_':
-        return Name$__ゼルギウス__getInstance();
-      case '__\u30DF\u30AB\u30E4_':
-        return Name$__ミカヤ__getInstance();
-      case '__\u30B5\u30B6_':
-        return Name$__サザ__getInstance();
+      case '\u30BC\u30EB\u30AE\u30A6\u30B9':
+        return Name$ゼルギウス_getInstance();
+      case '\u30DF\u30AB\u30E4':
+        return Name$ミカヤ_getInstance();
+      case '\u30B5\u30B6':
+        return Name$サザ_getInstance();
       case 'WarpPowder':
         return Name$WarpPowder_getInstance();
       case 'Thani':
@@ -9548,6 +9630,20 @@ var FEHSIM = function (_, Kotlin) {
         return Name$SpurAtkSpd_getInstance();
       case 'FeliciasBlade':
         return Name$FeliciasBlade_getInstance();
+      case 'BrazenDefRes':
+        return Name$BrazenDefRes_getInstance();
+      case 'ChillSpd':
+        return Name$ChillSpd_getInstance();
+      case 'Expiration':
+        return Name$Expiration_getInstance();
+      case 'BelovedZofia':
+        return Name$BelovedZofia_getInstance();
+      case '\u30BB\u30EA\u30AB__\u95C7_':
+        return Name$セリカ__闇__getInstance();
+      case '\u30CF\u30FC\u30C7\u30A3\u30F3__\u95C7_':
+        return Name$ハーディン__闇__getInstance();
+      case '\u30EB\u30D5\u30EC__\u95C7_':
+        return Name$ルフレ__闇__getInstance();
       default:throwISE('No enum constant jp.blogspot.turanukimaru.fehs.Name.' + name);
     }
   }
@@ -9754,7 +9850,8 @@ var FEHSIM = function (_, Kotlin) {
     this.createItem_0(Name$タクミ_getInstance(), 0, WeaponType$BOW_getInstance(), MoveType$INFANTRY_getInstance(), 5, 18, 8, 7, 6, 5, 6, 7, 8, 5, 2, Weapon$FujinYumi_getInstance(), null, Special$Vengeance_getInstance(), SkillA$CloseCounter_getInstance(), Skill$Companion_getInstance().NONE, SkillC$ThreatenSpd_getInstance().lv_za3lpa$(3));
     this.createItem_0(Name$ティアモ__花嫁__getInstance(), 0, WeaponType$BOW_getInstance(), MoveType$INFANTRY_getInstance(), 5, 17, 9, 9, 4, 5, 5, 8, 8, 3, 4, Weapon$CupidArrow2_getInstance(), Assist$RallyAtkSpd_getInstance(), null, Skill$Companion_getInstance().NONE, SkillB$EscapeRoute_getInstance().lv_za3lpa$(3), SkillC$BreathOfLife_getInstance().lv_za3lpa$(3));
     this.createItem_0(Name$ヒーニアス_getInstance(), 0, WeaponType$BOW_getInstance(), MoveType$INFANTRY_getInstance(), 5, 16, 9, 8, 4, 7, 5, 7, 8, 1, 7, Weapon$Nidhogg_getInstance(), null, Special$Iceberg_getInstance(), SkillA$FortressRes_getInstance().lv_za3lpa$(3), SkillB$CancelAffinity_getInstance().lv_za3lpa$(3), Skill$Companion_getInstance().NONE);
-    this.createItem_0(Name$フェリシア_getInstance(), 0, WeaponType$DAGGER_getInstance(), MoveType$INFANTRY_getInstance(), 3, 15, 6, 11, 3, 9, 5, 4, 8, 3, 8, Weapon$FeliciasPlate_getInstance(), null, Special$Glacies_getInstance(), SkillA$Resistance_getInstance().lv_za3lpa$(3), Skill$Companion_getInstance().NONE, SkillC$BreathOfLife_getInstance().lv_za3lpa$(3));
+    this.createItem_0(Name$フェリシア_getInstance(), 0, WeaponType$DAGGER_getInstance(), MoveType$INFANTRY_getInstance(), 3, 15, 6, 11, 3, 9, 5, 4, 8, 3, 8, Weapon$SilverDagger2_getInstance(), null, Special$Glacies_getInstance(), SkillA$Resistance_getInstance().lv_za3lpa$(3), Skill$Companion_getInstance().NONE, SkillC$BreathOfLife_getInstance().lv_za3lpa$(3));
+    this.createItem_0(Name$フェリシア2_getInstance(), 0, WeaponType$DAGGER_getInstance(), MoveType$INFANTRY_getInstance(), 3, 15, 6, 11, 3, 9, 5, 4, 8, 3, 8, Weapon$FeliciasPlate_getInstance(), null, Special$Glacies_getInstance(), SkillA$Resistance_getInstance().lv_za3lpa$(3), Skill$Companion_getInstance().NONE, SkillC$BreathOfLife_getInstance().lv_za3lpa$(3));
     this.createItem_0(Name$プリシラ_getInstance(), 0, WeaponType$STAFF_getInstance(), MoveType$CAVALRY_getInstance(), 4, 17, 7, 7, 4, 8, 5, 6, 6, 3, 7, Weapon$Panic_getInstance(), Assist$Rehabilitate_getInstance(), Special$StillWaterBalm_getInstance(), Skill$Companion_getInstance().NONE, Skill$Companion_getInstance().NONE, SkillC$SpurDef_getInstance().lv_za3lpa$(3));
     this.createItem_0(Name$フレデリク__夏__getInstance(), 0, WeaponType$DAGGER_getInstance(), MoveType$INFANTRY_getInstance(), 5, 18, 8, 7, 6, 5, 6, 7, 7, 6, 2, Weapon$Seashell2_getInstance(), Assist$ArdentSacrifice_getInstance(), null, SkillA$ArmoredBlow_getInstance().lv_za3lpa$(3), SkillB$SealAtkSpd_getInstance().lv_za3lpa$(2), Skill$Companion_getInstance().NONE);
     this.createItem_0(Name$マシュー_getInstance(), 0, WeaponType$DAGGER_getInstance(), MoveType$INFANTRY_getInstance(), 3, 17, 6, 10, 6, 5, 7, 5, 7, 7, 2, Weapon$RogueDagger2_getInstance(), Assist$ReciprocalAid_getInstance(), null, Skill$Companion_getInstance().NONE, SkillB$PoisonStrike_getInstance().lv_za3lpa$(3), SkillC$HoneSpd_getInstance().lv_za3lpa$(3));
@@ -9800,9 +9897,12 @@ var FEHSIM = function (_, Kotlin) {
     this.createItem_0(Name$リン__バレンタイン__getInstance(), 2, WeaponType$BTOME_getInstance(), MoveType$ARMORED_getInstance(), 5, 18, 9, 10, 5, 10, 5, 6, 8, 6, 7, Weapon$BlueGift2_getInstance(), Assist$ArdentSacrifice_getInstance(), null, SkillA$AtkSpdBond_getInstance().lv_za3lpa$(3), SkillB$Guard_getInstance().lv_za3lpa$(3), SkillC$ArmorMarch_getInstance().lv_za3lpa$(3));
     this.createItem_0(Name$ロイ__バレンタイン__getInstance(), 0, WeaponType$BOW_getInstance(), MoveType$CAVALRY_getInstance(), 5, 17, 9, 6, 5, 6, 4, 8, 2, 6, 7, Weapon$Gratia2_getInstance(), Assist$ReciprocalAid_getInstance(), null, SkillA$DeathBlow_getInstance().lv_za3lpa$(3), Skill$Companion_getInstance().NONE, SkillC$BowValor_getInstance().lv_za3lpa$(3));
     this.createItem_0(Name$エリウッド__バレンタイン__getInstance(), 2, WeaponType$LANCE_getInstance(), MoveType$ARMORED_getInstance(), 4, 23, 10, 8, 7, 7, 7, 9, 7, 6, 6, Weapon$CasaBlanca2_getInstance(), Assist$RallyAtkDef_getInstance(), null, SkillA$FireBoost_getInstance().lv_za3lpa$(3), Skill$Companion_getInstance().NONE, SkillC$GoadArmor_getInstance());
-    this.createItem_0(Name$__ゼルギウス__getInstance(), 1, WeaponType$SWORD_getInstance(), MoveType$ARMORED_getInstance(), 5, 22, 10, 7, 10, 6, 7, 8, 8, 9, 3, Weapon$Alondite_getInstance(), null, Special$BlackLuna_getInstance(), SkillA$FierceStance_getInstance().lv_za3lpa$(3), SkillB$WarpPowder_getInstance(), SkillC$PanicPloy_getInstance().lv_za3lpa$(3));
-    this.createItem_0(Name$__ミカヤ__getInstance(), 2, WeaponType$BTOME_getInstance(), MoveType$INFANTRY_getInstance(), 5, 16, 9, 6, 5, 9, 5, 8, 6, 2, 8, Weapon$Thani_getInstance(), Assist$Sacrifice_getInstance(), null, SkillA$DistantDef_getInstance().lv_za3lpa$(3), SkillB$Guard_getInstance().lv_za3lpa$(3), SkillC$DriveAtk_getInstance().lv_za3lpa$(2));
-    this.createItem_0(Name$__サザ__getInstance(), 0, WeaponType$DAGGER_getInstance(), MoveType$INFANTRY_getInstance(), 4, 17, 10, 9, 5, 4, 6, 8, 7, 4, 4, Weapon$Peshkatz_getInstance(), null, Special$Glimmer_getInstance(), SkillA$LifeAndDeath_getInstance().lv_za3lpa$(3), Skill$Companion_getInstance().NONE, SkillC$SpurAtkSpd_getInstance().lv_za3lpa$(2));
+    this.createItem_0(Name$ゼルギウス_getInstance(), 1, WeaponType$SWORD_getInstance(), MoveType$ARMORED_getInstance(), 5, 22, 10, 7, 10, 6, 7, 8, 8, 9, 3, Weapon$Alondite_getInstance(), null, Special$BlackLuna_getInstance(), SkillA$FierceStance_getInstance().lv_za3lpa$(3), SkillB$WarpPowder_getInstance(), SkillC$PanicPloy_getInstance().lv_za3lpa$(3));
+    this.createItem_0(Name$ミカヤ_getInstance(), 2, WeaponType$BTOME_getInstance(), MoveType$INFANTRY_getInstance(), 5, 16, 9, 6, 5, 9, 5, 8, 6, 2, 8, Weapon$Thani_getInstance(), Assist$Sacrifice_getInstance(), null, SkillA$DistantDef_getInstance().lv_za3lpa$(3), SkillB$Guard_getInstance().lv_za3lpa$(3), SkillC$DriveAtk_getInstance().lv_za3lpa$(2));
+    this.createItem_0(Name$サザ_getInstance(), 0, WeaponType$DAGGER_getInstance(), MoveType$INFANTRY_getInstance(), 4, 17, 10, 9, 5, 4, 6, 8, 7, 4, 4, Weapon$Peshkatz_getInstance(), null, Special$Glimmer_getInstance(), SkillA$LifeAndDeath_getInstance().lv_za3lpa$(3), Skill$Companion_getInstance().NONE, SkillC$SpurAtkSpd_getInstance().lv_za3lpa$(2));
+    this.createItem_0(Name$セリカ__闇__getInstance(), 1, WeaponType$SWORD_getInstance(), MoveType$INFANTRY_getInstance(), 5, 18, 9, 9, 5, 7, 6, 8, 8, 6, 5, Weapon$BelovedZofia_getInstance(), null, Special$Luna_getInstance(), Skill$Companion_getInstance().NONE, SkillB$ChillSpd_getInstance().lv_za3lpa$(3), SkillC$HoneAtk_getInstance().lv_za3lpa$(3));
+    this.createItem_0(Name$ハーディン__闇__getInstance(), 2, WeaponType$LANCE_getInstance(), MoveType$ARMORED_getInstance(), 5, 23, 8, 6, 10, 8, 6, 8, 6, 8, 7, Weapon$Gradivus_getInstance(), null, Special$Vengeance_getInstance(), SkillA$BrazenDefRes_getInstance().lv_za3lpa$(3), SkillB$BoldFighter_getInstance().lv_za3lpa$(3), Skill$Companion_getInstance().NONE);
+    this.createItem_0(Name$ルフレ__闇__getInstance(), 3, WeaponType$DRAGON_getInstance(), MoveType$ARMORED_getInstance(), 5, 24, 10, 7, 9, 5, 7, 10, 4, 8, 6, Weapon$Expiration_getInstance(), null, Special$Ignis_getInstance(), Skill$Companion_getInstance().NONE, SkillB$VengefulFighter_getInstance().lv_za3lpa$(3), SkillC$WardDragons_getInstance());
   };
   StandardBaseHero.prototype.createItem_0 = function (name, color, weaponType, moveType, minRarity, hp, atk, spd, def, res, hpgrowth, atkgrowth, spdgrowth, defgrowth, resgrowth, weapon, assist, special, aSkill, bSkill, cSkill) {
     if (name === void 0)
@@ -10214,6 +10314,28 @@ var FEHSIM = function (_, Kotlin) {
     }
   }
   Assist.valueOf_61zpoe$ = Assist$valueOf;
+  function Damage(source, special, weaponType, flat, staff, results) {
+    this.special = special;
+    this.deal = Damage$deal$lambda(this, source, weaponType, staff, flat, results);
+  }
+  function Damage$test$lambda(this$Damage, closure$source, closure$weaponType, closure$staff, closure$flat, closure$results) {
+    return function (target) {
+      return target.damaged_hqdydw$(Kotlin.imul(this$Damage.special.damage_sv9jhu$(closure$source, target.preventByDefResTerrain_3isy3r$(closure$weaponType, this$Damage.special.penetrate)), closure$staff) + closure$flat | 0, closure$results);
+    };
+  }
+  Damage.prototype.test_ekycsz$ = function (source, weaponType, flat, staff, results) {
+    return Damage$test$lambda(this, source, weaponType, staff, flat, results);
+  };
+  function Damage$deal$lambda(this$Damage, closure$source, closure$weaponType, closure$staff, closure$flat, closure$results) {
+    return function (target) {
+      return target.damaged_hqdydw$(Kotlin.imul(this$Damage.special.damage_sv9jhu$(closure$source, target.preventByDefResTerrain_3isy3r$(closure$weaponType, this$Damage.special.penetrate)), closure$staff) + closure$flat | 0, closure$results);
+    };
+  }
+  Damage.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'Damage',
+    interfaces: []
+  };
   function LappedSkill(skill, level) {
     this.skill = skill;
     this.level_cp3tvc$_0 = level;
@@ -10253,6 +10375,11 @@ var FEHSIM = function (_, Kotlin) {
   Object.defineProperty(LappedSkill.prototype, 'maxLevel', {
     get: function () {
       return this.skill.maxLevel;
+    }
+  });
+  Object.defineProperty(LappedSkill.prototype, 'penetrate', {
+    get: function () {
+      return this.skill.penetrate;
     }
   });
   Object.defineProperty(LappedSkill.prototype, 'preSkill', {
@@ -10309,6 +10436,9 @@ var FEHSIM = function (_, Kotlin) {
   };
   LappedSkill.prototype.attackPlan_p6uegp$$default = function (fightPlan, lv) {
     return this.skill.attackPlan_p6uegp$$default(fightPlan, lv);
+  };
+  LappedSkill.prototype.baseDamage_trfvk0$ = function (source) {
+    return this.skill.baseDamage_trfvk0$(source);
   };
   LappedSkill.prototype.beorcsBlessing_sv9jhu$ = function (battleUnit, thisLevel) {
     return this.skill.beorcsBlessing_sv9jhu$(battleUnit, thisLevel);
@@ -10373,8 +10503,8 @@ var FEHSIM = function (_, Kotlin) {
   LappedSkill.prototype.counterPlan_p6uegp$$default = function (fightPlan, lv) {
     return this.skill.counterPlan_p6uegp$$default(fightPlan, lv);
   };
-  LappedSkill.prototype.damage_96237r$$default = function (battleUnit, target, results, skill) {
-    return this.skill.damage_96237r$$default(battleUnit, target, results, skill);
+  LappedSkill.prototype.damage_sv9jhu$ = function (source, prevent) {
+    return this.skill.damage_sv9jhu$(source, prevent);
   };
   LappedSkill.prototype.dazzling_sv9jhu$ = function (battleUnit, lv) {
     return this.skill.dazzling_sv9jhu$(battleUnit, lv);
@@ -10469,6 +10599,9 @@ var FEHSIM = function (_, Kotlin) {
   LappedSkill.prototype.followupable_sv9jhu$ = function (battleUnit, lv) {
     return this.skill.followupable_sv9jhu$(battleUnit, lv);
   };
+  LappedSkill.prototype.fullHpAllBonus_sv9jhu$ = function (battleUnit, i) {
+    return this.skill.fullHpAllBonus_sv9jhu$(battleUnit, i);
+  };
   LappedSkill.prototype.fullHpAtkSpdBonus_sv9jhu$ = function (battleUnit, i) {
     return this.skill.fullHpAtkSpdBonus_sv9jhu$(battleUnit, i);
   };
@@ -10493,8 +10626,8 @@ var FEHSIM = function (_, Kotlin) {
   LappedSkill.prototype.prevent_w6mj9q$$default = function (battleUnit, damage, results, lv) {
     return this.skill.prevent_w6mj9q$$default(battleUnit, damage, results, lv);
   };
-  LappedSkill.prototype.reducedDamage_upjsjk$$default = function (battleUnit, damage, lv) {
-    return this.skill.reducedDamage_upjsjk$$default(battleUnit, damage, lv);
+  LappedSkill.prototype.preventedDamage_upjsjk$$default = function (battleUnit, damage, lv) {
+    return this.skill.preventedDamage_upjsjk$$default(battleUnit, damage, lv);
   };
   LappedSkill.prototype.sacasBlessing_sv9jhu$ = function (battleUnit, thisLevel) {
     return this.skill.sacasBlessing_sv9jhu$(battleUnit, thisLevel);
@@ -12396,7 +12529,7 @@ var FEHSIM = function (_, Kotlin) {
             this.itemMap_0.put_xwzc9p$(element.jp.tw, element);
           }
         }
-        var regex = Regex_init(' \\d');
+        var regex = Regex_init(' \\baseDamage');
         var lv = regex.find_905azu$(key);
         if (lv != null) {
           var skill = regex.replaceFirst_x2uqeu$(key, '');
@@ -12554,6 +12687,11 @@ var FEHSIM = function (_, Kotlin) {
       return 0;
     }
   });
+  Object.defineProperty(Skill.prototype, 'penetrate', {
+    get: function () {
+      return 0;
+    }
+  });
   Object.defineProperty(Skill.prototype, 'preSkill', {
     get: function () {
       return Skill$Companion_getInstance().NONE;
@@ -12667,15 +12805,11 @@ var FEHSIM = function (_, Kotlin) {
       lv = this.level;
     return callback$default ? callback$default(battleUnit, damage, lv) : this.specialTriggered_upjsjk$$default(battleUnit, damage, lv);
   };
-  Skill.prototype.damage_96237r$$default = function (battleUnit, target, results, skill) {
-    var damage = battleUnit.halfByStaff_za3lpa$(target.preventByDefResTerrain_yqyiwh$(battleUnit.colorAttack() + battleUnit.oneTimeOnlyAdditionalDamage | 0, battleUnit.armedHero.weapon.type));
-    battleUnit.oneTimeOnlyAdditionalDamage = 0;
-    return new Pair(damage > 0 ? damage : 0, skill);
+  Skill.prototype.damage_sv9jhu$ = function (source, prevent) {
+    return handmaidMath_getInstance().max_vux9f0$(this.baseDamage_trfvk0$(source) - prevent | 0, 0);
   };
-  Skill.prototype.damage_96237r$ = function (battleUnit, target, results, skill, callback$default) {
-    if (skill === void 0)
-      skill = null;
-    return callback$default ? callback$default(battleUnit, target, results, skill) : this.damage_96237r$$default(battleUnit, target, results, skill);
+  Skill.prototype.baseDamage_trfvk0$ = function (source) {
+    return source.colorAttack();
   };
   Skill.prototype.absorb_6zcyla$ = function (battleUnit, target, damage) {
     return damage;
@@ -12707,15 +12841,15 @@ var FEHSIM = function (_, Kotlin) {
       lv = this.level;
     return callback$default ? callback$default(battleUnit, lv) : this.afterFightEffect_sv9jhu$$default(battleUnit, lv);
   };
-  Skill.prototype.reducedDamage_upjsjk$$default = function (battleUnit, damage, lv) {
+  Skill.prototype.preventedDamage_upjsjk$$default = function (battleUnit, damage, lv) {
     return battleUnit;
   };
-  Skill.prototype.reducedDamage_upjsjk$ = function (battleUnit, damage, lv, callback$default) {
+  Skill.prototype.preventedDamage_upjsjk$ = function (battleUnit, damage, lv, callback$default) {
     if (damage === void 0)
       damage = 0;
     if (lv === void 0)
       lv = this.level;
-    return callback$default ? callback$default(battleUnit, damage, lv) : this.reducedDamage_upjsjk$$default(battleUnit, damage, lv);
+    return callback$default ? callback$default(battleUnit, damage, lv) : this.preventedDamage_upjsjk$$default(battleUnit, damage, lv);
   };
   Skill.prototype.defiantAtk_sv9jhu$ = function (battleUnit, lv) {
     if (battleUnit.hp <= (battleUnit.armedHero.maxHp / 2 | 0))
@@ -13019,6 +13153,18 @@ var FEHSIM = function (_, Kotlin) {
     }
     return battleUnit;
   };
+  Skill.prototype.fullHpAllBonus_sv9jhu$ = function (battleUnit, i) {
+    if (battleUnit.hp === battleUnit.armedHero.maxHp) {
+      battleUnit.atkEffect = battleUnit.atkEffect + i | 0;
+      battleUnit.spdEffect = battleUnit.spdEffect + i | 0;
+      battleUnit.defEffect = battleUnit.defEffect + i | 0;
+      battleUnit.resEffect = battleUnit.resEffect + i | 0;
+      if (battleUnit.side === SIDES$ATTACKER_getInstance()) {
+        battleUnit.hpLossAtEndOfFight = battleUnit.hpLossAtEndOfFight + i | 0;
+      }
+    }
+    return battleUnit;
+  };
   Skill.prototype.debuffBonus_trfvk0$ = function (battleUnit) {
     var enemy = ensureNotNull(battleUnit.enemy);
     battleUnit.debuffBonus = enemy.atkDebuff + enemy.spdDebuff + enemy.defBuff + enemy.resDebuff | 0;
@@ -13199,6 +13345,7 @@ var FEHSIM = function (_, Kotlin) {
     new SkillA$SpdDefBond();
     new SkillA$BrazenAtkDef();
     new SkillA$BrazenAtkSpd();
+    new SkillA$BrazenDefRes();
     SkillA$Companion_getInstance();
   }
   Object.defineProperty(SkillA.prototype, 'jp', {
@@ -14186,7 +14333,7 @@ var FEHSIM = function (_, Kotlin) {
     SkillA.call(this, 'BrazenAtkDef', 55, Name$BrazenAtkDef_getInstance(), SkillType$A_getInstance());
   }
   SkillA$BrazenAtkDef.prototype.counterEffect_sv9jhu$$default = function (battleUnit, lv) {
-    return this.brazenDef_sv9jhu$(this.brazenAtk_sv9jhu$(battleUnit, (lv * 2 | 0) + 1 | 0), (lv * 2 | 0) + 1 | 0);
+    return this.brazenAtk_sv9jhu$(this.brazenDef_sv9jhu$(battleUnit, (lv * 2 | 0) + 1 | 0), (lv * 2 | 0) + 1 | 0);
   };
   SkillA$BrazenAtkDef.$metadata$ = {
     kind: Kind_CLASS,
@@ -14203,7 +14350,7 @@ var FEHSIM = function (_, Kotlin) {
     SkillA.call(this, 'BrazenAtkSpd', 56, Name$BrazenAtkSpd_getInstance(), SkillType$A_getInstance());
   }
   SkillA$BrazenAtkSpd.prototype.counterEffect_sv9jhu$$default = function (battleUnit, lv) {
-    return this.brazenSpd_sv9jhu$(this.brazenAtk_sv9jhu$(battleUnit, (lv * 2 | 0) + 1 | 0), (lv * 2 | 0) + 1 | 0);
+    return this.brazenAtk_sv9jhu$(this.brazenSpd_sv9jhu$(battleUnit, (lv * 2 | 0) + 1 | 0), (lv * 2 | 0) + 1 | 0);
   };
   SkillA$BrazenAtkSpd.$metadata$ = {
     kind: Kind_CLASS,
@@ -14214,6 +14361,23 @@ var FEHSIM = function (_, Kotlin) {
   function SkillA$BrazenAtkSpd_getInstance() {
     SkillA_initFields();
     return SkillA$BrazenAtkSpd_instance;
+  }
+  function SkillA$BrazenDefRes() {
+    SkillA$BrazenDefRes_instance = this;
+    SkillA.call(this, 'BrazenDefRes', 57, Name$BrazenAtkSpd_getInstance(), SkillType$A_getInstance());
+  }
+  SkillA$BrazenDefRes.prototype.counterEffect_sv9jhu$$default = function (battleUnit, lv) {
+    return this.brazenDef_sv9jhu$(this.brazenRes_sv9jhu$(battleUnit, (lv * 2 | 0) + 1 | 0), (lv * 2 | 0) + 1 | 0);
+  };
+  SkillA$BrazenDefRes.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'BrazenDefRes',
+    interfaces: [SkillA]
+  };
+  var SkillA$BrazenDefRes_instance = null;
+  function SkillA$BrazenDefRes_getInstance() {
+    SkillA_initFields();
+    return SkillA$BrazenDefRes_instance;
   }
   SkillA.prototype.lv_za3lpa$ = function (lv) {
     return this.level === lv ? this : new LappedSkill(this, lv);
@@ -14268,7 +14432,7 @@ var FEHSIM = function (_, Kotlin) {
             this.itemMap_0.put_xwzc9p$(element.jp.tw, element);
           }
         }
-        var regex = Regex_init(' \\d');
+        var regex = Regex_init(' \\baseDamage');
         var lv = regex.find_905azu$(key);
         if (lv != null) {
           var skill = regex.replaceFirst_x2uqeu$(key, '');
@@ -14309,7 +14473,7 @@ var FEHSIM = function (_, Kotlin) {
     interfaces: [Skill, Enum]
   };
   function SkillA$values() {
-    return [SkillA$Hp_getInstance(), SkillA$HpSpd_getInstance(), SkillA$HpRes_getInstance(), SkillA$Attack_getInstance(), SkillA$AtkSpd_getInstance(), SkillA$AtkRes_getInstance(), SkillA$Speed_getInstance(), SkillA$SpdRes_getInstance(), SkillA$SpdDef_getInstance(), SkillA$Defense_getInstance(), SkillA$HpAtk_getInstance(), SkillA$AtkDef_getInstance(), SkillA$HpDef_getInstance(), SkillA$Resistance_getInstance(), SkillA$DefiantAtk_getInstance(), SkillA$DefiantSpd_getInstance(), SkillA$DefiantDef_getInstance(), SkillA$DefiantRes_getInstance(), SkillA$TriangleAdept_getInstance(), SkillA$LifeAndDeath_getInstance(), SkillA$Furry_getInstance(), SkillA$FortressDef_getInstance(), SkillA$FortressRes_getInstance(), SkillA$ArmoredBlow_getInstance(), SkillA$WardingBlow_getInstance(), SkillA$DeathBlow_getInstance(), SkillA$DartingBlow_getInstance(), SkillA$SwiftSparrow_getInstance(), SkillA$SturdyBlow_getInstance(), SkillA$SteadyBlow_getInstance(), SkillA$MirrorStrike_getInstance(), SkillA$BracingBlow_getInstance(), SkillA$SwiftStrike_getInstance(), SkillA$DistantDef_getInstance(), SkillA$CloseDef_getInstance(), SkillA$FierceStance_getInstance(), SkillA$SteadyStance_getInstance(), SkillA$WardingStance_getInstance(), SkillA$WardingBreath_getInstance(), SkillA$SteadyBreath_getInstance(), SkillA$EarthBoost_getInstance(), SkillA$WindBoost_getInstance(), SkillA$FireBoost_getInstance(), SkillA$WaterBoost_getInstance(), SkillA$HeavyBlade_getInstance(), SkillA$FlashingBlade_getInstance(), SkillA$CloseCounter_getInstance(), SkillA$DistantCounter_getInstance(), SkillA$SvalinnShield_getInstance(), SkillA$IotesShield_getInstance(), SkillA$GranisShield_getInstance(), SkillA$AtkSpdBond_getInstance(), SkillA$AtkDefBond_getInstance(), SkillA$AtkResBond_getInstance(), SkillA$SpdDefBond_getInstance(), SkillA$BrazenAtkDef_getInstance(), SkillA$BrazenAtkSpd_getInstance()];
+    return [SkillA$Hp_getInstance(), SkillA$HpSpd_getInstance(), SkillA$HpRes_getInstance(), SkillA$Attack_getInstance(), SkillA$AtkSpd_getInstance(), SkillA$AtkRes_getInstance(), SkillA$Speed_getInstance(), SkillA$SpdRes_getInstance(), SkillA$SpdDef_getInstance(), SkillA$Defense_getInstance(), SkillA$HpAtk_getInstance(), SkillA$AtkDef_getInstance(), SkillA$HpDef_getInstance(), SkillA$Resistance_getInstance(), SkillA$DefiantAtk_getInstance(), SkillA$DefiantSpd_getInstance(), SkillA$DefiantDef_getInstance(), SkillA$DefiantRes_getInstance(), SkillA$TriangleAdept_getInstance(), SkillA$LifeAndDeath_getInstance(), SkillA$Furry_getInstance(), SkillA$FortressDef_getInstance(), SkillA$FortressRes_getInstance(), SkillA$ArmoredBlow_getInstance(), SkillA$WardingBlow_getInstance(), SkillA$DeathBlow_getInstance(), SkillA$DartingBlow_getInstance(), SkillA$SwiftSparrow_getInstance(), SkillA$SturdyBlow_getInstance(), SkillA$SteadyBlow_getInstance(), SkillA$MirrorStrike_getInstance(), SkillA$BracingBlow_getInstance(), SkillA$SwiftStrike_getInstance(), SkillA$DistantDef_getInstance(), SkillA$CloseDef_getInstance(), SkillA$FierceStance_getInstance(), SkillA$SteadyStance_getInstance(), SkillA$WardingStance_getInstance(), SkillA$WardingBreath_getInstance(), SkillA$SteadyBreath_getInstance(), SkillA$EarthBoost_getInstance(), SkillA$WindBoost_getInstance(), SkillA$FireBoost_getInstance(), SkillA$WaterBoost_getInstance(), SkillA$HeavyBlade_getInstance(), SkillA$FlashingBlade_getInstance(), SkillA$CloseCounter_getInstance(), SkillA$DistantCounter_getInstance(), SkillA$SvalinnShield_getInstance(), SkillA$IotesShield_getInstance(), SkillA$GranisShield_getInstance(), SkillA$AtkSpdBond_getInstance(), SkillA$AtkDefBond_getInstance(), SkillA$AtkResBond_getInstance(), SkillA$SpdDefBond_getInstance(), SkillA$BrazenAtkDef_getInstance(), SkillA$BrazenAtkSpd_getInstance(), SkillA$BrazenDefRes_getInstance()];
   }
   SkillA.values = SkillA$values;
   function SkillA$valueOf(name) {
@@ -14428,6 +14592,8 @@ var FEHSIM = function (_, Kotlin) {
         return SkillA$BrazenAtkDef_getInstance();
       case 'BrazenAtkSpd':
         return SkillA$BrazenAtkSpd_getInstance();
+      case 'BrazenDefRes':
+        return SkillA$BrazenDefRes_getInstance();
       default:throwISE('No enum constant jp.blogspot.turanukimaru.fehs.skill.SkillA.' + name);
     }
   }
@@ -14481,7 +14647,7 @@ var FEHSIM = function (_, Kotlin) {
     new SkillB$Windsweep();
     new SkillB$Watersweep();
     new SkillB$Guard();
-    SkillB$ShieldPulse_instance = new SkillB('ShieldPulse', 30, Name$ShieldPulse_getInstance(), SkillType$B_getInstance());
+    new SkillB$ShieldPulse();
     new SkillB$WrathfulStaff();
     new SkillB$DazzlingStaff();
     new SkillB$CancelAffinity();
@@ -14506,6 +14672,7 @@ var FEHSIM = function (_, Kotlin) {
     new SkillB$PoisonStrike();
     SkillB$WarpPowder_instance = new SkillB('WarpPowder', 53, Name$WarpPowder_getInstance(), SkillType$B_getInstance());
     SkillB$ChillingSeal_instance = new SkillB('ChillingSeal', 54, Name$ChillingSeal_getInstance(), SkillType$B_getInstance());
+    SkillB$ChillSpd_instance = new SkillB('ChillSpd', 55, Name$ChillSpd_getInstance(), SkillType$B_getInstance());
     SkillB$Companion_getInstance();
   }
   Object.defineProperty(SkillB.prototype, 'jp', {
@@ -14905,7 +15072,19 @@ var FEHSIM = function (_, Kotlin) {
     SkillB_initFields();
     return SkillB$Guard_instance;
   }
-  var SkillB$ShieldPulse_instance;
+  function SkillB$ShieldPulse() {
+    SkillB$ShieldPulse_instance = this;
+    SkillB.call(this, 'ShieldPulse', 30, Name$ShieldPulse_getInstance(), SkillType$B_getInstance());
+  }
+  SkillB$ShieldPulse.prototype.specialTriggered_upjsjk$$default = function (battleUnit, damage, lv) {
+    return battleUnit.armedHero.special.type === SkillType$SPECIAL_C_getInstance() ? damage - 5 | 0 : damage;
+  };
+  SkillB$ShieldPulse.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'ShieldPulse',
+    interfaces: [SkillB]
+  };
+  var SkillB$ShieldPulse_instance = null;
   function SkillB$ShieldPulse_getInstance() {
     SkillB_initFields();
     return SkillB$ShieldPulse_instance;
@@ -15164,6 +15343,11 @@ var FEHSIM = function (_, Kotlin) {
     SkillB_initFields();
     return SkillB$ChillingSeal_instance;
   }
+  var SkillB$ChillSpd_instance;
+  function SkillB$ChillSpd_getInstance() {
+    SkillB_initFields();
+    return SkillB$ChillSpd_instance;
+  }
   SkillB.prototype.lv_za3lpa$ = function (lv) {
     return this.level === lv ? this : new LappedSkill(this, lv);
   };
@@ -15217,7 +15401,7 @@ var FEHSIM = function (_, Kotlin) {
             this.itemMap_0.put_xwzc9p$(element.jp.tw, element);
           }
         }
-        var regex = Regex_init(' \\d');
+        var regex = Regex_init(' \\baseDamage');
         var lv = regex.find_905azu$(key);
         if (lv != null) {
           var skill = regex.replaceFirst_x2uqeu$(key, '');
@@ -15258,7 +15442,7 @@ var FEHSIM = function (_, Kotlin) {
     interfaces: [Skill, Enum]
   };
   function SkillB$values() {
-    return [SkillB$SwordBreaker_getInstance(), SkillB$LanceBreaker_getInstance(), SkillB$AxeBreaker_getInstance(), SkillB$BowBreaker_getInstance(), SkillB$DaggerBreaker_getInstance(), SkillB$RTomeBreaker_getInstance(), SkillB$GTomeBreaker_getInstance(), SkillB$BTomeBreaker_getInstance(), SkillB$EscapeRoute_getInstance(), SkillB$Vantage_getInstance(), SkillB$WaryFighter_getInstance(), SkillB$BoldFighter_getInstance(), SkillB$VengefulFighter_getInstance(), SkillB$Desperation_getInstance(), SkillB$QuickRiposte_getInstance(), SkillB$BrashAssault_getInstance(), SkillB$Renewal_getInstance(), SkillB$LiveToServe_getInstance(), SkillB$WingsOfMercy_getInstance(), SkillB$Pass_getInstance(), SkillB$Obstruct_getInstance(), SkillB$SealAtk_getInstance(), SkillB$SealSpd_getInstance(), SkillB$SealDef_getInstance(), SkillB$SealRes_getInstance(), SkillB$SealAtkSpd_getInstance(), SkillB$SealAtkDef_getInstance(), SkillB$Windsweep_getInstance(), SkillB$Watersweep_getInstance(), SkillB$Guard_getInstance(), SkillB$ShieldPulse_getInstance(), SkillB$WrathfulStaff_getInstance(), SkillB$DazzlingStaff_getInstance(), SkillB$CancelAffinity_getInstance(), SkillB$Wrath_getInstance(), SkillB$FlierFormation_getInstance(), SkillB$BlazeDance_getInstance(), SkillB$GaleDance_getInstance(), SkillB$TorrentDance_getInstance(), SkillB$EarthDance_getInstance(), SkillB$GeyserDance_getInstance(), SkillB$KnockBack_getInstance(), SkillB$DragBack_getInstance(), SkillB$Lunge_getInstance(), SkillB$HitAndRun_getInstance(), SkillB$FollowUpRing_getInstance(), SkillB$RecoverRing_getInstance(), SkillB$LiveForBounty_getInstance(), SkillB$LiveForHonor_getInstance(), SkillB$SacaesBlessing_getInstance(), SkillB$BeorcsBlessing_getInstance(), SkillB$CrusadersWard_getInstance(), SkillB$PoisonStrike_getInstance(), SkillB$WarpPowder_getInstance(), SkillB$ChillingSeal_getInstance()];
+    return [SkillB$SwordBreaker_getInstance(), SkillB$LanceBreaker_getInstance(), SkillB$AxeBreaker_getInstance(), SkillB$BowBreaker_getInstance(), SkillB$DaggerBreaker_getInstance(), SkillB$RTomeBreaker_getInstance(), SkillB$GTomeBreaker_getInstance(), SkillB$BTomeBreaker_getInstance(), SkillB$EscapeRoute_getInstance(), SkillB$Vantage_getInstance(), SkillB$WaryFighter_getInstance(), SkillB$BoldFighter_getInstance(), SkillB$VengefulFighter_getInstance(), SkillB$Desperation_getInstance(), SkillB$QuickRiposte_getInstance(), SkillB$BrashAssault_getInstance(), SkillB$Renewal_getInstance(), SkillB$LiveToServe_getInstance(), SkillB$WingsOfMercy_getInstance(), SkillB$Pass_getInstance(), SkillB$Obstruct_getInstance(), SkillB$SealAtk_getInstance(), SkillB$SealSpd_getInstance(), SkillB$SealDef_getInstance(), SkillB$SealRes_getInstance(), SkillB$SealAtkSpd_getInstance(), SkillB$SealAtkDef_getInstance(), SkillB$Windsweep_getInstance(), SkillB$Watersweep_getInstance(), SkillB$Guard_getInstance(), SkillB$ShieldPulse_getInstance(), SkillB$WrathfulStaff_getInstance(), SkillB$DazzlingStaff_getInstance(), SkillB$CancelAffinity_getInstance(), SkillB$Wrath_getInstance(), SkillB$FlierFormation_getInstance(), SkillB$BlazeDance_getInstance(), SkillB$GaleDance_getInstance(), SkillB$TorrentDance_getInstance(), SkillB$EarthDance_getInstance(), SkillB$GeyserDance_getInstance(), SkillB$KnockBack_getInstance(), SkillB$DragBack_getInstance(), SkillB$Lunge_getInstance(), SkillB$HitAndRun_getInstance(), SkillB$FollowUpRing_getInstance(), SkillB$RecoverRing_getInstance(), SkillB$LiveForBounty_getInstance(), SkillB$LiveForHonor_getInstance(), SkillB$SacaesBlessing_getInstance(), SkillB$BeorcsBlessing_getInstance(), SkillB$CrusadersWard_getInstance(), SkillB$PoisonStrike_getInstance(), SkillB$WarpPowder_getInstance(), SkillB$ChillingSeal_getInstance(), SkillB$ChillSpd_getInstance()];
   }
   SkillB.values = SkillB$values;
   function SkillB$valueOf(name) {
@@ -15373,6 +15557,8 @@ var FEHSIM = function (_, Kotlin) {
         return SkillB$WarpPowder_getInstance();
       case 'ChillingSeal':
         return SkillB$ChillingSeal_getInstance();
+      case 'ChillSpd':
+        return SkillB$ChillSpd_getInstance();
       default:throwISE('No enum constant jp.blogspot.turanukimaru.fehs.skill.SkillB.' + name);
     }
   }
@@ -15428,35 +15614,36 @@ var FEHSIM = function (_, Kotlin) {
     SkillC$GoadFliers_instance = new SkillC('GoadFliers', 29, Name$GoadFliers_getInstance(), SkillType$C_getInstance(), void 0, void 0, 0);
     SkillC$WardArmor_instance = new SkillC('WardArmor', 30, Name$WardArmor_getInstance(), SkillType$C_getInstance(), void 0, void 0, 0);
     SkillC$WardCavalry_instance = new SkillC('WardCavalry', 31, Name$WardCavalry_getInstance(), SkillType$C_getInstance(), void 0, void 0, 0);
-    SkillC$WardFliers_instance = new SkillC('WardFliers', 32, Name$WardFliers_getInstance(), SkillType$C_getInstance(), void 0, void 0, 0);
-    SkillC$SavageBlow_instance = new SkillC('SavageBlow', 33, Name$SavageBlow_getInstance(), SkillType$C_getInstance());
-    SkillC$BreathOfLife_instance = new SkillC('BreathOfLife', 34, Name$BreathOfLife_getInstance(), SkillType$C_getInstance());
-    SkillC$SwordExperience_instance = new SkillC('SwordExperience', 35, Name$SwordExperience_getInstance(), SkillType$C_getInstance());
-    SkillC$AxeExperience_instance = new SkillC('AxeExperience', 36, Name$AxeExperience_getInstance(), SkillType$C_getInstance());
-    SkillC$BowExperience_instance = new SkillC('BowExperience', 37, Name$BowExperience_getInstance(), SkillType$C_getInstance());
-    SkillC$BTomeExperience_instance = new SkillC('BTomeExperience', 38, Name$BTomeExperience_getInstance(), SkillType$C_getInstance());
-    SkillC$SwordValor_instance = new SkillC('SwordValor', 39, Name$SwordValor_getInstance(), SkillType$C_getInstance());
-    SkillC$LanceValor_instance = new SkillC('LanceValor', 40, Name$LanceValor_getInstance(), SkillType$C_getInstance());
-    SkillC$AxeValor_instance = new SkillC('AxeValor', 41, Name$AxeValor_getInstance(), SkillType$C_getInstance());
-    SkillC$BowValor_instance = new SkillC('BowValor', 42, Name$BowValor_getInstance(), SkillType$C_getInstance());
-    SkillC$DaggerValor_instance = new SkillC('DaggerValor', 43, Name$DaggerValor_getInstance(), SkillType$C_getInstance());
-    SkillC$RTomeValor_instance = new SkillC('RTomeValor', 44, Name$RTomeValor_getInstance(), SkillType$C_getInstance());
-    SkillC$RTomeExperience_instance = new SkillC('RTomeExperience', 45, Name$RTomeExperience_getInstance(), SkillType$C_getInstance());
-    SkillC$BTomeValor_instance = new SkillC('BTomeValor', 46, Name$BTomeValor_getInstance(), SkillType$C_getInstance());
-    SkillC$GTomeValor_instance = new SkillC('GTomeValor', 47, Name$GTomeValor_getInstance(), SkillType$C_getInstance());
-    SkillC$PanicPloy_instance = new SkillC('PanicPloy', 48, Name$PanicPloy_getInstance(), SkillType$C_getInstance());
-    SkillC$AtkPloy_instance = new SkillC('AtkPloy', 49, Name$AtkPloy_getInstance(), SkillType$C_getInstance());
-    SkillC$SpdPloy_instance = new SkillC('SpdPloy', 50, Name$SpdPloy_getInstance(), SkillType$C_getInstance());
-    SkillC$DefPloy_instance = new SkillC('DefPloy', 51, Name$DefPloy_getInstance(), SkillType$C_getInstance());
-    SkillC$ResPloy_instance = new SkillC('ResPloy', 52, Name$ResPloy_getInstance(), SkillType$C_getInstance());
-    SkillC$InfantryPulse_instance = new SkillC('InfantryPulse', 53, Name$InfantryPulse_getInstance(), SkillType$C_getInstance());
-    SkillC$AtkSmoke_instance = new SkillC('AtkSmoke', 54, Name$AtkSmoke_getInstance(), SkillType$C_getInstance());
-    SkillC$SpdSmoke_instance = new SkillC('SpdSmoke', 55, Name$SpdSmoke_getInstance(), SkillType$C_getInstance());
-    SkillC$ArmorMarch_instance = new SkillC('ArmorMarch', 56, Name$ArmorMarch_getInstance(), SkillType$C_getInstance());
-    SkillC$Guidance_instance = new SkillC('Guidance', 57, Name$Guidance_getInstance(), SkillType$C_getInstance());
-    SkillC$AtkTactic_instance = new SkillC('AtkTactic', 58, Name$AtkTactic_getInstance(), SkillType$C_getInstance());
-    SkillC$DefTactic_instance = new SkillC('DefTactic', 59, Name$DefTactic_getInstance(), SkillType$C_getInstance());
-    SkillC$ResTactic_instance = new SkillC('ResTactic', 60, Name$ResTactic_getInstance(), SkillType$C_getInstance());
+    SkillC$WardDragons_instance = new SkillC('WardDragons', 32, Name$WardDragons_getInstance(), SkillType$C_getInstance(), void 0, void 0, 0);
+    SkillC$WardFliers_instance = new SkillC('WardFliers', 33, Name$WardFliers_getInstance(), SkillType$C_getInstance(), void 0, void 0, 0);
+    SkillC$SavageBlow_instance = new SkillC('SavageBlow', 34, Name$SavageBlow_getInstance(), SkillType$C_getInstance());
+    SkillC$BreathOfLife_instance = new SkillC('BreathOfLife', 35, Name$BreathOfLife_getInstance(), SkillType$C_getInstance());
+    SkillC$SwordExperience_instance = new SkillC('SwordExperience', 36, Name$SwordExperience_getInstance(), SkillType$C_getInstance());
+    SkillC$AxeExperience_instance = new SkillC('AxeExperience', 37, Name$AxeExperience_getInstance(), SkillType$C_getInstance());
+    SkillC$BowExperience_instance = new SkillC('BowExperience', 38, Name$BowExperience_getInstance(), SkillType$C_getInstance());
+    SkillC$BTomeExperience_instance = new SkillC('BTomeExperience', 39, Name$BTomeExperience_getInstance(), SkillType$C_getInstance());
+    SkillC$SwordValor_instance = new SkillC('SwordValor', 40, Name$SwordValor_getInstance(), SkillType$C_getInstance());
+    SkillC$LanceValor_instance = new SkillC('LanceValor', 41, Name$LanceValor_getInstance(), SkillType$C_getInstance());
+    SkillC$AxeValor_instance = new SkillC('AxeValor', 42, Name$AxeValor_getInstance(), SkillType$C_getInstance());
+    SkillC$BowValor_instance = new SkillC('BowValor', 43, Name$BowValor_getInstance(), SkillType$C_getInstance());
+    SkillC$DaggerValor_instance = new SkillC('DaggerValor', 44, Name$DaggerValor_getInstance(), SkillType$C_getInstance());
+    SkillC$RTomeValor_instance = new SkillC('RTomeValor', 45, Name$RTomeValor_getInstance(), SkillType$C_getInstance());
+    SkillC$RTomeExperience_instance = new SkillC('RTomeExperience', 46, Name$RTomeExperience_getInstance(), SkillType$C_getInstance());
+    SkillC$BTomeValor_instance = new SkillC('BTomeValor', 47, Name$BTomeValor_getInstance(), SkillType$C_getInstance());
+    SkillC$GTomeValor_instance = new SkillC('GTomeValor', 48, Name$GTomeValor_getInstance(), SkillType$C_getInstance());
+    SkillC$PanicPloy_instance = new SkillC('PanicPloy', 49, Name$PanicPloy_getInstance(), SkillType$C_getInstance());
+    SkillC$AtkPloy_instance = new SkillC('AtkPloy', 50, Name$AtkPloy_getInstance(), SkillType$C_getInstance());
+    SkillC$SpdPloy_instance = new SkillC('SpdPloy', 51, Name$SpdPloy_getInstance(), SkillType$C_getInstance());
+    SkillC$DefPloy_instance = new SkillC('DefPloy', 52, Name$DefPloy_getInstance(), SkillType$C_getInstance());
+    SkillC$ResPloy_instance = new SkillC('ResPloy', 53, Name$ResPloy_getInstance(), SkillType$C_getInstance());
+    SkillC$InfantryPulse_instance = new SkillC('InfantryPulse', 54, Name$InfantryPulse_getInstance(), SkillType$C_getInstance());
+    SkillC$AtkSmoke_instance = new SkillC('AtkSmoke', 55, Name$AtkSmoke_getInstance(), SkillType$C_getInstance());
+    SkillC$SpdSmoke_instance = new SkillC('SpdSmoke', 56, Name$SpdSmoke_getInstance(), SkillType$C_getInstance());
+    SkillC$ArmorMarch_instance = new SkillC('ArmorMarch', 57, Name$ArmorMarch_getInstance(), SkillType$C_getInstance());
+    SkillC$Guidance_instance = new SkillC('Guidance', 58, Name$Guidance_getInstance(), SkillType$C_getInstance());
+    SkillC$AtkTactic_instance = new SkillC('AtkTactic', 59, Name$AtkTactic_getInstance(), SkillType$C_getInstance());
+    SkillC$DefTactic_instance = new SkillC('DefTactic', 60, Name$DefTactic_getInstance(), SkillType$C_getInstance());
+    SkillC$ResTactic_instance = new SkillC('ResTactic', 61, Name$ResTactic_getInstance(), SkillType$C_getInstance());
     SkillC$Companion_getInstance();
   }
   Object.defineProperty(SkillC.prototype, 'jp', {
@@ -15643,6 +15830,11 @@ var FEHSIM = function (_, Kotlin) {
   function SkillC$WardCavalry_getInstance() {
     SkillC_initFields();
     return SkillC$WardCavalry_instance;
+  }
+  var SkillC$WardDragons_instance;
+  function SkillC$WardDragons_getInstance() {
+    SkillC_initFields();
+    return SkillC$WardDragons_instance;
   }
   var SkillC$WardFliers_instance;
   function SkillC$WardFliers_getInstance() {
@@ -15842,7 +16034,7 @@ var FEHSIM = function (_, Kotlin) {
             this.itemMap_0.put_xwzc9p$(element.jp.tw, element);
           }
         }
-        var regex = Regex_init(' \\d');
+        var regex = Regex_init(' \\baseDamage');
         var lv = regex.find_905azu$(key);
         if (lv != null) {
           var skill = regex.replaceFirst_x2uqeu$(key, '');
@@ -15883,7 +16075,7 @@ var FEHSIM = function (_, Kotlin) {
     interfaces: [Skill, Enum]
   };
   function SkillC$values() {
-    return [SkillC$SpurAtk_getInstance(), SkillC$SpurSpd_getInstance(), SkillC$SpurDef_getInstance(), SkillC$SpurRes_getInstance(), SkillC$SpurDefRes_getInstance(), SkillC$SpurSpdDef_getInstance(), SkillC$SpurAtkSpd_getInstance(), SkillC$ThreatenAtk_getInstance(), SkillC$ThreatenSpd_getInstance(), SkillC$ThreatenDef_getInstance(), SkillC$ThreatenRes_getInstance(), SkillC$FortifyDef_getInstance(), SkillC$FortifyRes_getInstance(), SkillC$FortifyArmor_getInstance(), SkillC$FortifyCavalry_getInstance(), SkillC$FortifyFliers_getInstance(), SkillC$FortifyDragons_getInstance(), SkillC$HoneAtk_getInstance(), SkillC$HoneSpd_getInstance(), SkillC$DriveAtk_getInstance(), SkillC$DriveDef_getInstance(), SkillC$DriveSpd_getInstance(), SkillC$DriveRes_getInstance(), SkillC$HoneArmor_getInstance(), SkillC$HoneCavalry_getInstance(), SkillC$HoneDragons_getInstance(), SkillC$HoneFliers_getInstance(), SkillC$GoadArmor_getInstance(), SkillC$GoadCavalry_getInstance(), SkillC$GoadFliers_getInstance(), SkillC$WardArmor_getInstance(), SkillC$WardCavalry_getInstance(), SkillC$WardFliers_getInstance(), SkillC$SavageBlow_getInstance(), SkillC$BreathOfLife_getInstance(), SkillC$SwordExperience_getInstance(), SkillC$AxeExperience_getInstance(), SkillC$BowExperience_getInstance(), SkillC$BTomeExperience_getInstance(), SkillC$SwordValor_getInstance(), SkillC$LanceValor_getInstance(), SkillC$AxeValor_getInstance(), SkillC$BowValor_getInstance(), SkillC$DaggerValor_getInstance(), SkillC$RTomeValor_getInstance(), SkillC$RTomeExperience_getInstance(), SkillC$BTomeValor_getInstance(), SkillC$GTomeValor_getInstance(), SkillC$PanicPloy_getInstance(), SkillC$AtkPloy_getInstance(), SkillC$SpdPloy_getInstance(), SkillC$DefPloy_getInstance(), SkillC$ResPloy_getInstance(), SkillC$InfantryPulse_getInstance(), SkillC$AtkSmoke_getInstance(), SkillC$SpdSmoke_getInstance(), SkillC$ArmorMarch_getInstance(), SkillC$Guidance_getInstance(), SkillC$AtkTactic_getInstance(), SkillC$DefTactic_getInstance(), SkillC$ResTactic_getInstance()];
+    return [SkillC$SpurAtk_getInstance(), SkillC$SpurSpd_getInstance(), SkillC$SpurDef_getInstance(), SkillC$SpurRes_getInstance(), SkillC$SpurDefRes_getInstance(), SkillC$SpurSpdDef_getInstance(), SkillC$SpurAtkSpd_getInstance(), SkillC$ThreatenAtk_getInstance(), SkillC$ThreatenSpd_getInstance(), SkillC$ThreatenDef_getInstance(), SkillC$ThreatenRes_getInstance(), SkillC$FortifyDef_getInstance(), SkillC$FortifyRes_getInstance(), SkillC$FortifyArmor_getInstance(), SkillC$FortifyCavalry_getInstance(), SkillC$FortifyFliers_getInstance(), SkillC$FortifyDragons_getInstance(), SkillC$HoneAtk_getInstance(), SkillC$HoneSpd_getInstance(), SkillC$DriveAtk_getInstance(), SkillC$DriveDef_getInstance(), SkillC$DriveSpd_getInstance(), SkillC$DriveRes_getInstance(), SkillC$HoneArmor_getInstance(), SkillC$HoneCavalry_getInstance(), SkillC$HoneDragons_getInstance(), SkillC$HoneFliers_getInstance(), SkillC$GoadArmor_getInstance(), SkillC$GoadCavalry_getInstance(), SkillC$GoadFliers_getInstance(), SkillC$WardArmor_getInstance(), SkillC$WardCavalry_getInstance(), SkillC$WardDragons_getInstance(), SkillC$WardFliers_getInstance(), SkillC$SavageBlow_getInstance(), SkillC$BreathOfLife_getInstance(), SkillC$SwordExperience_getInstance(), SkillC$AxeExperience_getInstance(), SkillC$BowExperience_getInstance(), SkillC$BTomeExperience_getInstance(), SkillC$SwordValor_getInstance(), SkillC$LanceValor_getInstance(), SkillC$AxeValor_getInstance(), SkillC$BowValor_getInstance(), SkillC$DaggerValor_getInstance(), SkillC$RTomeValor_getInstance(), SkillC$RTomeExperience_getInstance(), SkillC$BTomeValor_getInstance(), SkillC$GTomeValor_getInstance(), SkillC$PanicPloy_getInstance(), SkillC$AtkPloy_getInstance(), SkillC$SpdPloy_getInstance(), SkillC$DefPloy_getInstance(), SkillC$ResPloy_getInstance(), SkillC$InfantryPulse_getInstance(), SkillC$AtkSmoke_getInstance(), SkillC$SpdSmoke_getInstance(), SkillC$ArmorMarch_getInstance(), SkillC$Guidance_getInstance(), SkillC$AtkTactic_getInstance(), SkillC$DefTactic_getInstance(), SkillC$ResTactic_getInstance()];
   }
   SkillC.values = SkillC$values;
   function SkillC$valueOf(name) {
@@ -15952,6 +16144,8 @@ var FEHSIM = function (_, Kotlin) {
         return SkillC$WardArmor_getInstance();
       case 'WardCavalry':
         return SkillC$WardCavalry_getInstance();
+      case 'WardDragons':
+        return SkillC$WardDragons_getInstance();
       case 'WardFliers':
         return SkillC$WardFliers_getInstance();
       case 'SavageBlow':
@@ -16037,7 +16231,6 @@ var FEHSIM = function (_, Kotlin) {
     new Special$Glimmer();
     new Special$Astra();
     new Special$RegnalAstra();
-    new Special$Miracle();
     new Special$DraconicAura();
     new Special$DragonGaze();
     new Special$DragonFang();
@@ -16056,6 +16249,7 @@ var FEHSIM = function (_, Kotlin) {
     new Special$Retribution();
     new Special$Reprisal();
     new Special$Vengeance();
+    new Special$Miracle();
     new Special$HolyVestments();
     new Special$SacredCowl();
     new Special$IceMirror();
@@ -16063,25 +16257,25 @@ var FEHSIM = function (_, Kotlin) {
     new Special$Buckler();
     new Special$Escutcheon();
     new Special$Pavise();
-    Special$Galeforce_instance = new Special('Galeforce', 33, Name$Galeforce_getInstance(), SkillType$SPECIAL_A_getInstance(), 5);
-    Special$Imbue_instance = new Special('Imbue', 34, Name$Imbue_getInstance(), SkillType$SPECIAL_A_getInstance(), 1);
-    Special$HeavenlyLight_instance = new Special('HeavenlyLight', 35, Name$HeavenlyLight_getInstance(), SkillType$SPECIAL_A_getInstance(), 2);
-    Special$SolidEarthBalm_instance = new Special('SolidEarthBalm', 36, Name$SolidEarthBalm_getInstance(), SkillType$SPECIAL_A_getInstance(), 1);
-    Special$SwiftWindsBalm_instance = new Special('SwiftWindsBalm', 37, Name$SwiftWindsBalm_getInstance(), SkillType$SPECIAL_A_getInstance(), 1);
-    Special$KindledFireBalm_instance = new Special('KindledFireBalm', 38, Name$KindledFireBalm_getInstance(), SkillType$SPECIAL_A_getInstance(), 1);
-    Special$StillWaterBalm_instance = new Special('StillWaterBalm', 39, Name$StillWaterBalm_getInstance(), SkillType$SPECIAL_A_getInstance(), 1);
-    Special$RisingFlame_instance = new Special('RisingFlame', 40, Name$RisingFlame_getInstance(), SkillType$SPECIAL_A_getInstance(), 4);
-    Special$BlazingFlame_instance = new Special('BlazingFlame', 41, Name$BlazingFlame_getInstance(), SkillType$SPECIAL_A_getInstance(), 4);
-    Special$GrowingFlame_instance = new Special('GrowingFlame', 42, Name$GrowingFlame_getInstance(), SkillType$SPECIAL_A_getInstance(), 4);
-    Special$RisingLight_instance = new Special('RisingLight', 43, Name$RisingLight_getInstance(), SkillType$SPECIAL_A_getInstance(), 4);
-    Special$BlazingLight_instance = new Special('BlazingLight', 44, Name$BlazingLight_getInstance(), SkillType$SPECIAL_A_getInstance(), 4);
-    Special$GrowingLight_instance = new Special('GrowingLight', 45, Name$GrowingLight_getInstance(), SkillType$SPECIAL_A_getInstance(), 4);
-    Special$RisingWind_instance = new Special('RisingWind', 46, Name$RisingWind_getInstance(), SkillType$SPECIAL_A_getInstance(), 4);
-    Special$BlazingWind_instance = new Special('BlazingWind', 47, Name$BlazingWind_getInstance(), SkillType$SPECIAL_A_getInstance(), 4);
-    Special$GrowingWind_instance = new Special('GrowingWind', 48, Name$GrowingWind_getInstance(), SkillType$SPECIAL_A_getInstance(), 4);
-    Special$RisingThunder_instance = new Special('RisingThunder', 49, Name$RisingThunder_getInstance(), SkillType$SPECIAL_A_getInstance(), 4);
-    Special$BlazingThunder_instance = new Special('BlazingThunder', 50, Name$BlazingThunder_getInstance(), SkillType$SPECIAL_A_getInstance(), 4);
-    Special$GrowingThunder_instance = new Special('GrowingThunder', 51, Name$GrowingThunder_getInstance(), SkillType$SPECIAL_A_getInstance(), 4);
+    Special$Galeforce_instance = new Special('Galeforce', 33, Name$Galeforce_getInstance(), SkillType$SPECIAL_D_getInstance(), 5);
+    Special$Imbue_instance = new Special('Imbue', 34, Name$Imbue_getInstance(), SkillType$SPECIAL_D_getInstance(), 1);
+    Special$HeavenlyLight_instance = new Special('HeavenlyLight', 35, Name$HeavenlyLight_getInstance(), SkillType$SPECIAL_D_getInstance(), 2);
+    Special$SolidEarthBalm_instance = new Special('SolidEarthBalm', 36, Name$SolidEarthBalm_getInstance(), SkillType$SPECIAL_D_getInstance(), 1);
+    Special$SwiftWindsBalm_instance = new Special('SwiftWindsBalm', 37, Name$SwiftWindsBalm_getInstance(), SkillType$SPECIAL_D_getInstance(), 1);
+    Special$KindledFireBalm_instance = new Special('KindledFireBalm', 38, Name$KindledFireBalm_getInstance(), SkillType$SPECIAL_D_getInstance(), 1);
+    Special$StillWaterBalm_instance = new Special('StillWaterBalm', 39, Name$StillWaterBalm_getInstance(), SkillType$SPECIAL_D_getInstance(), 1);
+    Special$RisingFlame_instance = new Special('RisingFlame', 40, Name$RisingFlame_getInstance(), SkillType$SPECIAL_B_getInstance(), 4);
+    Special$BlazingFlame_instance = new Special('BlazingFlame', 41, Name$BlazingFlame_getInstance(), SkillType$SPECIAL_B_getInstance(), 4);
+    Special$GrowingFlame_instance = new Special('GrowingFlame', 42, Name$GrowingFlame_getInstance(), SkillType$SPECIAL_B_getInstance(), 4);
+    Special$RisingLight_instance = new Special('RisingLight', 43, Name$RisingLight_getInstance(), SkillType$SPECIAL_B_getInstance(), 4);
+    Special$BlazingLight_instance = new Special('BlazingLight', 44, Name$BlazingLight_getInstance(), SkillType$SPECIAL_B_getInstance(), 4);
+    Special$GrowingLight_instance = new Special('GrowingLight', 45, Name$GrowingLight_getInstance(), SkillType$SPECIAL_B_getInstance(), 4);
+    Special$RisingWind_instance = new Special('RisingWind', 46, Name$RisingWind_getInstance(), SkillType$SPECIAL_B_getInstance(), 4);
+    Special$BlazingWind_instance = new Special('BlazingWind', 47, Name$BlazingWind_getInstance(), SkillType$SPECIAL_B_getInstance(), 4);
+    Special$GrowingWind_instance = new Special('GrowingWind', 48, Name$GrowingWind_getInstance(), SkillType$SPECIAL_B_getInstance(), 4);
+    Special$RisingThunder_instance = new Special('RisingThunder', 49, Name$RisingThunder_getInstance(), SkillType$SPECIAL_B_getInstance(), 4);
+    Special$BlazingThunder_instance = new Special('BlazingThunder', 50, Name$BlazingThunder_getInstance(), SkillType$SPECIAL_B_getInstance(), 4);
+    Special$GrowingThunder_instance = new Special('GrowingThunder', 51, Name$GrowingThunder_getInstance(), SkillType$SPECIAL_B_getInstance(), 4);
     Special$Companion_getInstance();
   }
   Object.defineProperty(Special.prototype, 'jp', {
@@ -16108,9 +16302,6 @@ var FEHSIM = function (_, Kotlin) {
     Special$DayLight_instance = this;
     Special.call(this, 'DayLight', 0, Name$Daylight_getInstance(), SkillType$SPECIAL_A_getInstance(), 3);
   }
-  Special$DayLight.prototype.damage_96237r$$default = function (battleUnit, target, results, skill) {
-    return this.damage_96237r$(battleUnit, target, results, this, Special.prototype.damage_96237r$$default.bind(this));
-  };
   Special$DayLight.prototype.absorb_6zcyla$ = function (battleUnit, target, damage) {
     battleUnit.heal_za3lpa$((damage * 3 | 0) / 10 | 0);
     return damage;
@@ -16129,9 +16320,6 @@ var FEHSIM = function (_, Kotlin) {
     Special$Noontime_instance = this;
     Special.call(this, 'Noontime', 1, Name$Noontime_getInstance(), SkillType$SPECIAL_A_getInstance(), 2);
   }
-  Special$Noontime.prototype.damage_96237r$$default = function (battleUnit, target, results, skill) {
-    return this.damage_96237r$(battleUnit, target, results, this, Special.prototype.damage_96237r$$default.bind(this));
-  };
   Special$Noontime.prototype.absorb_6zcyla$ = function (battleUnit, target, damage) {
     battleUnit.heal_za3lpa$((damage * 3 | 0) / 10 | 0);
     return damage;
@@ -16150,9 +16338,6 @@ var FEHSIM = function (_, Kotlin) {
     Special$Sol_instance = this;
     Special.call(this, 'Sol', 2, Name$Sol_getInstance(), SkillType$SPECIAL_A_getInstance(), 3);
   }
-  Special$Sol.prototype.damage_96237r$$default = function (battleUnit, target, results, skill) {
-    return this.damage_96237r$(battleUnit, target, results, this, Special.prototype.damage_96237r$$default.bind(this));
-  };
   Special$Sol.prototype.absorb_6zcyla$ = function (battleUnit, target, damage) {
     battleUnit.heal_za3lpa$((damage * 5 | 0) / 10 | 0);
     return damage;
@@ -16171,8 +16356,8 @@ var FEHSIM = function (_, Kotlin) {
     Special$NightSky_instance = this;
     Special.call(this, 'NightSky', 3, Name$NightSky_getInstance(), SkillType$SPECIAL_A_getInstance(), 3);
   }
-  Special$NightSky.prototype.damage_96237r$$default = function (battleUnit, target, results, skill) {
-    return new Pair((this.damage_96237r$(battleUnit, target, results, this, Special.prototype.damage_96237r$$default.bind(this)).first * 15 | 0) / 10 | 0, this);
+  Special$NightSky.prototype.damage_sv9jhu$ = function (source, prevent) {
+    return (Special.prototype.damage_sv9jhu$.call(this, source, prevent) * 15 | 0) / 10 | 0;
   };
   Special$NightSky.$metadata$ = {
     kind: Kind_CLASS,
@@ -16188,8 +16373,8 @@ var FEHSIM = function (_, Kotlin) {
     Special$Glimmer_instance = this;
     Special.call(this, 'Glimmer', 4, Name$Glimmer_getInstance(), SkillType$SPECIAL_A_getInstance(), 2);
   }
-  Special$Glimmer.prototype.damage_96237r$$default = function (battleUnit, target, results, skill) {
-    return new Pair((this.damage_96237r$(battleUnit, target, results, this, Special.prototype.damage_96237r$$default.bind(this)).first * 15 | 0) / 10 | 0, this);
+  Special$Glimmer.prototype.damage_sv9jhu$ = function (source, prevent) {
+    return (Special.prototype.damage_sv9jhu$.call(this, source, prevent) * 15 | 0) / 10 | 0;
   };
   Special$Glimmer.$metadata$ = {
     kind: Kind_CLASS,
@@ -16205,8 +16390,8 @@ var FEHSIM = function (_, Kotlin) {
     Special$Astra_instance = this;
     Special.call(this, 'Astra', 5, Name$Astra_getInstance(), SkillType$SPECIAL_A_getInstance(), 4);
   }
-  Special$Astra.prototype.damage_96237r$$default = function (battleUnit, target, results, skill) {
-    return new Pair((this.damage_96237r$(battleUnit, target, results, this, Special.prototype.damage_96237r$$default.bind(this)).first * 25 | 0) / 10 | 0, this);
+  Special$Astra.prototype.damage_sv9jhu$ = function (source, prevent) {
+    return (Special.prototype.damage_sv9jhu$.call(this, source, prevent) * 25 | 0) / 10 | 0;
   };
   Special$Astra.$metadata$ = {
     kind: Kind_CLASS,
@@ -16222,8 +16407,8 @@ var FEHSIM = function (_, Kotlin) {
     Special$RegnalAstra_instance = this;
     Special.call(this, 'RegnalAstra', 6, Name$RegnalAstra_getInstance(), SkillType$SPECIAL_A_getInstance(), 2);
   }
-  Special$RegnalAstra.prototype.damage_96237r$$default = function (battleUnit, target, results, skill) {
-    return new Pair(battleUnit.halfByStaff_za3lpa$(target.preventByDefResTerrain_yqyiwh$(battleUnit.colorAttack() + ((battleUnit.effectedSpd * 4 | 0) / 10 | 0) | 0, battleUnit.armedHero.baseHero.weapon.type)), this);
+  Special$RegnalAstra.prototype.baseDamage_trfvk0$ = function (source) {
+    return source.colorAttack() + ((source.effectedSpd * 4 | 0) / 10 | 0) | 0;
   };
   Special$RegnalAstra.$metadata$ = {
     kind: Kind_CLASS,
@@ -16235,31 +16420,12 @@ var FEHSIM = function (_, Kotlin) {
     Special_initFields();
     return Special$RegnalAstra_instance;
   }
-  function Special$Miracle() {
-    Special$Miracle_instance = this;
-    Special.call(this, 'Miracle', 7, Name$Miracle_getInstance(), SkillType$SPECIAL_B_getInstance(), 5);
-  }
-  Special$Miracle.prototype.specialPrevent_upjsjk$$default = function (battleUnit, damage, lv) {
-    var tmp$;
-    tmp$ = battleUnit.hp;
-    return 2 <= tmp$ && tmp$ <= damage ? new Pair(battleUnit.hp - 1 | 0, this) : this.specialPrevent_upjsjk$(battleUnit, damage, lv, Special.prototype.specialPrevent_upjsjk$$default.bind(this));
-  };
-  Special$Miracle.$metadata$ = {
-    kind: Kind_CLASS,
-    simpleName: 'Miracle',
-    interfaces: [Special]
-  };
-  var Special$Miracle_instance = null;
-  function Special$Miracle_getInstance() {
-    Special_initFields();
-    return Special$Miracle_instance;
-  }
   function Special$DraconicAura() {
     Special$DraconicAura_instance = this;
-    Special.call(this, 'DraconicAura', 8, Name$DraconicAura_getInstance(), SkillType$SPECIAL_A_getInstance(), 3);
+    Special.call(this, 'DraconicAura', 7, Name$DraconicAura_getInstance(), SkillType$SPECIAL_A_getInstance(), 3);
   }
-  Special$DraconicAura.prototype.damage_96237r$$default = function (battleUnit, target, results, skill) {
-    return new Pair(battleUnit.halfByStaff_za3lpa$(target.preventByDefResTerrain_yqyiwh$(battleUnit.colorAttack() + ((battleUnit.effectedAtk * 3 | 0) / 10 | 0) | 0, battleUnit.armedHero.baseHero.weapon.type)), this);
+  Special$DraconicAura.prototype.baseDamage_trfvk0$ = function (source) {
+    return source.colorAttack() + ((source.effectedAtk * 3 | 0) / 10 | 0) | 0;
   };
   Special$DraconicAura.$metadata$ = {
     kind: Kind_CLASS,
@@ -16273,10 +16439,10 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Special$DragonGaze() {
     Special$DragonGaze_instance = this;
-    Special.call(this, 'DragonGaze', 9, Name$DragonGaze_getInstance(), SkillType$SPECIAL_A_getInstance(), 4);
+    Special.call(this, 'DragonGaze', 8, Name$DragonGaze_getInstance(), SkillType$SPECIAL_A_getInstance(), 4);
   }
-  Special$DragonGaze.prototype.damage_96237r$$default = function (battleUnit, target, results, skill) {
-    return new Pair(battleUnit.halfByStaff_za3lpa$(target.preventByDefResTerrain_yqyiwh$(battleUnit.colorAttack() + ((battleUnit.effectedAtk * 3 | 0) / 10 | 0) | 0, battleUnit.armedHero.baseHero.weapon.type)), this);
+  Special$DragonGaze.prototype.baseDamage_trfvk0$ = function (source) {
+    return source.colorAttack() + ((source.effectedAtk * 3 | 0) / 10 | 0) | 0;
   };
   Special$DragonGaze.$metadata$ = {
     kind: Kind_CLASS,
@@ -16290,10 +16456,10 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Special$DragonFang() {
     Special$DragonFang_instance = this;
-    Special.call(this, 'DragonFang', 10, Name$DragonFang_getInstance(), SkillType$SPECIAL_A_getInstance(), 4);
+    Special.call(this, 'DragonFang', 9, Name$DragonFang_getInstance(), SkillType$SPECIAL_A_getInstance(), 4);
   }
-  Special$DragonFang.prototype.damage_96237r$$default = function (battleUnit, target, results, skill) {
-    return new Pair(battleUnit.halfByStaff_za3lpa$(target.preventByDefResTerrain_yqyiwh$(battleUnit.colorAttack() + ((battleUnit.effectedAtk * 5 | 0) / 10 | 0) | 0, battleUnit.armedHero.baseHero.weapon.type)), this);
+  Special$DragonFang.prototype.baseDamage_trfvk0$ = function (source) {
+    return source.colorAttack() + ((source.effectedAtk * 5 | 0) / 10 | 0) | 0;
   };
   Special$DragonFang.$metadata$ = {
     kind: Kind_CLASS,
@@ -16307,10 +16473,10 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Special$GlowingEmber() {
     Special$GlowingEmber_instance = this;
-    Special.call(this, 'GlowingEmber', 11, Name$GlowingEmber_getInstance(), SkillType$SPECIAL_A_getInstance(), 4);
+    Special.call(this, 'GlowingEmber', 10, Name$GlowingEmber_getInstance(), SkillType$SPECIAL_A_getInstance(), 4);
   }
-  Special$GlowingEmber.prototype.damage_96237r$$default = function (battleUnit, target, results, skill) {
-    return new Pair(battleUnit.halfByStaff_za3lpa$(target.preventByDefResTerrain_yqyiwh$(battleUnit.colorAttack() + ((battleUnit.effectedDef * 5 | 0) / 10 | 0) | 0, battleUnit.armedHero.baseHero.weapon.type)), this);
+  Special$GlowingEmber.prototype.baseDamage_trfvk0$ = function (source) {
+    return source.colorAttack() + ((source.effectedDef * 5 | 0) / 10 | 0) | 0;
   };
   Special$GlowingEmber.$metadata$ = {
     kind: Kind_CLASS,
@@ -16324,10 +16490,10 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Special$Bonfire() {
     Special$Bonfire_instance = this;
-    Special.call(this, 'Bonfire', 12, Name$Bonfire_getInstance(), SkillType$SPECIAL_A_getInstance(), 3);
+    Special.call(this, 'Bonfire', 11, Name$Bonfire_getInstance(), SkillType$SPECIAL_A_getInstance(), 3);
   }
-  Special$Bonfire.prototype.damage_96237r$$default = function (battleUnit, target, results, skill) {
-    return new Pair(battleUnit.halfByStaff_za3lpa$(target.preventByDefResTerrain_yqyiwh$(battleUnit.colorAttack() + ((battleUnit.effectedDef * 5 | 0) / 10 | 0) | 0, battleUnit.armedHero.baseHero.weapon.type)), this);
+  Special$Bonfire.prototype.baseDamage_trfvk0$ = function (source) {
+    return source.colorAttack() + ((source.effectedDef * 5 | 0) / 10 | 0) | 0;
   };
   Special$Bonfire.$metadata$ = {
     kind: Kind_CLASS,
@@ -16341,10 +16507,10 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Special$Ignis() {
     Special$Ignis_instance = this;
-    Special.call(this, 'Ignis', 13, Name$Ignis_getInstance(), SkillType$SPECIAL_A_getInstance(), 4);
+    Special.call(this, 'Ignis', 12, Name$Ignis_getInstance(), SkillType$SPECIAL_A_getInstance(), 4);
   }
-  Special$Ignis.prototype.damage_96237r$$default = function (battleUnit, target, results, skill) {
-    return new Pair(battleUnit.halfByStaff_za3lpa$(target.preventByDefResTerrain_yqyiwh$(battleUnit.colorAttack() + ((battleUnit.effectedDef * 8 | 0) / 10 | 0) | 0, battleUnit.armedHero.baseHero.weapon.type)), this);
+  Special$Ignis.prototype.baseDamage_trfvk0$ = function (source) {
+    return source.colorAttack() + ((source.effectedDef * 8 | 0) / 10 | 0) | 0;
   };
   Special$Ignis.$metadata$ = {
     kind: Kind_CLASS,
@@ -16358,10 +16524,10 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Special$ChillingWind() {
     Special$ChillingWind_instance = this;
-    Special.call(this, 'ChillingWind', 14, Name$ChillingWind_getInstance(), SkillType$SPECIAL_A_getInstance(), 4);
+    Special.call(this, 'ChillingWind', 13, Name$ChillingWind_getInstance(), SkillType$SPECIAL_A_getInstance(), 4);
   }
-  Special$ChillingWind.prototype.damage_96237r$$default = function (battleUnit, target, results, skill) {
-    return new Pair(battleUnit.halfByStaff_za3lpa$(target.preventByDefResTerrain_yqyiwh$(battleUnit.colorAttack() + ((battleUnit.effectedRes * 5 | 0) / 10 | 0) | 0, battleUnit.armedHero.baseHero.weapon.type)), this);
+  Special$ChillingWind.prototype.baseDamage_trfvk0$ = function (source) {
+    return source.colorAttack() + ((source.effectedRes * 5 | 0) / 10 | 0) | 0;
   };
   Special$ChillingWind.$metadata$ = {
     kind: Kind_CLASS,
@@ -16375,10 +16541,10 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Special$Iceberg() {
     Special$Iceberg_instance = this;
-    Special.call(this, 'Iceberg', 15, Name$Iceberg_getInstance(), SkillType$SPECIAL_A_getInstance(), 3);
+    Special.call(this, 'Iceberg', 14, Name$Iceberg_getInstance(), SkillType$SPECIAL_A_getInstance(), 3);
   }
-  Special$Iceberg.prototype.damage_96237r$$default = function (battleUnit, target, results, skill) {
-    return new Pair(battleUnit.halfByStaff_za3lpa$(target.preventByDefResTerrain_yqyiwh$(battleUnit.colorAttack() + ((battleUnit.effectedRes * 5 | 0) / 10 | 0) | 0, battleUnit.armedHero.baseHero.weapon.type)), this);
+  Special$Iceberg.prototype.baseDamage_trfvk0$ = function (source) {
+    return source.colorAttack() + ((source.effectedRes * 5 | 0) / 10 | 0) | 0;
   };
   Special$Iceberg.$metadata$ = {
     kind: Kind_CLASS,
@@ -16392,10 +16558,10 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Special$Glacies() {
     Special$Glacies_instance = this;
-    Special.call(this, 'Glacies', 16, Name$Glacies_getInstance(), SkillType$SPECIAL_A_getInstance(), 4);
+    Special.call(this, 'Glacies', 15, Name$Glacies_getInstance(), SkillType$SPECIAL_A_getInstance(), 4);
   }
-  Special$Glacies.prototype.damage_96237r$$default = function (battleUnit, target, results, skill) {
-    return new Pair(battleUnit.halfByStaff_za3lpa$(target.preventByDefResTerrain_yqyiwh$(battleUnit.colorAttack() + ((battleUnit.effectedRes * 8 | 0) / 10 | 0) | 0, battleUnit.armedHero.baseHero.weapon.type)), this);
+  Special$Glacies.prototype.baseDamage_trfvk0$ = function (source) {
+    return source.colorAttack() + ((source.effectedRes * 8 | 0) / 10 | 0) | 0;
   };
   Special$Glacies.$metadata$ = {
     kind: Kind_CLASS,
@@ -16409,11 +16575,13 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Special$Aether() {
     Special$Aether_instance = this;
-    Special.call(this, 'Aether', 17, Name$Aether_getInstance(), SkillType$SPECIAL_A_getInstance(), 5);
+    Special.call(this, 'Aether', 16, Name$Aether_getInstance(), SkillType$SPECIAL_A_getInstance(), 5);
   }
-  Special$Aether.prototype.damage_96237r$$default = function (battleUnit, target, results, skill) {
-    return new Pair(battleUnit.halfByStaff_za3lpa$(target.preventByDefResTerrain_yqyiwh$(battleUnit.colorAttack(), battleUnit.armedHero.baseHero.weapon.type, 50)), this);
-  };
+  Object.defineProperty(Special$Aether.prototype, 'penetrate', {
+    get: function () {
+      return 50;
+    }
+  });
   Special$Aether.prototype.absorb_6zcyla$ = function (battleUnit, target, damage) {
     battleUnit.heal_za3lpa$((damage * 5 | 0) / 10 | 0);
     return damage;
@@ -16430,11 +16598,13 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Special$RadiantAether() {
     Special$RadiantAether_instance = this;
-    Special.call(this, 'RadiantAether', 18, Name$RadiantAether_getInstance(), SkillType$SPECIAL_A_getInstance(), 4);
+    Special.call(this, 'RadiantAether', 17, Name$RadiantAether_getInstance(), SkillType$SPECIAL_A_getInstance(), 4);
   }
-  Special$RadiantAether.prototype.damage_96237r$$default = function (battleUnit, target, results, skill) {
-    return new Pair(battleUnit.halfByStaff_za3lpa$(target.preventByDefResTerrain_yqyiwh$(battleUnit.colorAttack(), battleUnit.armedHero.baseHero.weapon.type, 50)), this);
-  };
+  Object.defineProperty(Special$RadiantAether.prototype, 'penetrate', {
+    get: function () {
+      return 50;
+    }
+  });
   Special$RadiantAether.prototype.absorb_6zcyla$ = function (battleUnit, target, damage) {
     battleUnit.heal_za3lpa$((damage * 5 | 0) / 10 | 0);
     return damage;
@@ -16451,11 +16621,13 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Special$NewMoon() {
     Special$NewMoon_instance = this;
-    Special.call(this, 'NewMoon', 19, Name$NewMoon_getInstance(), SkillType$SPECIAL_A_getInstance(), 3);
+    Special.call(this, 'NewMoon', 18, Name$NewMoon_getInstance(), SkillType$SPECIAL_A_getInstance(), 3);
   }
-  Special$NewMoon.prototype.damage_96237r$$default = function (battleUnit, target, results, skill) {
-    return new Pair(battleUnit.halfByStaff_za3lpa$(target.preventByDefResTerrain_yqyiwh$(battleUnit.colorAttack(), battleUnit.armedHero.baseHero.weapon.type, 30)), this);
-  };
+  Object.defineProperty(Special$NewMoon.prototype, 'penetrate', {
+    get: function () {
+      return 30;
+    }
+  });
   Special$NewMoon.$metadata$ = {
     kind: Kind_CLASS,
     simpleName: 'NewMoon',
@@ -16468,11 +16640,13 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Special$Moonbow() {
     Special$Moonbow_instance = this;
-    Special.call(this, 'Moonbow', 20, Name$Moonbow_getInstance(), SkillType$SPECIAL_A_getInstance(), 2);
+    Special.call(this, 'Moonbow', 19, Name$Moonbow_getInstance(), SkillType$SPECIAL_A_getInstance(), 2);
   }
-  Special$Moonbow.prototype.damage_96237r$$default = function (battleUnit, target, results, skill) {
-    return new Pair(battleUnit.halfByStaff_za3lpa$(target.preventByDefResTerrain_yqyiwh$(battleUnit.colorAttack(), battleUnit.armedHero.baseHero.weapon.type, 30)), this);
-  };
+  Object.defineProperty(Special$Moonbow.prototype, 'penetrate', {
+    get: function () {
+      return 30;
+    }
+  });
   Special$Moonbow.$metadata$ = {
     kind: Kind_CLASS,
     simpleName: 'Moonbow',
@@ -16485,11 +16659,13 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Special$Luna() {
     Special$Luna_instance = this;
-    Special.call(this, 'Luna', 21, Name$Luna_getInstance(), SkillType$SPECIAL_A_getInstance(), 3);
+    Special.call(this, 'Luna', 20, Name$Luna_getInstance(), SkillType$SPECIAL_A_getInstance(), 3);
   }
-  Special$Luna.prototype.damage_96237r$$default = function (battleUnit, target, results, skill) {
-    return new Pair(battleUnit.halfByStaff_za3lpa$(battleUnit.halfByStaff_za3lpa$(target.preventByDefResTerrain_yqyiwh$(battleUnit.colorAttack(), battleUnit.armedHero.baseHero.weapon.type, 50))), this);
-  };
+  Object.defineProperty(Special$Luna.prototype, 'penetrate', {
+    get: function () {
+      return 50;
+    }
+  });
   Special$Luna.$metadata$ = {
     kind: Kind_CLASS,
     simpleName: 'Luna',
@@ -16502,11 +16678,13 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Special$BlackLuna() {
     Special$BlackLuna_instance = this;
-    Special.call(this, 'BlackLuna', 22, Name$BlackLuna_getInstance(), SkillType$SPECIAL_A_getInstance(), 3);
+    Special.call(this, 'BlackLuna', 21, Name$BlackLuna_getInstance(), SkillType$SPECIAL_A_getInstance(), 3);
   }
-  Special$BlackLuna.prototype.damage_96237r$$default = function (battleUnit, target, results, skill) {
-    return new Pair(battleUnit.halfByStaff_za3lpa$(target.preventByDefResTerrain_yqyiwh$(battleUnit.colorAttack(), battleUnit.armedHero.baseHero.weapon.type, 80)), this);
-  };
+  Object.defineProperty(Special$BlackLuna.prototype, 'penetrate', {
+    get: function () {
+      return 80;
+    }
+  });
   Special$BlackLuna.$metadata$ = {
     kind: Kind_CLASS,
     simpleName: 'BlackLuna',
@@ -16519,10 +16697,10 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Special$Retribution() {
     Special$Retribution_instance = this;
-    Special.call(this, 'Retribution', 23, Name$Retribution_getInstance(), SkillType$SPECIAL_A_getInstance(), 3);
+    Special.call(this, 'Retribution', 22, Name$Retribution_getInstance(), SkillType$SPECIAL_A_getInstance(), 3);
   }
-  Special$Retribution.prototype.damage_96237r$$default = function (battleUnit, target, results, skill) {
-    return new Pair(battleUnit.halfByStaff_za3lpa$(target.preventByDefResTerrain_yqyiwh$(battleUnit.colorAttack() + (((battleUnit.armedHero.maxHp - battleUnit.hp | 0) * 3 | 0) / 10 | 0) | 0, battleUnit.armedHero.baseHero.weapon.type)), this);
+  Special$Retribution.prototype.baseDamage_trfvk0$ = function (source) {
+    return source.colorAttack() + (((source.armedHero.maxHp - source.hp | 0) * 3 | 0) / 10 | 0) | 0;
   };
   Special$Retribution.$metadata$ = {
     kind: Kind_CLASS,
@@ -16536,10 +16714,10 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Special$Reprisal() {
     Special$Reprisal_instance = this;
-    Special.call(this, 'Reprisal', 24, Name$Reprisal_getInstance(), SkillType$SPECIAL_A_getInstance(), 2);
+    Special.call(this, 'Reprisal', 23, Name$Reprisal_getInstance(), SkillType$SPECIAL_A_getInstance(), 2);
   }
-  Special$Reprisal.prototype.damage_96237r$$default = function (battleUnit, target, results, skill) {
-    return new Pair(battleUnit.halfByStaff_za3lpa$(target.preventByDefResTerrain_yqyiwh$(battleUnit.colorAttack() + (((battleUnit.armedHero.maxHp - battleUnit.hp | 0) * 3 | 0) / 10 | 0) | 0, battleUnit.armedHero.baseHero.weapon.type)), this);
+  Special$Reprisal.prototype.baseDamage_trfvk0$ = function (source) {
+    return source.colorAttack() + (((source.armedHero.maxHp - source.hp | 0) * 3 | 0) / 10 | 0) | 0;
   };
   Special$Reprisal.$metadata$ = {
     kind: Kind_CLASS,
@@ -16553,10 +16731,10 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Special$Vengeance() {
     Special$Vengeance_instance = this;
-    Special.call(this, 'Vengeance', 25, Name$Vengeance_getInstance(), SkillType$SPECIAL_A_getInstance(), 3);
+    Special.call(this, 'Vengeance', 24, Name$Vengeance_getInstance(), SkillType$SPECIAL_A_getInstance(), 3);
   }
-  Special$Vengeance.prototype.damage_96237r$$default = function (battleUnit, target, results, skill) {
-    return new Pair(battleUnit.halfByStaff_za3lpa$(target.preventByDefResTerrain_yqyiwh$(battleUnit.colorAttack() + (((battleUnit.armedHero.maxHp - battleUnit.hp | 0) * 5 | 0) / 10 | 0) | 0, battleUnit.armedHero.baseHero.weapon.type)), this);
+  Special$Vengeance.prototype.baseDamage_trfvk0$ = function (source) {
+    return source.colorAttack() + (((source.armedHero.maxHp - source.hp | 0) * 5 | 0) / 10 | 0) | 0;
   };
   Special$Vengeance.$metadata$ = {
     kind: Kind_CLASS,
@@ -16568,12 +16746,31 @@ var FEHSIM = function (_, Kotlin) {
     Special_initFields();
     return Special$Vengeance_instance;
   }
+  function Special$Miracle() {
+    Special$Miracle_instance = this;
+    Special.call(this, 'Miracle', 25, Name$Miracle_getInstance(), SkillType$SPECIAL_C_getInstance(), 5);
+  }
+  Special$Miracle.prototype.specialPrevent_upjsjk$$default = function (battleUnit, damage, lv) {
+    var tmp$;
+    tmp$ = battleUnit.hp;
+    return 2 <= tmp$ && tmp$ <= damage ? new Pair(battleUnit.hp - 1 | 0, this) : this.specialPrevent_upjsjk$(battleUnit, damage, lv, Special.prototype.specialPrevent_upjsjk$$default.bind(this));
+  };
+  Special$Miracle.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'Miracle',
+    interfaces: [Special]
+  };
+  var Special$Miracle_instance = null;
+  function Special$Miracle_getInstance() {
+    Special_initFields();
+    return Special$Miracle_instance;
+  }
   function Special$HolyVestments() {
     Special$HolyVestments_instance = this;
     Special.call(this, 'HolyVestments', 26, Name$HolyVestments_getInstance(), SkillType$SPECIAL_C_getInstance(), 3);
   }
   Special$HolyVestments.prototype.specialPrevent_upjsjk$$default = function (battleUnit, damage, lv) {
-    return ensureNotNull(battleUnit.armedHero.baseHero.weapon.type.weaponType).range === 2 ? new Pair(damage - ((damage * 3 | 0) / 10 | 0) | 0, this) : this.specialPrevent_upjsjk$(battleUnit, damage, lv, Special.prototype.specialPrevent_upjsjk$$default.bind(this));
+    return ensureNotNull(ensureNotNull(battleUnit.enemy).armedHero.baseHero.weapon.type.weaponType).range === 2 ? new Pair(handmaidMath_getInstance().max_vux9f0$(0, damage - ((damage * 3 | 0) / 10 | 0) + lv | 0), this) : this.specialPrevent_upjsjk$(battleUnit, damage, lv, Special.prototype.specialPrevent_upjsjk$$default.bind(this));
   };
   Special$HolyVestments.$metadata$ = {
     kind: Kind_CLASS,
@@ -16590,7 +16787,7 @@ var FEHSIM = function (_, Kotlin) {
     Special.call(this, 'SacredCowl', 27, Name$SacredCowl_getInstance(), SkillType$SPECIAL_C_getInstance(), 2);
   }
   Special$SacredCowl.prototype.specialPrevent_upjsjk$$default = function (battleUnit, damage, lv) {
-    return ensureNotNull(battleUnit.armedHero.baseHero.weapon.type.weaponType).range === 2 ? new Pair(damage - ((damage * 3 | 0) / 10 | 0) | 0, this) : this.specialPrevent_upjsjk$(battleUnit, damage, lv, Special.prototype.specialPrevent_upjsjk$$default.bind(this));
+    return ensureNotNull(ensureNotNull(battleUnit.enemy).armedHero.baseHero.weapon.type.weaponType).range === 2 ? new Pair(handmaidMath_getInstance().max_vux9f0$(0, damage - ((damage * 3 | 0) / 10 | 0) + lv | 0), this) : this.specialPrevent_upjsjk$(battleUnit, damage, lv, Special.prototype.specialPrevent_upjsjk$$default.bind(this));
   };
   Special$SacredCowl.$metadata$ = {
     kind: Kind_CLASS,
@@ -16607,9 +16804,9 @@ var FEHSIM = function (_, Kotlin) {
     Special.call(this, 'IceMirror', 28, Name$IceMirror_getInstance(), SkillType$SPECIAL_C_getInstance(), 2);
   }
   Special$IceMirror.prototype.specialPrevent_upjsjk$$default = function (battleUnit, damage, lv) {
-    return ensureNotNull(battleUnit.armedHero.baseHero.weapon.type.weaponType).range === 2 ? new Pair(damage - ((damage * 3 | 0) / 10 | 0) | 0, this) : this.specialPrevent_upjsjk$(battleUnit, damage, lv, Special.prototype.specialPrevent_upjsjk$$default.bind(this));
+    return ensureNotNull(ensureNotNull(battleUnit.enemy).armedHero.baseHero.weapon.type.weaponType).range === 2 ? new Pair(handmaidMath_getInstance().max_vux9f0$(0, damage - ((damage * 3 | 0) / 10 | 0) + lv | 0), this) : this.specialPrevent_upjsjk$(battleUnit, damage, lv, Special.prototype.specialPrevent_upjsjk$$default.bind(this));
   };
-  Special$IceMirror.prototype.reducedDamage_upjsjk$$default = function (battleUnit, damage, lv) {
+  Special$IceMirror.prototype.preventedDamage_upjsjk$$default = function (battleUnit, damage, lv) {
     battleUnit.oneTimeOnlyAdditionalDamage = damage;
     return battleUnit;
   };
@@ -16628,7 +16825,7 @@ var FEHSIM = function (_, Kotlin) {
     Special.call(this, 'Aegis', 29, Name$Aegis_getInstance(), SkillType$SPECIAL_C_getInstance(), 3);
   }
   Special$Aegis.prototype.specialPrevent_upjsjk$$default = function (battleUnit, damage, lv) {
-    return ensureNotNull(battleUnit.armedHero.baseHero.weapon.type.weaponType).range === 2 ? new Pair(damage - ((damage * 5 | 0) / 10 | 0) | 0, this) : this.specialPrevent_upjsjk$(battleUnit, damage, lv, Special.prototype.specialPrevent_upjsjk$$default.bind(this));
+    return ensureNotNull(ensureNotNull(battleUnit.enemy).armedHero.baseHero.weapon.type.weaponType).range === 2 ? new Pair(handmaidMath_getInstance().max_vux9f0$(0, damage - ((damage * 5 | 0) / 10 | 0) + lv | 0), this) : this.specialPrevent_upjsjk$(battleUnit, damage, lv, Special.prototype.specialPrevent_upjsjk$$default.bind(this));
   };
   Special$Aegis.$metadata$ = {
     kind: Kind_CLASS,
@@ -16642,10 +16839,10 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Special$Buckler() {
     Special$Buckler_instance = this;
-    Special.call(this, 'Buckler', 30, Name$Buckler_getInstance(), SkillType$SPECIAL_A_getInstance(), 3);
+    Special.call(this, 'Buckler', 30, Name$Buckler_getInstance(), SkillType$SPECIAL_C_getInstance(), 3);
   }
   Special$Buckler.prototype.specialPrevent_upjsjk$$default = function (battleUnit, damage, lv) {
-    return ensureNotNull(battleUnit.armedHero.baseHero.weapon.type.weaponType).range === 1 ? new Pair(damage - ((damage * 3 | 0) / 10 | 0) | 0, this) : this.specialPrevent_upjsjk$(battleUnit, damage, lv, Special.prototype.specialPrevent_upjsjk$$default.bind(this));
+    return ensureNotNull(ensureNotNull(battleUnit.enemy).armedHero.baseHero.weapon.type.weaponType).range === 1 ? new Pair(handmaidMath_getInstance().max_vux9f0$(0, damage - ((damage * 3 | 0) / 10 | 0) + lv | 0), this) : this.specialPrevent_upjsjk$(battleUnit, damage, lv, Special.prototype.specialPrevent_upjsjk$$default.bind(this));
   };
   Special$Buckler.$metadata$ = {
     kind: Kind_CLASS,
@@ -16659,10 +16856,10 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Special$Escutcheon() {
     Special$Escutcheon_instance = this;
-    Special.call(this, 'Escutcheon', 31, Name$Escutcheon_getInstance(), SkillType$SPECIAL_A_getInstance(), 2);
+    Special.call(this, 'Escutcheon', 31, Name$Escutcheon_getInstance(), SkillType$SPECIAL_C_getInstance(), 2);
   }
   Special$Escutcheon.prototype.specialPrevent_upjsjk$$default = function (battleUnit, damage, lv) {
-    return ensureNotNull(ensureNotNull(battleUnit.enemy).armedHero.baseHero.weapon.type.weaponType).range === 1 ? new Pair(damage - ((damage * 3 | 0) / 10 | 0) | 0, this) : this.specialPrevent_upjsjk$(battleUnit, damage, lv, Special.prototype.specialPrevent_upjsjk$$default.bind(this));
+    return ensureNotNull(ensureNotNull(battleUnit.enemy).armedHero.baseHero.weapon.type.weaponType).range === 1 ? new Pair(handmaidMath_getInstance().max_vux9f0$(0, damage - ((damage * 3 | 0) / 10 | 0) + lv | 0), this) : this.specialPrevent_upjsjk$(battleUnit, damage, lv, Special.prototype.specialPrevent_upjsjk$$default.bind(this));
   };
   Special$Escutcheon.$metadata$ = {
     kind: Kind_CLASS,
@@ -16676,10 +16873,10 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Special$Pavise() {
     Special$Pavise_instance = this;
-    Special.call(this, 'Pavise', 32, Name$Pavise_getInstance(), SkillType$SPECIAL_A_getInstance(), 3);
+    Special.call(this, 'Pavise', 32, Name$Pavise_getInstance(), SkillType$SPECIAL_C_getInstance(), 3);
   }
   Special$Pavise.prototype.specialPrevent_upjsjk$$default = function (battleUnit, damage, lv) {
-    return ensureNotNull(battleUnit.armedHero.baseHero.weapon.type.weaponType).range === 1 ? new Pair(damage - ((damage * 5 | 0) / 10 | 0) | 0, this) : this.specialPrevent_upjsjk$(battleUnit, damage, lv, Special.prototype.specialPrevent_upjsjk$$default.bind(this));
+    return ensureNotNull(ensureNotNull(battleUnit.enemy).armedHero.baseHero.weapon.type.weaponType).range === 1 ? new Pair(handmaidMath_getInstance().max_vux9f0$(0, damage - ((damage * 5 | 0) / 10 | 0) + lv | 0), this) : this.specialPrevent_upjsjk$(battleUnit, damage, lv, Special.prototype.specialPrevent_upjsjk$$default.bind(this));
   };
   Special$Pavise.$metadata$ = {
     kind: Kind_CLASS,
@@ -16855,7 +17052,7 @@ var FEHSIM = function (_, Kotlin) {
     interfaces: [Skill, Enum]
   };
   function Special$values() {
-    return [Special$DayLight_getInstance(), Special$Noontime_getInstance(), Special$Sol_getInstance(), Special$NightSky_getInstance(), Special$Glimmer_getInstance(), Special$Astra_getInstance(), Special$RegnalAstra_getInstance(), Special$Miracle_getInstance(), Special$DraconicAura_getInstance(), Special$DragonGaze_getInstance(), Special$DragonFang_getInstance(), Special$GlowingEmber_getInstance(), Special$Bonfire_getInstance(), Special$Ignis_getInstance(), Special$ChillingWind_getInstance(), Special$Iceberg_getInstance(), Special$Glacies_getInstance(), Special$Aether_getInstance(), Special$RadiantAether_getInstance(), Special$NewMoon_getInstance(), Special$Moonbow_getInstance(), Special$Luna_getInstance(), Special$BlackLuna_getInstance(), Special$Retribution_getInstance(), Special$Reprisal_getInstance(), Special$Vengeance_getInstance(), Special$HolyVestments_getInstance(), Special$SacredCowl_getInstance(), Special$IceMirror_getInstance(), Special$Aegis_getInstance(), Special$Buckler_getInstance(), Special$Escutcheon_getInstance(), Special$Pavise_getInstance(), Special$Galeforce_getInstance(), Special$Imbue_getInstance(), Special$HeavenlyLight_getInstance(), Special$SolidEarthBalm_getInstance(), Special$SwiftWindsBalm_getInstance(), Special$KindledFireBalm_getInstance(), Special$StillWaterBalm_getInstance(), Special$RisingFlame_getInstance(), Special$BlazingFlame_getInstance(), Special$GrowingFlame_getInstance(), Special$RisingLight_getInstance(), Special$BlazingLight_getInstance(), Special$GrowingLight_getInstance(), Special$RisingWind_getInstance(), Special$BlazingWind_getInstance(), Special$GrowingWind_getInstance(), Special$RisingThunder_getInstance(), Special$BlazingThunder_getInstance(), Special$GrowingThunder_getInstance()];
+    return [Special$DayLight_getInstance(), Special$Noontime_getInstance(), Special$Sol_getInstance(), Special$NightSky_getInstance(), Special$Glimmer_getInstance(), Special$Astra_getInstance(), Special$RegnalAstra_getInstance(), Special$DraconicAura_getInstance(), Special$DragonGaze_getInstance(), Special$DragonFang_getInstance(), Special$GlowingEmber_getInstance(), Special$Bonfire_getInstance(), Special$Ignis_getInstance(), Special$ChillingWind_getInstance(), Special$Iceberg_getInstance(), Special$Glacies_getInstance(), Special$Aether_getInstance(), Special$RadiantAether_getInstance(), Special$NewMoon_getInstance(), Special$Moonbow_getInstance(), Special$Luna_getInstance(), Special$BlackLuna_getInstance(), Special$Retribution_getInstance(), Special$Reprisal_getInstance(), Special$Vengeance_getInstance(), Special$Miracle_getInstance(), Special$HolyVestments_getInstance(), Special$SacredCowl_getInstance(), Special$IceMirror_getInstance(), Special$Aegis_getInstance(), Special$Buckler_getInstance(), Special$Escutcheon_getInstance(), Special$Pavise_getInstance(), Special$Galeforce_getInstance(), Special$Imbue_getInstance(), Special$HeavenlyLight_getInstance(), Special$SolidEarthBalm_getInstance(), Special$SwiftWindsBalm_getInstance(), Special$KindledFireBalm_getInstance(), Special$StillWaterBalm_getInstance(), Special$RisingFlame_getInstance(), Special$BlazingFlame_getInstance(), Special$GrowingFlame_getInstance(), Special$RisingLight_getInstance(), Special$BlazingLight_getInstance(), Special$GrowingLight_getInstance(), Special$RisingWind_getInstance(), Special$BlazingWind_getInstance(), Special$GrowingWind_getInstance(), Special$RisingThunder_getInstance(), Special$BlazingThunder_getInstance(), Special$GrowingThunder_getInstance()];
   }
   Special.values = Special$values;
   function Special$valueOf(name) {
@@ -16874,8 +17071,6 @@ var FEHSIM = function (_, Kotlin) {
         return Special$Astra_getInstance();
       case 'RegnalAstra':
         return Special$RegnalAstra_getInstance();
-      case 'Miracle':
-        return Special$Miracle_getInstance();
       case 'DraconicAura':
         return Special$DraconicAura_getInstance();
       case 'DragonGaze':
@@ -16912,6 +17107,8 @@ var FEHSIM = function (_, Kotlin) {
         return Special$Reprisal_getInstance();
       case 'Vengeance':
         return Special$Vengeance_getInstance();
+      case 'Miracle':
+        return Special$Miracle_getInstance();
       case 'HolyVestments':
         return Special$HolyVestments_getInstance();
       case 'SacredCowl':
@@ -17035,10 +17232,11 @@ var FEHSIM = function (_, Kotlin) {
     Weapon$Kadomatsu_instance = new Weapon('Kadomatsu', 45, Name$Kadomatsu_getInstance(), SkillType$SWORD_getInstance(), 10, Weapon$SteelSword_getInstance(), RefineSkill$RefineType$Range1_getInstance());
     Weapon$Kadomatsu2_instance = new Weapon('Kadomatsu2', 46, Name$Kadomatsu2_getInstance(), SkillType$SWORD_getInstance(), 14, Weapon$Kadomatsu_getInstance(), RefineSkill$RefineType$Range1_getInstance());
     new Weapon$WingSword();
-    Weapon$IronLance_instance = new Weapon('IronLance', 48, Name$IronLance_getInstance(), SkillType$LANCE_getInstance(), 6);
-    Weapon$SteelLance_instance = new Weapon('SteelLance', 49, Name$SteelLance_getInstance(), SkillType$LANCE_getInstance(), 8, Weapon$IronLance_getInstance());
-    Weapon$SilverLance_instance = new Weapon('SilverLance', 50, Name$SilverLance_getInstance(), SkillType$LANCE_getInstance(), 11, Weapon$SteelLance_getInstance());
-    Weapon$SilverLance2_instance = new Weapon('SilverLance2', 51, Name$SilverLance2_getInstance(), SkillType$LANCE_getInstance(), 15, Weapon$SilverLance_getInstance(), RefineSkill$RefineType$Range1_getInstance());
+    new Weapon$BelovedZofia();
+    Weapon$IronLance_instance = new Weapon('IronLance', 49, Name$IronLance_getInstance(), SkillType$LANCE_getInstance(), 6);
+    Weapon$SteelLance_instance = new Weapon('SteelLance', 50, Name$SteelLance_getInstance(), SkillType$LANCE_getInstance(), 8, Weapon$IronLance_getInstance());
+    Weapon$SilverLance_instance = new Weapon('SilverLance', 51, Name$SilverLance_getInstance(), SkillType$LANCE_getInstance(), 11, Weapon$SteelLance_getInstance());
+    Weapon$SilverLance2_instance = new Weapon('SilverLance2', 52, Name$SilverLance2_getInstance(), SkillType$LANCE_getInstance(), 15, Weapon$SilverLance_getInstance(), RefineSkill$RefineType$Range1_getInstance());
     new Weapon$KillerLance();
     new Weapon$KillerLance2();
     new Weapon$BraveLance();
@@ -17050,8 +17248,8 @@ var FEHSIM = function (_, Kotlin) {
     new Weapon$SlayingSpear2();
     new Weapon$CarrotLance();
     new Weapon$CarrotLance2();
-    Weapon$FirstBite_instance = new Weapon('FirstBite', 63, Name$FirstBite_getInstance(), SkillType$LANCE_getInstance(), 10, Weapon$SteelLance_getInstance());
-    Weapon$FirstBite2_instance = new Weapon('FirstBite2', 64, Name$FirstBite2_getInstance(), SkillType$LANCE_getInstance(), 14, Weapon$FirstBite_getInstance(), RefineSkill$RefineType$Range1_getInstance());
+    Weapon$FirstBite_instance = new Weapon('FirstBite', 64, Name$FirstBite_getInstance(), SkillType$LANCE_getInstance(), 10, Weapon$SteelLance_getInstance());
+    Weapon$FirstBite2_instance = new Weapon('FirstBite2', 65, Name$FirstBite2_getInstance(), SkillType$LANCE_getInstance(), 14, Weapon$FirstBite_getInstance(), RefineSkill$RefineType$Range1_getInstance());
     new Weapon$FiresweepLance();
     new Weapon$FiresweepLance2();
     new Weapon$DeftHarpoon();
@@ -17062,8 +17260,8 @@ var FEHSIM = function (_, Kotlin) {
     new Weapon$BerkutsLance2();
     new Weapon$SlayingLance();
     new Weapon$SlayingLance2();
-    Weapon$Fensalir_instance = new Weapon('Fensalir', 75, Name$Fensalir_getInstance(), SkillType$LANCE_getInstance(), 16, Weapon$SilverLance_getInstance());
-    Weapon$Siegmund_instance = new Weapon('Siegmund', 76, Name$Siegmund_getInstance(), SkillType$LANCE_getInstance(), 16, Weapon$SilverLance_getInstance(), RefineSkill$RefineType$Range1_getInstance());
+    Weapon$Fensalir_instance = new Weapon('Fensalir', 76, Name$Fensalir_getInstance(), SkillType$LANCE_getInstance(), 16, Weapon$SilverLance_getInstance());
+    Weapon$Siegmund_instance = new Weapon('Siegmund', 77, Name$Siegmund_getInstance(), SkillType$LANCE_getInstance(), 16, Weapon$SilverLance_getInstance(), RefineSkill$RefineType$Range1_getInstance());
     new Weapon$Gradivus();
     new Weapon$Vidofinir();
     new Weapon$CursedLance();
@@ -17075,10 +17273,10 @@ var FEHSIM = function (_, Kotlin) {
     new Weapon$CasaBlanca();
     new Weapon$CasaBlanca2();
     new Weapon$HinokasSpear();
-    Weapon$IronAxe_instance = new Weapon('IronAxe', 88, Name$IronAxe_getInstance(), SkillType$AXE_getInstance(), 6);
-    Weapon$SteelAxe_instance = new Weapon('SteelAxe', 89, Name$SteelAxe_getInstance(), SkillType$AXE_getInstance(), 8, Weapon$IronAxe_getInstance());
-    Weapon$SilverAxe_instance = new Weapon('SilverAxe', 90, Name$SilverAxe_getInstance(), SkillType$AXE_getInstance(), 11, Weapon$SteelAxe_getInstance());
-    Weapon$SilverAxe2_instance = new Weapon('SilverAxe2', 91, Name$SilverAxe2_getInstance(), SkillType$AXE_getInstance(), 15, Weapon$SilverAxe_getInstance(), RefineSkill$RefineType$Range1_getInstance());
+    Weapon$IronAxe_instance = new Weapon('IronAxe', 89, Name$IronAxe_getInstance(), SkillType$AXE_getInstance(), 6);
+    Weapon$SteelAxe_instance = new Weapon('SteelAxe', 90, Name$SteelAxe_getInstance(), SkillType$AXE_getInstance(), 8, Weapon$IronAxe_getInstance());
+    Weapon$SilverAxe_instance = new Weapon('SilverAxe', 91, Name$SilverAxe_getInstance(), SkillType$AXE_getInstance(), 11, Weapon$SteelAxe_getInstance());
+    Weapon$SilverAxe2_instance = new Weapon('SilverAxe2', 92, Name$SilverAxe2_getInstance(), SkillType$AXE_getInstance(), 15, Weapon$SilverAxe_getInstance(), RefineSkill$RefineType$Range1_getInstance());
     new Weapon$KillerAxe();
     new Weapon$KillerAxe2();
     new Weapon$BraveAxe();
@@ -17092,30 +17290,30 @@ var FEHSIM = function (_, Kotlin) {
     new Weapon$SlayingAxe2();
     new Weapon$CarrotAxe();
     new Weapon$CarrotAxe2();
-    Weapon$LegionsAxe_instance = new Weapon('LegionsAxe', 105, Name$LegionsAxe_getInstance(), SkillType$AXE_getInstance(), 10, Weapon$SteelAxe_getInstance());
-    Weapon$LegionsAxe2_instance = new Weapon('LegionsAxe2', 106, Name$LegionsAxe2_getInstance(), SkillType$AXE_getInstance(), 14, Weapon$LegionsAxe_getInstance(), RefineSkill$RefineType$Range1_getInstance());
+    Weapon$LegionsAxe_instance = new Weapon('LegionsAxe', 106, Name$LegionsAxe_getInstance(), SkillType$AXE_getInstance(), 10, Weapon$SteelAxe_getInstance());
+    Weapon$LegionsAxe2_instance = new Weapon('LegionsAxe2', 107, Name$LegionsAxe2_getInstance(), SkillType$AXE_getInstance(), 14, Weapon$LegionsAxe_getInstance(), RefineSkill$RefineType$Range1_getInstance());
     new Weapon$MelonCrusher();
     new Weapon$MelonCrusher2();
-    Weapon$LilithFloatie_instance = new Weapon('LilithFloatie', 109, Name$LilithFloatie_getInstance(), SkillType$AXE_getInstance(), 10, Weapon$SteelAxe_getInstance());
-    Weapon$LilithFloatie2_instance = new Weapon('LilithFloatie2', 110, Name$LilithFloatie2_getInstance(), SkillType$AXE_getInstance(), 14, Weapon$LilithFloatie_getInstance(), RefineSkill$RefineType$Range1_getInstance());
-    Weapon$Noatun_instance = new Weapon('Noatun', 111, Name$Noatun_getInstance(), SkillType$AXE_getInstance(), 16, Weapon$SilverAxe_getInstance());
+    Weapon$LilithFloatie_instance = new Weapon('LilithFloatie', 110, Name$LilithFloatie_getInstance(), SkillType$AXE_getInstance(), 10, Weapon$SteelAxe_getInstance());
+    Weapon$LilithFloatie2_instance = new Weapon('LilithFloatie2', 111, Name$LilithFloatie2_getInstance(), SkillType$AXE_getInstance(), 14, Weapon$LilithFloatie_getInstance(), RefineSkill$RefineType$Range1_getInstance());
+    Weapon$Noatun_instance = new Weapon('Noatun', 112, Name$Noatun_getInstance(), SkillType$AXE_getInstance(), 16, Weapon$SilverAxe_getInstance());
     new Weapon$Hauteclere();
     new Weapon$Armoads();
     new Weapon$Urvan();
-    Weapon$Uror_instance = new Weapon('Uror', 115, Name$Uror_getInstance(), SkillType$AXE_getInstance(), 16, Weapon$SilverAxe_getInstance());
+    Weapon$Uror_instance = new Weapon('Uror', 116, Name$Uror_getInstance(), SkillType$AXE_getInstance(), 16, Weapon$SilverAxe_getInstance());
     new Weapon$StoutTomahawk();
     new Weapon$SackOGifts();
     new Weapon$SackOGifts2();
     new Weapon$Handbell();
     new Weapon$Handbell2();
-    Weapon$Hagoita_instance = new Weapon('Hagoita', 121, Name$Hagoita_getInstance(), SkillType$AXE_getInstance(), 10, Weapon$SteelAxe_getInstance(), RefineSkill$RefineType$Range1_getInstance());
-    Weapon$Hagoita2_instance = new Weapon('Hagoita2', 122, Name$Hagoita2_getInstance(), SkillType$AXE_getInstance(), 14, Weapon$Hagoita_getInstance(), RefineSkill$RefineType$Range1_getInstance());
+    Weapon$Hagoita_instance = new Weapon('Hagoita', 122, Name$Hagoita_getInstance(), SkillType$AXE_getInstance(), 10, Weapon$SteelAxe_getInstance(), RefineSkill$RefineType$Range1_getInstance());
+    Weapon$Hagoita2_instance = new Weapon('Hagoita2', 123, Name$Hagoita2_getInstance(), SkillType$AXE_getInstance(), 14, Weapon$Hagoita_getInstance(), RefineSkill$RefineType$Range1_getInstance());
     new Weapon$BerserkArmads();
     new Weapon$Basilikos();
-    Weapon$IronBow_instance = new Weapon('IronBow', 125, Name$IronBow_getInstance(), SkillType$BOW_getInstance(), 4);
-    Weapon$SteelBow_instance = new Weapon('SteelBow', 126, Name$SteelBow_getInstance(), SkillType$BOW_getInstance(), 6, Weapon$IronBow_getInstance());
-    Weapon$SilverBow_instance = new Weapon('SilverBow', 127, Name$SilverBow_getInstance(), SkillType$BOW_getInstance(), 9, Weapon$SteelBow_getInstance());
-    Weapon$SilverBow2_instance = new Weapon('SilverBow2', 128, Name$SilverBow2_getInstance(), SkillType$BOW_getInstance(), 13, Weapon$SilverBow_getInstance(), RefineSkill$RefineType$Range2_getInstance());
+    Weapon$IronBow_instance = new Weapon('IronBow', 126, Name$IronBow_getInstance(), SkillType$BOW_getInstance(), 4);
+    Weapon$SteelBow_instance = new Weapon('SteelBow', 127, Name$SteelBow_getInstance(), SkillType$BOW_getInstance(), 6, Weapon$IronBow_getInstance());
+    Weapon$SilverBow_instance = new Weapon('SilverBow', 128, Name$SilverBow_getInstance(), SkillType$BOW_getInstance(), 9, Weapon$SteelBow_getInstance());
+    Weapon$SilverBow2_instance = new Weapon('SilverBow2', 129, Name$SilverBow2_getInstance(), SkillType$BOW_getInstance(), 13, Weapon$SilverBow_getInstance(), RefineSkill$RefineType$Range2_getInstance());
     new Weapon$BraveBow();
     new Weapon$BraveBow2();
     new Weapon$KillerBow();
@@ -17125,64 +17323,64 @@ var FEHSIM = function (_, Kotlin) {
     new Weapon$GuardBow2();
     new Weapon$FiresweepBow();
     new Weapon$FiresweepBow2();
-    Weapon$CupidArrow_instance = new Weapon('CupidArrow', 138, Name$CupidArrow_getInstance(), SkillType$BOW_getInstance(), 8, Weapon$SteelBow_getInstance());
-    Weapon$CupidArrow2_instance = new Weapon('CupidArrow2', 139, Name$CupidArrow2_getInstance(), SkillType$BOW_getInstance(), 12, Weapon$CupidArrow_getInstance(), RefineSkill$RefineType$Range2_getInstance());
+    Weapon$CupidArrow_instance = new Weapon('CupidArrow', 139, Name$CupidArrow_getInstance(), SkillType$BOW_getInstance(), 8, Weapon$SteelBow_getInstance());
+    Weapon$CupidArrow2_instance = new Weapon('CupidArrow2', 140, Name$CupidArrow2_getInstance(), SkillType$BOW_getInstance(), 12, Weapon$CupidArrow_getInstance(), RefineSkill$RefineType$Range2_getInstance());
     new Weapon$RefreshingBolt();
     new Weapon$RefreshingBolt2();
-    Weapon$ClarissesBow_instance = new Weapon('ClarissesBow', 142, Name$ClarissesBow_getInstance(), SkillType$BOW_getInstance(), 7, Weapon$SteelBow_getInstance());
-    Weapon$ClarissesBow2_instance = new Weapon('ClarissesBow2', 143, Name$ClarissesBow2_getInstance(), SkillType$BOW_getInstance(), 11, Weapon$ClarissesBow_getInstance(), RefineSkill$RefineType$Range2_getInstance());
+    Weapon$ClarissesBow_instance = new Weapon('ClarissesBow', 143, Name$ClarissesBow_getInstance(), SkillType$BOW_getInstance(), 7, Weapon$SteelBow_getInstance());
+    Weapon$ClarissesBow2_instance = new Weapon('ClarissesBow2', 144, Name$ClarissesBow2_getInstance(), SkillType$BOW_getInstance(), 11, Weapon$ClarissesBow_getInstance(), RefineSkill$RefineType$Range2_getInstance());
     new Weapon$SlayingBow();
     new Weapon$SlayingBow2();
     new Weapon$Parthia();
-    Weapon$FujinYumi_instance = new Weapon('FujinYumi', 147, Name$FujinYumi_getInstance(), SkillType$BOW_getInstance(), 14, Weapon$SilverBow_getInstance(), RefineSkill$RefineType$Range2_getInstance());
+    Weapon$FujinYumi_instance = new Weapon('FujinYumi', 148, Name$FujinYumi_getInstance(), SkillType$BOW_getInstance(), 14, Weapon$SilverBow_getInstance(), RefineSkill$RefineType$Range2_getInstance());
     new Weapon$Nidhogg();
     new Weapon$Mulagir();
-    Weapon$MonstrousBow_instance = new Weapon('MonstrousBow', 150, Name$MonstrousBow_getInstance(), SkillType$BOW_getInstance(), 8, Weapon$SteelBow_getInstance());
-    Weapon$MonstrousBow2_instance = new Weapon('MonstrousBow2', 151, Name$MonstrousBow2_getInstance(), SkillType$BOW_getInstance(), 12, Weapon$MonstrousBow_getInstance(), RefineSkill$RefineType$Range2_getInstance());
-    Weapon$HamaYa_instance = new Weapon('HamaYa', 152, Name$HamaYa_getInstance(), SkillType$BOW_getInstance(), 8, Weapon$SteelBow_getInstance(), RefineSkill$RefineType$Range2_getInstance());
-    Weapon$HamaYa2_instance = new Weapon('HamaYa2', 153, Name$HamaYa2_getInstance(), SkillType$BOW_getInstance(), 12, Weapon$HamaYa_getInstance(), RefineSkill$RefineType$Range2_getInstance());
+    Weapon$MonstrousBow_instance = new Weapon('MonstrousBow', 151, Name$MonstrousBow_getInstance(), SkillType$BOW_getInstance(), 8, Weapon$SteelBow_getInstance());
+    Weapon$MonstrousBow2_instance = new Weapon('MonstrousBow2', 152, Name$MonstrousBow2_getInstance(), SkillType$BOW_getInstance(), 12, Weapon$MonstrousBow_getInstance(), RefineSkill$RefineType$Range2_getInstance());
+    Weapon$HamaYa_instance = new Weapon('HamaYa', 153, Name$HamaYa_getInstance(), SkillType$BOW_getInstance(), 8, Weapon$SteelBow_getInstance(), RefineSkill$RefineType$Range2_getInstance());
+    Weapon$HamaYa2_instance = new Weapon('HamaYa2', 154, Name$HamaYa2_getInstance(), SkillType$BOW_getInstance(), 12, Weapon$HamaYa_getInstance(), RefineSkill$RefineType$Range2_getInstance());
     new Weapon$Gratia();
     new Weapon$Gratia2();
-    Weapon$IronDagger_instance = new Weapon('IronDagger', 156, Name$IronDagger_getInstance(), SkillType$DAGGER_getInstance(), 3);
-    Weapon$SteelDagger_instance = new Weapon('SteelDagger', 157, Name$SteelDagger_getInstance(), SkillType$DAGGER_getInstance(), 5, Weapon$IronDagger_getInstance());
-    Weapon$SilverDagger_instance = new Weapon('SilverDagger', 158, Name$SilverDagger_getInstance(), SkillType$DAGGER_getInstance(), 7, Weapon$SteelDagger_getInstance());
-    Weapon$SilverDagger2_instance = new Weapon('SilverDagger2', 159, Name$SilverDagger2_getInstance(), SkillType$DAGGER_getInstance(), 10, Weapon$SilverDagger_getInstance(), RefineSkill$RefineType$Range2_getInstance());
-    Weapon$RogueDagger_instance = new Weapon('RogueDagger', 160, Name$RogueDagger_getInstance(), SkillType$DAGGER_getInstance(), 4, Weapon$SteelDagger_getInstance());
-    Weapon$RogueDagger2_instance = new Weapon('RogueDagger2', 161, Name$RogueDagger2_getInstance(), SkillType$DAGGER_getInstance(), 7, Weapon$RogueDagger_getInstance(), RefineSkill$RefineType$Range2_getInstance());
-    Weapon$SmokeDagger_instance = new Weapon('SmokeDagger', 162, Name$SmokeDagger_getInstance(), SkillType$DAGGER_getInstance(), 6, Weapon$SteelDagger_getInstance());
-    Weapon$SmokeDagger2_instance = new Weapon('SmokeDagger2', 163, Name$SmokeDagger2_getInstance(), SkillType$DAGGER_getInstance(), 9, Weapon$SmokeDagger_getInstance(), RefineSkill$RefineType$Range2_getInstance());
+    Weapon$IronDagger_instance = new Weapon('IronDagger', 157, Name$IronDagger_getInstance(), SkillType$DAGGER_getInstance(), 3);
+    Weapon$SteelDagger_instance = new Weapon('SteelDagger', 158, Name$SteelDagger_getInstance(), SkillType$DAGGER_getInstance(), 5, Weapon$IronDagger_getInstance());
+    Weapon$SilverDagger_instance = new Weapon('SilverDagger', 159, Name$SilverDagger_getInstance(), SkillType$DAGGER_getInstance(), 7, Weapon$SteelDagger_getInstance());
+    Weapon$SilverDagger2_instance = new Weapon('SilverDagger2', 160, Name$SilverDagger2_getInstance(), SkillType$DAGGER_getInstance(), 10, Weapon$SilverDagger_getInstance(), RefineSkill$RefineType$Range2_getInstance());
+    Weapon$RogueDagger_instance = new Weapon('RogueDagger', 161, Name$RogueDagger_getInstance(), SkillType$DAGGER_getInstance(), 4, Weapon$SteelDagger_getInstance());
+    Weapon$RogueDagger2_instance = new Weapon('RogueDagger2', 162, Name$RogueDagger2_getInstance(), SkillType$DAGGER_getInstance(), 7, Weapon$RogueDagger_getInstance(), RefineSkill$RefineType$Range2_getInstance());
+    Weapon$SmokeDagger_instance = new Weapon('SmokeDagger', 163, Name$SmokeDagger_getInstance(), SkillType$DAGGER_getInstance(), 6, Weapon$SteelDagger_getInstance());
+    Weapon$SmokeDagger2_instance = new Weapon('SmokeDagger2', 164, Name$SmokeDagger2_getInstance(), SkillType$DAGGER_getInstance(), 9, Weapon$SmokeDagger_getInstance(), RefineSkill$RefineType$Range2_getInstance());
     new Weapon$PoisonDagger();
     new Weapon$PoisonDagger2();
     new Weapon$Seashell();
     new Weapon$Seashell2();
-    Weapon$DancersFan_instance = new Weapon('DancersFan', 168, Name$DancersFan_getInstance(), SkillType$DAGGER_getInstance(), 7, Weapon$SteelDagger_getInstance());
-    Weapon$DancersFan2_instance = new Weapon('DancersFan2', 169, Name$DancersFan2_getInstance(), SkillType$DAGGER_getInstance(), 10, Weapon$DancersFan_getInstance(), RefineSkill$RefineType$Range2_getInstance());
+    Weapon$DancersFan_instance = new Weapon('DancersFan', 169, Name$DancersFan_getInstance(), SkillType$DAGGER_getInstance(), 7, Weapon$SteelDagger_getInstance());
+    Weapon$DancersFan2_instance = new Weapon('DancersFan2', 170, Name$DancersFan2_getInstance(), SkillType$DAGGER_getInstance(), 10, Weapon$DancersFan_getInstance(), RefineSkill$RefineType$Range2_getInstance());
     new Weapon$DeathlyDagger();
     new Weapon$KittyPaddle();
     new Weapon$KittyPaddle2();
-    Weapon$KagamiMochi_instance = new Weapon('KagamiMochi', 173, Name$KagamiMochi_getInstance(), SkillType$DAGGER_getInstance(), 8, Weapon$SteelDagger_getInstance(), RefineSkill$RefineType$Range2_getInstance());
-    Weapon$KagamiMochi2_instance = new Weapon('KagamiMochi2', 174, Name$KagamiMochi2_getInstance(), SkillType$DAGGER_getInstance(), 12, Weapon$KagamiMochi_getInstance(), RefineSkill$RefineType$Range2_getInstance());
-    Weapon$FeliciasPlate_instance = new Weapon('FeliciasPlate', 175, Name$FeliciasPlate_getInstance(), SkillType$PENETRATE_DAGGER_getInstance(), 14, Weapon$SilverDagger2_getInstance(), RefineSkill$RefineType$Range2_getInstance());
-    Weapon$Peshkatz_instance = new Weapon('Peshkatz', 176, Name$Peshkatz_getInstance(), SkillType$DAGGER_getInstance(), 14, Weapon$SilverDagger_getInstance());
-    Weapon$Assault_instance = new Weapon('Assault', 177, Name$Assault_getInstance(), SkillType$STAFF_getInstance(), 10);
+    Weapon$KagamiMochi_instance = new Weapon('KagamiMochi', 174, Name$KagamiMochi_getInstance(), SkillType$DAGGER_getInstance(), 8, Weapon$SteelDagger_getInstance(), RefineSkill$RefineType$Range2_getInstance());
+    Weapon$KagamiMochi2_instance = new Weapon('KagamiMochi2', 175, Name$KagamiMochi2_getInstance(), SkillType$DAGGER_getInstance(), 12, Weapon$KagamiMochi_getInstance(), RefineSkill$RefineType$Range2_getInstance());
+    Weapon$FeliciasPlate_instance = new Weapon('FeliciasPlate', 176, Name$FeliciasPlate_getInstance(), SkillType$PENETRATE_DAGGER_getInstance(), 14, Weapon$SilverDagger2_getInstance(), RefineSkill$RefineType$Range2_getInstance());
+    Weapon$Peshkatz_instance = new Weapon('Peshkatz', 177, Name$Peshkatz_getInstance(), SkillType$DAGGER_getInstance(), 14, Weapon$SilverDagger_getInstance());
+    Weapon$Assault_instance = new Weapon('Assault', 178, Name$Assault_getInstance(), SkillType$STAFF_getInstance(), 10);
     new Weapon$Absorb();
     new Weapon$Absorb2();
-    Weapon$Candlelight_instance = new Weapon('Candlelight', 180, Name$Candlelight_getInstance(), SkillType$STAFF_getInstance(), 7, Weapon$Assault_getInstance());
-    Weapon$Candlelight2_instance = new Weapon('Candlelight2', 181, Name$Candlelight2_getInstance(), SkillType$STAFF_getInstance(), 11, Weapon$Assault_getInstance(), RefineSkill$RefineType$Staff_getInstance());
-    Weapon$Gravity_instance = new Weapon('Gravity', 182, Name$Gravity_getInstance(), SkillType$STAFF_getInstance(), 7, Weapon$Assault_getInstance());
-    Weapon$Gravity2_instance = new Weapon('Gravity2', 183, Name$Gravity2_getInstance(), SkillType$STAFF_getInstance(), 10, Weapon$Gravity_getInstance(), RefineSkill$RefineType$Staff_getInstance());
-    Weapon$Fear_instance = new Weapon('Fear', 184, Name$Fear_getInstance(), SkillType$STAFF_getInstance(), 5, Weapon$Assault_getInstance());
-    Weapon$Fear2_instance = new Weapon('Fear2', 185, Name$Fear2_getInstance(), SkillType$STAFF_getInstance(), 12, Weapon$Fear_getInstance(), RefineSkill$RefineType$Staff_getInstance());
-    Weapon$Slow_instance = new Weapon('Slow', 186, Name$Slow_getInstance(), SkillType$STAFF_getInstance(), 5, Weapon$Assault_getInstance());
-    Weapon$Slow2_instance = new Weapon('Slow2', 187, Name$Slow2_getInstance(), SkillType$STAFF_getInstance(), 12, Weapon$Slow_getInstance(), RefineSkill$RefineType$Staff_getInstance());
-    Weapon$Panic_instance = new Weapon('Panic', 188, Name$Panic_getInstance(), SkillType$STAFF_getInstance(), 6, Weapon$Assault_getInstance());
-    Weapon$Panic2_instance = new Weapon('Panic2', 189, Name$Panic2_getInstance(), SkillType$STAFF_getInstance(), 11, Weapon$Panic_getInstance(), RefineSkill$RefineType$Staff_getInstance());
+    Weapon$Candlelight_instance = new Weapon('Candlelight', 181, Name$Candlelight_getInstance(), SkillType$STAFF_getInstance(), 7, Weapon$Assault_getInstance());
+    Weapon$Candlelight2_instance = new Weapon('Candlelight2', 182, Name$Candlelight2_getInstance(), SkillType$STAFF_getInstance(), 11, Weapon$Assault_getInstance(), RefineSkill$RefineType$Staff_getInstance());
+    Weapon$Gravity_instance = new Weapon('Gravity', 183, Name$Gravity_getInstance(), SkillType$STAFF_getInstance(), 7, Weapon$Assault_getInstance());
+    Weapon$Gravity2_instance = new Weapon('Gravity2', 184, Name$Gravity2_getInstance(), SkillType$STAFF_getInstance(), 10, Weapon$Gravity_getInstance(), RefineSkill$RefineType$Staff_getInstance());
+    Weapon$Fear_instance = new Weapon('Fear', 185, Name$Fear_getInstance(), SkillType$STAFF_getInstance(), 5, Weapon$Assault_getInstance());
+    Weapon$Fear2_instance = new Weapon('Fear2', 186, Name$Fear2_getInstance(), SkillType$STAFF_getInstance(), 12, Weapon$Fear_getInstance(), RefineSkill$RefineType$Staff_getInstance());
+    Weapon$Slow_instance = new Weapon('Slow', 187, Name$Slow_getInstance(), SkillType$STAFF_getInstance(), 5, Weapon$Assault_getInstance());
+    Weapon$Slow2_instance = new Weapon('Slow2', 188, Name$Slow2_getInstance(), SkillType$STAFF_getInstance(), 12, Weapon$Slow_getInstance(), RefineSkill$RefineType$Staff_getInstance());
+    Weapon$Panic_instance = new Weapon('Panic', 189, Name$Panic_getInstance(), SkillType$STAFF_getInstance(), 6, Weapon$Assault_getInstance());
+    Weapon$Panic2_instance = new Weapon('Panic2', 190, Name$Panic2_getInstance(), SkillType$STAFF_getInstance(), 11, Weapon$Panic_getInstance(), RefineSkill$RefineType$Staff_getInstance());
     new Weapon$Pain();
     new Weapon$Pain2();
-    Weapon$Flux_instance = new Weapon('Flux', 192, Name$Flux_getInstance(), SkillType$RTOME_getInstance(), 4);
-    Weapon$Fire_instance = new Weapon('Fire', 193, Name$Fire_getInstance(), SkillType$RTOME_getInstance(), 4);
-    Weapon$Ruin_instance = new Weapon('Ruin', 194, Name$Ruin_getInstance(), SkillType$RTOME_getInstance(), 6, Weapon$Flux_getInstance());
-    Weapon$Elfire_instance = new Weapon('Elfire', 195, Name$Elfire_getInstance(), SkillType$RTOME_getInstance(), 6, Weapon$Fire_getInstance());
+    Weapon$Flux_instance = new Weapon('Flux', 193, Name$Flux_getInstance(), SkillType$RTOME_getInstance(), 4);
+    Weapon$Fire_instance = new Weapon('Fire', 194, Name$Fire_getInstance(), SkillType$RTOME_getInstance(), 4);
+    Weapon$Ruin_instance = new Weapon('Ruin', 195, Name$Ruin_getInstance(), SkillType$RTOME_getInstance(), 6, Weapon$Flux_getInstance());
+    Weapon$Elfire_instance = new Weapon('Elfire', 196, Name$Elfire_getInstance(), SkillType$RTOME_getInstance(), 6, Weapon$Fire_getInstance());
     new Weapon$Rauorwolf();
     new Weapon$Rauorwolf2();
     new Weapon$KeenRauorwolf2();
@@ -17192,23 +17390,23 @@ var FEHSIM = function (_, Kotlin) {
     new Weapon$Rauorblade2();
     new Weapon$Rauorowl();
     new Weapon$Rauorowl2();
-    Weapon$Fenrir_instance = new Weapon('Fenrir', 205, Name$Fenrir_getInstance(), SkillType$RTOME_getInstance(), 9, Weapon$Elfire_getInstance());
-    Weapon$Fenrir2_instance = new Weapon('Fenrir2', 206, Name$Fenrir2_getInstance(), SkillType$RTOME_getInstance(), 13, Weapon$Fenrir_getInstance(), RefineSkill$RefineType$Range2_getInstance());
-    Weapon$Bolganone_instance = new Weapon('Bolganone', 207, Name$Bolganone_getInstance(), SkillType$RTOME_getInstance(), 9, Weapon$Elfire_getInstance());
-    Weapon$Bolganone2_instance = new Weapon('Bolganone2', 208, Name$Bolganone2_getInstance(), SkillType$RTOME_getInstance(), 13, Weapon$Bolganone_getInstance(), RefineSkill$RefineType$Range2_getInstance());
-    Weapon$TomatoTome_instance = new Weapon('TomatoTome', 209, Name$TomatoTome_getInstance(), SkillType$RTOME_getInstance(), 8, Weapon$Elfire_getInstance());
-    Weapon$TomatoTome2_instance = new Weapon('TomatoTome2', 210, Name$TomatoTome2_getInstance(), SkillType$RTOME_getInstance(), 12, Weapon$TomatoTome_getInstance(), RefineSkill$RefineType$Range2_getInstance());
-    Weapon$Brynhildr_instance = new Weapon('Brynhildr', 211, Name$Brynhildr_getInstance(), SkillType$RTOME_getInstance(), 14, Weapon$Bolganone_getInstance());
-    Weapon$Cymbeline_instance = new Weapon('Cymbeline', 212, Name$Cymbeline_getInstance(), SkillType$RTOME_getInstance(), 14, Weapon$Bolganone_getInstance(), RefineSkill$RefineType$Range2_getInstance());
+    Weapon$Fenrir_instance = new Weapon('Fenrir', 206, Name$Fenrir_getInstance(), SkillType$RTOME_getInstance(), 9, Weapon$Elfire_getInstance());
+    Weapon$Fenrir2_instance = new Weapon('Fenrir2', 207, Name$Fenrir2_getInstance(), SkillType$RTOME_getInstance(), 13, Weapon$Fenrir_getInstance(), RefineSkill$RefineType$Range2_getInstance());
+    Weapon$Bolganone_instance = new Weapon('Bolganone', 208, Name$Bolganone_getInstance(), SkillType$RTOME_getInstance(), 9, Weapon$Elfire_getInstance());
+    Weapon$Bolganone2_instance = new Weapon('Bolganone2', 209, Name$Bolganone2_getInstance(), SkillType$RTOME_getInstance(), 13, Weapon$Bolganone_getInstance(), RefineSkill$RefineType$Range2_getInstance());
+    Weapon$TomatoTome_instance = new Weapon('TomatoTome', 210, Name$TomatoTome_getInstance(), SkillType$RTOME_getInstance(), 8, Weapon$Elfire_getInstance());
+    Weapon$TomatoTome2_instance = new Weapon('TomatoTome2', 211, Name$TomatoTome2_getInstance(), SkillType$RTOME_getInstance(), 12, Weapon$TomatoTome_getInstance(), RefineSkill$RefineType$Range2_getInstance());
+    Weapon$Brynhildr_instance = new Weapon('Brynhildr', 212, Name$Brynhildr_getInstance(), SkillType$RTOME_getInstance(), 14, Weapon$Bolganone_getInstance());
+    Weapon$Cymbeline_instance = new Weapon('Cymbeline', 213, Name$Cymbeline_getInstance(), SkillType$RTOME_getInstance(), 14, Weapon$Bolganone_getInstance(), RefineSkill$RefineType$Range2_getInstance());
     new Weapon$Ragnarok();
-    Weapon$Valflame_instance = new Weapon('Valflame', 214, Name$Valflame_getInstance(), SkillType$RTOME_getInstance(), 14, Weapon$Bolganone_getInstance());
-    Weapon$Grimoire_instance = new Weapon('Grimoire', 215, Name$Grimoire_getInstance(), SkillType$RTOME_getInstance(), 14, Weapon$Bolganone_getInstance());
+    Weapon$Valflame_instance = new Weapon('Valflame', 215, Name$Valflame_getInstance(), SkillType$RTOME_getInstance(), 14, Weapon$Bolganone_getInstance());
+    Weapon$Grimoire_instance = new Weapon('Grimoire', 216, Name$Grimoire_getInstance(), SkillType$RTOME_getInstance(), 14, Weapon$Bolganone_getInstance());
     new Weapon$Candelabra();
     new Weapon$Candelabra2();
     new Weapon$Gleipnir();
     new Weapon$Naglfar();
-    Weapon$Thunder_instance = new Weapon('Thunder', 220, Name$Thunder_getInstance(), SkillType$BTOME_getInstance(), 4);
-    Weapon$Elthunder_instance = new Weapon('Elthunder', 221, Name$Elthunder_getInstance(), SkillType$BTOME_getInstance(), 6, Weapon$Thunder_getInstance());
+    Weapon$Thunder_instance = new Weapon('Thunder', 221, Name$Thunder_getInstance(), SkillType$BTOME_getInstance(), 4);
+    Weapon$Elthunder_instance = new Weapon('Elthunder', 222, Name$Elthunder_getInstance(), SkillType$BTOME_getInstance(), 6, Weapon$Thunder_getInstance());
     new Weapon$Blarwolf();
     new Weapon$Blarwolf2();
     new Weapon$KeenBlarwolf2();
@@ -17218,29 +17416,29 @@ var FEHSIM = function (_, Kotlin) {
     new Weapon$Blarblade2();
     new Weapon$Blarowl();
     new Weapon$Blarowl2();
-    Weapon$Thoron_instance = new Weapon('Thoron', 231, Name$Thoron_getInstance(), SkillType$BTOME_getInstance(), 9, Weapon$Elthunder_getInstance());
-    Weapon$Thoron2_instance = new Weapon('Thoron2', 232, Name$Thoron2_getInstance(), SkillType$BTOME_getInstance(), 13, Weapon$Thoron_getInstance(), RefineSkill$RefineType$Range2_getInstance());
-    Weapon$BlueEgg_instance = new Weapon('BlueEgg', 233, Name$BlueEgg_getInstance(), SkillType$BTOME_getInstance(), 7, Weapon$Elthunder_getInstance());
-    Weapon$BlueEgg2_instance = new Weapon('BlueEgg2', 234, Name$BlueEgg2_getInstance(), SkillType$BTOME_getInstance(), 11, Weapon$BlueEgg_getInstance(), RefineSkill$RefineType$Range2_getInstance());
-    Weapon$BlessedBouquet_instance = new Weapon('BlessedBouquet', 235, Name$BlessedBouquet_getInstance(), SkillType$BTOME_getInstance(), 9, Weapon$Elthunder_getInstance());
-    Weapon$BlessedBouquet2_instance = new Weapon('BlessedBouquet2', 236, Name$BlessedBouquet2_getInstance(), SkillType$BTOME_getInstance(), 12, Weapon$BlessedBouquet_getInstance(), RefineSkill$RefineType$Range2_getInstance());
-    Weapon$SealifeTome_instance = new Weapon('SealifeTome', 237, Name$SealifeTome_getInstance(), SkillType$BTOME_getInstance(), 8, Weapon$Elthunder_getInstance());
-    Weapon$SealifeTome2_instance = new Weapon('SealifeTome2', 238, Name$SealifeTome2_getInstance(), SkillType$BTOME_getInstance(), 12, Weapon$SealifeTome_getInstance(), RefineSkill$RefineType$Range2_getInstance());
-    Weapon$DancersScore_instance = new Weapon('DancersScore', 239, Name$DancersScore_getInstance(), SkillType$BTOME_getInstance(), 8, Weapon$Elthunder_getInstance());
-    Weapon$DancersScore2_instance = new Weapon('DancersScore2', 240, Name$DancersScore2_getInstance(), SkillType$BTOME_getInstance(), 12, Weapon$DancersScore_getInstance(), RefineSkill$RefineType$Range2_getInstance());
-    Weapon$DarkAura_instance = new Weapon('DarkAura', 241, Name$DarkAura_getInstance(), SkillType$BTOME_getInstance(), 14, Weapon$Thoron_getInstance());
+    Weapon$Thoron_instance = new Weapon('Thoron', 232, Name$Thoron_getInstance(), SkillType$BTOME_getInstance(), 9, Weapon$Elthunder_getInstance());
+    Weapon$Thoron2_instance = new Weapon('Thoron2', 233, Name$Thoron2_getInstance(), SkillType$BTOME_getInstance(), 13, Weapon$Thoron_getInstance(), RefineSkill$RefineType$Range2_getInstance());
+    Weapon$BlueEgg_instance = new Weapon('BlueEgg', 234, Name$BlueEgg_getInstance(), SkillType$BTOME_getInstance(), 7, Weapon$Elthunder_getInstance());
+    Weapon$BlueEgg2_instance = new Weapon('BlueEgg2', 235, Name$BlueEgg2_getInstance(), SkillType$BTOME_getInstance(), 11, Weapon$BlueEgg_getInstance(), RefineSkill$RefineType$Range2_getInstance());
+    Weapon$BlessedBouquet_instance = new Weapon('BlessedBouquet', 236, Name$BlessedBouquet_getInstance(), SkillType$BTOME_getInstance(), 9, Weapon$Elthunder_getInstance());
+    Weapon$BlessedBouquet2_instance = new Weapon('BlessedBouquet2', 237, Name$BlessedBouquet2_getInstance(), SkillType$BTOME_getInstance(), 12, Weapon$BlessedBouquet_getInstance(), RefineSkill$RefineType$Range2_getInstance());
+    Weapon$SealifeTome_instance = new Weapon('SealifeTome', 238, Name$SealifeTome_getInstance(), SkillType$BTOME_getInstance(), 8, Weapon$Elthunder_getInstance());
+    Weapon$SealifeTome2_instance = new Weapon('SealifeTome2', 239, Name$SealifeTome2_getInstance(), SkillType$BTOME_getInstance(), 12, Weapon$SealifeTome_getInstance(), RefineSkill$RefineType$Range2_getInstance());
+    Weapon$DancersScore_instance = new Weapon('DancersScore', 240, Name$DancersScore_getInstance(), SkillType$BTOME_getInstance(), 8, Weapon$Elthunder_getInstance());
+    Weapon$DancersScore2_instance = new Weapon('DancersScore2', 241, Name$DancersScore2_getInstance(), SkillType$BTOME_getInstance(), 12, Weapon$DancersScore_getInstance(), RefineSkill$RefineType$Range2_getInstance());
+    Weapon$DarkAura_instance = new Weapon('DarkAura', 242, Name$DarkAura_getInstance(), SkillType$BTOME_getInstance(), 14, Weapon$Thoron_getInstance());
     new Weapon$Valaskjalf();
-    Weapon$Aura_instance = new Weapon('Aura', 243, Name$Aura_getInstance(), SkillType$BTOME_getInstance(), 14, Weapon$Thoron_getInstance());
+    Weapon$Aura_instance = new Weapon('Aura', 244, Name$Aura_getInstance(), SkillType$BTOME_getInstance(), 14, Weapon$Thoron_getInstance());
     new Weapon$DireThunder();
     new Weapon$WeirdingTome();
     new Weapon$Thani();
     new Weapon$Ivaldi();
     new Weapon$BlueGift();
     new Weapon$BlueGift2();
-    Weapon$Wind_instance = new Weapon('Wind', 250, Name$Wind_getInstance(), SkillType$GTOME_getInstance(), 4);
-    Weapon$Elwind_instance = new Weapon('Elwind', 251, Name$Elwind_getInstance(), SkillType$GTOME_getInstance(), 6, Weapon$Wind_getInstance());
-    Weapon$Rexcalibur_instance = new Weapon('Rexcalibur', 252, Name$Rexcalibur_getInstance(), SkillType$GTOME_getInstance(), 9, Weapon$Elwind_getInstance());
-    Weapon$Rexcalibur2_instance = new Weapon('Rexcalibur2', 253, Name$Rexcalibur2_getInstance(), SkillType$GTOME_getInstance(), 13, Weapon$Rexcalibur_getInstance(), RefineSkill$RefineType$Range2_getInstance());
+    Weapon$Wind_instance = new Weapon('Wind', 251, Name$Wind_getInstance(), SkillType$GTOME_getInstance(), 4);
+    Weapon$Elwind_instance = new Weapon('Elwind', 252, Name$Elwind_getInstance(), SkillType$GTOME_getInstance(), 6, Weapon$Wind_getInstance());
+    Weapon$Rexcalibur_instance = new Weapon('Rexcalibur', 253, Name$Rexcalibur_getInstance(), SkillType$GTOME_getInstance(), 9, Weapon$Elwind_getInstance());
+    Weapon$Rexcalibur2_instance = new Weapon('Rexcalibur2', 254, Name$Rexcalibur2_getInstance(), SkillType$GTOME_getInstance(), 14, Weapon$Rexcalibur_getInstance(), RefineSkill$RefineType$Range2_getInstance());
     new Weapon$Gronnwolf();
     new Weapon$Gronnwolf2();
     new Weapon$KeenGronnwolf2();
@@ -17252,31 +17450,32 @@ var FEHSIM = function (_, Kotlin) {
     new Weapon$Gronnowl2();
     new Weapon$GreenEgg();
     new Weapon$GreenEgg2();
-    Weapon$HibiscusTome_instance = new Weapon('HibiscusTome', 265, Name$HibiscusTome_getInstance(), SkillType$GTOME_getInstance(), 8, Weapon$Elwind_getInstance());
-    Weapon$HibiscusTome2_instance = new Weapon('HibiscusTome2', 266, Name$HibiscusTome2_getInstance(), SkillType$GTOME_getInstance(), 12, Weapon$HibiscusTome_getInstance(), RefineSkill$RefineType$Range2_getInstance());
-    Weapon$DancersRing_instance = new Weapon('DancersRing', 267, Name$DancersRing_getInstance(), SkillType$GTOME_getInstance(), 8, Weapon$Elwind_getInstance());
-    Weapon$DancersRing2_instance = new Weapon('DancersRing2', 268, Name$DancersRing2_getInstance(), SkillType$GTOME_getInstance(), 12, Weapon$DancersRing_getInstance(), RefineSkill$RefineType$Range2_getInstance());
-    Weapon$Elivagar_instance = new Weapon('Elivagar', 269, Name$Elivagar_getInstance(), SkillType$GTOME_getInstance(), 14, Weapon$Rexcalibur_getInstance());
+    Weapon$HibiscusTome_instance = new Weapon('HibiscusTome', 266, Name$HibiscusTome_getInstance(), SkillType$GTOME_getInstance(), 8, Weapon$Elwind_getInstance());
+    Weapon$HibiscusTome2_instance = new Weapon('HibiscusTome2', 267, Name$HibiscusTome2_getInstance(), SkillType$GTOME_getInstance(), 12, Weapon$HibiscusTome_getInstance(), RefineSkill$RefineType$Range2_getInstance());
+    Weapon$DancersRing_instance = new Weapon('DancersRing', 268, Name$DancersRing_getInstance(), SkillType$GTOME_getInstance(), 8, Weapon$Elwind_getInstance());
+    Weapon$DancersRing2_instance = new Weapon('DancersRing2', 269, Name$DancersRing2_getInstance(), SkillType$GTOME_getInstance(), 12, Weapon$DancersRing_getInstance(), RefineSkill$RefineType$Range2_getInstance());
+    Weapon$Elivagar_instance = new Weapon('Elivagar', 270, Name$Elivagar_getInstance(), SkillType$GTOME_getInstance(), 14, Weapon$Rexcalibur_getInstance());
     new Weapon$Excalibur();
     new Weapon$Naga();
     new Weapon$DarkExcalibur();
     new Weapon$DivineNaga();
-    Weapon$SpectralTome_instance = new Weapon('SpectralTome', 274, Name$SpectralTome_getInstance(), SkillType$GTOME_getInstance(), 8, Weapon$Elwind_getInstance());
-    Weapon$SpectralTome2_instance = new Weapon('SpectralTome2', 275, Name$SpectralTome2_getInstance(), SkillType$GTOME_getInstance(), 12, Weapon$SpectralTome_getInstance(), RefineSkill$RefineType$Range2_getInstance());
+    Weapon$SpectralTome_instance = new Weapon('SpectralTome', 275, Name$SpectralTome_getInstance(), SkillType$GTOME_getInstance(), 8, Weapon$Elwind_getInstance());
+    Weapon$SpectralTome2_instance = new Weapon('SpectralTome2', 276, Name$SpectralTome2_getInstance(), SkillType$GTOME_getInstance(), 12, Weapon$SpectralTome_getInstance(), RefineSkill$RefineType$Range2_getInstance());
     new Weapon$Blizzard();
     new Weapon$GreenGift();
     new Weapon$GreenGift2();
-    Weapon$FireBreath_instance = new Weapon('FireBreath', 279, Name$FireBreath_getInstance(), SkillType$DRAGON_getInstance(), 6);
-    Weapon$FireBreath2_instance = new Weapon('FireBreath2', 280, Name$FireBreath2_getInstance(), SkillType$DRAGON_getInstance(), 8, Weapon$FireBreath_getInstance());
+    Weapon$FireBreath_instance = new Weapon('FireBreath', 280, Name$FireBreath_getInstance(), SkillType$DRAGON_getInstance(), 6);
+    Weapon$FireBreath2_instance = new Weapon('FireBreath2', 281, Name$FireBreath2_getInstance(), SkillType$DRAGON_getInstance(), 8, Weapon$FireBreath_getInstance());
     new Weapon$LightningBreath();
     new Weapon$LightningBreath2();
-    Weapon$Flametongue_instance = new Weapon('Flametongue', 283, Name$Flametongue_getInstance(), SkillType$DRAGON_getInstance(), 11, Weapon$FireBreath2_getInstance());
-    Weapon$Flametongue2_instance = new Weapon('Flametongue2', 284, Name$Flametongue2_getInstance(), SkillType$DRAGON_getInstance(), 15, Weapon$Flametongue_getInstance(), RefineSkill$RefineType$Range1_getInstance());
-    Weapon$LightBreath_instance = new Weapon('LightBreath', 285, Name$LightBreath_getInstance(), SkillType$DRAGON_getInstance(), 9, Weapon$FireBreath2_getInstance());
-    Weapon$LightBreath2_instance = new Weapon('LightBreath2', 286, Name$LightBreath2_getInstance(), SkillType$DRAGON_getInstance(), 13, Weapon$LightBreath_getInstance(), RefineSkill$RefineType$Range1_getInstance());
-    Weapon$DarkBreath_instance = new Weapon('DarkBreath', 287, Name$DarkBreath_getInstance(), SkillType$DRAGON_getInstance(), 9, Weapon$FireBreath_getInstance());
-    Weapon$DarkBreath2_instance = new Weapon('DarkBreath2', 288, Name$DarkBreath2_getInstance(), SkillType$DRAGON_getInstance(), 13, Weapon$DarkBreath_getInstance(), RefineSkill$RefineType$Range1_getInstance());
+    Weapon$Flametongue_instance = new Weapon('Flametongue', 284, Name$Flametongue_getInstance(), SkillType$DRAGON_getInstance(), 11, Weapon$FireBreath2_getInstance());
+    Weapon$Flametongue2_instance = new Weapon('Flametongue2', 285, Name$Flametongue2_getInstance(), SkillType$DRAGON_getInstance(), 15, Weapon$Flametongue_getInstance(), RefineSkill$RefineType$Range1_getInstance());
+    Weapon$LightBreath_instance = new Weapon('LightBreath', 286, Name$LightBreath_getInstance(), SkillType$DRAGON_getInstance(), 9, Weapon$FireBreath2_getInstance());
+    Weapon$LightBreath2_instance = new Weapon('LightBreath2', 287, Name$LightBreath2_getInstance(), SkillType$DRAGON_getInstance(), 13, Weapon$LightBreath_getInstance(), RefineSkill$RefineType$Range1_getInstance());
+    Weapon$DarkBreath_instance = new Weapon('DarkBreath', 288, Name$DarkBreath_getInstance(), SkillType$DRAGON_getInstance(), 9, Weapon$FireBreath_getInstance());
+    Weapon$DarkBreath2_instance = new Weapon('DarkBreath2', 289, Name$DarkBreath2_getInstance(), SkillType$DRAGON_getInstance(), 13, Weapon$DarkBreath_getInstance(), RefineSkill$RefineType$Range1_getInstance());
     new Weapon$GreatFlame();
+    new Weapon$Expiration();
     Weapon$Companion_getInstance();
   }
   Object.defineProperty(Weapon.prototype, 'jp', {
@@ -18046,6 +18245,26 @@ var FEHSIM = function (_, Kotlin) {
     Weapon_initFields();
     return Weapon$WingSword_instance;
   }
+  function Weapon$BelovedZofia() {
+    Weapon$BelovedZofia_instance = this;
+    Weapon.call(this, 'BelovedZofia', 48, Name$BelovedZofia_getInstance(), SkillType$SWORD_getInstance(), 16, Weapon$SilverSword2_getInstance());
+  }
+  Weapon$BelovedZofia.prototype.equip_yukhz7$$default = function (armedHero, lv) {
+    return this.equip_yukhz7$(this.equipDef_yukhz7$(armedHero, 3), lv, Weapon.prototype.equip_yukhz7$$default.bind(this));
+  };
+  Weapon$BelovedZofia.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
+    return this.fullHpAllBonus_sv9jhu$(battleUnit, 4);
+  };
+  Weapon$BelovedZofia.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'BelovedZofia',
+    interfaces: [Weapon]
+  };
+  var Weapon$BelovedZofia_instance = null;
+  function Weapon$BelovedZofia_getInstance() {
+    Weapon_initFields();
+    return Weapon$BelovedZofia_instance;
+  }
   var Weapon$IronLance_instance;
   function Weapon$IronLance_getInstance() {
     Weapon_initFields();
@@ -18068,7 +18287,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$KillerLance() {
     Weapon$KillerLance_instance = this;
-    Weapon.call(this, 'KillerLance', 52, Name$KillerLance_getInstance(), SkillType$LANCE_getInstance(), 7, Weapon$SteelLance_getInstance());
+    Weapon.call(this, 'KillerLance', 53, Name$KillerLance_getInstance(), SkillType$LANCE_getInstance(), 7, Weapon$SteelLance_getInstance());
   }
   Weapon$KillerLance.prototype.equip_yukhz7$$default = function (armedHero, lv) {
     return this.equipKiller_yukhz7$(armedHero, lv);
@@ -18085,7 +18304,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$KillerLance2() {
     Weapon$KillerLance2_instance = this;
-    Weapon.call(this, 'KillerLance2', 53, Name$KillerLance2_getInstance(), SkillType$LANCE_getInstance(), 11, Weapon$KillerLance_getInstance());
+    Weapon.call(this, 'KillerLance2', 54, Name$KillerLance2_getInstance(), SkillType$LANCE_getInstance(), 11, Weapon$KillerLance_getInstance());
   }
   Weapon$KillerLance2.prototype.equip_yukhz7$$default = function (armedHero, lv) {
     return this.equipKiller_yukhz7$(armedHero, lv);
@@ -18102,7 +18321,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$BraveLance() {
     Weapon$BraveLance_instance = this;
-    Weapon.call(this, 'BraveLance', 54, Name$BraveLance_getInstance(), SkillType$LANCE_getInstance(), 5, Weapon$SteelLance_getInstance());
+    Weapon.call(this, 'BraveLance', 55, Name$BraveLance_getInstance(), SkillType$LANCE_getInstance(), 5, Weapon$SteelLance_getInstance());
   }
   Weapon$BraveLance.prototype.equip_yukhz7$$default = function (armedHero, lv) {
     return this.equipBrave_yukhz7$(armedHero, lv);
@@ -18122,7 +18341,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$BraveLance2() {
     Weapon$BraveLance2_instance = this;
-    Weapon.call(this, 'BraveLance2', 55, Name$BraveLance2_getInstance(), SkillType$LANCE_getInstance(), 8, Weapon$BraveLance_getInstance());
+    Weapon.call(this, 'BraveLance2', 56, Name$BraveLance2_getInstance(), SkillType$LANCE_getInstance(), 8, Weapon$BraveLance_getInstance());
   }
   Weapon$BraveLance2.prototype.equip_yukhz7$$default = function (armedHero, lv) {
     return this.equipBrave_yukhz7$(armedHero, lv);
@@ -18142,7 +18361,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$SapphireLance() {
     Weapon$SapphireLance_instance = this;
-    Weapon.call(this, 'SapphireLance', 56, Name$SapphireLance_getInstance(), SkillType$LANCE_getInstance(), 8, Weapon$SteelLance_getInstance());
+    Weapon.call(this, 'SapphireLance', 57, Name$SapphireLance_getInstance(), SkillType$LANCE_getInstance(), 8, Weapon$SteelLance_getInstance());
   }
   Weapon$SapphireLance.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.colorAdvantage_sv9jhu$(battleUnit, 3);
@@ -18159,7 +18378,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$SapphireLance2() {
     Weapon$SapphireLance2_instance = this;
-    Weapon.call(this, 'SapphireLance2', 57, Name$SapphireLance2_getInstance(), SkillType$LANCE_getInstance(), 12, Weapon$SapphireLance_getInstance());
+    Weapon.call(this, 'SapphireLance2', 58, Name$SapphireLance2_getInstance(), SkillType$LANCE_getInstance(), 12, Weapon$SapphireLance_getInstance());
   }
   Weapon$SapphireLance2.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.colorAdvantage_sv9jhu$(battleUnit, 3);
@@ -18176,7 +18395,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$HeavySpear() {
     Weapon$HeavySpear_instance = this;
-    Weapon.call(this, 'HeavySpear', 58, Name$HeavySpear_getInstance(), SkillType$LANCE_getInstance(), 8, Weapon$SteelLance_getInstance());
+    Weapon.call(this, 'HeavySpear', 59, Name$HeavySpear_getInstance(), SkillType$LANCE_getInstance(), 8, Weapon$SteelLance_getInstance());
   }
   Weapon$HeavySpear.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.effectiveAgainst_d5yp1f$(MoveType$ARMORED_getInstance(), battleUnit);
@@ -18193,7 +18412,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$HeavySpear2() {
     Weapon$HeavySpear2_instance = this;
-    Weapon.call(this, 'HeavySpear2', 59, Name$HeavySpear2_getInstance(), SkillType$LANCE_getInstance(), 12, Weapon$HeavySpear_getInstance());
+    Weapon.call(this, 'HeavySpear2', 60, Name$HeavySpear2_getInstance(), SkillType$LANCE_getInstance(), 12, Weapon$HeavySpear_getInstance());
   }
   Weapon$HeavySpear2.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.effectiveAgainst_d5yp1f$(MoveType$ARMORED_getInstance(), battleUnit);
@@ -18210,7 +18429,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$SlayingSpear2() {
     Weapon$SlayingSpear2_instance = this;
-    Weapon.call(this, 'SlayingSpear2', 60, Name$SlayingSpear2_getInstance(), SkillType$LANCE_getInstance(), 14, Weapon$HeavySpear2_getInstance(), RefineSkill$RefineType$Range1_getInstance());
+    Weapon.call(this, 'SlayingSpear2', 61, Name$SlayingSpear2_getInstance(), SkillType$LANCE_getInstance(), 14, Weapon$HeavySpear2_getInstance(), RefineSkill$RefineType$Range1_getInstance());
   }
   Weapon$SlayingSpear2.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.effectiveAgainst_d5yp1f$(MoveType$ARMORED_getInstance(), battleUnit);
@@ -18227,7 +18446,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$CarrotLance() {
     Weapon$CarrotLance_instance = this;
-    Weapon.call(this, 'CarrotLance', 61, Name$CarrotLance_getInstance(), SkillType$LANCE_getInstance(), 9, Weapon$SteelLance_getInstance());
+    Weapon.call(this, 'CarrotLance', 62, Name$CarrotLance_getInstance(), SkillType$LANCE_getInstance(), 9, Weapon$SteelLance_getInstance());
   }
   Weapon$CarrotLance.prototype.attackEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.attackHeal_sv9jhu$(battleUnit, 4);
@@ -18244,7 +18463,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$CarrotLance2() {
     Weapon$CarrotLance2_instance = this;
-    Weapon.call(this, 'CarrotLance2', 62, Name$CarrotLance2_getInstance(), SkillType$LANCE_getInstance(), 13, Weapon$CarrotLance_getInstance(), RefineSkill$RefineType$Range1_getInstance());
+    Weapon.call(this, 'CarrotLance2', 63, Name$CarrotLance2_getInstance(), SkillType$LANCE_getInstance(), 13, Weapon$CarrotLance_getInstance(), RefineSkill$RefineType$Range1_getInstance());
   }
   Weapon$CarrotLance2.prototype.attackEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.attackHeal_sv9jhu$(battleUnit, 4);
@@ -18271,7 +18490,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$FiresweepLance() {
     Weapon$FiresweepLance_instance = this;
-    Weapon.call(this, 'FiresweepLance', 65, Name$FiresweepLance_getInstance(), SkillType$LANCE_getInstance(), 11, Weapon$SteelLance_getInstance());
+    Weapon.call(this, 'FiresweepLance', 66, Name$FiresweepLance_getInstance(), SkillType$LANCE_getInstance(), 11, Weapon$SteelLance_getInstance());
   }
   Weapon$FiresweepLance.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.disableEachCounter_sv9jhu$(battleUnit, 0);
@@ -18288,7 +18507,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$FiresweepLance2() {
     Weapon$FiresweepLance2_instance = this;
-    Weapon.call(this, 'FiresweepLance2', 66, Name$FiresweepLance2_getInstance(), SkillType$LANCE_getInstance(), 15, Weapon$FiresweepLance_getInstance());
+    Weapon.call(this, 'FiresweepLance2', 67, Name$FiresweepLance2_getInstance(), SkillType$LANCE_getInstance(), 15, Weapon$FiresweepLance_getInstance());
   }
   Weapon$FiresweepLance2.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.disableEachCounter_sv9jhu$(battleUnit, 0);
@@ -18305,7 +18524,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$DeftHarpoon() {
     Weapon$DeftHarpoon_instance = this;
-    Weapon.call(this, 'DeftHarpoon', 67, Name$DeftHarpoon_getInstance(), SkillType$LANCE_getInstance(), 10, Weapon$SteelLance_getInstance());
+    Weapon.call(this, 'DeftHarpoon', 68, Name$DeftHarpoon_getInstance(), SkillType$LANCE_getInstance(), 10, Weapon$SteelLance_getInstance());
   }
   Weapon$DeftHarpoon.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.fullHpBonus_sv9jhu$(battleUnit, 2);
@@ -18322,7 +18541,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$DeftHarpoon2() {
     Weapon$DeftHarpoon2_instance = this;
-    Weapon.call(this, 'DeftHarpoon2', 68, Name$DeftHarpoon2_getInstance(), SkillType$LANCE_getInstance(), 14, Weapon$DeftHarpoon_getInstance(), RefineSkill$RefineType$Range1_getInstance());
+    Weapon.call(this, 'DeftHarpoon2', 69, Name$DeftHarpoon2_getInstance(), SkillType$LANCE_getInstance(), 14, Weapon$DeftHarpoon_getInstance(), RefineSkill$RefineType$Range1_getInstance());
   }
   Weapon$DeftHarpoon2.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.fullHpBonus_sv9jhu$(battleUnit, 2);
@@ -18339,7 +18558,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Ridersbane() {
     Weapon$Ridersbane_instance = this;
-    Weapon.call(this, 'Ridersbane', 69, Name$Ridersbane_getInstance(), SkillType$LANCE_getInstance(), 10, Weapon$SteelLance_getInstance());
+    Weapon.call(this, 'Ridersbane', 70, Name$Ridersbane_getInstance(), SkillType$LANCE_getInstance(), 10, Weapon$SteelLance_getInstance());
   }
   Weapon$Ridersbane.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.effectiveAgainst_d5yp1f$(MoveType$CAVALRY_getInstance(), battleUnit);
@@ -18356,7 +18575,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Ridersbane2() {
     Weapon$Ridersbane2_instance = this;
-    Weapon.call(this, 'Ridersbane2', 70, Name$Ridersbane2_getInstance(), SkillType$LANCE_getInstance(), 14, Weapon$Ridersbane_getInstance(), RefineSkill$RefineType$Range1_getInstance());
+    Weapon.call(this, 'Ridersbane2', 71, Name$Ridersbane2_getInstance(), SkillType$LANCE_getInstance(), 14, Weapon$Ridersbane_getInstance(), RefineSkill$RefineType$Range1_getInstance());
   }
   Weapon$Ridersbane2.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.effectiveAgainst_d5yp1f$(MoveType$CAVALRY_getInstance(), battleUnit);
@@ -18373,7 +18592,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$BerkutsLance() {
     Weapon$BerkutsLance_instance = this;
-    Weapon.call(this, 'BerkutsLance', 71, Name$BerkutsLance_getInstance(), SkillType$LANCE_getInstance(), 10, Weapon$SteelLance_getInstance());
+    Weapon.call(this, 'BerkutsLance', 72, Name$BerkutsLance_getInstance(), SkillType$LANCE_getInstance(), 10, Weapon$SteelLance_getInstance());
   }
   Weapon$BerkutsLance.prototype.counterEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.blowRes_sv9jhu$(battleUnit, 4);
@@ -18390,7 +18609,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$BerkutsLance2() {
     Weapon$BerkutsLance2_instance = this;
-    Weapon.call(this, 'BerkutsLance2', 72, Name$BerkutsLance2_getInstance(), SkillType$LANCE_getInstance(), 14, Weapon$BerkutsLance_getInstance(), RefineSkill$RefineType$Range1_getInstance());
+    Weapon.call(this, 'BerkutsLance2', 73, Name$BerkutsLance2_getInstance(), SkillType$LANCE_getInstance(), 14, Weapon$BerkutsLance_getInstance(), RefineSkill$RefineType$Range1_getInstance());
   }
   Weapon$BerkutsLance2.prototype.counterEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.blowRes_sv9jhu$(battleUnit, 4);
@@ -18407,7 +18626,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$SlayingLance() {
     Weapon$SlayingLance_instance = this;
-    Weapon.call(this, 'SlayingLance', 73, Name$SlayingLance_getInstance(), SkillType$LANCE_getInstance(), 10, Weapon$SteelLance_getInstance());
+    Weapon.call(this, 'SlayingLance', 74, Name$SlayingLance_getInstance(), SkillType$LANCE_getInstance(), 10, Weapon$SteelLance_getInstance());
   }
   Weapon$SlayingLance.prototype.equip_yukhz7$$default = function (armedHero, lv) {
     return this.equipKiller_yukhz7$(armedHero, lv);
@@ -18424,7 +18643,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$SlayingLance2() {
     Weapon$SlayingLance2_instance = this;
-    Weapon.call(this, 'SlayingLance2', 74, Name$SlayingLance2_getInstance(), SkillType$LANCE_getInstance(), 14, Weapon$SlayingLance_getInstance(), RefineSkill$RefineType$Range1_getInstance());
+    Weapon.call(this, 'SlayingLance2', 75, Name$SlayingLance2_getInstance(), SkillType$LANCE_getInstance(), 14, Weapon$SlayingLance_getInstance(), RefineSkill$RefineType$Range1_getInstance());
   }
   Weapon$SlayingLance2.prototype.equip_yukhz7$$default = function (armedHero, lv) {
     return this.equipKiller_yukhz7$(armedHero, lv);
@@ -18451,7 +18670,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Gradivus() {
     Weapon$Gradivus_instance = this;
-    Weapon.call(this, 'Gradivus', 77, Name$Gradivus_getInstance(), SkillType$LANCE_getInstance(), 16, Weapon$SilverLance_getInstance());
+    Weapon.call(this, 'Gradivus', 78, Name$Gradivus_getInstance(), SkillType$LANCE_getInstance(), 16, Weapon$SilverLance_getInstance());
   }
   Weapon$Gradivus.prototype.counterEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.counterAllRange_trfvk0$(battleUnit);
@@ -18468,7 +18687,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Vidofinir() {
     Weapon$Vidofinir_instance = this;
-    Weapon.call(this, 'Vidofinir', 78, Name$Vidofinir_getInstance(), SkillType$LANCE_getInstance(), 16, Weapon$SilverLance_getInstance());
+    Weapon.call(this, 'Vidofinir', 79, Name$Vidofinir_getInstance(), SkillType$LANCE_getInstance(), 16, Weapon$SilverLance_getInstance());
   }
   Weapon$Vidofinir.prototype.counterEffect_sv9jhu$$default = function (battleUnit, lv) {
     var weapon = ensureNotNull(battleUnit.enemy).armedHero.baseHero.weaponType;
@@ -18489,7 +18708,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$CursedLance() {
     Weapon$CursedLance_instance = this;
-    Weapon.call(this, 'CursedLance', 79, Name$CursedLance_getInstance(), SkillType$LANCE_getInstance(), 16, Weapon$SilverLance_getInstance());
+    Weapon.call(this, 'CursedLance', 80, Name$CursedLance_getInstance(), SkillType$LANCE_getInstance(), 16, Weapon$SilverLance_getInstance());
   }
   Weapon$CursedLance.prototype.equip_yukhz7$$default = function (armedHero, lv) {
     return this.equipKiller_yukhz7$(this.equipAtk_yukhz7$(this.equipSpd_yukhz7$(armedHero, 2), 2), lv);
@@ -18509,7 +18728,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Geirskogul() {
     Weapon$Geirskogul_instance = this;
-    Weapon.call(this, 'Geirskogul', 80, Name$Geirskogul_getInstance(), SkillType$LANCE_getInstance(), 16, Weapon$SilverLance_getInstance());
+    Weapon.call(this, 'Geirskogul', 81, Name$Geirskogul_getInstance(), SkillType$LANCE_getInstance(), 16, Weapon$SilverLance_getInstance());
   }
   Weapon$Geirskogul.prototype.equip_yukhz7$$default = function (armedHero, lv) {
     return this.equip_yukhz7$(this.equipDef_yukhz7$(armedHero, 3), lv, Weapon.prototype.equip_yukhz7$$default.bind(this));
@@ -18526,7 +18745,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Leiptr() {
     Weapon$Leiptr_instance = this;
-    Weapon.call(this, 'Leiptr', 81, Name$Leiptr_getInstance(), SkillType$LANCE_getInstance(), 16, Weapon$SilverLance_getInstance());
+    Weapon.call(this, 'Leiptr', 82, Name$Leiptr_getInstance(), SkillType$LANCE_getInstance(), 16, Weapon$SilverLance_getInstance());
   }
   Weapon$Leiptr.prototype.counterEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.counterAllRange_trfvk0$(battleUnit);
@@ -18543,7 +18762,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$BrightNaginata() {
     Weapon$BrightNaginata_instance = this;
-    Weapon.call(this, 'BrightNaginata', 82, Name$BrightNaginata_getInstance(), SkillType$LANCE_getInstance(), 16, Weapon$SilverLance_getInstance());
+    Weapon.call(this, 'BrightNaginata', 83, Name$BrightNaginata_getInstance(), SkillType$LANCE_getInstance(), 16, Weapon$SilverLance_getInstance());
   }
   Weapon$BrightNaginata.prototype.counterEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.blowDef_sv9jhu$(this.blowAtk_sv9jhu$(battleUnit, 4), 4);
@@ -18560,7 +18779,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Tannenboom() {
     Weapon$Tannenboom_instance = this;
-    Weapon.call(this, 'Tannenboom', 83, Name$Tannenboom_getInstance(), SkillType$LANCE_getInstance(), 10, Weapon$SteelLance_getInstance());
+    Weapon.call(this, 'Tannenboom', 84, Name$Tannenboom_getInstance(), SkillType$LANCE_getInstance(), 10, Weapon$SteelLance_getInstance());
   }
   Weapon$Tannenboom.prototype.counterEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.allBonus_sv9jhu$(battleUnit, 2);
@@ -18577,7 +18796,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Tannenboom2() {
     Weapon$Tannenboom2_instance = this;
-    Weapon.call(this, 'Tannenboom2', 84, Name$Tannenboom2_getInstance(), SkillType$LANCE_getInstance(), 14, Weapon$Tannenboom_getInstance(), RefineSkill$RefineType$Range1_getInstance());
+    Weapon.call(this, 'Tannenboom2', 85, Name$Tannenboom2_getInstance(), SkillType$LANCE_getInstance(), 14, Weapon$Tannenboom_getInstance(), RefineSkill$RefineType$Range1_getInstance());
   }
   Weapon$Tannenboom2.prototype.counterEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.allBonus_sv9jhu$(battleUnit, 2);
@@ -18594,7 +18813,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$CasaBlanca() {
     Weapon$CasaBlanca_instance = this;
-    Weapon.call(this, 'CasaBlanca', 85, Name$CasaBlanca_getInstance(), SkillType$LANCE_getInstance(), 10, Weapon$SteelLance_getInstance());
+    Weapon.call(this, 'CasaBlanca', 86, Name$CasaBlanca_getInstance(), SkillType$LANCE_getInstance(), 10, Weapon$SteelLance_getInstance());
   }
   Weapon$CasaBlanca.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.antiBuffBonus_trfvk0$(battleUnit);
@@ -18611,7 +18830,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$CasaBlanca2() {
     Weapon$CasaBlanca2_instance = this;
-    Weapon.call(this, 'CasaBlanca2', 86, Name$CasaBlanca2_getInstance(), SkillType$LANCE_getInstance(), 14, Weapon$CasaBlanca_getInstance());
+    Weapon.call(this, 'CasaBlanca2', 87, Name$CasaBlanca2_getInstance(), SkillType$LANCE_getInstance(), 14, Weapon$CasaBlanca_getInstance());
   }
   Weapon$CasaBlanca2.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.antiBuffBonus_trfvk0$(battleUnit);
@@ -18628,7 +18847,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$HinokasSpear() {
     Weapon$HinokasSpear_instance = this;
-    Weapon.call(this, 'HinokasSpear', 87, Name$HinokasSpear_getInstance(), SkillType$LANCE_getInstance(), 16, Weapon$SilverLance_getInstance(), RefineSkill$RefineType$Range1_getInstance());
+    Weapon.call(this, 'HinokasSpear', 88, Name$HinokasSpear_getInstance(), SkillType$LANCE_getInstance(), 16, Weapon$SilverLance_getInstance(), RefineSkill$RefineType$Range1_getInstance());
   }
   Weapon$HinokasSpear.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return battleUnit.adjacentUnits > 0 ? this.blowAtk_sv9jhu$(this.blowSpd_sv9jhu$(battleUnit, 4), 4) : battleUnit;
@@ -18665,7 +18884,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$KillerAxe() {
     Weapon$KillerAxe_instance = this;
-    Weapon.call(this, 'KillerAxe', 92, Name$KillerAxe_getInstance(), SkillType$AXE_getInstance(), 7, Weapon$SteelAxe_getInstance());
+    Weapon.call(this, 'KillerAxe', 93, Name$KillerAxe_getInstance(), SkillType$AXE_getInstance(), 7, Weapon$SteelAxe_getInstance());
   }
   Weapon$KillerAxe.prototype.equip_yukhz7$$default = function (armedHero, lv) {
     return this.equipKiller_yukhz7$(armedHero, lv);
@@ -18682,7 +18901,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$KillerAxe2() {
     Weapon$KillerAxe2_instance = this;
-    Weapon.call(this, 'KillerAxe2', 93, Name$KillerAxe2_getInstance(), SkillType$AXE_getInstance(), 11, Weapon$KillerAxe_getInstance());
+    Weapon.call(this, 'KillerAxe2', 94, Name$KillerAxe2_getInstance(), SkillType$AXE_getInstance(), 11, Weapon$KillerAxe_getInstance());
   }
   Weapon$KillerAxe2.prototype.equip_yukhz7$$default = function (armedHero, lv) {
     return this.equipKiller_yukhz7$(armedHero, lv);
@@ -18699,7 +18918,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$BraveAxe() {
     Weapon$BraveAxe_instance = this;
-    Weapon.call(this, 'BraveAxe', 94, Name$BraveAxe_getInstance(), SkillType$AXE_getInstance(), 5, Weapon$SteelAxe_getInstance());
+    Weapon.call(this, 'BraveAxe', 95, Name$BraveAxe_getInstance(), SkillType$AXE_getInstance(), 5, Weapon$SteelAxe_getInstance());
   }
   Weapon$BraveAxe.prototype.equip_yukhz7$$default = function (armedHero, lv) {
     return this.equipBrave_yukhz7$(armedHero, lv);
@@ -18719,7 +18938,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$BraveAxe2() {
     Weapon$BraveAxe2_instance = this;
-    Weapon.call(this, 'BraveAxe2', 95, Name$BraveAxe2_getInstance(), SkillType$AXE_getInstance(), 8, Weapon$BraveAxe_getInstance());
+    Weapon.call(this, 'BraveAxe2', 96, Name$BraveAxe2_getInstance(), SkillType$AXE_getInstance(), 8, Weapon$BraveAxe_getInstance());
   }
   Weapon$BraveAxe2.prototype.equip_yukhz7$$default = function (armedHero, lv) {
     return this.equipBrave_yukhz7$(armedHero, lv);
@@ -18739,7 +18958,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Hammer() {
     Weapon$Hammer_instance = this;
-    Weapon.call(this, 'Hammer', 96, Name$Hammer_getInstance(), SkillType$AXE_getInstance(), 8, Weapon$SteelAxe_getInstance());
+    Weapon.call(this, 'Hammer', 97, Name$Hammer_getInstance(), SkillType$AXE_getInstance(), 8, Weapon$SteelAxe_getInstance());
   }
   Weapon$Hammer.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.effectiveAgainst_d5yp1f$(MoveType$ARMORED_getInstance(), battleUnit);
@@ -18756,7 +18975,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Hammer2() {
     Weapon$Hammer2_instance = this;
-    Weapon.call(this, 'Hammer2', 97, Name$Hammer2_getInstance(), SkillType$AXE_getInstance(), 12, Weapon$Hammer_getInstance());
+    Weapon.call(this, 'Hammer2', 98, Name$Hammer2_getInstance(), SkillType$AXE_getInstance(), 12, Weapon$Hammer_getInstance());
   }
   Weapon$Hammer2.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.effectiveAgainst_d5yp1f$(MoveType$ARMORED_getInstance(), battleUnit);
@@ -18773,7 +18992,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$SlayingHammer2() {
     Weapon$SlayingHammer2_instance = this;
-    Weapon.call(this, 'SlayingHammer2', 98, Name$SlayingHammer2_getInstance(), SkillType$AXE_getInstance(), 14, Weapon$Hammer2_getInstance(), RefineSkill$RefineType$Range1_getInstance());
+    Weapon.call(this, 'SlayingHammer2', 99, Name$SlayingHammer2_getInstance(), SkillType$AXE_getInstance(), 14, Weapon$Hammer2_getInstance(), RefineSkill$RefineType$Range1_getInstance());
   }
   Weapon$SlayingHammer2.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.effectiveAgainst_d5yp1f$(MoveType$ARMORED_getInstance(), battleUnit);
@@ -18790,7 +19009,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$EmeraldAxe() {
     Weapon$EmeraldAxe_instance = this;
-    Weapon.call(this, 'EmeraldAxe', 99, Name$EmeraldAxe_getInstance(), SkillType$AXE_getInstance(), 8, Weapon$SteelAxe_getInstance());
+    Weapon.call(this, 'EmeraldAxe', 100, Name$EmeraldAxe_getInstance(), SkillType$AXE_getInstance(), 8, Weapon$SteelAxe_getInstance());
   }
   Weapon$EmeraldAxe.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.colorAdvantage_sv9jhu$(battleUnit, 3);
@@ -18807,7 +19026,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$EmeraldAxe2() {
     Weapon$EmeraldAxe2_instance = this;
-    Weapon.call(this, 'EmeraldAxe2', 100, Name$EmeraldAxe2_getInstance(), SkillType$AXE_getInstance(), 12, Weapon$EmeraldAxe_getInstance());
+    Weapon.call(this, 'EmeraldAxe2', 101, Name$EmeraldAxe2_getInstance(), SkillType$AXE_getInstance(), 12, Weapon$EmeraldAxe_getInstance());
   }
   Weapon$EmeraldAxe2.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.colorAdvantage_sv9jhu$(battleUnit, 3);
@@ -18824,7 +19043,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$SlayingAxe() {
     Weapon$SlayingAxe_instance = this;
-    Weapon.call(this, 'SlayingAxe', 101, Name$SlayingAxe_getInstance(), SkillType$AXE_getInstance(), 10, Weapon$SteelAxe_getInstance());
+    Weapon.call(this, 'SlayingAxe', 102, Name$SlayingAxe_getInstance(), SkillType$AXE_getInstance(), 10, Weapon$SteelAxe_getInstance());
   }
   Weapon$SlayingAxe.prototype.equip_yukhz7$$default = function (armedHero, lv) {
     return this.equipKiller_yukhz7$(armedHero, lv);
@@ -18841,7 +19060,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$SlayingAxe2() {
     Weapon$SlayingAxe2_instance = this;
-    Weapon.call(this, 'SlayingAxe2', 102, Name$SlayingAxe2_getInstance(), SkillType$AXE_getInstance(), 14, Weapon$SlayingAxe_getInstance(), RefineSkill$RefineType$Range1_getInstance());
+    Weapon.call(this, 'SlayingAxe2', 103, Name$SlayingAxe2_getInstance(), SkillType$AXE_getInstance(), 14, Weapon$SlayingAxe_getInstance(), RefineSkill$RefineType$Range1_getInstance());
   }
   Weapon$SlayingAxe2.prototype.equip_yukhz7$$default = function (armedHero, lv) {
     return this.equipKiller_yukhz7$(armedHero, lv);
@@ -18858,7 +19077,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$CarrotAxe() {
     Weapon$CarrotAxe_instance = this;
-    Weapon.call(this, 'CarrotAxe', 103, Name$CarrotAxe_getInstance(), SkillType$AXE_getInstance(), 9, Weapon$SteelAxe_getInstance());
+    Weapon.call(this, 'CarrotAxe', 104, Name$CarrotAxe_getInstance(), SkillType$AXE_getInstance(), 9, Weapon$SteelAxe_getInstance());
   }
   Weapon$CarrotAxe.prototype.attackEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.attackHeal_sv9jhu$(battleUnit, 4);
@@ -18875,7 +19094,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$CarrotAxe2() {
     Weapon$CarrotAxe2_instance = this;
-    Weapon.call(this, 'CarrotAxe2', 104, Name$CarrotAxe2_getInstance(), SkillType$AXE_getInstance(), 13, Weapon$CarrotAxe_getInstance(), RefineSkill$RefineType$Range1_getInstance());
+    Weapon.call(this, 'CarrotAxe2', 105, Name$CarrotAxe2_getInstance(), SkillType$AXE_getInstance(), 13, Weapon$CarrotAxe_getInstance(), RefineSkill$RefineType$Range1_getInstance());
   }
   Weapon$CarrotAxe2.prototype.attackEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.attackHeal_sv9jhu$(battleUnit, 4);
@@ -18902,7 +19121,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$MelonCrusher() {
     Weapon$MelonCrusher_instance = this;
-    Weapon.call(this, 'MelonCrusher', 107, Name$MelonCrusher_getInstance(), SkillType$AXE_getInstance(), 10, Weapon$SteelAxe_getInstance());
+    Weapon.call(this, 'MelonCrusher', 108, Name$MelonCrusher_getInstance(), SkillType$AXE_getInstance(), 10, Weapon$SteelAxe_getInstance());
   }
   Weapon$MelonCrusher.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.fullHpBonus_sv9jhu$(battleUnit, 2);
@@ -18919,7 +19138,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$MelonCrusher2() {
     Weapon$MelonCrusher2_instance = this;
-    Weapon.call(this, 'MelonCrusher2', 108, Name$MelonCrusher2_getInstance(), SkillType$AXE_getInstance(), 14, Weapon$MelonCrusher_getInstance(), RefineSkill$RefineType$Range1_getInstance());
+    Weapon.call(this, 'MelonCrusher2', 109, Name$MelonCrusher2_getInstance(), SkillType$AXE_getInstance(), 14, Weapon$MelonCrusher_getInstance(), RefineSkill$RefineType$Range1_getInstance());
   }
   Weapon$MelonCrusher2.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.fullHpBonus_sv9jhu$(battleUnit, 2);
@@ -18951,7 +19170,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Hauteclere() {
     Weapon$Hauteclere_instance = this;
-    Weapon.call(this, 'Hauteclere', 112, Name$Hauteclere_getInstance(), SkillType$AXE_getInstance(), 16, Weapon$SilverAxe_getInstance(), RefineSkill$RefineType$Range1_getInstance());
+    Weapon.call(this, 'Hauteclere', 113, Name$Hauteclere_getInstance(), SkillType$AXE_getInstance(), 16, Weapon$SilverAxe_getInstance(), RefineSkill$RefineType$Range1_getInstance());
   }
   Weapon$Hauteclere.prototype.equip_yukhz7$$default = function (armedHero, lv) {
     return this.equipKiller_yukhz7$(armedHero, lv);
@@ -18968,7 +19187,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Armoads() {
     Weapon$Armoads_instance = this;
-    Weapon.call(this, 'Armoads', 113, Name$Armoads_getInstance(), SkillType$AXE_getInstance(), 16, Weapon$SilverAxe_getInstance());
+    Weapon.call(this, 'Armoads', 114, Name$Armoads_getInstance(), SkillType$AXE_getInstance(), 16, Weapon$SilverAxe_getInstance());
   }
   Weapon$Armoads.prototype.counterEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.followupable_sv9jhu$(battleUnit, 2);
@@ -18985,7 +19204,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Urvan() {
     Weapon$Urvan_instance = this;
-    Weapon.call(this, 'Urvan', 114, Name$Urvan_getInstance(), SkillType$AXE_getInstance(), 16, Weapon$SilverAxe_getInstance());
+    Weapon.call(this, 'Urvan', 115, Name$Urvan_getInstance(), SkillType$AXE_getInstance(), 16, Weapon$SilverAxe_getInstance());
   }
   Weapon$Urvan.prototype.equip_yukhz7$$default = function (armedHero, lv) {
     return this.equipKiller_yukhz7$(armedHero, lv);
@@ -19010,7 +19229,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$StoutTomahawk() {
     Weapon$StoutTomahawk_instance = this;
-    Weapon.call(this, 'StoutTomahawk', 116, Name$StoutTomahawk_getInstance(), SkillType$AXE_getInstance(), 16, Weapon$SilverAxe_getInstance());
+    Weapon.call(this, 'StoutTomahawk', 117, Name$StoutTomahawk_getInstance(), SkillType$AXE_getInstance(), 16, Weapon$SilverAxe_getInstance());
   }
   Weapon$StoutTomahawk.prototype.counterEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.counterAllRange_trfvk0$(battleUnit);
@@ -19027,7 +19246,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$SackOGifts() {
     Weapon$SackOGifts_instance = this;
-    Weapon.call(this, 'SackOGifts', 117, Name$SackOGifts_getInstance(), SkillType$AXE_getInstance(), 10, Weapon$SteelAxe_getInstance());
+    Weapon.call(this, 'SackOGifts', 118, Name$SackOGifts_getInstance(), SkillType$AXE_getInstance(), 10, Weapon$SteelAxe_getInstance());
   }
   Weapon$SackOGifts.prototype.counterEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.allBonus_sv9jhu$(battleUnit, 2);
@@ -19044,7 +19263,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$SackOGifts2() {
     Weapon$SackOGifts2_instance = this;
-    Weapon.call(this, 'SackOGifts2', 118, Name$SackOGifts2_getInstance(), SkillType$AXE_getInstance(), 14, Weapon$SackOGifts_getInstance(), RefineSkill$RefineType$Range1_getInstance());
+    Weapon.call(this, 'SackOGifts2', 119, Name$SackOGifts2_getInstance(), SkillType$AXE_getInstance(), 14, Weapon$SackOGifts_getInstance(), RefineSkill$RefineType$Range1_getInstance());
   }
   Weapon$SackOGifts2.prototype.counterEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.allBonus_sv9jhu$(battleUnit, 2);
@@ -19061,7 +19280,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Handbell() {
     Weapon$Handbell_instance = this;
-    Weapon.call(this, 'Handbell', 119, Name$Handbell_getInstance(), SkillType$AXE_getInstance(), 10, Weapon$SteelAxe_getInstance());
+    Weapon.call(this, 'Handbell', 120, Name$Handbell_getInstance(), SkillType$AXE_getInstance(), 10, Weapon$SteelAxe_getInstance());
   }
   Weapon$Handbell.prototype.counterEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.allBonus_sv9jhu$(battleUnit, 2);
@@ -19078,7 +19297,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Handbell2() {
     Weapon$Handbell2_instance = this;
-    Weapon.call(this, 'Handbell2', 120, Name$Handbell2_getInstance(), SkillType$AXE_getInstance(), 14, Weapon$Handbell_getInstance(), RefineSkill$RefineType$Range1_getInstance());
+    Weapon.call(this, 'Handbell2', 121, Name$Handbell2_getInstance(), SkillType$AXE_getInstance(), 14, Weapon$Handbell_getInstance(), RefineSkill$RefineType$Range1_getInstance());
   }
   Weapon$Handbell2.prototype.counterEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.allBonus_sv9jhu$(battleUnit, 2);
@@ -19105,7 +19324,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$BerserkArmads() {
     Weapon$BerserkArmads_instance = this;
-    Weapon.call(this, 'BerserkArmads', 123, Name$BerserkArmads_getInstance(), SkillType$AXE_getInstance(), 16, Weapon$SilverAxe_getInstance());
+    Weapon.call(this, 'BerserkArmads', 124, Name$BerserkArmads_getInstance(), SkillType$AXE_getInstance(), 16, Weapon$SilverAxe_getInstance());
   }
   Weapon$BerserkArmads.prototype.equip_yukhz7$$default = function (armedHero, lv) {
     return this.equipKiller_yukhz7$(armedHero, lv);
@@ -19125,7 +19344,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Basilikos() {
     Weapon$Basilikos_instance = this;
-    Weapon.call(this, 'Basilikos', 124, Name$Basilikos_getInstance(), SkillType$AXE_getInstance(), 16, Weapon$BraveAxe2_getInstance(), RefineSkill$RefineType$Range1_getInstance());
+    Weapon.call(this, 'Basilikos', 125, Name$Basilikos_getInstance(), SkillType$AXE_getInstance(), 16, Weapon$BraveAxe2_getInstance(), RefineSkill$RefineType$Range1_getInstance());
   }
   Weapon$Basilikos.prototype.equip_yukhz7$$default = function (armedHero, lv) {
     return this.equipKiller_yukhz7$(armedHero, lv);
@@ -19162,7 +19381,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$BraveBow() {
     Weapon$BraveBow_instance = this;
-    Weapon.call(this, 'BraveBow', 129, Name$BraveBow_getInstance(), SkillType$BOW_getInstance(), 4, Weapon$SteelBow_getInstance());
+    Weapon.call(this, 'BraveBow', 130, Name$BraveBow_getInstance(), SkillType$BOW_getInstance(), 4, Weapon$SteelBow_getInstance());
   }
   Weapon$BraveBow.prototype.equip_yukhz7$$default = function (armedHero, lv) {
     return this.equipBrave_yukhz7$(armedHero, lv);
@@ -19182,7 +19401,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$BraveBow2() {
     Weapon$BraveBow2_instance = this;
-    Weapon.call(this, 'BraveBow2', 130, Name$BraveBow2_getInstance(), SkillType$BOW_getInstance(), 7, Weapon$BraveBow_getInstance());
+    Weapon.call(this, 'BraveBow2', 131, Name$BraveBow2_getInstance(), SkillType$BOW_getInstance(), 7, Weapon$BraveBow_getInstance());
   }
   Weapon$BraveBow2.prototype.equip_yukhz7$$default = function (armedHero, lv) {
     return this.equipBrave_yukhz7$(armedHero, lv);
@@ -19202,7 +19421,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$KillerBow() {
     Weapon$KillerBow_instance = this;
-    Weapon.call(this, 'KillerBow', 131, Name$KillerBow_getInstance(), SkillType$BOW_getInstance(), 5, Weapon$SteelBow_getInstance());
+    Weapon.call(this, 'KillerBow', 132, Name$KillerBow_getInstance(), SkillType$BOW_getInstance(), 5, Weapon$SteelBow_getInstance());
   }
   Weapon$KillerBow.prototype.equip_yukhz7$$default = function (armedHero, lv) {
     return this.equipKiller_yukhz7$(armedHero, lv);
@@ -19219,7 +19438,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$KillerBow2() {
     Weapon$KillerBow2_instance = this;
-    Weapon.call(this, 'KillerBow2', 132, Name$KillerBow2_getInstance(), SkillType$BOW_getInstance(), 9, Weapon$KillerBow_getInstance());
+    Weapon.call(this, 'KillerBow2', 133, Name$KillerBow2_getInstance(), SkillType$BOW_getInstance(), 9, Weapon$KillerBow_getInstance());
   }
   Weapon$KillerBow2.prototype.equip_yukhz7$$default = function (armedHero, lv) {
     return this.equipKiller_yukhz7$(armedHero, lv);
@@ -19236,7 +19455,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$AssassinsBow() {
     Weapon$AssassinsBow_instance = this;
-    Weapon.call(this, 'AssassinsBow', 133, Name$AssassinsBow_getInstance(), SkillType$BOW_getInstance(), 7, Weapon$SteelBow_getInstance());
+    Weapon.call(this, 'AssassinsBow', 134, Name$AssassinsBow_getInstance(), SkillType$BOW_getInstance(), 7, Weapon$SteelBow_getInstance());
   }
   Weapon$AssassinsBow.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.bothEffect_sv9jhu$(this.weaponBreaker_y53988$(battleUnit, WeaponType$DAGGER_getInstance(), 3), lv, Weapon.prototype.bothEffect_sv9jhu$$default.bind(this));
@@ -19253,7 +19472,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$AssassinsBow2() {
     Weapon$AssassinsBow2_instance = this;
-    Weapon.call(this, 'AssassinsBow2', 134, Name$AssassinsBow2_getInstance(), SkillType$BOW_getInstance(), 11, Weapon$AssassinsBow_getInstance());
+    Weapon.call(this, 'AssassinsBow2', 135, Name$AssassinsBow2_getInstance(), SkillType$BOW_getInstance(), 11, Weapon$AssassinsBow_getInstance());
   }
   Weapon$AssassinsBow2.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.bothEffect_sv9jhu$(this.weaponBreaker_y53988$(battleUnit, WeaponType$DAGGER_getInstance(), 3), lv, Weapon.prototype.bothEffect_sv9jhu$$default.bind(this));
@@ -19270,7 +19489,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$GuardBow2() {
     Weapon$GuardBow2_instance = this;
-    Weapon.call(this, 'GuardBow2', 135, Name$GuardBow2_getInstance(), SkillType$BOW_getInstance(), 12, Weapon$AssassinsBow2_getInstance(), RefineSkill$RefineType$Range2_getInstance());
+    Weapon.call(this, 'GuardBow2', 136, Name$GuardBow2_getInstance(), SkillType$BOW_getInstance(), 12, Weapon$AssassinsBow2_getInstance(), RefineSkill$RefineType$Range2_getInstance());
   }
   Weapon$GuardBow2.prototype.counterEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.distantDef_sv9jhu$(battleUnit, 6);
@@ -19287,7 +19506,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$FiresweepBow() {
     Weapon$FiresweepBow_instance = this;
-    Weapon.call(this, 'FiresweepBow', 136, Name$FiresweepBow_getInstance(), SkillType$BOW_getInstance(), 7, Weapon$SteelBow_getInstance());
+    Weapon.call(this, 'FiresweepBow', 137, Name$FiresweepBow_getInstance(), SkillType$BOW_getInstance(), 7, Weapon$SteelBow_getInstance());
   }
   Weapon$FiresweepBow.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.bothEffect_sv9jhu$(this.disableEachCounter_sv9jhu$(battleUnit, 0), lv, Weapon.prototype.bothEffect_sv9jhu$$default.bind(this));
@@ -19304,7 +19523,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$FiresweepBow2() {
     Weapon$FiresweepBow2_instance = this;
-    Weapon.call(this, 'FiresweepBow2', 137, Name$FiresweepBow2_getInstance(), SkillType$BOW_getInstance(), 11, Weapon$FiresweepBow_getInstance());
+    Weapon.call(this, 'FiresweepBow2', 138, Name$FiresweepBow2_getInstance(), SkillType$BOW_getInstance(), 11, Weapon$FiresweepBow_getInstance());
   }
   Weapon$FiresweepBow2.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.attackEffect_sv9jhu$(this.disableEachCounter_sv9jhu$(battleUnit, 0), lv, Weapon.prototype.attackEffect_sv9jhu$$default.bind(this));
@@ -19331,7 +19550,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$RefreshingBolt() {
     Weapon$RefreshingBolt_instance = this;
-    Weapon.call(this, 'RefreshingBolt', 140, Name$RefreshingBolt_getInstance(), SkillType$BOW_getInstance(), 8, Weapon$SteelBow_getInstance());
+    Weapon.call(this, 'RefreshingBolt', 141, Name$RefreshingBolt_getInstance(), SkillType$BOW_getInstance(), 8, Weapon$SteelBow_getInstance());
   }
   Weapon$RefreshingBolt.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.attackEffect_sv9jhu$(this.fullHpBonus_sv9jhu$(battleUnit, 2), lv, Weapon.prototype.attackEffect_sv9jhu$$default.bind(this));
@@ -19348,7 +19567,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$RefreshingBolt2() {
     Weapon$RefreshingBolt2_instance = this;
-    Weapon.call(this, 'RefreshingBolt2', 141, Name$RefreshingBolt2_getInstance(), SkillType$BOW_getInstance(), 12, Weapon$RefreshingBolt_getInstance(), RefineSkill$RefineType$Range2_getInstance());
+    Weapon.call(this, 'RefreshingBolt2', 142, Name$RefreshingBolt2_getInstance(), SkillType$BOW_getInstance(), 12, Weapon$RefreshingBolt_getInstance(), RefineSkill$RefineType$Range2_getInstance());
   }
   Weapon$RefreshingBolt2.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.attackEffect_sv9jhu$(this.fullHpBonus_sv9jhu$(battleUnit, 2), lv, Weapon.prototype.attackEffect_sv9jhu$$default.bind(this));
@@ -19375,7 +19594,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$SlayingBow() {
     Weapon$SlayingBow_instance = this;
-    Weapon.call(this, 'SlayingBow', 144, Name$SlayingBow_getInstance(), SkillType$BOW_getInstance(), 10, Weapon$SteelBow_getInstance());
+    Weapon.call(this, 'SlayingBow', 145, Name$SlayingBow_getInstance(), SkillType$BOW_getInstance(), 10, Weapon$SteelBow_getInstance());
   }
   Weapon$SlayingBow.prototype.equip_yukhz7$$default = function (armedHero, lv) {
     return this.equipKiller_yukhz7$(armedHero, lv);
@@ -19392,7 +19611,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$SlayingBow2() {
     Weapon$SlayingBow2_instance = this;
-    Weapon.call(this, 'SlayingBow2', 145, Name$SlayingBow2_getInstance(), SkillType$BOW_getInstance(), 12, Weapon$SlayingBow_getInstance(), RefineSkill$RefineType$Range2_getInstance());
+    Weapon.call(this, 'SlayingBow2', 146, Name$SlayingBow2_getInstance(), SkillType$BOW_getInstance(), 12, Weapon$SlayingBow_getInstance(), RefineSkill$RefineType$Range2_getInstance());
   }
   Weapon$SlayingBow2.prototype.equip_yukhz7$$default = function (armedHero, lv) {
     return this.equipKiller_yukhz7$(armedHero, lv);
@@ -19409,7 +19628,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Parthia() {
     Weapon$Parthia_instance = this;
-    Weapon.call(this, 'Parthia', 146, Name$Parthia_getInstance(), SkillType$BOW_getInstance(), 14, Weapon$SilverBow_getInstance(), RefineSkill$RefineType$Range2_getInstance());
+    Weapon.call(this, 'Parthia', 147, Name$Parthia_getInstance(), SkillType$BOW_getInstance(), 14, Weapon$SilverBow_getInstance(), RefineSkill$RefineType$Range2_getInstance());
   }
   Weapon$Parthia.prototype.attackEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.attackEffect_sv9jhu$(this.blowRes_sv9jhu$(battleUnit, 2), lv, Weapon.prototype.attackEffect_sv9jhu$$default.bind(this));
@@ -19431,7 +19650,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Nidhogg() {
     Weapon$Nidhogg_instance = this;
-    Weapon.call(this, 'Nidhogg', 148, Name$Nidhogg_getInstance(), SkillType$BOW_getInstance(), 14, Weapon$SilverBow_getInstance());
+    Weapon.call(this, 'Nidhogg', 149, Name$Nidhogg_getInstance(), SkillType$BOW_getInstance(), 14, Weapon$SilverBow_getInstance());
   }
   Weapon$Nidhogg.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.allBonus_sv9jhu$(battleUnit, battleUnit.adjacentUnits * 2 | 0);
@@ -19448,7 +19667,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Mulagir() {
     Weapon$Mulagir_instance = this;
-    Weapon.call(this, 'Mulagir', 149, Name$Mulagir_getInstance(), SkillType$BOW_getInstance(), 14, Weapon$SilverBow_getInstance());
+    Weapon.call(this, 'Mulagir', 150, Name$Mulagir_getInstance(), SkillType$BOW_getInstance(), 14, Weapon$SilverBow_getInstance());
   }
   Weapon$Mulagir.prototype.equip_yukhz7$$default = function (armedHero, lv) {
     return this.equip_yukhz7$(this.equipSpd_yukhz7$(armedHero, 3), lv, Weapon.prototype.equip_yukhz7$$default.bind(this));
@@ -19488,7 +19707,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Gratia() {
     Weapon$Gratia_instance = this;
-    Weapon.call(this, 'Gratia', 154, Name$Gratia_getInstance(), SkillType$BOW_getInstance(), 8, Weapon$SteelBow_getInstance());
+    Weapon.call(this, 'Gratia', 155, Name$Gratia_getInstance(), SkillType$BOW_getInstance(), 8, Weapon$SteelBow_getInstance());
   }
   Weapon$Gratia.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.antiRangedWeaponBuffBonus_trfvk0$(battleUnit);
@@ -19505,7 +19724,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Gratia2() {
     Weapon$Gratia2_instance = this;
-    Weapon.call(this, 'Gratia2', 155, Name$Gratia2_getInstance(), SkillType$BOW_getInstance(), 12, Weapon$Gratia_getInstance());
+    Weapon.call(this, 'Gratia2', 156, Name$Gratia2_getInstance(), SkillType$BOW_getInstance(), 12, Weapon$Gratia_getInstance());
   }
   Weapon$Gratia2.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.antiRangedWeaponBuffBonus_trfvk0$(battleUnit);
@@ -19562,7 +19781,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$PoisonDagger() {
     Weapon$PoisonDagger_instance = this;
-    Weapon.call(this, 'PoisonDagger', 164, Name$PoisonDagger_getInstance(), SkillType$DAGGER_getInstance(), 2, Weapon$SteelDagger_getInstance());
+    Weapon.call(this, 'PoisonDagger', 165, Name$PoisonDagger_getInstance(), SkillType$DAGGER_getInstance(), 2, Weapon$SteelDagger_getInstance());
   }
   Weapon$PoisonDagger.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.effectiveAgainst_d5yp1f$(MoveType$INFANTRY_getInstance(), battleUnit);
@@ -19579,7 +19798,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$PoisonDagger2() {
     Weapon$PoisonDagger2_instance = this;
-    Weapon.call(this, 'PoisonDagger2', 165, Name$PoisonDagger2_getInstance(), SkillType$DAGGER_getInstance(), 5, Weapon$PoisonDagger_getInstance());
+    Weapon.call(this, 'PoisonDagger2', 166, Name$PoisonDagger2_getInstance(), SkillType$DAGGER_getInstance(), 5, Weapon$PoisonDagger_getInstance());
   }
   Weapon$PoisonDagger2.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.effectiveAgainst_d5yp1f$(MoveType$INFANTRY_getInstance(), battleUnit);
@@ -19596,7 +19815,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Seashell() {
     Weapon$Seashell_instance = this;
-    Weapon.call(this, 'Seashell', 166, Name$Seashell_getInstance(), SkillType$DAGGER_getInstance(), 7, Weapon$SteelDagger_getInstance());
+    Weapon.call(this, 'Seashell', 167, Name$Seashell_getInstance(), SkillType$DAGGER_getInstance(), 7, Weapon$SteelDagger_getInstance());
   }
   Weapon$Seashell.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.fullHpBonus_sv9jhu$(battleUnit, 2);
@@ -19613,7 +19832,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Seashell2() {
     Weapon$Seashell2_instance = this;
-    Weapon.call(this, 'Seashell2', 167, Name$Seashell2_getInstance(), SkillType$DAGGER_getInstance(), 10, Weapon$Seashell_getInstance(), RefineSkill$RefineType$Range2_getInstance());
+    Weapon.call(this, 'Seashell2', 168, Name$Seashell2_getInstance(), SkillType$DAGGER_getInstance(), 10, Weapon$Seashell_getInstance(), RefineSkill$RefineType$Range2_getInstance());
   }
   Weapon$Seashell2.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.fullHpBonus_sv9jhu$(battleUnit, 2);
@@ -19640,7 +19859,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$DeathlyDagger() {
     Weapon$DeathlyDagger_instance = this;
-    Weapon.call(this, 'DeathlyDagger', 170, Name$DeathlyDagger_getInstance(), SkillType$DAGGER_getInstance(), 11, Weapon$SilverDagger_getInstance(), RefineSkill$RefineType$Range2_getInstance());
+    Weapon.call(this, 'DeathlyDagger', 171, Name$DeathlyDagger_getInstance(), SkillType$DAGGER_getInstance(), 11, Weapon$SilverDagger_getInstance(), RefineSkill$RefineType$Range2_getInstance());
   }
   Weapon$DeathlyDagger.prototype.attackEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.attackPain_sv9jhu$(battleUnit, 7);
@@ -19657,7 +19876,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$KittyPaddle() {
     Weapon$KittyPaddle_instance = this;
-    Weapon.call(this, 'KittyPaddle', 171, Name$KittyPaddle_getInstance(), SkillType$DAGGER_getInstance(), 5, Weapon$SteelDagger_getInstance());
+    Weapon.call(this, 'KittyPaddle', 172, Name$KittyPaddle_getInstance(), SkillType$DAGGER_getInstance(), 5, Weapon$SteelDagger_getInstance());
   }
   Weapon$KittyPaddle.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.effectiveAgainstMagic_trfvk0$(battleUnit);
@@ -19674,7 +19893,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$KittyPaddle2() {
     Weapon$KittyPaddle2_instance = this;
-    Weapon.call(this, 'KittyPaddle2', 172, Name$KittyPaddle2_getInstance(), SkillType$DAGGER_getInstance(), 8, Weapon$KittyPaddle_getInstance());
+    Weapon.call(this, 'KittyPaddle2', 173, Name$KittyPaddle2_getInstance(), SkillType$DAGGER_getInstance(), 8, Weapon$KittyPaddle_getInstance());
   }
   Weapon$KittyPaddle2.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.effectiveAgainstMagic_trfvk0$(battleUnit);
@@ -19716,7 +19935,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Absorb() {
     Weapon$Absorb_instance = this;
-    Weapon.call(this, 'Absorb', 178, Name$Absorb_getInstance(), SkillType$STAFF_getInstance(), 4, Weapon$Assault_getInstance());
+    Weapon.call(this, 'Absorb', 179, Name$Absorb_getInstance(), SkillType$STAFF_getInstance(), 4, Weapon$Assault_getInstance());
   }
   Weapon$Absorb.prototype.absorb_6zcyla$ = function (battleUnit, target, damage) {
     return battleUnit.heal_za3lpa$((damage * 5 | 0) / 10 | 0);
@@ -19733,7 +19952,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Absorb2() {
     Weapon$Absorb2_instance = this;
-    Weapon.call(this, 'Absorb2', 179, Name$Absorb2_getInstance(), SkillType$STAFF_getInstance(), 7, Weapon$Absorb_getInstance(), RefineSkill$RefineType$Staff_getInstance());
+    Weapon.call(this, 'Absorb2', 180, Name$Absorb2_getInstance(), SkillType$STAFF_getInstance(), 7, Weapon$Absorb_getInstance(), RefineSkill$RefineType$Staff_getInstance());
   }
   Weapon$Absorb2.prototype.absorb_6zcyla$ = function (battleUnit, target, damage) {
     return battleUnit.heal_za3lpa$((damage * 5 | 0) / 10 | 0);
@@ -19800,7 +20019,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Pain() {
     Weapon$Pain_instance = this;
-    Weapon.call(this, 'Pain', 190, Name$Pain_getInstance(), SkillType$STAFF_getInstance(), 3, Weapon$Assault_getInstance());
+    Weapon.call(this, 'Pain', 191, Name$Pain_getInstance(), SkillType$STAFF_getInstance(), 3, Weapon$Assault_getInstance());
   }
   Weapon$Pain.prototype.attackEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.attackPain_sv9jhu$(battleUnit, 10);
@@ -19817,7 +20036,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Pain2() {
     Weapon$Pain2_instance = this;
-    Weapon.call(this, 'Pain2', 191, Name$Pain2_getInstance(), SkillType$STAFF_getInstance(), 10, Weapon$Pain_getInstance(), RefineSkill$RefineType$Staff_getInstance());
+    Weapon.call(this, 'Pain2', 192, Name$Pain2_getInstance(), SkillType$STAFF_getInstance(), 10, Weapon$Pain_getInstance(), RefineSkill$RefineType$Staff_getInstance());
   }
   Weapon$Pain2.prototype.attackEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.attackPain_sv9jhu$(battleUnit, 10);
@@ -19854,7 +20073,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Rauorwolf() {
     Weapon$Rauorwolf_instance = this;
-    Weapon.call(this, 'Rauorwolf', 196, Name$Rauorwolf_getInstance(), SkillType$RTOME_getInstance(), 10, Weapon$Elfire_getInstance());
+    Weapon.call(this, 'Rauorwolf', 197, Name$Rauorwolf_getInstance(), SkillType$RTOME_getInstance(), 10, Weapon$Elfire_getInstance());
   }
   Weapon$Rauorwolf.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.effectiveAgainst_d5yp1f$(MoveType$CAVALRY_getInstance(), battleUnit);
@@ -19871,7 +20090,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Rauorwolf2() {
     Weapon$Rauorwolf2_instance = this;
-    Weapon.call(this, 'Rauorwolf2', 197, Name$Rauorwolf2_getInstance(), SkillType$RTOME_getInstance(), 10, Weapon$Rauorwolf_getInstance());
+    Weapon.call(this, 'Rauorwolf2', 198, Name$Rauorwolf2_getInstance(), SkillType$RTOME_getInstance(), 10, Weapon$Rauorwolf_getInstance());
   }
   Weapon$Rauorwolf2.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.effectiveAgainst_d5yp1f$(MoveType$CAVALRY_getInstance(), battleUnit);
@@ -19888,7 +20107,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$KeenRauorwolf2() {
     Weapon$KeenRauorwolf2_instance = this;
-    Weapon.call(this, 'KeenRauorwolf2', 198, Name$KeenRauorwolf2_getInstance(), SkillType$RTOME_getInstance(), 12, Weapon$Rauorwolf2_getInstance(), RefineSkill$RefineType$Range2_getInstance());
+    Weapon.call(this, 'KeenRauorwolf2', 199, Name$KeenRauorwolf2_getInstance(), SkillType$RTOME_getInstance(), 12, Weapon$Rauorwolf2_getInstance(), RefineSkill$RefineType$Range2_getInstance());
   }
   Weapon$KeenRauorwolf2.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.effectiveAgainst_d5yp1f$(MoveType$CAVALRY_getInstance(), battleUnit);
@@ -19905,7 +20124,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Rauorraven() {
     Weapon$Rauorraven_instance = this;
-    Weapon.call(this, 'Rauorraven', 199, Name$Rauorraven_getInstance(), SkillType$RTOME_getInstance(), 7, Weapon$Elfire_getInstance());
+    Weapon.call(this, 'Rauorraven', 200, Name$Rauorraven_getInstance(), SkillType$RTOME_getInstance(), 7, Weapon$Elfire_getInstance());
   }
   Weapon$Rauorraven.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.equipRaven_trfvk0$(battleUnit);
@@ -19922,7 +20141,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Rauorraven2() {
     Weapon$Rauorraven2_instance = this;
-    Weapon.call(this, 'Rauorraven2', 200, Name$Rauorraven2_getInstance(), SkillType$RTOME_getInstance(), 11, Weapon$Rauorraven_getInstance());
+    Weapon.call(this, 'Rauorraven2', 201, Name$Rauorraven2_getInstance(), SkillType$RTOME_getInstance(), 11, Weapon$Rauorraven_getInstance());
   }
   Weapon$Rauorraven2.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.equipRaven_trfvk0$(battleUnit);
@@ -19939,7 +20158,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Rauorblade() {
     Weapon$Rauorblade_instance = this;
-    Weapon.call(this, 'Rauorblade', 201, Name$Rauorblade_getInstance(), SkillType$RTOME_getInstance(), 9, Weapon$Elfire_getInstance());
+    Weapon.call(this, 'Rauorblade', 202, Name$Rauorblade_getInstance(), SkillType$RTOME_getInstance(), 9, Weapon$Elfire_getInstance());
   }
   Weapon$Rauorblade.prototype.equip_yukhz7$$default = function (armedHero, lv) {
     return this.equipBlade_yukhz7$(armedHero, lv);
@@ -19959,7 +20178,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Rauorblade2() {
     Weapon$Rauorblade2_instance = this;
-    Weapon.call(this, 'Rauorblade2', 202, Name$Rauorblade2_getInstance(), SkillType$RTOME_getInstance(), 13, Weapon$Rauorblade_getInstance());
+    Weapon.call(this, 'Rauorblade2', 203, Name$Rauorblade2_getInstance(), SkillType$RTOME_getInstance(), 13, Weapon$Rauorblade_getInstance());
   }
   Weapon$Rauorblade2.prototype.equip_yukhz7$$default = function (armedHero, lv) {
     return this.equipBlade_yukhz7$(armedHero, lv);
@@ -19979,7 +20198,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Rauorowl() {
     Weapon$Rauorowl_instance = this;
-    Weapon.call(this, 'Rauorowl', 203, Name$Rauorowl_getInstance(), SkillType$RTOME_getInstance(), 6, Weapon$Elfire_getInstance());
+    Weapon.call(this, 'Rauorowl', 204, Name$Rauorowl_getInstance(), SkillType$RTOME_getInstance(), 6, Weapon$Elfire_getInstance());
   }
   Weapon$Rauorowl.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.allBonus_sv9jhu$(battleUnit, battleUnit.adjacentUnits * 2 | 0);
@@ -19996,7 +20215,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Rauorowl2() {
     Weapon$Rauorowl2_instance = this;
-    Weapon.call(this, 'Rauorowl2', 204, Name$Rauorowl2_getInstance(), SkillType$RTOME_getInstance(), 10, Weapon$Rauorowl_getInstance(), RefineSkill$RefineType$Range2_getInstance());
+    Weapon.call(this, 'Rauorowl2', 205, Name$Rauorowl2_getInstance(), SkillType$RTOME_getInstance(), 10, Weapon$Rauorowl_getInstance(), RefineSkill$RefineType$Range2_getInstance());
   }
   Weapon$Rauorowl2.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.allBonus_sv9jhu$(battleUnit, battleUnit.adjacentUnits * 2 | 0);
@@ -20053,7 +20272,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Ragnarok() {
     Weapon$Ragnarok_instance = this;
-    Weapon.call(this, 'Ragnarok', 213, Name$Ragnarok_getInstance(), SkillType$RTOME_getInstance(), 14, Weapon$Bolganone_getInstance());
+    Weapon.call(this, 'Ragnarok', 214, Name$Ragnarok_getInstance(), SkillType$RTOME_getInstance(), 14, Weapon$Bolganone_getInstance());
   }
   Weapon$Ragnarok.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.fullHpAtkSpdBonus_sv9jhu$(battleUnit, 5);
@@ -20080,7 +20299,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Candelabra() {
     Weapon$Candelabra_instance = this;
-    Weapon.call(this, 'Candelabra', 216, Name$Candelabra_getInstance(), SkillType$RTOME_getInstance(), 8, Weapon$Elfire_getInstance());
+    Weapon.call(this, 'Candelabra', 217, Name$Candelabra_getInstance(), SkillType$RTOME_getInstance(), 8, Weapon$Elfire_getInstance());
   }
   Weapon$Candelabra.prototype.counterEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.allBonus_sv9jhu$(battleUnit, 2);
@@ -20097,7 +20316,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Candelabra2() {
     Weapon$Candelabra2_instance = this;
-    Weapon.call(this, 'Candelabra2', 217, Name$Candelabra2_getInstance(), SkillType$RTOME_getInstance(), 12, Weapon$Candelabra_getInstance(), RefineSkill$RefineType$Range2_getInstance());
+    Weapon.call(this, 'Candelabra2', 218, Name$Candelabra2_getInstance(), SkillType$RTOME_getInstance(), 12, Weapon$Candelabra_getInstance(), RefineSkill$RefineType$Range2_getInstance());
   }
   Weapon$Candelabra2.prototype.counterEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.allBonus_sv9jhu$(battleUnit, 2);
@@ -20114,7 +20333,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Gleipnir() {
     Weapon$Gleipnir_instance = this;
-    Weapon.call(this, 'Gleipnir', 218, Name$Gleipnir_getInstance(), SkillType$RTOME_getInstance(), 14, Weapon$Bolganone_getInstance());
+    Weapon.call(this, 'Gleipnir', 219, Name$Gleipnir_getInstance(), SkillType$RTOME_getInstance(), 14, Weapon$Bolganone_getInstance());
   }
   Weapon$Gleipnir.prototype.equip_yukhz7$$default = function (armedHero, lv) {
     return this.equip_yukhz7$(this.equipRes_yukhz7$(armedHero, 3), lv, Weapon.prototype.equip_yukhz7$$default.bind(this));
@@ -20134,7 +20353,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Naglfar() {
     Weapon$Naglfar_instance = this;
-    Weapon.call(this, 'Naglfar', 219, Name$Naglfar_getInstance(), SkillType$RTOME_getInstance(), 14, Weapon$Bolganone_getInstance());
+    Weapon.call(this, 'Naglfar', 220, Name$Naglfar_getInstance(), SkillType$RTOME_getInstance(), 14, Weapon$Bolganone_getInstance());
   }
   Weapon$Naglfar.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.equipRaven_trfvk0$(battleUnit);
@@ -20161,7 +20380,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Blarwolf() {
     Weapon$Blarwolf_instance = this;
-    Weapon.call(this, 'Blarwolf', 222, Name$Blarwolf_getInstance(), SkillType$BTOME_getInstance(), 6, Weapon$Elthunder_getInstance());
+    Weapon.call(this, 'Blarwolf', 223, Name$Blarwolf_getInstance(), SkillType$BTOME_getInstance(), 6, Weapon$Elthunder_getInstance());
   }
   Weapon$Blarwolf.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.effectiveAgainst_d5yp1f$(MoveType$CAVALRY_getInstance(), battleUnit);
@@ -20178,7 +20397,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Blarwolf2() {
     Weapon$Blarwolf2_instance = this;
-    Weapon.call(this, 'Blarwolf2', 223, Name$Blarwolf2_getInstance(), SkillType$BTOME_getInstance(), 10, Weapon$Blarwolf_getInstance());
+    Weapon.call(this, 'Blarwolf2', 224, Name$Blarwolf2_getInstance(), SkillType$BTOME_getInstance(), 10, Weapon$Blarwolf_getInstance());
   }
   Weapon$Blarwolf2.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.effectiveAgainst_d5yp1f$(MoveType$CAVALRY_getInstance(), battleUnit);
@@ -20195,7 +20414,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$KeenBlarwolf2() {
     Weapon$KeenBlarwolf2_instance = this;
-    Weapon.call(this, 'KeenBlarwolf2', 224, Name$KeenBlarwolf2_getInstance(), SkillType$BTOME_getInstance(), 12, Weapon$Blarwolf2_getInstance(), RefineSkill$RefineType$Range2_getInstance());
+    Weapon.call(this, 'KeenBlarwolf2', 225, Name$KeenBlarwolf2_getInstance(), SkillType$BTOME_getInstance(), 12, Weapon$Blarwolf2_getInstance(), RefineSkill$RefineType$Range2_getInstance());
   }
   Weapon$KeenBlarwolf2.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.effectiveAgainst_d5yp1f$(MoveType$CAVALRY_getInstance(), battleUnit);
@@ -20212,7 +20431,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Blarraven() {
     Weapon$Blarraven_instance = this;
-    Weapon.call(this, 'Blarraven', 225, Name$Blarraven_getInstance(), SkillType$BTOME_getInstance(), 7, Weapon$Elthunder_getInstance());
+    Weapon.call(this, 'Blarraven', 226, Name$Blarraven_getInstance(), SkillType$BTOME_getInstance(), 7, Weapon$Elthunder_getInstance());
   }
   Weapon$Blarraven.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.equipRaven_trfvk0$(battleUnit);
@@ -20229,7 +20448,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Blarraven2() {
     Weapon$Blarraven2_instance = this;
-    Weapon.call(this, 'Blarraven2', 226, Name$Blarraven2_getInstance(), SkillType$BTOME_getInstance(), 11, Weapon$Blarraven_getInstance());
+    Weapon.call(this, 'Blarraven2', 227, Name$Blarraven2_getInstance(), SkillType$BTOME_getInstance(), 11, Weapon$Blarraven_getInstance());
   }
   Weapon$Blarraven2.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.equipRaven_trfvk0$(battleUnit);
@@ -20246,7 +20465,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Blarblade() {
     Weapon$Blarblade_instance = this;
-    Weapon.call(this, 'Blarblade', 227, Name$Blarblade_getInstance(), SkillType$RTOME_getInstance(), 9, Weapon$Elthunder_getInstance());
+    Weapon.call(this, 'Blarblade', 228, Name$Blarblade_getInstance(), SkillType$BTOME_getInstance(), 9, Weapon$Elthunder_getInstance());
   }
   Weapon$Blarblade.prototype.equip_yukhz7$$default = function (armedHero, lv) {
     return this.equipBlade_yukhz7$(armedHero, lv);
@@ -20266,7 +20485,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Blarblade2() {
     Weapon$Blarblade2_instance = this;
-    Weapon.call(this, 'Blarblade2', 228, Name$Blarblade2_getInstance(), SkillType$RTOME_getInstance(), 13, Weapon$Blarblade_getInstance());
+    Weapon.call(this, 'Blarblade2', 229, Name$Blarblade2_getInstance(), SkillType$BTOME_getInstance(), 13, Weapon$Blarblade_getInstance());
   }
   Weapon$Blarblade2.prototype.equip_yukhz7$$default = function (armedHero, lv) {
     return this.equipBlade_yukhz7$(armedHero, lv);
@@ -20286,7 +20505,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Blarowl() {
     Weapon$Blarowl_instance = this;
-    Weapon.call(this, 'Blarowl', 229, Name$Blarowl_getInstance(), SkillType$BTOME_getInstance(), 6, Weapon$Elthunder_getInstance());
+    Weapon.call(this, 'Blarowl', 230, Name$Blarowl_getInstance(), SkillType$BTOME_getInstance(), 6, Weapon$Elthunder_getInstance());
   }
   Weapon$Blarowl.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.allBonus_sv9jhu$(battleUnit, battleUnit.adjacentUnits * 2 | 0);
@@ -20303,7 +20522,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Blarowl2() {
     Weapon$Blarowl2_instance = this;
-    Weapon.call(this, 'Blarowl2', 230, Name$Blarowl2_getInstance(), SkillType$BTOME_getInstance(), 10, Weapon$Blarowl_getInstance(), RefineSkill$RefineType$Range2_getInstance());
+    Weapon.call(this, 'Blarowl2', 231, Name$Blarowl2_getInstance(), SkillType$BTOME_getInstance(), 10, Weapon$Blarowl_getInstance(), RefineSkill$RefineType$Range2_getInstance());
   }
   Weapon$Blarowl2.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.allBonus_sv9jhu$(battleUnit, battleUnit.adjacentUnits * 2 | 0);
@@ -20375,7 +20594,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Valaskjalf() {
     Weapon$Valaskjalf_instance = this;
-    Weapon.call(this, 'Valaskjalf', 242, Name$Valaskjalf_getInstance(), SkillType$BTOME_getInstance(), 14, Weapon$Thoron_getInstance());
+    Weapon.call(this, 'Valaskjalf', 243, Name$Valaskjalf_getInstance(), SkillType$BTOME_getInstance(), 14, Weapon$Thoron_getInstance());
   }
   Weapon$Valaskjalf.prototype.counterPlan_p6uegp$$default = function (fightPlan, lv) {
     return this.vantage_p6uegp$(fightPlan, 2);
@@ -20397,7 +20616,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$DireThunder() {
     Weapon$DireThunder_instance = this;
-    Weapon.call(this, 'DireThunder', 244, Name$DireThunder_getInstance(), SkillType$BTOME_getInstance(), 9, Weapon$Thoron_getInstance());
+    Weapon.call(this, 'DireThunder', 245, Name$DireThunder_getInstance(), SkillType$BTOME_getInstance(), 9, Weapon$Thoron_getInstance());
   }
   Weapon$DireThunder.prototype.equip_yukhz7$$default = function (armedHero, lv) {
     return this.equipBrave_yukhz7$(armedHero, lv);
@@ -20417,7 +20636,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$WeirdingTome() {
     Weapon$WeirdingTome_instance = this;
-    Weapon.call(this, 'WeirdingTome', 245, Name$WeirdingTome_getInstance(), SkillType$BTOME_getInstance(), 14, Weapon$Thoron_getInstance());
+    Weapon.call(this, 'WeirdingTome', 246, Name$WeirdingTome_getInstance(), SkillType$BTOME_getInstance(), 14, Weapon$Thoron_getInstance());
   }
   Weapon$WeirdingTome.prototype.equip_yukhz7$$default = function (armedHero, lv) {
     return this.equip_yukhz7$(this.equipSpd_yukhz7$(armedHero, 3), lv, Weapon.prototype.equip_yukhz7$$default.bind(this));
@@ -20434,7 +20653,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Thani() {
     Weapon$Thani_instance = this;
-    Weapon.call(this, 'Thani', 246, Name$Thani_getInstance(), SkillType$BTOME_getInstance(), 14, Weapon$Thoron_getInstance());
+    Weapon.call(this, 'Thani', 247, Name$Thani_getInstance(), SkillType$BTOME_getInstance(), 14, Weapon$Thoron_getInstance());
   }
   Weapon$Thani.prototype.equip_yukhz7$$default = function (armedHero, lv) {
     return this.equip_yukhz7$(this.equipRes_yukhz7$(armedHero, 3), lv, Weapon.prototype.equip_yukhz7$$default.bind(this));
@@ -20479,7 +20698,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Ivaldi() {
     Weapon$Ivaldi_instance = this;
-    Weapon.call(this, 'Ivaldi', 247, Name$Ivaldi_getInstance(), SkillType$BTOME_getInstance(), 14, Weapon$Thoron_getInstance());
+    Weapon.call(this, 'Ivaldi', 248, Name$Ivaldi_getInstance(), SkillType$BTOME_getInstance(), 14, Weapon$Thoron_getInstance());
   }
   Weapon$Ivaldi.prototype.equip_yukhz7$$default = function (armedHero, lv) {
     return this.equip_yukhz7$(this.equipDef_yukhz7$(armedHero, 3), lv, Weapon.prototype.equip_yukhz7$$default.bind(this));
@@ -20499,7 +20718,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$BlueGift() {
     Weapon$BlueGift_instance = this;
-    Weapon.call(this, 'BlueGift', 248, Name$BlueGift_getInstance(), SkillType$BTOME_getInstance(), 8, Weapon$Thoron_getInstance());
+    Weapon.call(this, 'BlueGift', 249, Name$BlueGift_getInstance(), SkillType$BTOME_getInstance(), 8, Weapon$Thoron_getInstance());
   }
   Weapon$BlueGift.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.antiRangedWeaponBuffBonus_trfvk0$(battleUnit);
@@ -20516,7 +20735,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$BlueGift2() {
     Weapon$BlueGift2_instance = this;
-    Weapon.call(this, 'BlueGift2', 249, Name$BlueGift2_getInstance(), SkillType$BTOME_getInstance(), 12, Weapon$BlueGift_getInstance());
+    Weapon.call(this, 'BlueGift2', 250, Name$BlueGift2_getInstance(), SkillType$BTOME_getInstance(), 12, Weapon$BlueGift_getInstance());
   }
   Weapon$BlueGift2.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.antiRangedWeaponBuffBonus_trfvk0$(battleUnit);
@@ -20553,7 +20772,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Gronnwolf() {
     Weapon$Gronnwolf_instance = this;
-    Weapon.call(this, 'Gronnwolf', 254, Name$Gronnwolf_getInstance(), SkillType$GTOME_getInstance(), 6, Weapon$Elwind_getInstance());
+    Weapon.call(this, 'Gronnwolf', 255, Name$Gronnwolf_getInstance(), SkillType$GTOME_getInstance(), 6, Weapon$Elwind_getInstance());
   }
   Weapon$Gronnwolf.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.effectiveAgainst_d5yp1f$(MoveType$CAVALRY_getInstance(), battleUnit);
@@ -20570,7 +20789,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Gronnwolf2() {
     Weapon$Gronnwolf2_instance = this;
-    Weapon.call(this, 'Gronnwolf2', 255, Name$Gronnwolf2_getInstance(), SkillType$GTOME_getInstance(), 10, Weapon$Gronnwolf_getInstance());
+    Weapon.call(this, 'Gronnwolf2', 256, Name$Gronnwolf2_getInstance(), SkillType$GTOME_getInstance(), 10, Weapon$Gronnwolf_getInstance());
   }
   Weapon$Gronnwolf2.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.effectiveAgainst_d5yp1f$(MoveType$CAVALRY_getInstance(), battleUnit);
@@ -20587,7 +20806,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$KeenGronnwolf2() {
     Weapon$KeenGronnwolf2_instance = this;
-    Weapon.call(this, 'KeenGronnwolf2', 256, Name$KeenGronnwolf2_getInstance(), SkillType$GTOME_getInstance(), 12, Weapon$Gronnwolf2_getInstance(), RefineSkill$RefineType$Range2_getInstance());
+    Weapon.call(this, 'KeenGronnwolf2', 257, Name$KeenGronnwolf2_getInstance(), SkillType$GTOME_getInstance(), 12, Weapon$Gronnwolf2_getInstance(), RefineSkill$RefineType$Range2_getInstance());
   }
   Weapon$KeenGronnwolf2.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.effectiveAgainst_d5yp1f$(MoveType$CAVALRY_getInstance(), battleUnit);
@@ -20604,7 +20823,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Gronnraven() {
     Weapon$Gronnraven_instance = this;
-    Weapon.call(this, 'Gronnraven', 257, Name$Gronnraven_getInstance(), SkillType$GTOME_getInstance(), 7, Weapon$Elwind_getInstance());
+    Weapon.call(this, 'Gronnraven', 258, Name$Gronnraven_getInstance(), SkillType$GTOME_getInstance(), 7, Weapon$Elwind_getInstance());
   }
   Weapon$Gronnraven.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.equipRaven_trfvk0$(battleUnit);
@@ -20621,7 +20840,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Gronnraven2() {
     Weapon$Gronnraven2_instance = this;
-    Weapon.call(this, 'Gronnraven2', 258, Name$Gronnraven2_getInstance(), SkillType$GTOME_getInstance(), 11, Weapon$Gronnraven_getInstance());
+    Weapon.call(this, 'Gronnraven2', 259, Name$Gronnraven2_getInstance(), SkillType$GTOME_getInstance(), 11, Weapon$Gronnraven_getInstance());
   }
   Weapon$Gronnraven2.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.equipRaven_trfvk0$(battleUnit);
@@ -20638,7 +20857,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Gronnblade() {
     Weapon$Gronnblade_instance = this;
-    Weapon.call(this, 'Gronnblade', 259, Name$Gronnblade_getInstance(), SkillType$GTOME_getInstance(), 9, Weapon$Elwind_getInstance());
+    Weapon.call(this, 'Gronnblade', 260, Name$Gronnblade_getInstance(), SkillType$GTOME_getInstance(), 9, Weapon$Elwind_getInstance());
   }
   Weapon$Gronnblade.prototype.equip_yukhz7$$default = function (armedHero, lv) {
     return this.equipBlade_yukhz7$(armedHero, lv);
@@ -20658,7 +20877,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Gronnblade2() {
     Weapon$Gronnblade2_instance = this;
-    Weapon.call(this, 'Gronnblade2', 260, Name$Gronnblade2_getInstance(), SkillType$GTOME_getInstance(), 13, Weapon$Gronnblade_getInstance());
+    Weapon.call(this, 'Gronnblade2', 261, Name$Gronnblade2_getInstance(), SkillType$GTOME_getInstance(), 13, Weapon$Gronnblade_getInstance());
   }
   Weapon$Gronnblade2.prototype.equip_yukhz7$$default = function (armedHero, lv) {
     return this.equipBlade_yukhz7$(armedHero, lv);
@@ -20678,7 +20897,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Gronnowl() {
     Weapon$Gronnowl_instance = this;
-    Weapon.call(this, 'Gronnowl', 261, Name$Gronnowl_getInstance(), SkillType$GTOME_getInstance(), 6, Weapon$Elwind_getInstance());
+    Weapon.call(this, 'Gronnowl', 262, Name$Gronnowl_getInstance(), SkillType$GTOME_getInstance(), 6, Weapon$Elwind_getInstance());
   }
   Weapon$Gronnowl.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.allBonus_sv9jhu$(battleUnit, battleUnit.adjacentUnits * 2 | 0);
@@ -20695,7 +20914,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Gronnowl2() {
     Weapon$Gronnowl2_instance = this;
-    Weapon.call(this, 'Gronnowl2', 262, Name$Gronnowl2_getInstance(), SkillType$GTOME_getInstance(), 10, Weapon$Gronnowl_getInstance(), RefineSkill$RefineType$Range2_getInstance());
+    Weapon.call(this, 'Gronnowl2', 263, Name$Gronnowl2_getInstance(), SkillType$GTOME_getInstance(), 10, Weapon$Gronnowl_getInstance(), RefineSkill$RefineType$Range2_getInstance());
   }
   Weapon$Gronnowl2.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.allBonus_sv9jhu$(battleUnit, battleUnit.adjacentUnits * 2 | 0);
@@ -20712,7 +20931,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$GreenEgg() {
     Weapon$GreenEgg_instance = this;
-    Weapon.call(this, 'GreenEgg', 263, Name$GreenEgg_getInstance(), SkillType$GTOME_getInstance(), 7, Weapon$Elwind_getInstance());
+    Weapon.call(this, 'GreenEgg', 264, Name$GreenEgg_getInstance(), SkillType$GTOME_getInstance(), 7, Weapon$Elwind_getInstance());
   }
   Weapon$GreenEgg.prototype.attackEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.attackHeal_sv9jhu$(battleUnit, 4);
@@ -20729,7 +20948,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$GreenEgg2() {
     Weapon$GreenEgg2_instance = this;
-    Weapon.call(this, 'GreenEgg2', 264, Name$GreenEgg2_getInstance(), SkillType$GTOME_getInstance(), 11, Weapon$GreenEgg_getInstance(), RefineSkill$RefineType$Range2_getInstance());
+    Weapon.call(this, 'GreenEgg2', 265, Name$GreenEgg2_getInstance(), SkillType$GTOME_getInstance(), 11, Weapon$GreenEgg_getInstance(), RefineSkill$RefineType$Range2_getInstance());
   }
   Weapon$GreenEgg2.prototype.attackEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.attackHeal_sv9jhu$(battleUnit, 4);
@@ -20771,7 +20990,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Excalibur() {
     Weapon$Excalibur_instance = this;
-    Weapon.call(this, 'Excalibur', 270, Name$Excalibur_getInstance(), SkillType$GTOME_getInstance(), 14, Weapon$Rexcalibur_getInstance());
+    Weapon.call(this, 'Excalibur', 271, Name$Excalibur_getInstance(), SkillType$GTOME_getInstance(), 14, Weapon$Rexcalibur_getInstance());
   }
   Weapon$Excalibur.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.effectiveAgainst_d5yp1f$(MoveType$FLIER_getInstance(), battleUnit);
@@ -20788,7 +21007,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Naga() {
     Weapon$Naga_instance = this;
-    Weapon.call(this, 'Naga', 271, Name$Naga_getInstance(), SkillType$GTOME_getInstance(), 14, Weapon$Rexcalibur_getInstance());
+    Weapon.call(this, 'Naga', 272, Name$Naga_getInstance(), SkillType$GTOME_getInstance(), 14, Weapon$Rexcalibur_getInstance());
   }
   Weapon$Naga.prototype.counterEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.effectiveAgainst_58hff6$(WeaponType$DRAGON_getInstance(), this.blowDef_sv9jhu$(this.blowRes_sv9jhu$(battleUnit, 2), 2));
@@ -20808,7 +21027,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$DarkExcalibur() {
     Weapon$DarkExcalibur_instance = this;
-    Weapon.call(this, 'DarkExcalibur', 272, Name$DarkExcalibur_getInstance(), SkillType$GTOME_getInstance(), 14, Weapon$Rexcalibur_getInstance());
+    Weapon.call(this, 'DarkExcalibur', 273, Name$DarkExcalibur_getInstance(), SkillType$GTOME_getInstance(), 14, Weapon$Rexcalibur_getInstance());
   }
   Weapon$DarkExcalibur.prototype.specialTriggered_upjsjk$$default = function (battleUnit, damage, lv) {
     return damage + 10 | 0;
@@ -20825,7 +21044,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$DivineNaga() {
     Weapon$DivineNaga_instance = this;
-    Weapon.call(this, 'DivineNaga', 273, Name$DivineNaga_getInstance(), SkillType$GTOME_getInstance(), 14, Weapon$Rexcalibur_getInstance());
+    Weapon.call(this, 'DivineNaga', 274, Name$DivineNaga_getInstance(), SkillType$GTOME_getInstance(), 14, Weapon$Rexcalibur_getInstance());
   }
   Weapon$DivineNaga.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.antiBuffBonus_trfvk0$(this.effectiveAgainst_58hff6$(WeaponType$DRAGON_getInstance(), battleUnit));
@@ -20852,7 +21071,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$Blizzard() {
     Weapon$Blizzard_instance = this;
-    Weapon.call(this, 'Blizzard', 276, Name$Blizzard_getInstance(), SkillType$GTOME_getInstance(), 14, Weapon$Rexcalibur_getInstance());
+    Weapon.call(this, 'Blizzard', 277, Name$Blizzard_getInstance(), SkillType$GTOME_getInstance(), 14, Weapon$Rexcalibur_getInstance());
   }
   Weapon$Blizzard.prototype.equip_yukhz7$$default = function (armedHero, lv) {
     return this.equip_yukhz7$(this.equipRes_yukhz7$(armedHero, 3), lv, Weapon.prototype.equip_yukhz7$$default.bind(this));
@@ -20872,7 +21091,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$GreenGift() {
     Weapon$GreenGift_instance = this;
-    Weapon.call(this, 'GreenGift', 277, Name$GreenGift_getInstance(), SkillType$GTOME_getInstance(), 8, Weapon$Elwind_getInstance());
+    Weapon.call(this, 'GreenGift', 278, Name$GreenGift_getInstance(), SkillType$GTOME_getInstance(), 8, Weapon$Elwind_getInstance());
   }
   Weapon$GreenGift.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.antiRangedWeaponBuffBonus_trfvk0$(battleUnit);
@@ -20889,7 +21108,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$GreenGift2() {
     Weapon$GreenGift2_instance = this;
-    Weapon.call(this, 'GreenGift2', 278, Name$GreenGift2_getInstance(), SkillType$GTOME_getInstance(), 12, Weapon$GreenGift_getInstance());
+    Weapon.call(this, 'GreenGift2', 279, Name$GreenGift2_getInstance(), SkillType$GTOME_getInstance(), 12, Weapon$GreenGift_getInstance());
   }
   Weapon$GreenGift2.prototype.bothEffect_sv9jhu$$default = function (battleUnit, lv) {
     return this.antiRangedWeaponBuffBonus_trfvk0$(battleUnit);
@@ -20916,7 +21135,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$LightningBreath() {
     Weapon$LightningBreath_instance = this;
-    Weapon.call(this, 'LightningBreath', 281, Name$LightningBreath_getInstance(), SkillType$DRAGON_getInstance(), 8, Weapon$FireBreath2_getInstance());
+    Weapon.call(this, 'LightningBreath', 282, Name$LightningBreath_getInstance(), SkillType$DRAGON_getInstance(), 8, Weapon$FireBreath2_getInstance());
   }
   Weapon$LightningBreath.prototype.equip_yukhz7$$default = function (armedHero, lv) {
     return this.equipBlade_yukhz7$(armedHero, lv);
@@ -20936,7 +21155,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$LightningBreath2() {
     Weapon$LightningBreath2_instance = this;
-    Weapon.call(this, 'LightningBreath2', 282, Name$LightningBreath2_getInstance(), SkillType$DRAGON_getInstance(), 11, Weapon$LightningBreath_getInstance(), RefineSkill$RefineType$Range1_getInstance());
+    Weapon.call(this, 'LightningBreath2', 283, Name$LightningBreath2_getInstance(), SkillType$DRAGON_getInstance(), 11, Weapon$LightningBreath_getInstance(), RefineSkill$RefineType$Range1_getInstance());
   }
   Weapon$LightningBreath2.prototype.equip_yukhz7$$default = function (armedHero, lv) {
     return this.equipBlade_yukhz7$(armedHero, lv);
@@ -20986,7 +21205,7 @@ var FEHSIM = function (_, Kotlin) {
   }
   function Weapon$GreatFlame() {
     Weapon$GreatFlame_instance = this;
-    Weapon.call(this, 'GreatFlame', 289, Name$GreatFlame_getInstance(), SkillType$PENETRATE_DRAGON_getInstance(), 16, Weapon$Flametongue_getInstance());
+    Weapon.call(this, 'GreatFlame', 290, Name$GreatFlame_getInstance(), SkillType$PENETRATE_DRAGON_getInstance(), 16, Weapon$Flametongue_getInstance());
   }
   Weapon$GreatFlame.prototype.equip_yukhz7$$default = function (armedHero, lv) {
     return this.equip_yukhz7$(this.equipAtk_yukhz7$(armedHero, 3), lv, Weapon.prototype.equip_yukhz7$$default.bind(this));
@@ -21003,6 +21222,23 @@ var FEHSIM = function (_, Kotlin) {
   function Weapon$GreatFlame_getInstance() {
     Weapon_initFields();
     return Weapon$GreatFlame_instance;
+  }
+  function Weapon$Expiration() {
+    Weapon$Expiration_instance = this;
+    Weapon.call(this, 'Expiration', 291, Name$Expiration_getInstance(), SkillType$PENETRATE_DRAGON_getInstance(), 16, Weapon$Flametongue_getInstance());
+  }
+  Weapon$Expiration.prototype.counterEffect_sv9jhu$$default = function (battleUnit, lv) {
+    return this.counterAllRange_trfvk0$(battleUnit);
+  };
+  Weapon$Expiration.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'Expiration',
+    interfaces: [Weapon]
+  };
+  var Weapon$Expiration_instance = null;
+  function Weapon$Expiration_getInstance() {
+    Weapon_initFields();
+    return Weapon$Expiration_instance;
   }
   Object.defineProperty(Weapon.prototype, 'value', {
     get: function () {
@@ -21073,7 +21309,7 @@ var FEHSIM = function (_, Kotlin) {
     interfaces: [Skill, Enum]
   };
   function Weapon$values() {
-    return [Weapon$IronSword_getInstance(), Weapon$SteelSword_getInstance(), Weapon$SilverSword_getInstance(), Weapon$SilverSword2_getInstance(), Weapon$ArmorSlayer_getInstance(), Weapon$ArmorSlayer2_getInstance(), Weapon$Armorsmasher2_getInstance(), Weapon$BraveSword_getInstance(), Weapon$BraveSword2_getInstance(), Weapon$RubySword_getInstance(), Weapon$RubySword2_getInstance(), Weapon$KillingEdge_getInstance(), Weapon$KillingEdge2_getInstance(), Weapon$WaoDao_getInstance(), Weapon$WaoDao2_getInstance(), Weapon$Zanbato_getInstance(), Weapon$Zanbato2_getInstance(), Weapon$SlayingEdge_getInstance(), Weapon$SlayingEdge2_getInstance(), Weapon$AyrasBlade_getInstance(), Weapon$Folkvangr_getInstance(), Weapon$FalchionM_getInstance(), Weapon$FalchionA_getInstance(), Weapon$FalchionC_getInstance(), Weapon$BindingBlade_getInstance(), Weapon$Durandal_getInstance(), Weapon$SolKatti_getInstance(), Weapon$Yato_getInstance(), Weapon$Raijinto_getInstance(), Weapon$Sieglinde_getInstance(), Weapon$Tyrfing_getInstance(), Weapon$Mystletainn_getInstance(), Weapon$Eckesachs_getInstance(), Weapon$Siegfried_getInstance(), Weapon$Ragnell_getInstance(), Weapon$BlazingDurandal_getInstance(), Weapon$Amiti_getInstance(), Weapon$Alondite_getInstance(), Weapon$DivineTyrfing_getInstance(), Weapon$RegalBlade_getInstance(), Weapon$ResoluteBlade_getInstance(), Weapon$Audhulma_getInstance(), Weapon$DarkGreatsword_getInstance(), Weapon$FiresweepSword_getInstance(), Weapon$FiresweepSword2_getInstance(), Weapon$Kadomatsu_getInstance(), Weapon$Kadomatsu2_getInstance(), Weapon$WingSword_getInstance(), Weapon$IronLance_getInstance(), Weapon$SteelLance_getInstance(), Weapon$SilverLance_getInstance(), Weapon$SilverLance2_getInstance(), Weapon$KillerLance_getInstance(), Weapon$KillerLance2_getInstance(), Weapon$BraveLance_getInstance(), Weapon$BraveLance2_getInstance(), Weapon$SapphireLance_getInstance(), Weapon$SapphireLance2_getInstance(), Weapon$HeavySpear_getInstance(), Weapon$HeavySpear2_getInstance(), Weapon$SlayingSpear2_getInstance(), Weapon$CarrotLance_getInstance(), Weapon$CarrotLance2_getInstance(), Weapon$FirstBite_getInstance(), Weapon$FirstBite2_getInstance(), Weapon$FiresweepLance_getInstance(), Weapon$FiresweepLance2_getInstance(), Weapon$DeftHarpoon_getInstance(), Weapon$DeftHarpoon2_getInstance(), Weapon$Ridersbane_getInstance(), Weapon$Ridersbane2_getInstance(), Weapon$BerkutsLance_getInstance(), Weapon$BerkutsLance2_getInstance(), Weapon$SlayingLance_getInstance(), Weapon$SlayingLance2_getInstance(), Weapon$Fensalir_getInstance(), Weapon$Siegmund_getInstance(), Weapon$Gradivus_getInstance(), Weapon$Vidofinir_getInstance(), Weapon$CursedLance_getInstance(), Weapon$Geirskogul_getInstance(), Weapon$Leiptr_getInstance(), Weapon$BrightNaginata_getInstance(), Weapon$Tannenboom_getInstance(), Weapon$Tannenboom2_getInstance(), Weapon$CasaBlanca_getInstance(), Weapon$CasaBlanca2_getInstance(), Weapon$HinokasSpear_getInstance(), Weapon$IronAxe_getInstance(), Weapon$SteelAxe_getInstance(), Weapon$SilverAxe_getInstance(), Weapon$SilverAxe2_getInstance(), Weapon$KillerAxe_getInstance(), Weapon$KillerAxe2_getInstance(), Weapon$BraveAxe_getInstance(), Weapon$BraveAxe2_getInstance(), Weapon$Hammer_getInstance(), Weapon$Hammer2_getInstance(), Weapon$SlayingHammer2_getInstance(), Weapon$EmeraldAxe_getInstance(), Weapon$EmeraldAxe2_getInstance(), Weapon$SlayingAxe_getInstance(), Weapon$SlayingAxe2_getInstance(), Weapon$CarrotAxe_getInstance(), Weapon$CarrotAxe2_getInstance(), Weapon$LegionsAxe_getInstance(), Weapon$LegionsAxe2_getInstance(), Weapon$MelonCrusher_getInstance(), Weapon$MelonCrusher2_getInstance(), Weapon$LilithFloatie_getInstance(), Weapon$LilithFloatie2_getInstance(), Weapon$Noatun_getInstance(), Weapon$Hauteclere_getInstance(), Weapon$Armoads_getInstance(), Weapon$Urvan_getInstance(), Weapon$Uror_getInstance(), Weapon$StoutTomahawk_getInstance(), Weapon$SackOGifts_getInstance(), Weapon$SackOGifts2_getInstance(), Weapon$Handbell_getInstance(), Weapon$Handbell2_getInstance(), Weapon$Hagoita_getInstance(), Weapon$Hagoita2_getInstance(), Weapon$BerserkArmads_getInstance(), Weapon$Basilikos_getInstance(), Weapon$IronBow_getInstance(), Weapon$SteelBow_getInstance(), Weapon$SilverBow_getInstance(), Weapon$SilverBow2_getInstance(), Weapon$BraveBow_getInstance(), Weapon$BraveBow2_getInstance(), Weapon$KillerBow_getInstance(), Weapon$KillerBow2_getInstance(), Weapon$AssassinsBow_getInstance(), Weapon$AssassinsBow2_getInstance(), Weapon$GuardBow2_getInstance(), Weapon$FiresweepBow_getInstance(), Weapon$FiresweepBow2_getInstance(), Weapon$CupidArrow_getInstance(), Weapon$CupidArrow2_getInstance(), Weapon$RefreshingBolt_getInstance(), Weapon$RefreshingBolt2_getInstance(), Weapon$ClarissesBow_getInstance(), Weapon$ClarissesBow2_getInstance(), Weapon$SlayingBow_getInstance(), Weapon$SlayingBow2_getInstance(), Weapon$Parthia_getInstance(), Weapon$FujinYumi_getInstance(), Weapon$Nidhogg_getInstance(), Weapon$Mulagir_getInstance(), Weapon$MonstrousBow_getInstance(), Weapon$MonstrousBow2_getInstance(), Weapon$HamaYa_getInstance(), Weapon$HamaYa2_getInstance(), Weapon$Gratia_getInstance(), Weapon$Gratia2_getInstance(), Weapon$IronDagger_getInstance(), Weapon$SteelDagger_getInstance(), Weapon$SilverDagger_getInstance(), Weapon$SilverDagger2_getInstance(), Weapon$RogueDagger_getInstance(), Weapon$RogueDagger2_getInstance(), Weapon$SmokeDagger_getInstance(), Weapon$SmokeDagger2_getInstance(), Weapon$PoisonDagger_getInstance(), Weapon$PoisonDagger2_getInstance(), Weapon$Seashell_getInstance(), Weapon$Seashell2_getInstance(), Weapon$DancersFan_getInstance(), Weapon$DancersFan2_getInstance(), Weapon$DeathlyDagger_getInstance(), Weapon$KittyPaddle_getInstance(), Weapon$KittyPaddle2_getInstance(), Weapon$KagamiMochi_getInstance(), Weapon$KagamiMochi2_getInstance(), Weapon$FeliciasPlate_getInstance(), Weapon$Peshkatz_getInstance(), Weapon$Assault_getInstance(), Weapon$Absorb_getInstance(), Weapon$Absorb2_getInstance(), Weapon$Candlelight_getInstance(), Weapon$Candlelight2_getInstance(), Weapon$Gravity_getInstance(), Weapon$Gravity2_getInstance(), Weapon$Fear_getInstance(), Weapon$Fear2_getInstance(), Weapon$Slow_getInstance(), Weapon$Slow2_getInstance(), Weapon$Panic_getInstance(), Weapon$Panic2_getInstance(), Weapon$Pain_getInstance(), Weapon$Pain2_getInstance(), Weapon$Flux_getInstance(), Weapon$Fire_getInstance(), Weapon$Ruin_getInstance(), Weapon$Elfire_getInstance(), Weapon$Rauorwolf_getInstance(), Weapon$Rauorwolf2_getInstance(), Weapon$KeenRauorwolf2_getInstance(), Weapon$Rauorraven_getInstance(), Weapon$Rauorraven2_getInstance(), Weapon$Rauorblade_getInstance(), Weapon$Rauorblade2_getInstance(), Weapon$Rauorowl_getInstance(), Weapon$Rauorowl2_getInstance(), Weapon$Fenrir_getInstance(), Weapon$Fenrir2_getInstance(), Weapon$Bolganone_getInstance(), Weapon$Bolganone2_getInstance(), Weapon$TomatoTome_getInstance(), Weapon$TomatoTome2_getInstance(), Weapon$Brynhildr_getInstance(), Weapon$Cymbeline_getInstance(), Weapon$Ragnarok_getInstance(), Weapon$Valflame_getInstance(), Weapon$Grimoire_getInstance(), Weapon$Candelabra_getInstance(), Weapon$Candelabra2_getInstance(), Weapon$Gleipnir_getInstance(), Weapon$Naglfar_getInstance(), Weapon$Thunder_getInstance(), Weapon$Elthunder_getInstance(), Weapon$Blarwolf_getInstance(), Weapon$Blarwolf2_getInstance(), Weapon$KeenBlarwolf2_getInstance(), Weapon$Blarraven_getInstance(), Weapon$Blarraven2_getInstance(), Weapon$Blarblade_getInstance(), Weapon$Blarblade2_getInstance(), Weapon$Blarowl_getInstance(), Weapon$Blarowl2_getInstance(), Weapon$Thoron_getInstance(), Weapon$Thoron2_getInstance(), Weapon$BlueEgg_getInstance(), Weapon$BlueEgg2_getInstance(), Weapon$BlessedBouquet_getInstance(), Weapon$BlessedBouquet2_getInstance(), Weapon$SealifeTome_getInstance(), Weapon$SealifeTome2_getInstance(), Weapon$DancersScore_getInstance(), Weapon$DancersScore2_getInstance(), Weapon$DarkAura_getInstance(), Weapon$Valaskjalf_getInstance(), Weapon$Aura_getInstance(), Weapon$DireThunder_getInstance(), Weapon$WeirdingTome_getInstance(), Weapon$Thani_getInstance(), Weapon$Ivaldi_getInstance(), Weapon$BlueGift_getInstance(), Weapon$BlueGift2_getInstance(), Weapon$Wind_getInstance(), Weapon$Elwind_getInstance(), Weapon$Rexcalibur_getInstance(), Weapon$Rexcalibur2_getInstance(), Weapon$Gronnwolf_getInstance(), Weapon$Gronnwolf2_getInstance(), Weapon$KeenGronnwolf2_getInstance(), Weapon$Gronnraven_getInstance(), Weapon$Gronnraven2_getInstance(), Weapon$Gronnblade_getInstance(), Weapon$Gronnblade2_getInstance(), Weapon$Gronnowl_getInstance(), Weapon$Gronnowl2_getInstance(), Weapon$GreenEgg_getInstance(), Weapon$GreenEgg2_getInstance(), Weapon$HibiscusTome_getInstance(), Weapon$HibiscusTome2_getInstance(), Weapon$DancersRing_getInstance(), Weapon$DancersRing2_getInstance(), Weapon$Elivagar_getInstance(), Weapon$Excalibur_getInstance(), Weapon$Naga_getInstance(), Weapon$DarkExcalibur_getInstance(), Weapon$DivineNaga_getInstance(), Weapon$SpectralTome_getInstance(), Weapon$SpectralTome2_getInstance(), Weapon$Blizzard_getInstance(), Weapon$GreenGift_getInstance(), Weapon$GreenGift2_getInstance(), Weapon$FireBreath_getInstance(), Weapon$FireBreath2_getInstance(), Weapon$LightningBreath_getInstance(), Weapon$LightningBreath2_getInstance(), Weapon$Flametongue_getInstance(), Weapon$Flametongue2_getInstance(), Weapon$LightBreath_getInstance(), Weapon$LightBreath2_getInstance(), Weapon$DarkBreath_getInstance(), Weapon$DarkBreath2_getInstance(), Weapon$GreatFlame_getInstance()];
+    return [Weapon$IronSword_getInstance(), Weapon$SteelSword_getInstance(), Weapon$SilverSword_getInstance(), Weapon$SilverSword2_getInstance(), Weapon$ArmorSlayer_getInstance(), Weapon$ArmorSlayer2_getInstance(), Weapon$Armorsmasher2_getInstance(), Weapon$BraveSword_getInstance(), Weapon$BraveSword2_getInstance(), Weapon$RubySword_getInstance(), Weapon$RubySword2_getInstance(), Weapon$KillingEdge_getInstance(), Weapon$KillingEdge2_getInstance(), Weapon$WaoDao_getInstance(), Weapon$WaoDao2_getInstance(), Weapon$Zanbato_getInstance(), Weapon$Zanbato2_getInstance(), Weapon$SlayingEdge_getInstance(), Weapon$SlayingEdge2_getInstance(), Weapon$AyrasBlade_getInstance(), Weapon$Folkvangr_getInstance(), Weapon$FalchionM_getInstance(), Weapon$FalchionA_getInstance(), Weapon$FalchionC_getInstance(), Weapon$BindingBlade_getInstance(), Weapon$Durandal_getInstance(), Weapon$SolKatti_getInstance(), Weapon$Yato_getInstance(), Weapon$Raijinto_getInstance(), Weapon$Sieglinde_getInstance(), Weapon$Tyrfing_getInstance(), Weapon$Mystletainn_getInstance(), Weapon$Eckesachs_getInstance(), Weapon$Siegfried_getInstance(), Weapon$Ragnell_getInstance(), Weapon$BlazingDurandal_getInstance(), Weapon$Amiti_getInstance(), Weapon$Alondite_getInstance(), Weapon$DivineTyrfing_getInstance(), Weapon$RegalBlade_getInstance(), Weapon$ResoluteBlade_getInstance(), Weapon$Audhulma_getInstance(), Weapon$DarkGreatsword_getInstance(), Weapon$FiresweepSword_getInstance(), Weapon$FiresweepSword2_getInstance(), Weapon$Kadomatsu_getInstance(), Weapon$Kadomatsu2_getInstance(), Weapon$WingSword_getInstance(), Weapon$BelovedZofia_getInstance(), Weapon$IronLance_getInstance(), Weapon$SteelLance_getInstance(), Weapon$SilverLance_getInstance(), Weapon$SilverLance2_getInstance(), Weapon$KillerLance_getInstance(), Weapon$KillerLance2_getInstance(), Weapon$BraveLance_getInstance(), Weapon$BraveLance2_getInstance(), Weapon$SapphireLance_getInstance(), Weapon$SapphireLance2_getInstance(), Weapon$HeavySpear_getInstance(), Weapon$HeavySpear2_getInstance(), Weapon$SlayingSpear2_getInstance(), Weapon$CarrotLance_getInstance(), Weapon$CarrotLance2_getInstance(), Weapon$FirstBite_getInstance(), Weapon$FirstBite2_getInstance(), Weapon$FiresweepLance_getInstance(), Weapon$FiresweepLance2_getInstance(), Weapon$DeftHarpoon_getInstance(), Weapon$DeftHarpoon2_getInstance(), Weapon$Ridersbane_getInstance(), Weapon$Ridersbane2_getInstance(), Weapon$BerkutsLance_getInstance(), Weapon$BerkutsLance2_getInstance(), Weapon$SlayingLance_getInstance(), Weapon$SlayingLance2_getInstance(), Weapon$Fensalir_getInstance(), Weapon$Siegmund_getInstance(), Weapon$Gradivus_getInstance(), Weapon$Vidofinir_getInstance(), Weapon$CursedLance_getInstance(), Weapon$Geirskogul_getInstance(), Weapon$Leiptr_getInstance(), Weapon$BrightNaginata_getInstance(), Weapon$Tannenboom_getInstance(), Weapon$Tannenboom2_getInstance(), Weapon$CasaBlanca_getInstance(), Weapon$CasaBlanca2_getInstance(), Weapon$HinokasSpear_getInstance(), Weapon$IronAxe_getInstance(), Weapon$SteelAxe_getInstance(), Weapon$SilverAxe_getInstance(), Weapon$SilverAxe2_getInstance(), Weapon$KillerAxe_getInstance(), Weapon$KillerAxe2_getInstance(), Weapon$BraveAxe_getInstance(), Weapon$BraveAxe2_getInstance(), Weapon$Hammer_getInstance(), Weapon$Hammer2_getInstance(), Weapon$SlayingHammer2_getInstance(), Weapon$EmeraldAxe_getInstance(), Weapon$EmeraldAxe2_getInstance(), Weapon$SlayingAxe_getInstance(), Weapon$SlayingAxe2_getInstance(), Weapon$CarrotAxe_getInstance(), Weapon$CarrotAxe2_getInstance(), Weapon$LegionsAxe_getInstance(), Weapon$LegionsAxe2_getInstance(), Weapon$MelonCrusher_getInstance(), Weapon$MelonCrusher2_getInstance(), Weapon$LilithFloatie_getInstance(), Weapon$LilithFloatie2_getInstance(), Weapon$Noatun_getInstance(), Weapon$Hauteclere_getInstance(), Weapon$Armoads_getInstance(), Weapon$Urvan_getInstance(), Weapon$Uror_getInstance(), Weapon$StoutTomahawk_getInstance(), Weapon$SackOGifts_getInstance(), Weapon$SackOGifts2_getInstance(), Weapon$Handbell_getInstance(), Weapon$Handbell2_getInstance(), Weapon$Hagoita_getInstance(), Weapon$Hagoita2_getInstance(), Weapon$BerserkArmads_getInstance(), Weapon$Basilikos_getInstance(), Weapon$IronBow_getInstance(), Weapon$SteelBow_getInstance(), Weapon$SilverBow_getInstance(), Weapon$SilverBow2_getInstance(), Weapon$BraveBow_getInstance(), Weapon$BraveBow2_getInstance(), Weapon$KillerBow_getInstance(), Weapon$KillerBow2_getInstance(), Weapon$AssassinsBow_getInstance(), Weapon$AssassinsBow2_getInstance(), Weapon$GuardBow2_getInstance(), Weapon$FiresweepBow_getInstance(), Weapon$FiresweepBow2_getInstance(), Weapon$CupidArrow_getInstance(), Weapon$CupidArrow2_getInstance(), Weapon$RefreshingBolt_getInstance(), Weapon$RefreshingBolt2_getInstance(), Weapon$ClarissesBow_getInstance(), Weapon$ClarissesBow2_getInstance(), Weapon$SlayingBow_getInstance(), Weapon$SlayingBow2_getInstance(), Weapon$Parthia_getInstance(), Weapon$FujinYumi_getInstance(), Weapon$Nidhogg_getInstance(), Weapon$Mulagir_getInstance(), Weapon$MonstrousBow_getInstance(), Weapon$MonstrousBow2_getInstance(), Weapon$HamaYa_getInstance(), Weapon$HamaYa2_getInstance(), Weapon$Gratia_getInstance(), Weapon$Gratia2_getInstance(), Weapon$IronDagger_getInstance(), Weapon$SteelDagger_getInstance(), Weapon$SilverDagger_getInstance(), Weapon$SilverDagger2_getInstance(), Weapon$RogueDagger_getInstance(), Weapon$RogueDagger2_getInstance(), Weapon$SmokeDagger_getInstance(), Weapon$SmokeDagger2_getInstance(), Weapon$PoisonDagger_getInstance(), Weapon$PoisonDagger2_getInstance(), Weapon$Seashell_getInstance(), Weapon$Seashell2_getInstance(), Weapon$DancersFan_getInstance(), Weapon$DancersFan2_getInstance(), Weapon$DeathlyDagger_getInstance(), Weapon$KittyPaddle_getInstance(), Weapon$KittyPaddle2_getInstance(), Weapon$KagamiMochi_getInstance(), Weapon$KagamiMochi2_getInstance(), Weapon$FeliciasPlate_getInstance(), Weapon$Peshkatz_getInstance(), Weapon$Assault_getInstance(), Weapon$Absorb_getInstance(), Weapon$Absorb2_getInstance(), Weapon$Candlelight_getInstance(), Weapon$Candlelight2_getInstance(), Weapon$Gravity_getInstance(), Weapon$Gravity2_getInstance(), Weapon$Fear_getInstance(), Weapon$Fear2_getInstance(), Weapon$Slow_getInstance(), Weapon$Slow2_getInstance(), Weapon$Panic_getInstance(), Weapon$Panic2_getInstance(), Weapon$Pain_getInstance(), Weapon$Pain2_getInstance(), Weapon$Flux_getInstance(), Weapon$Fire_getInstance(), Weapon$Ruin_getInstance(), Weapon$Elfire_getInstance(), Weapon$Rauorwolf_getInstance(), Weapon$Rauorwolf2_getInstance(), Weapon$KeenRauorwolf2_getInstance(), Weapon$Rauorraven_getInstance(), Weapon$Rauorraven2_getInstance(), Weapon$Rauorblade_getInstance(), Weapon$Rauorblade2_getInstance(), Weapon$Rauorowl_getInstance(), Weapon$Rauorowl2_getInstance(), Weapon$Fenrir_getInstance(), Weapon$Fenrir2_getInstance(), Weapon$Bolganone_getInstance(), Weapon$Bolganone2_getInstance(), Weapon$TomatoTome_getInstance(), Weapon$TomatoTome2_getInstance(), Weapon$Brynhildr_getInstance(), Weapon$Cymbeline_getInstance(), Weapon$Ragnarok_getInstance(), Weapon$Valflame_getInstance(), Weapon$Grimoire_getInstance(), Weapon$Candelabra_getInstance(), Weapon$Candelabra2_getInstance(), Weapon$Gleipnir_getInstance(), Weapon$Naglfar_getInstance(), Weapon$Thunder_getInstance(), Weapon$Elthunder_getInstance(), Weapon$Blarwolf_getInstance(), Weapon$Blarwolf2_getInstance(), Weapon$KeenBlarwolf2_getInstance(), Weapon$Blarraven_getInstance(), Weapon$Blarraven2_getInstance(), Weapon$Blarblade_getInstance(), Weapon$Blarblade2_getInstance(), Weapon$Blarowl_getInstance(), Weapon$Blarowl2_getInstance(), Weapon$Thoron_getInstance(), Weapon$Thoron2_getInstance(), Weapon$BlueEgg_getInstance(), Weapon$BlueEgg2_getInstance(), Weapon$BlessedBouquet_getInstance(), Weapon$BlessedBouquet2_getInstance(), Weapon$SealifeTome_getInstance(), Weapon$SealifeTome2_getInstance(), Weapon$DancersScore_getInstance(), Weapon$DancersScore2_getInstance(), Weapon$DarkAura_getInstance(), Weapon$Valaskjalf_getInstance(), Weapon$Aura_getInstance(), Weapon$DireThunder_getInstance(), Weapon$WeirdingTome_getInstance(), Weapon$Thani_getInstance(), Weapon$Ivaldi_getInstance(), Weapon$BlueGift_getInstance(), Weapon$BlueGift2_getInstance(), Weapon$Wind_getInstance(), Weapon$Elwind_getInstance(), Weapon$Rexcalibur_getInstance(), Weapon$Rexcalibur2_getInstance(), Weapon$Gronnwolf_getInstance(), Weapon$Gronnwolf2_getInstance(), Weapon$KeenGronnwolf2_getInstance(), Weapon$Gronnraven_getInstance(), Weapon$Gronnraven2_getInstance(), Weapon$Gronnblade_getInstance(), Weapon$Gronnblade2_getInstance(), Weapon$Gronnowl_getInstance(), Weapon$Gronnowl2_getInstance(), Weapon$GreenEgg_getInstance(), Weapon$GreenEgg2_getInstance(), Weapon$HibiscusTome_getInstance(), Weapon$HibiscusTome2_getInstance(), Weapon$DancersRing_getInstance(), Weapon$DancersRing2_getInstance(), Weapon$Elivagar_getInstance(), Weapon$Excalibur_getInstance(), Weapon$Naga_getInstance(), Weapon$DarkExcalibur_getInstance(), Weapon$DivineNaga_getInstance(), Weapon$SpectralTome_getInstance(), Weapon$SpectralTome2_getInstance(), Weapon$Blizzard_getInstance(), Weapon$GreenGift_getInstance(), Weapon$GreenGift2_getInstance(), Weapon$FireBreath_getInstance(), Weapon$FireBreath2_getInstance(), Weapon$LightningBreath_getInstance(), Weapon$LightningBreath2_getInstance(), Weapon$Flametongue_getInstance(), Weapon$Flametongue2_getInstance(), Weapon$LightBreath_getInstance(), Weapon$LightBreath2_getInstance(), Weapon$DarkBreath_getInstance(), Weapon$DarkBreath2_getInstance(), Weapon$GreatFlame_getInstance(), Weapon$Expiration_getInstance()];
   }
   Weapon.values = Weapon$values;
   function Weapon$valueOf(name) {
@@ -21174,6 +21410,8 @@ var FEHSIM = function (_, Kotlin) {
         return Weapon$Kadomatsu2_getInstance();
       case 'WingSword':
         return Weapon$WingSword_getInstance();
+      case 'BelovedZofia':
+        return Weapon$BelovedZofia_getInstance();
       case 'IronLance':
         return Weapon$IronLance_getInstance();
       case 'SteelLance':
@@ -21658,6 +21896,8 @@ var FEHSIM = function (_, Kotlin) {
         return Weapon$DarkBreath2_getInstance();
       case 'GreatFlame':
         return Weapon$GreatFlame_getInstance();
+      case 'Expiration':
+        return Weapon$Expiration_getInstance();
       default:throwISE('No enum constant jp.blogspot.turanukimaru.fehs.skill.Weapon.' + name);
     }
   }
@@ -21862,6 +22102,9 @@ var FEHSIM = function (_, Kotlin) {
     get: Locale$TAIWAN_getInstance
   });
   package$fehs.Locale = Locale;
+  Object.defineProperty(package$fehs, 'handmaidMath', {
+    get: handmaidMath_getInstance
+  });
   package$fehs.ModelObjectRepository = ModelObjectRepository;
   Object.defineProperty(Name, 'NONE', {
     get: Name$NONE_getInstance
@@ -24038,6 +24281,9 @@ var FEHSIM = function (_, Kotlin) {
   Object.defineProperty(Name, 'WardCavalry', {
     get: Name$WardCavalry_getInstance
   });
+  Object.defineProperty(Name, 'WardDragons', {
+    get: Name$WardDragons_getInstance
+  });
   Object.defineProperty(Name, 'WardFliers', {
     get: Name$WardFliers_getInstance
   });
@@ -24263,14 +24509,14 @@ var FEHSIM = function (_, Kotlin) {
   Object.defineProperty(Name, 'FeliciasPlate', {
     get: Name$FeliciasPlate_getInstance
   });
-  Object.defineProperty(Name, '__\u30BC\u30EB\u30AE\u30A6\u30B9_', {
-    get: Name$__ゼルギウス__getInstance
+  Object.defineProperty(Name, '\u30BC\u30EB\u30AE\u30A6\u30B9', {
+    get: Name$ゼルギウス_getInstance
   });
-  Object.defineProperty(Name, '__\u30DF\u30AB\u30E4_', {
-    get: Name$__ミカヤ__getInstance
+  Object.defineProperty(Name, '\u30DF\u30AB\u30E4', {
+    get: Name$ミカヤ_getInstance
   });
-  Object.defineProperty(Name, '__\u30B5\u30B6_', {
-    get: Name$__サザ__getInstance
+  Object.defineProperty(Name, '\u30B5\u30B6', {
+    get: Name$サザ_getInstance
   });
   Object.defineProperty(Name, 'WarpPowder', {
     get: Name$WarpPowder_getInstance
@@ -24289,6 +24535,27 @@ var FEHSIM = function (_, Kotlin) {
   });
   Object.defineProperty(Name, 'FeliciasBlade', {
     get: Name$FeliciasBlade_getInstance
+  });
+  Object.defineProperty(Name, 'BrazenDefRes', {
+    get: Name$BrazenDefRes_getInstance
+  });
+  Object.defineProperty(Name, 'ChillSpd', {
+    get: Name$ChillSpd_getInstance
+  });
+  Object.defineProperty(Name, 'Expiration', {
+    get: Name$Expiration_getInstance
+  });
+  Object.defineProperty(Name, 'BelovedZofia', {
+    get: Name$BelovedZofia_getInstance
+  });
+  Object.defineProperty(Name, '\u30BB\u30EA\u30AB__\u95C7_', {
+    get: Name$セリカ__闇__getInstance
+  });
+  Object.defineProperty(Name, '\u30CF\u30FC\u30C7\u30A3\u30F3__\u95C7_', {
+    get: Name$ハーディン__闇__getInstance
+  });
+  Object.defineProperty(Name, '\u30EB\u30D5\u30EC__\u95C7_', {
+    get: Name$ルフレ__闇__getInstance
   });
   package$fehs.Name = Name;
   Object.defineProperty(package$fehs, 'StandardBaseHero', {
@@ -24386,6 +24653,7 @@ var FEHSIM = function (_, Kotlin) {
   });
   var package$skill = package$fehs.skill || (package$fehs.skill = {});
   package$skill.Assist = Assist;
+  package$skill.Damage = Damage;
   package$skill.LappedSkill = LappedSkill;
   Object.defineProperty(RefineSkill, 'Range1Atk', {
     get: RefineSkill$Range1Atk_getInstance
@@ -24890,6 +25158,9 @@ var FEHSIM = function (_, Kotlin) {
   Object.defineProperty(SkillA, 'BrazenAtkSpd', {
     get: SkillA$BrazenAtkSpd_getInstance
   });
+  Object.defineProperty(SkillA, 'BrazenDefRes', {
+    get: SkillA$BrazenDefRes_getInstance
+  });
   Object.defineProperty(SkillA, 'Companion', {
     get: SkillA$Companion_getInstance
   });
@@ -25059,6 +25330,9 @@ var FEHSIM = function (_, Kotlin) {
   Object.defineProperty(SkillB, 'ChillingSeal', {
     get: SkillB$ChillingSeal_getInstance
   });
+  Object.defineProperty(SkillB, 'ChillSpd', {
+    get: SkillB$ChillSpd_getInstance
+  });
   Object.defineProperty(SkillB, 'Companion', {
     get: SkillB$Companion_getInstance
   });
@@ -25158,6 +25432,9 @@ var FEHSIM = function (_, Kotlin) {
   });
   Object.defineProperty(SkillC, 'WardCavalry', {
     get: SkillC$WardCavalry_getInstance
+  });
+  Object.defineProperty(SkillC, 'WardDragons', {
+    get: SkillC$WardDragons_getInstance
   });
   Object.defineProperty(SkillC, 'WardFliers', {
     get: SkillC$WardFliers_getInstance
@@ -25271,9 +25548,6 @@ var FEHSIM = function (_, Kotlin) {
   Object.defineProperty(Special, 'RegnalAstra', {
     get: Special$RegnalAstra_getInstance
   });
-  Object.defineProperty(Special, 'Miracle', {
-    get: Special$Miracle_getInstance
-  });
   Object.defineProperty(Special, 'DraconicAura', {
     get: Special$DraconicAura_getInstance
   });
@@ -25327,6 +25601,9 @@ var FEHSIM = function (_, Kotlin) {
   });
   Object.defineProperty(Special, 'Vengeance', {
     get: Special$Vengeance_getInstance
+  });
+  Object.defineProperty(Special, 'Miracle', {
+    get: Special$Miracle_getInstance
   });
   Object.defineProperty(Special, 'HolyVestments', {
     get: Special$HolyVestments_getInstance
@@ -25553,6 +25830,9 @@ var FEHSIM = function (_, Kotlin) {
   });
   Object.defineProperty(Weapon, 'WingSword', {
     get: Weapon$WingSword_getInstance
+  });
+  Object.defineProperty(Weapon, 'BelovedZofia', {
+    get: Weapon$BelovedZofia_getInstance
   });
   Object.defineProperty(Weapon, 'IronLance', {
     get: Weapon$IronLance_getInstance
@@ -26280,11 +26560,15 @@ var FEHSIM = function (_, Kotlin) {
   Object.defineProperty(Weapon, 'GreatFlame', {
     get: Weapon$GreatFlame_getInstance
   });
+  Object.defineProperty(Weapon, 'Expiration', {
+    get: Weapon$Expiration_getInstance
+  });
   Object.defineProperty(Weapon, 'Companion', {
     get: Weapon$Companion_getInstance
   });
   package$skill.Weapon = Weapon;
   Object.defineProperty(Assist.prototype, 'maxLevel', Object.getOwnPropertyDescriptor(Skill.prototype, 'maxLevel'));
+  Object.defineProperty(Assist.prototype, 'penetrate', Object.getOwnPropertyDescriptor(Skill.prototype, 'penetrate'));
   Assist.prototype.localeName_miixs2$ = Skill.prototype.localeName_miixs2$;
   Assist.prototype.bothEffect_sv9jhu$$default = Skill.prototype.bothEffect_sv9jhu$$default;
   Assist.prototype.attackEffect_sv9jhu$$default = Skill.prototype.attackEffect_sv9jhu$$default;
@@ -26296,13 +26580,14 @@ var FEHSIM = function (_, Kotlin) {
   Assist.prototype.prevent_w6mj9q$$default = Skill.prototype.prevent_w6mj9q$$default;
   Assist.prototype.specialPrevent_upjsjk$$default = Skill.prototype.specialPrevent_upjsjk$$default;
   Assist.prototype.specialTriggered_upjsjk$$default = Skill.prototype.specialTriggered_upjsjk$$default;
-  Assist.prototype.damage_96237r$$default = Skill.prototype.damage_96237r$$default;
+  Assist.prototype.damage_sv9jhu$ = Skill.prototype.damage_sv9jhu$;
+  Assist.prototype.baseDamage_trfvk0$ = Skill.prototype.baseDamage_trfvk0$;
   Assist.prototype.absorb_6zcyla$ = Skill.prototype.absorb_6zcyla$;
   Assist.prototype.equip_yukhz7$$default = Skill.prototype.equip_yukhz7$$default;
   Assist.prototype.equip_x1io8k$ = Skill.prototype.equip_x1io8k$;
   Assist.prototype.turnStart_sv9jhu$$default = Skill.prototype.turnStart_sv9jhu$$default;
   Assist.prototype.afterFightEffect_sv9jhu$$default = Skill.prototype.afterFightEffect_sv9jhu$$default;
-  Assist.prototype.reducedDamage_upjsjk$$default = Skill.prototype.reducedDamage_upjsjk$$default;
+  Assist.prototype.preventedDamage_upjsjk$$default = Skill.prototype.preventedDamage_upjsjk$$default;
   Assist.prototype.defiantAtk_sv9jhu$ = Skill.prototype.defiantAtk_sv9jhu$;
   Assist.prototype.defiantSpd_sv9jhu$ = Skill.prototype.defiantSpd_sv9jhu$;
   Assist.prototype.defiantDef_sv9jhu$ = Skill.prototype.defiantDef_sv9jhu$;
@@ -26355,6 +26640,7 @@ var FEHSIM = function (_, Kotlin) {
   Assist.prototype.equipRaven_trfvk0$ = Skill.prototype.equipRaven_trfvk0$;
   Assist.prototype.bladeEffect_trfvk0$ = Skill.prototype.bladeEffect_trfvk0$;
   Assist.prototype.fullHpAtkSpdBonus_sv9jhu$ = Skill.prototype.fullHpAtkSpdBonus_sv9jhu$;
+  Assist.prototype.fullHpAllBonus_sv9jhu$ = Skill.prototype.fullHpAllBonus_sv9jhu$;
   Assist.prototype.debuffBonus_trfvk0$ = Skill.prototype.debuffBonus_trfvk0$;
   Assist.prototype.antiBuffBonus_trfvk0$ = Skill.prototype.antiBuffBonus_trfvk0$;
   Assist.prototype.antiMagicBuffBonus_trfvk0$ = Skill.prototype.antiMagicBuffBonus_trfvk0$;
@@ -26383,11 +26669,10 @@ var FEHSIM = function (_, Kotlin) {
   Assist.prototype.prevent_w6mj9q$ = Skill.prototype.prevent_w6mj9q$;
   Assist.prototype.specialPrevent_upjsjk$ = Skill.prototype.specialPrevent_upjsjk$;
   Assist.prototype.specialTriggered_upjsjk$ = Skill.prototype.specialTriggered_upjsjk$;
-  Assist.prototype.damage_96237r$ = Skill.prototype.damage_96237r$;
   Assist.prototype.equip_yukhz7$ = Skill.prototype.equip_yukhz7$;
   Assist.prototype.turnStart_sv9jhu$ = Skill.prototype.turnStart_sv9jhu$;
   Assist.prototype.afterFightEffect_sv9jhu$ = Skill.prototype.afterFightEffect_sv9jhu$;
-  Assist.prototype.reducedDamage_upjsjk$ = Skill.prototype.reducedDamage_upjsjk$;
+  Assist.prototype.preventedDamage_upjsjk$ = Skill.prototype.preventedDamage_upjsjk$;
   LappedSkill.prototype.bothEffect_sv9jhu$ = Skill.prototype.bothEffect_sv9jhu$;
   LappedSkill.prototype.attackEffect_sv9jhu$ = Skill.prototype.attackEffect_sv9jhu$;
   LappedSkill.prototype.counterEffect_sv9jhu$ = Skill.prototype.counterEffect_sv9jhu$;
@@ -26398,13 +26683,13 @@ var FEHSIM = function (_, Kotlin) {
   LappedSkill.prototype.prevent_w6mj9q$ = Skill.prototype.prevent_w6mj9q$;
   LappedSkill.prototype.specialPrevent_upjsjk$ = Skill.prototype.specialPrevent_upjsjk$;
   LappedSkill.prototype.specialTriggered_upjsjk$ = Skill.prototype.specialTriggered_upjsjk$;
-  LappedSkill.prototype.damage_96237r$ = Skill.prototype.damage_96237r$;
   LappedSkill.prototype.equip_yukhz7$ = Skill.prototype.equip_yukhz7$;
   LappedSkill.prototype.turnStart_sv9jhu$ = Skill.prototype.turnStart_sv9jhu$;
   LappedSkill.prototype.afterFightEffect_sv9jhu$ = Skill.prototype.afterFightEffect_sv9jhu$;
-  LappedSkill.prototype.reducedDamage_upjsjk$ = Skill.prototype.reducedDamage_upjsjk$;
+  LappedSkill.prototype.preventedDamage_upjsjk$ = Skill.prototype.preventedDamage_upjsjk$;
   RefineSkill.prototype.equip_x1io8k$ = Skill.prototype.equip_x1io8k$;
   Object.defineProperty(RefineSkill.prototype, 'maxLevel', Object.getOwnPropertyDescriptor(Skill.prototype, 'maxLevel'));
+  Object.defineProperty(RefineSkill.prototype, 'penetrate', Object.getOwnPropertyDescriptor(Skill.prototype, 'penetrate'));
   RefineSkill.prototype.localeName_miixs2$ = Skill.prototype.localeName_miixs2$;
   RefineSkill.prototype.bothEffect_sv9jhu$$default = Skill.prototype.bothEffect_sv9jhu$$default;
   RefineSkill.prototype.attackEffect_sv9jhu$$default = Skill.prototype.attackEffect_sv9jhu$$default;
@@ -26416,11 +26701,12 @@ var FEHSIM = function (_, Kotlin) {
   RefineSkill.prototype.prevent_w6mj9q$$default = Skill.prototype.prevent_w6mj9q$$default;
   RefineSkill.prototype.specialPrevent_upjsjk$$default = Skill.prototype.specialPrevent_upjsjk$$default;
   RefineSkill.prototype.specialTriggered_upjsjk$$default = Skill.prototype.specialTriggered_upjsjk$$default;
-  RefineSkill.prototype.damage_96237r$$default = Skill.prototype.damage_96237r$$default;
+  RefineSkill.prototype.damage_sv9jhu$ = Skill.prototype.damage_sv9jhu$;
+  RefineSkill.prototype.baseDamage_trfvk0$ = Skill.prototype.baseDamage_trfvk0$;
   RefineSkill.prototype.absorb_6zcyla$ = Skill.prototype.absorb_6zcyla$;
   RefineSkill.prototype.turnStart_sv9jhu$$default = Skill.prototype.turnStart_sv9jhu$$default;
   RefineSkill.prototype.afterFightEffect_sv9jhu$$default = Skill.prototype.afterFightEffect_sv9jhu$$default;
-  RefineSkill.prototype.reducedDamage_upjsjk$$default = Skill.prototype.reducedDamage_upjsjk$$default;
+  RefineSkill.prototype.preventedDamage_upjsjk$$default = Skill.prototype.preventedDamage_upjsjk$$default;
   RefineSkill.prototype.defiantAtk_sv9jhu$ = Skill.prototype.defiantAtk_sv9jhu$;
   RefineSkill.prototype.defiantSpd_sv9jhu$ = Skill.prototype.defiantSpd_sv9jhu$;
   RefineSkill.prototype.defiantDef_sv9jhu$ = Skill.prototype.defiantDef_sv9jhu$;
@@ -26471,6 +26757,7 @@ var FEHSIM = function (_, Kotlin) {
   RefineSkill.prototype.equipRaven_trfvk0$ = Skill.prototype.equipRaven_trfvk0$;
   RefineSkill.prototype.bladeEffect_trfvk0$ = Skill.prototype.bladeEffect_trfvk0$;
   RefineSkill.prototype.fullHpAtkSpdBonus_sv9jhu$ = Skill.prototype.fullHpAtkSpdBonus_sv9jhu$;
+  RefineSkill.prototype.fullHpAllBonus_sv9jhu$ = Skill.prototype.fullHpAllBonus_sv9jhu$;
   RefineSkill.prototype.debuffBonus_trfvk0$ = Skill.prototype.debuffBonus_trfvk0$;
   RefineSkill.prototype.antiBuffBonus_trfvk0$ = Skill.prototype.antiBuffBonus_trfvk0$;
   RefineSkill.prototype.antiMagicBuffBonus_trfvk0$ = Skill.prototype.antiMagicBuffBonus_trfvk0$;
@@ -26500,10 +26787,10 @@ var FEHSIM = function (_, Kotlin) {
   RefineSkill.prototype.prevent_w6mj9q$ = Skill.prototype.prevent_w6mj9q$;
   RefineSkill.prototype.specialPrevent_upjsjk$ = Skill.prototype.specialPrevent_upjsjk$;
   RefineSkill.prototype.specialTriggered_upjsjk$ = Skill.prototype.specialTriggered_upjsjk$;
-  RefineSkill.prototype.damage_96237r$ = Skill.prototype.damage_96237r$;
   RefineSkill.prototype.turnStart_sv9jhu$ = Skill.prototype.turnStart_sv9jhu$;
   RefineSkill.prototype.afterFightEffect_sv9jhu$ = Skill.prototype.afterFightEffect_sv9jhu$;
-  RefineSkill.prototype.reducedDamage_upjsjk$ = Skill.prototype.reducedDamage_upjsjk$;
+  RefineSkill.prototype.preventedDamage_upjsjk$ = Skill.prototype.preventedDamage_upjsjk$;
+  Object.defineProperty(Seal.prototype, 'penetrate', Object.getOwnPropertyDescriptor(Skill.prototype, 'penetrate'));
   Seal.prototype.localeName_miixs2$ = Skill.prototype.localeName_miixs2$;
   Seal.prototype.bothEffect_sv9jhu$$default = Skill.prototype.bothEffect_sv9jhu$$default;
   Seal.prototype.attackEffect_sv9jhu$$default = Skill.prototype.attackEffect_sv9jhu$$default;
@@ -26515,13 +26802,14 @@ var FEHSIM = function (_, Kotlin) {
   Seal.prototype.prevent_w6mj9q$$default = Skill.prototype.prevent_w6mj9q$$default;
   Seal.prototype.specialPrevent_upjsjk$$default = Skill.prototype.specialPrevent_upjsjk$$default;
   Seal.prototype.specialTriggered_upjsjk$$default = Skill.prototype.specialTriggered_upjsjk$$default;
-  Seal.prototype.damage_96237r$$default = Skill.prototype.damage_96237r$$default;
+  Seal.prototype.damage_sv9jhu$ = Skill.prototype.damage_sv9jhu$;
+  Seal.prototype.baseDamage_trfvk0$ = Skill.prototype.baseDamage_trfvk0$;
   Seal.prototype.absorb_6zcyla$ = Skill.prototype.absorb_6zcyla$;
   Seal.prototype.equip_yukhz7$$default = Skill.prototype.equip_yukhz7$$default;
   Seal.prototype.equip_x1io8k$ = Skill.prototype.equip_x1io8k$;
   Seal.prototype.turnStart_sv9jhu$$default = Skill.prototype.turnStart_sv9jhu$$default;
   Seal.prototype.afterFightEffect_sv9jhu$$default = Skill.prototype.afterFightEffect_sv9jhu$$default;
-  Seal.prototype.reducedDamage_upjsjk$$default = Skill.prototype.reducedDamage_upjsjk$$default;
+  Seal.prototype.preventedDamage_upjsjk$$default = Skill.prototype.preventedDamage_upjsjk$$default;
   Seal.prototype.defiantAtk_sv9jhu$ = Skill.prototype.defiantAtk_sv9jhu$;
   Seal.prototype.defiantSpd_sv9jhu$ = Skill.prototype.defiantSpd_sv9jhu$;
   Seal.prototype.defiantDef_sv9jhu$ = Skill.prototype.defiantDef_sv9jhu$;
@@ -26574,6 +26862,7 @@ var FEHSIM = function (_, Kotlin) {
   Seal.prototype.equipRaven_trfvk0$ = Skill.prototype.equipRaven_trfvk0$;
   Seal.prototype.bladeEffect_trfvk0$ = Skill.prototype.bladeEffect_trfvk0$;
   Seal.prototype.fullHpAtkSpdBonus_sv9jhu$ = Skill.prototype.fullHpAtkSpdBonus_sv9jhu$;
+  Seal.prototype.fullHpAllBonus_sv9jhu$ = Skill.prototype.fullHpAllBonus_sv9jhu$;
   Seal.prototype.debuffBonus_trfvk0$ = Skill.prototype.debuffBonus_trfvk0$;
   Seal.prototype.antiBuffBonus_trfvk0$ = Skill.prototype.antiBuffBonus_trfvk0$;
   Seal.prototype.antiMagicBuffBonus_trfvk0$ = Skill.prototype.antiMagicBuffBonus_trfvk0$;
@@ -26602,16 +26891,16 @@ var FEHSIM = function (_, Kotlin) {
   Seal.prototype.prevent_w6mj9q$ = Skill.prototype.prevent_w6mj9q$;
   Seal.prototype.specialPrevent_upjsjk$ = Skill.prototype.specialPrevent_upjsjk$;
   Seal.prototype.specialTriggered_upjsjk$ = Skill.prototype.specialTriggered_upjsjk$;
-  Seal.prototype.damage_96237r$ = Skill.prototype.damage_96237r$;
   Seal.prototype.equip_yukhz7$ = Skill.prototype.equip_yukhz7$;
   Seal.prototype.turnStart_sv9jhu$ = Skill.prototype.turnStart_sv9jhu$;
   Seal.prototype.afterFightEffect_sv9jhu$ = Skill.prototype.afterFightEffect_sv9jhu$;
-  Seal.prototype.reducedDamage_upjsjk$ = Skill.prototype.reducedDamage_upjsjk$;
+  Seal.prototype.preventedDamage_upjsjk$ = Skill.prototype.preventedDamage_upjsjk$;
   Object.defineProperty(Skill$None.prototype, 'level', Object.getOwnPropertyDescriptor(Skill.prototype, 'level'));
   Object.defineProperty(Skill$None.prototype, 'type', Object.getOwnPropertyDescriptor(Skill.prototype, 'type'));
   Object.defineProperty(Skill$None.prototype, 'value', Object.getOwnPropertyDescriptor(Skill.prototype, 'value'));
   Object.defineProperty(Skill$None.prototype, 'jp', Object.getOwnPropertyDescriptor(Skill.prototype, 'jp'));
   Object.defineProperty(Skill$None.prototype, 'maxLevel', Object.getOwnPropertyDescriptor(Skill.prototype, 'maxLevel'));
+  Object.defineProperty(Skill$None.prototype, 'penetrate', Object.getOwnPropertyDescriptor(Skill.prototype, 'penetrate'));
   Object.defineProperty(Skill$None.prototype, 'preSkill', Object.getOwnPropertyDescriptor(Skill.prototype, 'preSkill'));
   Skill$None.prototype.localeName_miixs2$ = Skill.prototype.localeName_miixs2$;
   Skill$None.prototype.bothEffect_sv9jhu$$default = Skill.prototype.bothEffect_sv9jhu$$default;
@@ -26624,13 +26913,14 @@ var FEHSIM = function (_, Kotlin) {
   Skill$None.prototype.prevent_w6mj9q$$default = Skill.prototype.prevent_w6mj9q$$default;
   Skill$None.prototype.specialPrevent_upjsjk$$default = Skill.prototype.specialPrevent_upjsjk$$default;
   Skill$None.prototype.specialTriggered_upjsjk$$default = Skill.prototype.specialTriggered_upjsjk$$default;
-  Skill$None.prototype.damage_96237r$$default = Skill.prototype.damage_96237r$$default;
+  Skill$None.prototype.damage_sv9jhu$ = Skill.prototype.damage_sv9jhu$;
+  Skill$None.prototype.baseDamage_trfvk0$ = Skill.prototype.baseDamage_trfvk0$;
   Skill$None.prototype.absorb_6zcyla$ = Skill.prototype.absorb_6zcyla$;
   Skill$None.prototype.equip_yukhz7$$default = Skill.prototype.equip_yukhz7$$default;
   Skill$None.prototype.equip_x1io8k$ = Skill.prototype.equip_x1io8k$;
   Skill$None.prototype.turnStart_sv9jhu$$default = Skill.prototype.turnStart_sv9jhu$$default;
   Skill$None.prototype.afterFightEffect_sv9jhu$$default = Skill.prototype.afterFightEffect_sv9jhu$$default;
-  Skill$None.prototype.reducedDamage_upjsjk$$default = Skill.prototype.reducedDamage_upjsjk$$default;
+  Skill$None.prototype.preventedDamage_upjsjk$$default = Skill.prototype.preventedDamage_upjsjk$$default;
   Skill$None.prototype.defiantAtk_sv9jhu$ = Skill.prototype.defiantAtk_sv9jhu$;
   Skill$None.prototype.defiantSpd_sv9jhu$ = Skill.prototype.defiantSpd_sv9jhu$;
   Skill$None.prototype.defiantDef_sv9jhu$ = Skill.prototype.defiantDef_sv9jhu$;
@@ -26683,6 +26973,7 @@ var FEHSIM = function (_, Kotlin) {
   Skill$None.prototype.equipRaven_trfvk0$ = Skill.prototype.equipRaven_trfvk0$;
   Skill$None.prototype.bladeEffect_trfvk0$ = Skill.prototype.bladeEffect_trfvk0$;
   Skill$None.prototype.fullHpAtkSpdBonus_sv9jhu$ = Skill.prototype.fullHpAtkSpdBonus_sv9jhu$;
+  Skill$None.prototype.fullHpAllBonus_sv9jhu$ = Skill.prototype.fullHpAllBonus_sv9jhu$;
   Skill$None.prototype.debuffBonus_trfvk0$ = Skill.prototype.debuffBonus_trfvk0$;
   Skill$None.prototype.antiBuffBonus_trfvk0$ = Skill.prototype.antiBuffBonus_trfvk0$;
   Skill$None.prototype.antiMagicBuffBonus_trfvk0$ = Skill.prototype.antiMagicBuffBonus_trfvk0$;
@@ -26711,11 +27002,11 @@ var FEHSIM = function (_, Kotlin) {
   Skill$None.prototype.prevent_w6mj9q$ = Skill.prototype.prevent_w6mj9q$;
   Skill$None.prototype.specialPrevent_upjsjk$ = Skill.prototype.specialPrevent_upjsjk$;
   Skill$None.prototype.specialTriggered_upjsjk$ = Skill.prototype.specialTriggered_upjsjk$;
-  Skill$None.prototype.damage_96237r$ = Skill.prototype.damage_96237r$;
   Skill$None.prototype.equip_yukhz7$ = Skill.prototype.equip_yukhz7$;
   Skill$None.prototype.turnStart_sv9jhu$ = Skill.prototype.turnStart_sv9jhu$;
   Skill$None.prototype.afterFightEffect_sv9jhu$ = Skill.prototype.afterFightEffect_sv9jhu$;
-  Skill$None.prototype.reducedDamage_upjsjk$ = Skill.prototype.reducedDamage_upjsjk$;
+  Skill$None.prototype.preventedDamage_upjsjk$ = Skill.prototype.preventedDamage_upjsjk$;
+  Object.defineProperty(SkillA.prototype, 'penetrate', Object.getOwnPropertyDescriptor(Skill.prototype, 'penetrate'));
   SkillA.prototype.localeName_miixs2$ = Skill.prototype.localeName_miixs2$;
   SkillA.prototype.bothEffect_sv9jhu$$default = Skill.prototype.bothEffect_sv9jhu$$default;
   SkillA.prototype.attackEffect_sv9jhu$$default = Skill.prototype.attackEffect_sv9jhu$$default;
@@ -26727,13 +27018,14 @@ var FEHSIM = function (_, Kotlin) {
   SkillA.prototype.prevent_w6mj9q$$default = Skill.prototype.prevent_w6mj9q$$default;
   SkillA.prototype.specialPrevent_upjsjk$$default = Skill.prototype.specialPrevent_upjsjk$$default;
   SkillA.prototype.specialTriggered_upjsjk$$default = Skill.prototype.specialTriggered_upjsjk$$default;
-  SkillA.prototype.damage_96237r$$default = Skill.prototype.damage_96237r$$default;
+  SkillA.prototype.damage_sv9jhu$ = Skill.prototype.damage_sv9jhu$;
+  SkillA.prototype.baseDamage_trfvk0$ = Skill.prototype.baseDamage_trfvk0$;
   SkillA.prototype.absorb_6zcyla$ = Skill.prototype.absorb_6zcyla$;
   SkillA.prototype.equip_yukhz7$$default = Skill.prototype.equip_yukhz7$$default;
   SkillA.prototype.equip_x1io8k$ = Skill.prototype.equip_x1io8k$;
   SkillA.prototype.turnStart_sv9jhu$$default = Skill.prototype.turnStart_sv9jhu$$default;
   SkillA.prototype.afterFightEffect_sv9jhu$$default = Skill.prototype.afterFightEffect_sv9jhu$$default;
-  SkillA.prototype.reducedDamage_upjsjk$$default = Skill.prototype.reducedDamage_upjsjk$$default;
+  SkillA.prototype.preventedDamage_upjsjk$$default = Skill.prototype.preventedDamage_upjsjk$$default;
   SkillA.prototype.defiantAtk_sv9jhu$ = Skill.prototype.defiantAtk_sv9jhu$;
   SkillA.prototype.defiantSpd_sv9jhu$ = Skill.prototype.defiantSpd_sv9jhu$;
   SkillA.prototype.defiantDef_sv9jhu$ = Skill.prototype.defiantDef_sv9jhu$;
@@ -26786,6 +27078,7 @@ var FEHSIM = function (_, Kotlin) {
   SkillA.prototype.equipRaven_trfvk0$ = Skill.prototype.equipRaven_trfvk0$;
   SkillA.prototype.bladeEffect_trfvk0$ = Skill.prototype.bladeEffect_trfvk0$;
   SkillA.prototype.fullHpAtkSpdBonus_sv9jhu$ = Skill.prototype.fullHpAtkSpdBonus_sv9jhu$;
+  SkillA.prototype.fullHpAllBonus_sv9jhu$ = Skill.prototype.fullHpAllBonus_sv9jhu$;
   SkillA.prototype.debuffBonus_trfvk0$ = Skill.prototype.debuffBonus_trfvk0$;
   SkillA.prototype.antiBuffBonus_trfvk0$ = Skill.prototype.antiBuffBonus_trfvk0$;
   SkillA.prototype.antiMagicBuffBonus_trfvk0$ = Skill.prototype.antiMagicBuffBonus_trfvk0$;
@@ -26814,11 +27107,11 @@ var FEHSIM = function (_, Kotlin) {
   SkillA.prototype.prevent_w6mj9q$ = Skill.prototype.prevent_w6mj9q$;
   SkillA.prototype.specialPrevent_upjsjk$ = Skill.prototype.specialPrevent_upjsjk$;
   SkillA.prototype.specialTriggered_upjsjk$ = Skill.prototype.specialTriggered_upjsjk$;
-  SkillA.prototype.damage_96237r$ = Skill.prototype.damage_96237r$;
   SkillA.prototype.equip_yukhz7$ = Skill.prototype.equip_yukhz7$;
   SkillA.prototype.turnStart_sv9jhu$ = Skill.prototype.turnStart_sv9jhu$;
   SkillA.prototype.afterFightEffect_sv9jhu$ = Skill.prototype.afterFightEffect_sv9jhu$;
-  SkillA.prototype.reducedDamage_upjsjk$ = Skill.prototype.reducedDamage_upjsjk$;
+  SkillA.prototype.preventedDamage_upjsjk$ = Skill.prototype.preventedDamage_upjsjk$;
+  Object.defineProperty(SkillB.prototype, 'penetrate', Object.getOwnPropertyDescriptor(Skill.prototype, 'penetrate'));
   SkillB.prototype.localeName_miixs2$ = Skill.prototype.localeName_miixs2$;
   SkillB.prototype.bothEffect_sv9jhu$$default = Skill.prototype.bothEffect_sv9jhu$$default;
   SkillB.prototype.attackEffect_sv9jhu$$default = Skill.prototype.attackEffect_sv9jhu$$default;
@@ -26830,13 +27123,14 @@ var FEHSIM = function (_, Kotlin) {
   SkillB.prototype.prevent_w6mj9q$$default = Skill.prototype.prevent_w6mj9q$$default;
   SkillB.prototype.specialPrevent_upjsjk$$default = Skill.prototype.specialPrevent_upjsjk$$default;
   SkillB.prototype.specialTriggered_upjsjk$$default = Skill.prototype.specialTriggered_upjsjk$$default;
-  SkillB.prototype.damage_96237r$$default = Skill.prototype.damage_96237r$$default;
+  SkillB.prototype.damage_sv9jhu$ = Skill.prototype.damage_sv9jhu$;
+  SkillB.prototype.baseDamage_trfvk0$ = Skill.prototype.baseDamage_trfvk0$;
   SkillB.prototype.absorb_6zcyla$ = Skill.prototype.absorb_6zcyla$;
   SkillB.prototype.equip_yukhz7$$default = Skill.prototype.equip_yukhz7$$default;
   SkillB.prototype.equip_x1io8k$ = Skill.prototype.equip_x1io8k$;
   SkillB.prototype.turnStart_sv9jhu$$default = Skill.prototype.turnStart_sv9jhu$$default;
   SkillB.prototype.afterFightEffect_sv9jhu$$default = Skill.prototype.afterFightEffect_sv9jhu$$default;
-  SkillB.prototype.reducedDamage_upjsjk$$default = Skill.prototype.reducedDamage_upjsjk$$default;
+  SkillB.prototype.preventedDamage_upjsjk$$default = Skill.prototype.preventedDamage_upjsjk$$default;
   SkillB.prototype.defiantAtk_sv9jhu$ = Skill.prototype.defiantAtk_sv9jhu$;
   SkillB.prototype.defiantSpd_sv9jhu$ = Skill.prototype.defiantSpd_sv9jhu$;
   SkillB.prototype.defiantDef_sv9jhu$ = Skill.prototype.defiantDef_sv9jhu$;
@@ -26889,6 +27183,7 @@ var FEHSIM = function (_, Kotlin) {
   SkillB.prototype.equipRaven_trfvk0$ = Skill.prototype.equipRaven_trfvk0$;
   SkillB.prototype.bladeEffect_trfvk0$ = Skill.prototype.bladeEffect_trfvk0$;
   SkillB.prototype.fullHpAtkSpdBonus_sv9jhu$ = Skill.prototype.fullHpAtkSpdBonus_sv9jhu$;
+  SkillB.prototype.fullHpAllBonus_sv9jhu$ = Skill.prototype.fullHpAllBonus_sv9jhu$;
   SkillB.prototype.debuffBonus_trfvk0$ = Skill.prototype.debuffBonus_trfvk0$;
   SkillB.prototype.antiBuffBonus_trfvk0$ = Skill.prototype.antiBuffBonus_trfvk0$;
   SkillB.prototype.antiMagicBuffBonus_trfvk0$ = Skill.prototype.antiMagicBuffBonus_trfvk0$;
@@ -26917,11 +27212,11 @@ var FEHSIM = function (_, Kotlin) {
   SkillB.prototype.prevent_w6mj9q$ = Skill.prototype.prevent_w6mj9q$;
   SkillB.prototype.specialPrevent_upjsjk$ = Skill.prototype.specialPrevent_upjsjk$;
   SkillB.prototype.specialTriggered_upjsjk$ = Skill.prototype.specialTriggered_upjsjk$;
-  SkillB.prototype.damage_96237r$ = Skill.prototype.damage_96237r$;
   SkillB.prototype.equip_yukhz7$ = Skill.prototype.equip_yukhz7$;
   SkillB.prototype.turnStart_sv9jhu$ = Skill.prototype.turnStart_sv9jhu$;
   SkillB.prototype.afterFightEffect_sv9jhu$ = Skill.prototype.afterFightEffect_sv9jhu$;
-  SkillB.prototype.reducedDamage_upjsjk$ = Skill.prototype.reducedDamage_upjsjk$;
+  SkillB.prototype.preventedDamage_upjsjk$ = Skill.prototype.preventedDamage_upjsjk$;
+  Object.defineProperty(SkillC.prototype, 'penetrate', Object.getOwnPropertyDescriptor(Skill.prototype, 'penetrate'));
   SkillC.prototype.localeName_miixs2$ = Skill.prototype.localeName_miixs2$;
   SkillC.prototype.bothEffect_sv9jhu$$default = Skill.prototype.bothEffect_sv9jhu$$default;
   SkillC.prototype.attackEffect_sv9jhu$$default = Skill.prototype.attackEffect_sv9jhu$$default;
@@ -26933,13 +27228,14 @@ var FEHSIM = function (_, Kotlin) {
   SkillC.prototype.prevent_w6mj9q$$default = Skill.prototype.prevent_w6mj9q$$default;
   SkillC.prototype.specialPrevent_upjsjk$$default = Skill.prototype.specialPrevent_upjsjk$$default;
   SkillC.prototype.specialTriggered_upjsjk$$default = Skill.prototype.specialTriggered_upjsjk$$default;
-  SkillC.prototype.damage_96237r$$default = Skill.prototype.damage_96237r$$default;
+  SkillC.prototype.damage_sv9jhu$ = Skill.prototype.damage_sv9jhu$;
+  SkillC.prototype.baseDamage_trfvk0$ = Skill.prototype.baseDamage_trfvk0$;
   SkillC.prototype.absorb_6zcyla$ = Skill.prototype.absorb_6zcyla$;
   SkillC.prototype.equip_yukhz7$$default = Skill.prototype.equip_yukhz7$$default;
   SkillC.prototype.equip_x1io8k$ = Skill.prototype.equip_x1io8k$;
   SkillC.prototype.turnStart_sv9jhu$$default = Skill.prototype.turnStart_sv9jhu$$default;
   SkillC.prototype.afterFightEffect_sv9jhu$$default = Skill.prototype.afterFightEffect_sv9jhu$$default;
-  SkillC.prototype.reducedDamage_upjsjk$$default = Skill.prototype.reducedDamage_upjsjk$$default;
+  SkillC.prototype.preventedDamage_upjsjk$$default = Skill.prototype.preventedDamage_upjsjk$$default;
   SkillC.prototype.defiantAtk_sv9jhu$ = Skill.prototype.defiantAtk_sv9jhu$;
   SkillC.prototype.defiantSpd_sv9jhu$ = Skill.prototype.defiantSpd_sv9jhu$;
   SkillC.prototype.defiantDef_sv9jhu$ = Skill.prototype.defiantDef_sv9jhu$;
@@ -26992,6 +27288,7 @@ var FEHSIM = function (_, Kotlin) {
   SkillC.prototype.equipRaven_trfvk0$ = Skill.prototype.equipRaven_trfvk0$;
   SkillC.prototype.bladeEffect_trfvk0$ = Skill.prototype.bladeEffect_trfvk0$;
   SkillC.prototype.fullHpAtkSpdBonus_sv9jhu$ = Skill.prototype.fullHpAtkSpdBonus_sv9jhu$;
+  SkillC.prototype.fullHpAllBonus_sv9jhu$ = Skill.prototype.fullHpAllBonus_sv9jhu$;
   SkillC.prototype.debuffBonus_trfvk0$ = Skill.prototype.debuffBonus_trfvk0$;
   SkillC.prototype.antiBuffBonus_trfvk0$ = Skill.prototype.antiBuffBonus_trfvk0$;
   SkillC.prototype.antiMagicBuffBonus_trfvk0$ = Skill.prototype.antiMagicBuffBonus_trfvk0$;
@@ -27020,12 +27317,12 @@ var FEHSIM = function (_, Kotlin) {
   SkillC.prototype.prevent_w6mj9q$ = Skill.prototype.prevent_w6mj9q$;
   SkillC.prototype.specialPrevent_upjsjk$ = Skill.prototype.specialPrevent_upjsjk$;
   SkillC.prototype.specialTriggered_upjsjk$ = Skill.prototype.specialTriggered_upjsjk$;
-  SkillC.prototype.damage_96237r$ = Skill.prototype.damage_96237r$;
   SkillC.prototype.equip_yukhz7$ = Skill.prototype.equip_yukhz7$;
   SkillC.prototype.turnStart_sv9jhu$ = Skill.prototype.turnStart_sv9jhu$;
   SkillC.prototype.afterFightEffect_sv9jhu$ = Skill.prototype.afterFightEffect_sv9jhu$;
-  SkillC.prototype.reducedDamage_upjsjk$ = Skill.prototype.reducedDamage_upjsjk$;
+  SkillC.prototype.preventedDamage_upjsjk$ = Skill.prototype.preventedDamage_upjsjk$;
   Object.defineProperty(Special.prototype, 'maxLevel', Object.getOwnPropertyDescriptor(Skill.prototype, 'maxLevel'));
+  Object.defineProperty(Special.prototype, 'penetrate', Object.getOwnPropertyDescriptor(Skill.prototype, 'penetrate'));
   Special.prototype.localeName_miixs2$ = Skill.prototype.localeName_miixs2$;
   Special.prototype.bothEffect_sv9jhu$$default = Skill.prototype.bothEffect_sv9jhu$$default;
   Special.prototype.attackEffect_sv9jhu$$default = Skill.prototype.attackEffect_sv9jhu$$default;
@@ -27037,13 +27334,14 @@ var FEHSIM = function (_, Kotlin) {
   Special.prototype.prevent_w6mj9q$$default = Skill.prototype.prevent_w6mj9q$$default;
   Special.prototype.specialPrevent_upjsjk$$default = Skill.prototype.specialPrevent_upjsjk$$default;
   Special.prototype.specialTriggered_upjsjk$$default = Skill.prototype.specialTriggered_upjsjk$$default;
-  Special.prototype.damage_96237r$$default = Skill.prototype.damage_96237r$$default;
+  Special.prototype.damage_sv9jhu$ = Skill.prototype.damage_sv9jhu$;
+  Special.prototype.baseDamage_trfvk0$ = Skill.prototype.baseDamage_trfvk0$;
   Special.prototype.absorb_6zcyla$ = Skill.prototype.absorb_6zcyla$;
   Special.prototype.equip_yukhz7$$default = Skill.prototype.equip_yukhz7$$default;
   Special.prototype.equip_x1io8k$ = Skill.prototype.equip_x1io8k$;
   Special.prototype.turnStart_sv9jhu$$default = Skill.prototype.turnStart_sv9jhu$$default;
   Special.prototype.afterFightEffect_sv9jhu$$default = Skill.prototype.afterFightEffect_sv9jhu$$default;
-  Special.prototype.reducedDamage_upjsjk$$default = Skill.prototype.reducedDamage_upjsjk$$default;
+  Special.prototype.preventedDamage_upjsjk$$default = Skill.prototype.preventedDamage_upjsjk$$default;
   Special.prototype.defiantAtk_sv9jhu$ = Skill.prototype.defiantAtk_sv9jhu$;
   Special.prototype.defiantSpd_sv9jhu$ = Skill.prototype.defiantSpd_sv9jhu$;
   Special.prototype.defiantDef_sv9jhu$ = Skill.prototype.defiantDef_sv9jhu$;
@@ -27096,6 +27394,7 @@ var FEHSIM = function (_, Kotlin) {
   Special.prototype.equipRaven_trfvk0$ = Skill.prototype.equipRaven_trfvk0$;
   Special.prototype.bladeEffect_trfvk0$ = Skill.prototype.bladeEffect_trfvk0$;
   Special.prototype.fullHpAtkSpdBonus_sv9jhu$ = Skill.prototype.fullHpAtkSpdBonus_sv9jhu$;
+  Special.prototype.fullHpAllBonus_sv9jhu$ = Skill.prototype.fullHpAllBonus_sv9jhu$;
   Special.prototype.debuffBonus_trfvk0$ = Skill.prototype.debuffBonus_trfvk0$;
   Special.prototype.antiBuffBonus_trfvk0$ = Skill.prototype.antiBuffBonus_trfvk0$;
   Special.prototype.antiMagicBuffBonus_trfvk0$ = Skill.prototype.antiMagicBuffBonus_trfvk0$;
@@ -27124,12 +27423,12 @@ var FEHSIM = function (_, Kotlin) {
   Special.prototype.prevent_w6mj9q$ = Skill.prototype.prevent_w6mj9q$;
   Special.prototype.specialPrevent_upjsjk$ = Skill.prototype.specialPrevent_upjsjk$;
   Special.prototype.specialTriggered_upjsjk$ = Skill.prototype.specialTriggered_upjsjk$;
-  Special.prototype.damage_96237r$ = Skill.prototype.damage_96237r$;
   Special.prototype.equip_yukhz7$ = Skill.prototype.equip_yukhz7$;
   Special.prototype.turnStart_sv9jhu$ = Skill.prototype.turnStart_sv9jhu$;
   Special.prototype.afterFightEffect_sv9jhu$ = Skill.prototype.afterFightEffect_sv9jhu$;
-  Special.prototype.reducedDamage_upjsjk$ = Skill.prototype.reducedDamage_upjsjk$;
+  Special.prototype.preventedDamage_upjsjk$ = Skill.prototype.preventedDamage_upjsjk$;
   Object.defineProperty(Weapon.prototype, 'maxLevel', Object.getOwnPropertyDescriptor(Skill.prototype, 'maxLevel'));
+  Object.defineProperty(Weapon.prototype, 'penetrate', Object.getOwnPropertyDescriptor(Skill.prototype, 'penetrate'));
   Weapon.prototype.localeName_miixs2$ = Skill.prototype.localeName_miixs2$;
   Weapon.prototype.bothEffect_sv9jhu$$default = Skill.prototype.bothEffect_sv9jhu$$default;
   Weapon.prototype.attackEffect_sv9jhu$$default = Skill.prototype.attackEffect_sv9jhu$$default;
@@ -27141,13 +27440,14 @@ var FEHSIM = function (_, Kotlin) {
   Weapon.prototype.prevent_w6mj9q$$default = Skill.prototype.prevent_w6mj9q$$default;
   Weapon.prototype.specialPrevent_upjsjk$$default = Skill.prototype.specialPrevent_upjsjk$$default;
   Weapon.prototype.specialTriggered_upjsjk$$default = Skill.prototype.specialTriggered_upjsjk$$default;
-  Weapon.prototype.damage_96237r$$default = Skill.prototype.damage_96237r$$default;
+  Weapon.prototype.damage_sv9jhu$ = Skill.prototype.damage_sv9jhu$;
+  Weapon.prototype.baseDamage_trfvk0$ = Skill.prototype.baseDamage_trfvk0$;
   Weapon.prototype.absorb_6zcyla$ = Skill.prototype.absorb_6zcyla$;
   Weapon.prototype.equip_yukhz7$$default = Skill.prototype.equip_yukhz7$$default;
   Weapon.prototype.equip_x1io8k$ = Skill.prototype.equip_x1io8k$;
   Weapon.prototype.turnStart_sv9jhu$$default = Skill.prototype.turnStart_sv9jhu$$default;
   Weapon.prototype.afterFightEffect_sv9jhu$$default = Skill.prototype.afterFightEffect_sv9jhu$$default;
-  Weapon.prototype.reducedDamage_upjsjk$$default = Skill.prototype.reducedDamage_upjsjk$$default;
+  Weapon.prototype.preventedDamage_upjsjk$$default = Skill.prototype.preventedDamage_upjsjk$$default;
   Weapon.prototype.defiantAtk_sv9jhu$ = Skill.prototype.defiantAtk_sv9jhu$;
   Weapon.prototype.defiantSpd_sv9jhu$ = Skill.prototype.defiantSpd_sv9jhu$;
   Weapon.prototype.defiantDef_sv9jhu$ = Skill.prototype.defiantDef_sv9jhu$;
@@ -27200,6 +27500,7 @@ var FEHSIM = function (_, Kotlin) {
   Weapon.prototype.equipRaven_trfvk0$ = Skill.prototype.equipRaven_trfvk0$;
   Weapon.prototype.bladeEffect_trfvk0$ = Skill.prototype.bladeEffect_trfvk0$;
   Weapon.prototype.fullHpAtkSpdBonus_sv9jhu$ = Skill.prototype.fullHpAtkSpdBonus_sv9jhu$;
+  Weapon.prototype.fullHpAllBonus_sv9jhu$ = Skill.prototype.fullHpAllBonus_sv9jhu$;
   Weapon.prototype.debuffBonus_trfvk0$ = Skill.prototype.debuffBonus_trfvk0$;
   Weapon.prototype.antiBuffBonus_trfvk0$ = Skill.prototype.antiBuffBonus_trfvk0$;
   Weapon.prototype.antiMagicBuffBonus_trfvk0$ = Skill.prototype.antiMagicBuffBonus_trfvk0$;
@@ -27228,11 +27529,10 @@ var FEHSIM = function (_, Kotlin) {
   Weapon.prototype.prevent_w6mj9q$ = Skill.prototype.prevent_w6mj9q$;
   Weapon.prototype.specialPrevent_upjsjk$ = Skill.prototype.specialPrevent_upjsjk$;
   Weapon.prototype.specialTriggered_upjsjk$ = Skill.prototype.specialTriggered_upjsjk$;
-  Weapon.prototype.damage_96237r$ = Skill.prototype.damage_96237r$;
   Weapon.prototype.equip_yukhz7$ = Skill.prototype.equip_yukhz7$;
   Weapon.prototype.turnStart_sv9jhu$ = Skill.prototype.turnStart_sv9jhu$;
   Weapon.prototype.afterFightEffect_sv9jhu$ = Skill.prototype.afterFightEffect_sv9jhu$;
-  Weapon.prototype.reducedDamage_upjsjk$ = Skill.prototype.reducedDamage_upjsjk$;
+  Weapon.prototype.preventedDamage_upjsjk$ = Skill.prototype.preventedDamage_upjsjk$;
   Kotlin.defineModule('FEHSIM', _);
   return _;
 }(typeof FEHSIM === 'undefined' ? {} : FEHSIM, kotlin);

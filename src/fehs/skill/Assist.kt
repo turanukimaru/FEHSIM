@@ -1,6 +1,5 @@
 package jp.blogspot.turanukimaru.fehs.skill
 
-import jp.blogspot.turanukimaru.fehs.Locale
 import jp.blogspot.turanukimaru.fehs.Name
 import jp.blogspot.turanukimaru.fehs.SkillType
 
@@ -48,11 +47,11 @@ enum class Assist(override val jp: Name, override val type: SkillType, override 
      */
     override val value get() = name.replace("2", "+")
 
-  //  override fun localeName(locale: Locale): String =jp.localeName(locale)
+    //  override fun localeName(locale: Locale): String =jp.localeName(locale)
 
     companion object {
-       private val itemMap = mutableMapOf<String, Skill>()
-        fun spreadItems(none:Boolean = false): List<Skill> = values().fold(if(none) arrayListOf<Skill>(Skill.NONE) else arrayListOf(), { list, e -> list.add(e);list })
+        private val itemMap = mutableMapOf<String, Skill>()
+        fun spreadItems(none: Boolean = false): List<Skill> = values().fold(if (none) arrayListOf<Skill>(Skill.NONE) else arrayListOf(), { list, e -> list.add(e);list })
 
         fun valueOfOrNONE(key: String?): Skill = if (key == null) Skill.NONE else try {
             if (itemMap.isEmpty()) {

@@ -1,5 +1,6 @@
 package jp.blogspot.turanukimaru.fehs
 
+import jp.blogspot.turanukimaru.fehs.skill.Damage
 import jp.blogspot.turanukimaru.fehs.skill.Skill
 
 /**
@@ -24,7 +25,7 @@ data class BattleUnit(val armedHero: ArmedHero
                       , var side: SIDES = SIDES.NONE
 //虚勢どうすんだこれ…
                       , var phantomSpeed: Int = 0
-        , var adjacentUnits:Int  = 0
+                      , var adjacentUnits: Int = 0
 
 
         //スキルの効果
@@ -200,12 +201,6 @@ data class BattleUnit(val armedHero: ArmedHero
         armedHero.afterFightEffect(this)
     }
 
-    fun reducedDamage(damage: Int) {
-        //初期化
-        oneTimeOnlyAdditionalDamage = 0
-        armedHero.reducedDamage(this, damage)
-    }
-
 
     /**
      * 戦闘。スキルで戦闘時効果を計算したうえで実行しその結果を返す
@@ -246,86 +241,78 @@ data class BattleUnit(val armedHero: ArmedHero
         result.last().target.afterFightEffect()
         return result
     }
-//    fun fightTest(target: BattleUnit): AttackResult {
-//        val testUnit = this.clone()
-//        val fightPlan = armedHero.fightPlan(testUnit, target)
-//        //planで能力値は計算済みだからここは簡略化してもいいかなあ。でもウルヴァンで奥義関係なくダメージ減少してるんだよなあ
-//        val dealDamage = Skill.NONE.damage(testUnit, target, 1)
-//        val counterDamage = Skill.NONE.damage(target, testUnit, 1)
-//        //試算はあとでいいか・・・
-//        return
-//
-//    }
 
     /**
      * 攻撃。
      */
     fun attack(target: BattleUnit, results: List<AttackResult>): AttackResult {
-        //planで能力値は計算済みだからここは簡略化してもいいかなあ。でもウルヴァンで奥義関係なくダメージ減少してるんだよなあ
-        val damage = damage(target, results)
+        val damage = buildDamage(results)
 
         //damageと一緒に奥義を飛ばせば効果も計算できるか？
-        val preventedDamage = target.preventBySkill(damage.first, results)
+//        これと等価 buildDamage.deal(target)
+        val preventedDamage = target.let(damage.deal)
 
-        //氷鏡のによる追加。簡単に済んで良かった。
-        target.reducedDamage(damage.first - preventedDamage.first)
         //スキルが発動していたら吸収効果を発動する。九州のないスキルは何も起こらない
-        damage.second?.absorb(this, target, if (target.hp > preventedDamage.first) preventedDamage.first else target.hp)
-        target.hp = if (target.hp > preventedDamage.first) {
-            target.hp - preventedDamage.first
-        } else {
-            0
-        }
-        return AttackResult(this, target, preventedDamage.first, damage.second, preventedDamage.second)
+        damage.special.absorb(this, target, if (target.hp > preventedDamage.first) preventedDamage.first else target.hp)
+
+        return AttackResult(this, target, preventedDamage.first, damage.special, preventedDamage.second)
 
     }
 
-    fun damage(target: BattleUnit, results: List<AttackResult>): Pair<Int, Skill?> {
-        //println("level / cooldown ${armedHero.special.level}  ${armedHero.reduceSpecialCooldown}")
-        if (specialCount == armedHero.specialCoolDownTime) {
-            val damage = armedHero.special.damage(this, target, results)
-            specialCount = if (damage.second != null) 0 else specialCount
-            return if (damage.second != null) Pair(damage.first + armedHero.skills.fold(0, { d, skill -> skill.specialTriggered(this, d) }), damage.second) else damage
+    fun buildDamage(results: List<AttackResult>): Damage {
+        //攻撃時に発動するかの条件がある奥義が出たらどうしよう…
+        if (specialCount >= armedHero.specialCoolDownTime && armedHero.special.type == SkillType.SPECIAL_A) {
+            specialCount = 0
+            return Damage(this, armedHero.special, armedHero.weapon.type, armedHero.skills.fold(oneTimeOnlyAdditionalDamage, { d, skill -> skill.specialTriggered(this, d) }), halfByStaff, results)
         }
         //println("level / cooldown ${armedHero.special.level}  ${armedHero.reduceSpecialCooldown}")
         specialCount += if (accelerateAttackCooldown + 1 > InflictCooldown) accelerateAttackCooldown + 1 - InflictCooldown else 0
         specialCount = if (specialCount > armedHero.specialCoolDownTime) armedHero.specialCoolDownTime else specialCount
-        //ここにレイプトがかかってくるのか・・・どうすっかなあこれ。
-        return Skill.NONE.damage(this, target, results, null)
+        return Damage(this, Skill.NONE, armedHero.weapon.type, oneTimeOnlyAdditionalDamage, halfByStaff, results)
     }
 
-    //相手の武器に合わせてこちらの守備・魔防で軽減
-    fun effectedPrevent(weaponType: SkillType) = weaponType.prevent(this)
-
-    fun halfByStaff(damage: Int): Int = damage - if (armedHero.baseHero.weaponType == WeaponType.STAFF && !wrathfulStaff) damage / 2 else 0
-    /**
-     * スキル・奥義によるダメージ減少.
-     */
-    fun preventByDefResTerrain(damage: Int, weaponType: SkillType, mitModPercent: Int = 0): Int =
-            damage - effectedPrevent(weaponType) * (if (defensiveTerrain) 130 else 100) / 100 + (effectedPrevent(weaponType) * mitModPercent) / 100
+    private val halfByStaff get() = if (armedHero.baseHero.weaponType == WeaponType.STAFF && !wrathfulStaff) 2 else 1
 
     /**
      * スキル・奥義によるダメージ減少.
      */
-    fun preventBySkill(damage: Int, results: List<AttackResult>): Pair<Int, Skill?> {
+    fun preventByDefResTerrain(weaponType: SkillType, specialPenetrate: Int): Int =
+            let(weaponType.prevent) * (if (defensiveTerrain) 130 else 100) / 100 - (let(weaponType.prevent) * specialPenetrate) / 100
+
+    /**
+     * スキル・奥義によるダメージ減少.
+     */
+    fun damaged(damage: Int, results: List<AttackResult>): Pair<Int, Skill?> {
         val prevented = armedHero.skills.fold(damage, { d, skill -> skill.prevent(this, d, results) })
-
+        oneTimeOnlyAdditionalDamage = 0
+        armedHero.reducedDamage(this, damage - prevented)
         if (specialCount == armedHero.specialCoolDownTime) {
 
-            val specialPrevented = armedHero.special.specialPrevent(this, prevented)
+            val specialPrevented = armedHero.special.specialPrevent(this, prevented, armedHero.skills.fold(0, { d, skill -> skill.specialTriggered(this, d) }))
             specialCount = if (specialPrevented.second != null) 0 else specialCount
+            damageToHp(specialPrevented.first)
+            armedHero.skills.forEach { e -> e.preventedDamage(this, prevented - specialPrevented.first) }
             return specialPrevented
         }
         specialCount += if (accelerateTargetCooldown + 1 > InflictCooldown) accelerateTargetCooldown + 1 - InflictCooldown else 0
         specialCount = if (specialCount > armedHero.specialCoolDownTime) armedHero.specialCoolDownTime else specialCount
+        damageToHp(prevented)
         return Pair(prevented, null)
+    }
+
+    private fun damageToHp(damage: Int) {
+        hp = if (hp > damage) {
+            hp - damage
+        } else {
+            0
+        }
     }
 
     /**
      * 通常攻撃。奥義や連撃防御が発動しないときの数字。
      */
-    //   fun normalAttack(damage: Int, preventBySkill: Int, target: BattleUnit, results: List<AttackResult>): Pair<Int, String> {
-    //       return Skill.NONE.damage(this, target, results, 0)
+    //   fun normalAttack(buildDamage: Int, preventedDamage: Int, target: BattleUnit, results: List<AttackResult>): Pair<Int, String> {
+    //       return Skill.NONE.buildDamage(this, target, results, 0)
     //   }
     /**
      * 色の倍率と特効が乗った攻撃。

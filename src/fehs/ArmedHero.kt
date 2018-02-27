@@ -31,7 +31,8 @@ data class ArmedHero(
         var defSpur: Int = 0,
         var resSpur: Int = 0
 ) {
-    val weapon get() = if (refinedWeapon != Skill.NONE) RefineSkill.valueOfWeapon(baseWeapon) ?: baseWeapon else baseWeapon
+    val weapon
+        get() = if (refinedWeapon != Skill.NONE) RefineSkill.valueOfWeapon(baseWeapon) ?: baseWeapon else baseWeapon
     /**
      * スキルのリスト。戦闘時などにすべてのスキルをなめるのに使う。読み取り専用プロパティにすることで毎回その時のプロパティからリストを作れるはず
      * 個体が編集されているときは編集後のスキルを使う
@@ -106,7 +107,7 @@ data class ArmedHero(
      */
     val growths = baseHero.growths
     val specialCoolDownTime: Int get() = special.level - reduceSpecialCooldown
-    val statusText: String get() = "H"+maxHp+" A"+atk+" S"+spd+" D"+def+" R"+res
+    val statusText: String get() = "H" + maxHp + " A" + atk + " S" + spd + " D" + def + " R" + res
 
     init {
         //名前が無いときは変更なしとして扱い、ベースになるクラスの装備を使う
@@ -169,7 +170,7 @@ data class ArmedHero(
     /**
      * スキルにより減少したダメージ。
      */
-    fun reducedDamage(battleUnit: BattleUnit, damage: Int): BattleUnit = skills.fold(battleUnit, { b, skill -> skill.reducedDamage(b, damage) })
+    fun reducedDamage(battleUnit: BattleUnit, damage: Int): BattleUnit = skills.fold(battleUnit, { b, skill -> skill.preventedDamage(b, damage) })
 
 
     /**

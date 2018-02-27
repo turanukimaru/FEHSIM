@@ -1,6 +1,5 @@
 package jp.blogspot.turanukimaru.fehs.skill
 
-import jp.blogspot.turanukimaru.fehs.Locale
 import jp.blogspot.turanukimaru.fehs.Name
 import jp.blogspot.turanukimaru.fehs.SkillType
 
@@ -10,67 +9,68 @@ import jp.blogspot.turanukimaru.fehs.SkillType
 enum class SkillC(override val jp: Name, override val type: SkillType, override val level: Int = 0, override val preSkill: Skill = Skill.Companion.NONE, override val maxLevel: Int = 3) : Skill {
 
 
-    SpurAtk(Name.  SpurAtk , SkillType.C),
-    SpurSpd(Name.SpurSpd   , SkillType.C),
-    SpurDef(Name.  SpurDef , SkillType.C),
-    SpurRes(Name.  SpurRes , SkillType.C),
-    SpurDefRes(Name.  SpurDefRes , SkillType.C, maxLevel = 2),
-    SpurSpdDef(Name.  SpurSpdDef , SkillType.C, maxLevel = 2),
-    SpurAtkSpd(Name.  SpurAtkSpd , SkillType.C, maxLevel = 2),
-    ThreatenAtk(Name. ThreatenAtk  , SkillType.C),
-    ThreatenSpd(Name.  ThreatenSpd , SkillType.C),
-    ThreatenDef(Name. ThreatenDef  , SkillType.C),
-    ThreatenRes(Name. ThreatenRes  , SkillType.C),
-    FortifyDef(Name.FortifyDef   , SkillType.C),
-    FortifyRes(Name. FortifyRes  , SkillType.C),
-    FortifyArmor(Name. FortifyArmor  , SkillType.C, maxLevel = 0),
-    FortifyCavalry(Name.   FortifyCavalry, SkillType.C, maxLevel = 0),
-    FortifyFliers(Name. FortifyFliers  , SkillType.C, maxLevel = 0),
-    FortifyDragons(Name. FortifyDragons  , SkillType.C, maxLevel = 0),
-    HoneAtk(Name. HoneAtk  , SkillType.C),
-    HoneSpd(Name. HoneSpd  , SkillType.C),
-    DriveAtk(Name.   DriveAtk, SkillType.C, maxLevel = 2),
-    DriveDef(Name.DriveDef   , SkillType.C, maxLevel = 2),
-    DriveSpd(Name.   DriveSpd, SkillType.C, maxLevel = 2),
-    DriveRes(Name. DriveRes  , SkillType.C, maxLevel = 2),
-    HoneArmor(Name.HoneArmor   , SkillType.C, maxLevel = 0),
-    HoneCavalry(Name. HoneCavalry  , SkillType.C, maxLevel = 0),
-    HoneDragons(Name. HoneDragons  , SkillType.C, maxLevel = 0),
-    HoneFliers(Name.   HoneFliers, SkillType.C, maxLevel = 0),
-    GoadArmor(Name. GoadArmor  , SkillType.C, maxLevel = 0),
-    GoadCavalry(Name.GoadCavalry   , SkillType.C, maxLevel = 0),
-    GoadFliers(Name. GoadFliers  , SkillType.C, maxLevel = 0),
-    WardArmor(Name. WardArmor  , SkillType.C, maxLevel = 0),
-    WardCavalry(Name. WardCavalry  , SkillType.C, maxLevel = 0),
-    WardFliers(Name.  WardFliers , SkillType.C, maxLevel = 0),
-    SavageBlow(Name. SavageBlow  , SkillType.C),
-    BreathOfLife(Name. BreathOfLife  , SkillType.C),
-    SwordExperience(Name. SwordExperience  , SkillType.C),
-    AxeExperience(Name. AxeExperience  , SkillType.C),
-    BowExperience(Name.   BowExperience, SkillType.C),
-    BTomeExperience(Name. BTomeExperience  , SkillType.C),
-    SwordValor(Name.SwordValor   , SkillType.C),
-    LanceValor(Name.LanceValor   , SkillType.C),
-    AxeValor(Name.  AxeValor , SkillType.C),
-    BowValor(Name.  BowValor , SkillType.C),
-    DaggerValor(Name.  DaggerValor , SkillType.C),
-    RTomeValor(Name.  RTomeValor , SkillType.C),
-    RTomeExperience(Name.RTomeExperience , SkillType.C),
-    BTomeValor(Name. BTomeValor  , SkillType.C),
-    GTomeValor(Name.GTomeValor   , SkillType.C),
-    PanicPloy(Name.PanicPloy   , SkillType.C),
-    AtkPloy(Name.  AtkPloy , SkillType.C),
-    SpdPloy(Name.  SpdPloy , SkillType.C),
-    DefPloy(Name. DefPloy  , SkillType.C),
-    ResPloy(Name. ResPloy  , SkillType.C),
-    InfantryPulse(Name. InfantryPulse  , SkillType.C),
-    AtkSmoke(Name. AtkSmoke  , SkillType.C),
-    SpdSmoke(Name.  SpdSmoke , SkillType.C),
-    ArmorMarch(Name.  ArmorMarch , SkillType.C),
-    Guidance(Name. Guidance  , SkillType.C),
-    AtkTactic(Name.AtkTactic   , SkillType.C),
-    DefTactic(Name.  DefTactic , SkillType.C),
-    ResTactic(Name.  ResTactic , SkillType.C),
+    SpurAtk(Name.SpurAtk, SkillType.C),
+    SpurSpd(Name.SpurSpd, SkillType.C),
+    SpurDef(Name.SpurDef, SkillType.C),
+    SpurRes(Name.SpurRes, SkillType.C),
+    SpurDefRes(Name.SpurDefRes, SkillType.C, maxLevel = 2),
+    SpurSpdDef(Name.SpurSpdDef, SkillType.C, maxLevel = 2),
+    SpurAtkSpd(Name.SpurAtkSpd, SkillType.C, maxLevel = 2),
+    ThreatenAtk(Name.ThreatenAtk, SkillType.C),
+    ThreatenSpd(Name.ThreatenSpd, SkillType.C),
+    ThreatenDef(Name.ThreatenDef, SkillType.C),
+    ThreatenRes(Name.ThreatenRes, SkillType.C),
+    FortifyDef(Name.FortifyDef, SkillType.C),
+    FortifyRes(Name.FortifyRes, SkillType.C),
+    FortifyArmor(Name.FortifyArmor, SkillType.C, maxLevel = 0),
+    FortifyCavalry(Name.FortifyCavalry, SkillType.C, maxLevel = 0),
+    FortifyFliers(Name.FortifyFliers, SkillType.C, maxLevel = 0),
+    FortifyDragons(Name.FortifyDragons, SkillType.C, maxLevel = 0),
+    HoneAtk(Name.HoneAtk, SkillType.C),
+    HoneSpd(Name.HoneSpd, SkillType.C),
+    DriveAtk(Name.DriveAtk, SkillType.C, maxLevel = 2),
+    DriveDef(Name.DriveDef, SkillType.C, maxLevel = 2),
+    DriveSpd(Name.DriveSpd, SkillType.C, maxLevel = 2),
+    DriveRes(Name.DriveRes, SkillType.C, maxLevel = 2),
+    HoneArmor(Name.HoneArmor, SkillType.C, maxLevel = 0),
+    HoneCavalry(Name.HoneCavalry, SkillType.C, maxLevel = 0),
+    HoneDragons(Name.HoneDragons, SkillType.C, maxLevel = 0),
+    HoneFliers(Name.HoneFliers, SkillType.C, maxLevel = 0),
+    GoadArmor(Name.GoadArmor, SkillType.C, maxLevel = 0),
+    GoadCavalry(Name.GoadCavalry, SkillType.C, maxLevel = 0),
+    GoadFliers(Name.GoadFliers, SkillType.C, maxLevel = 0),
+    WardArmor(Name.WardArmor, SkillType.C, maxLevel = 0),
+    WardCavalry(Name.WardCavalry, SkillType.C, maxLevel = 0),
+    WardDragons(Name.WardDragons, SkillType.C, maxLevel = 0),
+    WardFliers(Name.WardFliers, SkillType.C, maxLevel = 0),
+    SavageBlow(Name.SavageBlow, SkillType.C),
+    BreathOfLife(Name.BreathOfLife, SkillType.C),
+    SwordExperience(Name.SwordExperience, SkillType.C),
+    AxeExperience(Name.AxeExperience, SkillType.C),
+    BowExperience(Name.BowExperience, SkillType.C),
+    BTomeExperience(Name.BTomeExperience, SkillType.C),
+    SwordValor(Name.SwordValor, SkillType.C),
+    LanceValor(Name.LanceValor, SkillType.C),
+    AxeValor(Name.AxeValor, SkillType.C),
+    BowValor(Name.BowValor, SkillType.C),
+    DaggerValor(Name.DaggerValor, SkillType.C),
+    RTomeValor(Name.RTomeValor, SkillType.C),
+    RTomeExperience(Name.RTomeExperience, SkillType.C),
+    BTomeValor(Name.BTomeValor, SkillType.C),
+    GTomeValor(Name.GTomeValor, SkillType.C),
+    PanicPloy(Name.PanicPloy, SkillType.C),
+    AtkPloy(Name.AtkPloy, SkillType.C),
+    SpdPloy(Name.SpdPloy, SkillType.C),
+    DefPloy(Name.DefPloy, SkillType.C),
+    ResPloy(Name.ResPloy, SkillType.C),
+    InfantryPulse(Name.InfantryPulse, SkillType.C),
+    AtkSmoke(Name.AtkSmoke, SkillType.C),
+    SpdSmoke(Name.SpdSmoke, SkillType.C),
+    ArmorMarch(Name.ArmorMarch, SkillType.C),
+    Guidance(Name.Guidance, SkillType.C),
+    AtkTactic(Name.AtkTactic, SkillType.C),
+    DefTactic(Name.DefTactic, SkillType.C),
+    ResTactic(Name.ResTactic, SkillType.C),
 
     ;
 
@@ -85,10 +85,15 @@ enum class SkillC(override val jp: Name, override val type: SkillType, override 
      */
     override val value get() = name
 
- //   override fun localeName(locale: Locale): String =jp.localeName(locale)
+    //   override fun localeName(locale: Locale): String =jp.localeName(locale)
 
     companion object {
-        fun spreadItems(none: Boolean = false): List<Skill> = values().fold(if (none) arrayListOf<Skill>(Skill.NONE) else arrayListOf(), { list, e -> if(e.maxLevel == 0){list.add(e)} else (1..e.maxLevel).forEach({ i -> list.add(e.lv(i)) });list })
+        fun spreadItems(none: Boolean = false): List<Skill> = values().fold(if (none) arrayListOf<Skill>(Skill.NONE) else arrayListOf(), { list, e ->
+            if (e.maxLevel == 0) {
+                list.add(e)
+            } else (1..e.maxLevel).forEach({ i -> list.add(e.lv(i)) });list
+        })
+
         private val itemMap = mutableMapOf<String, SkillC>()
 
         fun valueOfOrNONE(key: String?): Skill = if (key == null) Skill.NONE
@@ -97,7 +102,7 @@ enum class SkillC(override val jp: Name, override val type: SkillType, override 
                 if (itemMap.isEmpty()) {
                     values().forEach { e -> itemMap.put(e.value, e);itemMap.put(e.jp.jp, e);itemMap.put(e.jp.us, e);itemMap.put(e.jp.tw, e) }
                 }
-                val regex = " \\d".toRegex()
+                val regex = " \\baseDamage".toRegex()
 
                 val lv = regex.find(key)
                 if (lv != null) {
