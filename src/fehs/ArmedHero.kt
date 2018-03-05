@@ -128,29 +128,29 @@ data class ArmedHero(
     /**
      * 戦闘効果。スキルの攻撃効果を再帰でなめて攻撃時効果を計算する。主に能力値変化
      */
-    fun bothEffect(battleUnit: BattleUnit): BattleUnit =
-            skills.fold(battleUnit, { b, skill -> skill.bothEffect(b) })
+    fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit): BattleUnit =
+            skills.fold(battleUnit, { b, skill -> skill.bothEffect(b, enemy) })
 
 
     /**
      * 攻撃側戦闘効果。スキルの攻撃効果を再帰でなめて攻撃時効果を計算する。主に能力値変化
      */
-    fun attackEffect(battleUnit: BattleUnit): BattleUnit = skills.fold(battleUnit, { b, skill -> skill.attackEffect(b) })
+    fun attackEffect(battleUnit: BattleUnit, enemy: BattleUnit): BattleUnit = skills.fold(battleUnit, { b, skill -> skill.attackEffect(b, enemy) })
 
     /**
      * 受け側戦闘効果。スキルの反撃効果を再帰でなめて受け時効果を計算する。主に能力値変化
      */
-    fun counterEffect(battleUnit: BattleUnit): BattleUnit = skills.fold(battleUnit, { b, skill -> skill.counterEffect(b) })
+    fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit): BattleUnit = skills.fold(battleUnit, { b, skill -> skill.counterEffect(b, enemy) })
 
     /**
      * 能力値計算後に適応する必要のある攻撃側戦闘効果。
      */
-    fun effectedAttackEffect(battleUnit: BattleUnit): BattleUnit = skills.fold(battleUnit, { b, skill -> skill.effectedAttackEffect(b) })
+    fun effectedAttackEffect(battleUnit: BattleUnit, enemy: BattleUnit): BattleUnit = skills.fold(battleUnit, { b, skill -> skill.effectedAttackEffect(b, enemy) })
 
     /**
      * 能力値計算後に適応する必要のある受け側戦闘効果
      */
-    fun effectedCcounterEffect(battleUnit: BattleUnit): BattleUnit = skills.fold(battleUnit, { b, skill -> skill.effectedCounterEffect(b) })
+    fun effectedCcounterEffect(battleUnit: BattleUnit, enemy: BattleUnit): BattleUnit = skills.fold(battleUnit, { b, skill -> skill.effectedCounterEffect(b, enemy) })
 
     /**
      * 攻撃側戦闘プラン。スキルの攻撃プランを再帰でなめて攻撃時効果を計算する。主に行動順の制御

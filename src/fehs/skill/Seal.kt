@@ -41,53 +41,53 @@ enum class Seal(override val jp: Name, override val type: SkillType, override va
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipHp(armedHero, lv)
     },
     CloseDef(Name.CloseDef, SkillType.SEAL) {
-        override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = closeDef(battleUnit, lv * 2)
+        override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = closeDef(battleUnit, enemy, lv * 2)
     },
     DistantDef(Name.DistantDef, SkillType.SEAL) {
-        override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = distantDef(battleUnit, lv * 2)
+        override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = distantDef(battleUnit, enemy, lv * 2)
     },
     FortressRes(Name.FortressRes, SkillType.SEAL) {
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipAtk(equipRes(armedHero, lv + 2), -3)
     },
     BrashAssault(Name.BrashAssault, SkillType.SEAL) {
-        override fun attackEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = brashAssault(battleUnit, lv)
+        override fun attackEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = brashAssault(battleUnit, enemy, lv)
     },
     HardyBearing(Name.HardyBearing, SkillType.SEAL) {
-        override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit {
+        override fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit {
             battleUnit.disableChangePlan = true
             if (battleUnit.hp >= battleUnit.armedHero.maxHp * (150 - lv * 50) / 100) {
-                battleUnit.enemy!!.disableChangePlan = true
+                enemy.disableChangePlan = true
             }
-            return super.bothEffect(battleUnit, lv)
+            return super.bothEffect(battleUnit, enemy, lv)
         }
 
     },
     HeavyBlade(Name.BrashAssault, SkillType.B) {
-        override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = heavyBlade(battleUnit, lv)
+        override fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = heavyBlade(battleUnit, enemy, lv)
     },
 
     PhantomSpeed(Name.PhantomSpeed, SkillType.SEAL) {
-        override fun bothEffect(battleUnit: BattleUnit, lv: Int): BattleUnit {
+        override fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit {
             battleUnit.phantomSpeed = when (lv) {1 -> 5
                 2 -> 8
                 3 -> 10
                 else -> 0
             }
-            return super.bothEffect(battleUnit, lv)
+            return super.bothEffect(battleUnit, enemy, lv)
         }
     },
 
     PanicPloy(Name.PanicPloy, SkillType.SEAL),
     QuickenedPulse(Name.QuickenedPulse, SkillType.SEAL, maxLevel = 0),
     QuickRiposte(Name.QuickRiposte, SkillType.SEAL) {
-        override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = followupable(battleUnit, lv)
+        override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = followupable(battleUnit, lv)
     },
 
     /**
      * 連撃防御。武器の種類はなんか定数に定数を持たせるべきか…
      */
     DeflectMagic(Name.DeflectMagic, SkillType.SEAL) {
-        override fun prevent(battleUnit: BattleUnit, damage: Int, results: List<AttackResult>, lv: Int): Int = if (results.isNotEmpty() && results.last().side != battleUnit.side && battleUnit.enemy!!.armedHero.isMagicWeapon()) damage - damage * when (lv) {
+        override fun prevent(battleUnit: BattleUnit, damage: Int, source: BattleUnit, results: List<AttackResult>, lv: Int): Int = if (results.isNotEmpty() && results.last().side != battleUnit.side && source.armedHero.isMagicWeapon()) damage - damage * when (lv) {
             1 -> 3
             2 -> 5
             3 -> 8
@@ -96,7 +96,7 @@ enum class Seal(override val jp: Name, override val type: SkillType, override va
     },
 
     DeflectMelee(Name.DeflectMelee, SkillType.SEAL) {
-        override fun prevent(battleUnit: BattleUnit, damage: Int, results: List<AttackResult>, lv: Int): Int = if (results.isNotEmpty() && results.last().side != battleUnit.side && battleUnit.enemy!!.armedHero.isMagicWeapon()) damage - damage * when (lv) {
+        override fun prevent(battleUnit: BattleUnit, damage: Int, source: BattleUnit, results: List<AttackResult>, lv: Int): Int = if (results.isNotEmpty() && results.last().side != battleUnit.side && source.armedHero.isMagicWeapon()) damage - damage * when (lv) {
             1 -> 3
             2 -> 5
             3 -> 8
@@ -104,7 +104,7 @@ enum class Seal(override val jp: Name, override val type: SkillType, override va
         } / 10 else damage
     },
     DeflectMissile(Name.DeflectMissile, SkillType.SEAL) {
-        override fun prevent(battleUnit: BattleUnit, damage: Int, results: List<AttackResult>, lv: Int): Int = if (results.isNotEmpty() && results.last().side != battleUnit.side && battleUnit.enemy!!.armedHero.isMagicWeapon()) damage - damage * when (lv) {
+        override fun prevent(battleUnit: BattleUnit, damage: Int, source: BattleUnit, results: List<AttackResult>, lv: Int): Int = if (results.isNotEmpty() && results.last().side != battleUnit.side && source.armedHero.isMagicWeapon()) damage - damage * when (lv) {
             1 -> 3
             2 -> 5
             3 -> 8

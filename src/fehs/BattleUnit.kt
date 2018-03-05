@@ -1,6 +1,5 @@
 package jp.blogspot.turanukimaru.fehs
 
-import jp.blogspot.turanukimaru.fehs.skill.Damage
 import jp.blogspot.turanukimaru.fehs.skill.Skill
 
 /**
@@ -118,11 +117,6 @@ data class BattleUnit(val armedHero: ArmedHero
 
 
 ) {
-    /**
-     * 戦闘時に相手をしている敵。お互いが入っている
-     * ※DataClassがDataClassを参照するとtoStringが無限ループする！
-     */
-    var enemy: BattleUnit? = null
     //射程はともかく移動距離は制限を受ける可能性がある。いやそれを言うなら全てのステータスがそうであるが・・・これDelegateでできれば楽だと思ったけどBuff考えるとできないな
     val movableSteps: Int get() = armedHero.movableSteps
     val effectiveRange: Int get() = armedHero.effectiveRange
@@ -174,27 +168,27 @@ data class BattleUnit(val armedHero: ArmedHero
     /**
      * 戦闘効果。スキルの攻撃効果を再帰でなめて攻撃時効果を計算する。主に能力値変化
      */
-    fun bothEffect(): BattleUnit = armedHero.bothEffect(this)
+    private fun bothEffect(enemy: BattleUnit): BattleUnit = armedHero.bothEffect(this, enemy)
 
     /**
      * 攻撃側戦闘効果。スキルの攻撃効果を再帰でなめて攻撃時効果を計算する。主に能力値変化
      */
-    fun attackEffect(): BattleUnit = armedHero.attackEffect(this)
+    private fun attackEffect(enemy: BattleUnit): BattleUnit = armedHero.attackEffect(this, enemy)
 
     /**
      * 受け側戦闘効果。スキルの反撃効果を再帰でなめて受け時効果を計算する。主に能力値変化
      */
-    fun counterEffect(): BattleUnit = armedHero.counterEffect(this)
+    private fun counterEffect(enemy: BattleUnit): BattleUnit = armedHero.counterEffect(this, enemy)
 
     /**
      * 能力値計算後に適応する必要のある攻撃側戦闘効果。
      */
-    fun effectedAttackEffect(): BattleUnit = armedHero.effectedAttackEffect(this)
+    private fun effectedAttackEffect(enemy: BattleUnit): BattleUnit = armedHero.effectedAttackEffect(this, enemy)
 
     /**
      * 能力値計算後に適応する必要のある受け側戦闘効果
      */
-    fun effectedCcounterEffect(): BattleUnit = armedHero.effectedCcounterEffect(this)
+    fun effectedCcounterEffect(enemy: BattleUnit): BattleUnit = armedHero.effectedCcounterEffect(this, enemy)
 
     fun afterFightEffect() {
         lossHp(hpLossAtEndOfFight)
@@ -208,8 +202,6 @@ data class BattleUnit(val armedHero: ArmedHero
     fun fight(targetUnit: BattleUnit): List<AttackResult> {
         val source = this.copy()
         val target = targetUnit.copy()
-        source.enemy = target
-        target.enemy = source
         val fightPlan = fightPlan(source, target)
         return fightPlan.fight()
     }
@@ -217,11 +209,11 @@ data class BattleUnit(val armedHero: ArmedHero
     /**
      * 戦闘プラン.
      */
-    fun fightPlan(battleUnit: BattleUnit, targetUnit: BattleUnit): FightPlan {
+    private fun fightPlan(attacker: BattleUnit, target: BattleUnit): FightPlan {
         //スキルのattackplan内で能力値の再計算すりゃいいか
-        val effectedAttacker = battleUnit.bothEffect().attackEffect()
-        val effectedTarget = targetUnit.bothEffect().counterEffect()
-        return FightPlan(effectedAttacker.effectedAttackEffect(), effectedTarget.effectedCcounterEffect()).planning()
+        val effectedAttacker = attacker.bothEffect(target).attackEffect(target)
+        val effectedTarget = target.bothEffect(attacker).counterEffect(attacker)
+        return FightPlan(effectedAttacker.effectedAttackEffect(target), effectedTarget.effectedCcounterEffect(attacker)).planning()
     }
 
 
@@ -249,13 +241,14 @@ data class BattleUnit(val armedHero: ArmedHero
         val damage = buildDamage(results)
 
         //damageと一緒に奥義を飛ばせば効果も計算できるか？
-//        これと等価 buildDamage.deal(target)
+//        これと等価 damage.deal(target)
         val preventedDamage = target.let(damage.deal)
 
-        //スキルが発動していたら吸収効果を発動する。九州のないスキルは何も起こらない
-        damage.special.absorb(this, target, if (target.hp > preventedDamage.first) preventedDamage.first else target.hp)
+        //スキルが発動していたら吸収効果を発動する。吸収のないスキルは何も起こらない
+        if (damage.special != Skill.NONE)
+            armedHero.skills.forEach { it.absorb(this, target, preventedDamage.lossHp) }
 
-        return AttackResult(this, target, preventedDamage.first, damage.special, preventedDamage.second)
+        return AttackResult(this, target, preventedDamage.damage, damage.special, preventedDamage.preventSkill)
 
     }
 
@@ -263,7 +256,7 @@ data class BattleUnit(val armedHero: ArmedHero
         //攻撃時に発動するかの条件がある奥義が出たらどうしよう…
         if (specialCount >= armedHero.specialCoolDownTime && armedHero.special.type == SkillType.SPECIAL_A) {
             specialCount = 0
-            return Damage(this, armedHero.special, armedHero.weapon.type, armedHero.skills.fold(oneTimeOnlyAdditionalDamage, { d, skill -> skill.specialTriggered(this, d) }), halfByStaff, results)
+            return Damage(this, armedHero.special, armedHero.weapon.type, armedHero.skills.fold(0, { d, skill -> skill.specialTriggered(this, d) }), halfByStaff, results)
         }
         //println("level / cooldown ${armedHero.special.level}  ${armedHero.reduceSpecialCooldown}")
         specialCount += if (accelerateAttackCooldown + 1 > InflictCooldown) accelerateAttackCooldown + 1 - InflictCooldown else 0
@@ -274,38 +267,36 @@ data class BattleUnit(val armedHero: ArmedHero
     private val halfByStaff get() = if (armedHero.baseHero.weaponType == WeaponType.STAFF && !wrathfulStaff) 2 else 1
 
     /**
-     * スキル・奥義によるダメージ減少.
+     * 地形・奥義によるダメージ減少.
      */
     fun preventByDefResTerrain(weaponType: SkillType, specialPenetrate: Int): Int =
             let(weaponType.prevent) * (if (defensiveTerrain) 130 else 100) / 100 - (let(weaponType.prevent) * specialPenetrate) / 100
 
+    fun prevent(damage: Int, source: BattleUnit, results: List<AttackResult>) = armedHero.skills.fold(damage, { d, skill -> skill.prevent(this, d, source, results) })
+
+    fun specialPrevent(source: BattleUnit, damage: Int) = armedHero.special.specialPrevent(this, damage, source, armedHero.skills.fold(0, { d, skill -> skill.specialPreventTriggered(this, d) }))
     /**
      * スキル・奥義によるダメージ減少.
      */
-    fun damaged(damage: Int, results: List<AttackResult>): Pair<Int, Skill?> {
-        val prevented = armedHero.skills.fold(damage, { d, skill -> skill.prevent(this, d, results) })
+    fun damaged(damage: Int, specialPrevented: Pair<Int, Skill>): DamageResult {
         oneTimeOnlyAdditionalDamage = 0
-        armedHero.reducedDamage(this, damage - prevented)
-        if (specialCount == armedHero.specialCoolDownTime) {
-
-            val specialPrevented = armedHero.special.specialPrevent(this, prevented, armedHero.skills.fold(0, { d, skill -> skill.specialTriggered(this, d) }))
-            specialCount = if (specialPrevented.second != null) 0 else specialCount
-            damageToHp(specialPrevented.first)
-            armedHero.skills.forEach { e -> e.preventedDamage(this, prevented - specialPrevented.first) }
-            return specialPrevented
+        armedHero.reducedDamage(this, damage)
+        if (specialCount == armedHero.specialCoolDownTime && specialPrevented.second != null) {
+            specialCount = 0
+            val loss = damageToHp(specialPrevented.first)
+            armedHero.skills.forEach { e -> e.preventedDamage(this, damage - specialPrevented.first) }
+            return DamageResult(specialPrevented.first, specialPrevented.second, loss)
         }
         specialCount += if (accelerateTargetCooldown + 1 > InflictCooldown) accelerateTargetCooldown + 1 - InflictCooldown else 0
         specialCount = if (specialCount > armedHero.specialCoolDownTime) armedHero.specialCoolDownTime else specialCount
-        damageToHp(prevented)
-        return Pair(prevented, null)
+        val loss = damageToHp(damage)
+        return DamageResult(damage, Skill.NONE, loss)
     }
 
-    private fun damageToHp(damage: Int) {
-        hp = if (hp > damage) {
-            hp - damage
-        } else {
-            0
-        }
+    private fun damageToHp(damage: Int): Int {
+        val result = HandmaidMath.min(hp, damage)
+        hp = if (hp > damage) hp - damage else 0
+        return result
     }
 
     /**
@@ -317,19 +308,19 @@ data class BattleUnit(val armedHero: ArmedHero
     /**
      * 色の倍率と特効が乗った攻撃。
      */
-    fun colorAdvantage(): Int {
-        val colorDiff = enemy!!.armedHero.baseHero.color - armedHero.baseHero.color
+    fun colorAdvantage(enemy: BattleUnit): Int {
+        val colorDiff = enemy.armedHero.baseHero.color - armedHero.baseHero.color
 
-        return if (colorlessAdvantage && enemy!!.armedHero.baseHero.color == 0) 1
-        else if (enemy!!.colorlessAdvantage && armedHero.baseHero.color == 0) -1
-        else if (enemy!!.armedHero.baseHero.color == 0 || armedHero.baseHero.color == 0 || colorDiff == 0) 0
+        return if (colorlessAdvantage && enemy.armedHero.baseHero.color == 0) 1
+        else if (enemy.colorlessAdvantage && armedHero.baseHero.color == 0) -1
+        else if (enemy.armedHero.baseHero.color == 0 || armedHero.baseHero.color == 0 || colorDiff == 0) 0
         else if (colorDiff == -1 || colorDiff == 2) 1
         else if (colorDiff == 1 || colorDiff == -2) -1 else 0
     }
 
-    fun colorAttack(): Int {
-        val advantageLevel = if (colorAdvantageLevel >= enemy!!.colorAdvantageLevel) colorAdvantageLevel else enemy!!.colorAdvantageLevel
-        val colorAd = colorAdvantage()
+    fun colorAttack(enemy: BattleUnit): Int {
+        val advantageLevel = if (colorAdvantageLevel >= enemy.colorAdvantageLevel) colorAdvantageLevel else enemy.colorAdvantageLevel
+        val colorAd = colorAdvantage(enemy)
         val colorPow = (if (advantageLevel == 0) 20 else (advantageLevel * 5 + 5) * antiColorAdvantage + 20) * colorAd
 
 

@@ -23,30 +23,30 @@ interface Skill {
      * 戦闘時の効果。基本的にunitの能力値を上下したり
      * 弓だけはここで特効のチェックするか…
      */
-    fun bothEffect(battleUnit: BattleUnit, lv: Int = level): BattleUnit {
-        if (type == SkillType.BOW && battleUnit.enemy!!.armedHero.baseHero.moveType == MoveType.FLIER) battleUnit.effectiveAgainst = EffectiveAgainst.FLIER
+    fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int = level): BattleUnit {
+        if (type == SkillType.BOW && enemy.armedHero.baseHero.moveType == MoveType.FLIER) battleUnit.effectiveAgainst = EffectiveAgainst.FLIER
         return battleUnit
     }
 
     /**
      * 攻撃時の効果。基本的にunitの能力値を上下したり
      */
-    fun attackEffect(battleUnit: BattleUnit, lv: Int = level): BattleUnit = battleUnit
+    fun attackEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int = level): BattleUnit = battleUnit
 
     /**
      * 反撃時の効果
      */
-    fun counterEffect(battleUnit: BattleUnit, lv: Int = level): BattleUnit = battleUnit
+    fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int = level): BattleUnit = battleUnit
 
     /**
      * 攻撃時の効果。基本的にunitの能力値が上下した後参照したいとき
      */
-    fun effectedAttackEffect(battleUnit: BattleUnit, lv: Int = level): BattleUnit = battleUnit
+    fun effectedAttackEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int = level): BattleUnit = battleUnit
 
     /**
      * 反撃時の効果。基本的にunitの能力値が上下した後参照したいとき
      */
-    fun effectedCounterEffect(battleUnit: BattleUnit, lv: Int = level): BattleUnit = battleUnit
+    fun effectedCounterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int = level): BattleUnit = battleUnit
 
     /**
      * 攻撃時の効果。基本的にunitの能力値を上下したり攻撃の順番を変える
@@ -61,27 +61,32 @@ interface Skill {
     /**
      * ダメージ減少。連撃防御
      */
-    fun prevent(battleUnit: BattleUnit, damage: Int, results: List<AttackResult>, lv: Int = level): Int = damage
+    fun prevent(battleUnit: BattleUnit, damage: Int, source: BattleUnit, results: List<AttackResult>, lv: Int = level): Int = damage
 
     /**
      * ダメージ減少。奥義や連撃防御.奥義が2回発動するようなことになりませんように・・・
      */
-    fun specialPrevent(battleUnit: BattleUnit, damage: Int, lv: Int = level): Pair<Int, Skill?> = Pair(damage, null)
+    fun specialPrevent(battleUnit: BattleUnit, damage: Int, source: BattleUnit, lv: Int = level): Pair<Int, Skill> = Pair(damage, Skill.NONE)
 
     /**
      * 奥義発動時の追加効果。ほぼダメージ＋１０のスキル用
      */
-    fun specialTriggered(battleUnit: BattleUnit, damage: Int, lv: Int = level): Int = damage
+    fun specialTriggered(battleUnit: BattleUnit, damage: Int): Int = damage
+
+    /**
+     * 軽減奥義発動時の追加効果。楯の鼓動用。↑と分けたのは軽減奥義＋わとうの時にダメージが増えてしまうから…
+     */
+    fun specialPreventTriggered(battleUnit: BattleUnit, damage: Int): Int = damage
 
     /**
      * ほぼ奥義専用。攻撃時のダメージ計算。デフォルトで奥義なしのダメージ
      */
-    fun damage(source: BattleUnit, prevent: Int): Int = handmaidMath.max(baseDamage(source) - prevent, 0)
+    fun damage(source: BattleUnit, target: BattleUnit, prevent: Int): Int = HandmaidMath.max(baseDamage(source, target) - prevent, 0)
 
     /**
      * 基本ダメージ。奥義でダメージを追加するときはここ
      */
-    fun baseDamage(source: BattleUnit): Int = source.colorAttack()
+    fun baseDamage(source: BattleUnit, target: BattleUnit): Int = source.colorAttack(target)
 
     fun absorb(battleUnit: BattleUnit, target: BattleUnit, damage: Int): Int = damage
 
@@ -152,28 +157,28 @@ interface Skill {
         return battleUnit
     }
 
-    fun closeDef(battleUnit: BattleUnit, lv: Int): BattleUnit {
-        if (battleUnit.enemy!!.armedHero.baseHero.weaponType.range == 1) {
+    fun closeDef(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit {
+        if (enemy.armedHero.baseHero.weaponType.range == 1) {
             battleUnit.defEffect += lv
             battleUnit.resEffect += lv
         }
         return battleUnit
     }
 
-    fun distantDef(battleUnit: BattleUnit, lv: Int): BattleUnit {
-        if (battleUnit.enemy!!.armedHero.baseHero.weaponType.range == 2) {
+    fun distantDef(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit {
+        if (enemy.armedHero.baseHero.weaponType.range == 2) {
             battleUnit.defEffect += lv
             battleUnit.resEffect += lv
         }
         return battleUnit
     }
 
-    fun weaponBreaker(battleUnit: BattleUnit, weapon: WeaponType, lv: Int): BattleUnit {
+    fun weaponBreaker(battleUnit: BattleUnit, enemy: BattleUnit, weapon: WeaponType, lv: Int): BattleUnit {
         log("HP:${battleUnit.hp}")
         log("threashold:${battleUnit.armedHero.maxHp * (lv * 20 - 10) / 100}")
-        if ((battleUnit.hp >= battleUnit.armedHero.maxHp * (lv * 20 - 10) / 100) && battleUnit.enemy!!.armedHero.baseHero.weaponType == weapon) {
+        if ((battleUnit.hp >= battleUnit.armedHero.maxHp * (lv * 20 - 10) / 100) && enemy.armedHero.baseHero.weaponType == weapon) {
             battleUnit.followupable = true
-            battleUnit.enemy!!.antiFollowup = true
+            enemy.antiFollowup = true
         }
         return battleUnit
     }
@@ -181,29 +186,29 @@ interface Skill {
     /**
      *
      */
-    fun boostDef(battleUnit: BattleUnit, lv: Int): BattleUnit {
-        if (battleUnit.hp - battleUnit.enemy!!.hp >= 3) {
+    fun boostDef(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit {
+        if (battleUnit.hp - enemy.hp >= 3) {
             battleUnit.defEffect += lv
         }
         return battleUnit
     }
 
-    fun boostSpd(battleUnit: BattleUnit, lv: Int): BattleUnit {
-        if (battleUnit.hp - battleUnit.enemy!!.hp >= 3) {
+    fun boostSpd(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit {
+        if (battleUnit.hp - enemy.hp >= 3) {
             battleUnit.spdEffect += lv
         }
         return battleUnit
     }
 
-    fun boostAtk(battleUnit: BattleUnit, lv: Int): BattleUnit {
-        if (battleUnit.hp - battleUnit.enemy!!.hp >= 3) {
+    fun boostAtk(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit {
+        if (battleUnit.hp - enemy.hp >= 3) {
             battleUnit.atkEffect += lv
         }
         return battleUnit
     }
 
-    fun boostRes(battleUnit: BattleUnit, lv: Int): BattleUnit {
-        if (battleUnit.hp - battleUnit.enemy!!.hp >= 3) {
+    fun boostRes(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit {
+        if (battleUnit.hp - enemy.hp >= 3) {
             battleUnit.resEffect += lv
         }
         return battleUnit
@@ -260,23 +265,23 @@ interface Skill {
         return armedHero
     }
 
-    fun effectiveAgainst(moveType: MoveType, battleUnit: BattleUnit): BattleUnit {
-        if (battleUnit.enemy!!.armedHero.baseHero.moveType == moveType) {
+    fun effectiveAgainst(moveType: MoveType, battleUnit: BattleUnit, enemy: BattleUnit): BattleUnit {
+        if (enemy.armedHero.baseHero.moveType == moveType) {
             battleUnit.effectiveAgainst = EffectiveAgainst.Companion.valueOfMoveType(moveType)
         }
         return battleUnit
     }
 
-    fun effectiveAgainst(weaponType: WeaponType, battleUnit: BattleUnit): BattleUnit {
-        if (battleUnit.enemy!!.armedHero.baseHero.weaponType == weaponType) {
+    fun effectiveAgainst(weaponType: WeaponType, battleUnit: BattleUnit, enemy: BattleUnit): BattleUnit {
+        if (enemy.armedHero.baseHero.weaponType == weaponType) {
             battleUnit.effectiveAgainst = EffectiveAgainst.Companion.valueOfWeaponType(weaponType)
         }
         return battleUnit
     }
 
-    fun effectiveAgainstMagic(battleUnit: BattleUnit): BattleUnit {
-        if (battleUnit.enemy!!.armedHero.isMagicWeapon()) {
-            battleUnit.effectiveAgainst = EffectiveAgainst.Companion.valueOfWeaponType(battleUnit.enemy!!.armedHero.baseHero.weaponType)
+    fun effectiveAgainstMagic(battleUnit: BattleUnit, enemy: BattleUnit): BattleUnit {
+        if (enemy.armedHero.isMagicWeapon()) {
+            battleUnit.effectiveAgainst = EffectiveAgainst.Companion.valueOfWeaponType(enemy.armedHero.baseHero.weaponType)
         }
         return battleUnit
     }
@@ -286,7 +291,7 @@ interface Skill {
         return battleUnit
     }
 
-    fun colorAdvantage(battleUnit: BattleUnit, lv: Int): BattleUnit {
+    fun colorAdvantage(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit {
         battleUnit.colorAdvantageLevel = lv
         return battleUnit
     }
@@ -315,11 +320,11 @@ interface Skill {
         return battleUnit
     }
 
-    fun eachNofollowupable(battleUnit: BattleUnit, lv: Int): BattleUnit {
+    fun eachNofollowupable(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit {
         if (battleUnit.hp >= battleUnit.armedHero.maxHp * (110 - 20 * lv) / 100) {
             log(battleUnit.armedHero.name + " followapable")
             battleUnit.antiFollowup = true
-            battleUnit.enemy!!.antiFollowup = true
+            enemy.antiFollowup = true
         }
         return battleUnit
     }
@@ -332,39 +337,39 @@ interface Skill {
         return fightPlan
     }
 
-    fun brashAssault(battleUnit: BattleUnit, percentile: Int): BattleUnit {
-        if ((battleUnit.armedHero.baseHero.weaponType.range == battleUnit.enemy!!.armedHero.baseHero.weaponType.range || battleUnit.enemy!!.counterAllRange)
-                && !battleUnit.enemy!!.cannotCcounter
+    fun brashAssault(battleUnit: BattleUnit, enemy: BattleUnit, percentile: Int): BattleUnit {
+        if ((battleUnit.armedHero.baseHero.weaponType.range == enemy.armedHero.baseHero.weaponType.range || enemy.counterAllRange)
+                && !enemy.cannotCcounter
                 && (battleUnit.hp <= battleUnit.armedHero.maxHp * percentile / 100)) {
             battleUnit.followupable = true
         }
         return battleUnit
     }
 
-    fun windsweep(battleUnit: BattleUnit, lv: Int): BattleUnit {
-        if (battleUnit.enemy!!.armedHero.baseHero.weaponType.isMaterial
-                && (battleUnit.effectedPhantomSpd - battleUnit.enemy!!.effectedPhantomSpd >= 7 - lv * 2)) {
-            battleUnit.enemy!!.cannotCcounter = true
+    fun windsweep(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit {
+        if (enemy.armedHero.baseHero.weaponType.isMaterial
+                && (battleUnit.effectedPhantomSpd - enemy.effectedPhantomSpd >= 7 - lv * 2)) {
+            enemy.cannotCcounter = true
         }
         return battleUnit
     }
 
-    fun watersweep(battleUnit: BattleUnit, lv: Int): BattleUnit {
-        if (!battleUnit.enemy!!.armedHero.baseHero.weaponType.isMaterial
-                && (battleUnit.effectedPhantomSpd - battleUnit.enemy!!.effectedPhantomSpd >= 7 - lv * 2)) {
-            battleUnit.enemy!!.cannotCcounter = true
+    fun watersweep(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit {
+        if (!enemy.armedHero.baseHero.weaponType.isMaterial
+                && (battleUnit.effectedPhantomSpd - enemy.effectedPhantomSpd >= 7 - lv * 2)) {
+            enemy.cannotCcounter = true
         }
         return battleUnit
     }
 
-    fun dazzling(battleUnit: BattleUnit, lv: Int): BattleUnit {
+    fun dazzling(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit {
         if (battleUnit.hp >= battleUnit.armedHero.maxHp * (150 - lv * 50)) {
-            battleUnit.enemy!!.cannotCcounter = true
+            enemy.cannotCcounter = true
         }
         return battleUnit
     }
 
-    fun wrathfulStaff(battleUnit: BattleUnit, lv: Int): BattleUnit {
+    fun wrathfulStaff(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit {
         if (battleUnit.hp >= battleUnit.armedHero.maxHp * (150 - lv * 50)) {
             battleUnit.wrathfulStaff = true
         }
@@ -377,31 +382,31 @@ interface Skill {
     }
 
 
-    fun disableEachCounter(battleUnit: BattleUnit, thisLevel: Int): BattleUnit {
+    fun disableEachCounter(battleUnit: BattleUnit, enemy: BattleUnit, thisLevel: Int): BattleUnit {
         battleUnit.cannotCcounter = true
-        battleUnit.enemy!!.cannotCcounter = true
+        enemy.cannotCcounter = true
         return battleUnit
     }
 
-    fun antiFollowupDef(battleUnit: BattleUnit, thisLevel: Int): BattleUnit {
-        if (battleUnit.def - thisLevel >= battleUnit.enemy!!.def) {
-            battleUnit.enemy!!.antiFollowup = true
+    fun antiFollowupDef(battleUnit: BattleUnit, enemy: BattleUnit, thisLevel: Int): BattleUnit {
+        if (battleUnit.def - thisLevel >= enemy.def) {
+            enemy.antiFollowup = true
         }
         return battleUnit
     }
 
-    fun sacasBlessing(battleUnit: BattleUnit, thisLevel: Int): BattleUnit {
-        val enemyType = battleUnit.enemy!!.armedHero.baseHero.weaponType
+    fun sacasBlessing(battleUnit: BattleUnit, enemy: BattleUnit, thisLevel: Int): BattleUnit {
+        val enemyType = enemy.armedHero.baseHero.weaponType
         if (enemyType == WeaponType.SWORD || enemyType == WeaponType.LANCE || enemyType == WeaponType.AXE) {
-            battleUnit.enemy!!.cannotCcounter = true
+            enemy.cannotCcounter = true
         }
         return battleUnit
     }
 
-    fun beorcsBlessing(battleUnit: BattleUnit, thisLevel: Int): BattleUnit {
-        val enemyType = battleUnit.enemy!!.armedHero.baseHero.moveType
+    fun beorcsBlessing(battleUnit: BattleUnit, enemy: BattleUnit, thisLevel: Int): BattleUnit {
+        val enemyType = enemy.armedHero.baseHero.moveType
         if (enemyType == MoveType.CAVALRY || enemyType == MoveType.FLIER) {
-            battleUnit.enemy!!.antiBuffBonus = true
+            enemy.antiBuffBonus = true
         }
         return battleUnit
     }
@@ -434,8 +439,8 @@ interface Skill {
         return battleUnit
     }
 
-    fun enemyFullHpBonus(battleUnit: BattleUnit, i: Int): BattleUnit {
-        if (battleUnit.enemy!!.hp == battleUnit.enemy!!.armedHero.maxHp) {
+    fun enemyFullHpBonus(battleUnit: BattleUnit, enemy: BattleUnit, i: Int): BattleUnit {
+        if (enemy.hp == enemy.armedHero.maxHp) {
             battleUnit.atkEffect += i
             battleUnit.spdEffect += i
         }
@@ -491,48 +496,48 @@ interface Skill {
         return battleUnit
     }
 
-    fun debuffBonus(battleUnit: BattleUnit): BattleUnit {
-        val enemy = battleUnit.enemy!!
+    fun debuffBonus(battleUnit: BattleUnit, enemy: BattleUnit): BattleUnit {
+        val enemy = enemy
         battleUnit.debuffBonus = enemy.atkDebuff + enemy.spdDebuff + enemy.defBuff + enemy.resDebuff
         return battleUnit
     }
 
-    fun antiBuffBonus(battleUnit: BattleUnit): BattleUnit {
-        battleUnit.enemy!!.antiBuffBonus = true
+    fun antiBuffBonus(battleUnit: BattleUnit, enemy: BattleUnit): BattleUnit {
+        enemy.antiBuffBonus = true
         return battleUnit
     }
 
-    fun antiMagicBuffBonus(battleUnit: BattleUnit): BattleUnit {
-        if (battleUnit.enemy!!.armedHero.baseHero.isMagicWeapon()) {
-            battleUnit.enemy!!.antiBuffBonus = true
+    fun antiMagicBuffBonus(battleUnit: BattleUnit, enemy: BattleUnit): BattleUnit {
+        if (enemy.armedHero.baseHero.isMagicWeapon()) {
+            enemy.antiBuffBonus = true
         }
         return battleUnit
     }
 
 
-    fun antiRangedWeaponBuffBonus(battleUnit: BattleUnit): BattleUnit {
-        if (battleUnit.enemy!!.armedHero.baseHero.weaponType.range == 2) {
-            battleUnit.enemy!!.antiBuffBonus = true
+    fun antiRangedWeaponBuffBonus(battleUnit: BattleUnit, enemy: BattleUnit): BattleUnit {
+        if (enemy.armedHero.baseHero.weaponType.range == 2) {
+            enemy.antiBuffBonus = true
         }
         return battleUnit
     }
 
-    fun heavyBlade(battleUnit: BattleUnit, lv: Int): BattleUnit {
-        if (battleUnit.effectedAtk - battleUnit.enemy!!.effectedAtk > lv) {
+    fun heavyBlade(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit {
+        if (battleUnit.effectedAtk - enemy.effectedAtk > lv) {
             battleUnit.accelerateAttackCooldown = 1
         }
         return battleUnit
     }
 
-    fun flashingBlade(battleUnit: BattleUnit, lv: Int): BattleUnit {
-        if (battleUnit.effectedPhantomSpd - battleUnit.enemy!!.effectedPhantomSpd > lv) {
+    fun flashingBlade(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit {
+        if (battleUnit.effectedPhantomSpd - enemy.effectedPhantomSpd > lv) {
             battleUnit.accelerateAttackCooldown = 1
         }
         return battleUnit
     }
 
-    fun feliciasBlade(battleUnit: BattleUnit): BattleUnit {
-        if (battleUnit.enemy!!.armedHero.isMagicWeapon()) {
+    fun feliciasBlade(battleUnit: BattleUnit, enemy: BattleUnit): BattleUnit {
+        if (enemy.armedHero.isMagicWeapon()) {
             //攻撃で儲けでも加速
             battleUnit.accelerateAttackCooldown = 1
             battleUnit.accelerateTargetCooldown = 1
@@ -557,15 +562,15 @@ interface Skill {
     }
 
 
-    fun antiAccelerateCooldown(battleUnit: BattleUnit, lv: Int): BattleUnit {
+    fun antiAccelerateCooldown(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit {
         if (battleUnit.hp * 10 >= battleUnit.armedHero.maxHp * (11 - lv)) {
-            battleUnit.enemy!!.InflictCooldown = 1
+            enemy.InflictCooldown = 1
         }
         return battleUnit
     }
 
-    fun attackPain(battleUnit: BattleUnit, lv: Int): BattleUnit {
-        battleUnit.enemy!!.hpLossAtEndOfFight += lv
+    fun attackPain(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit {
+        enemy.hpLossAtEndOfFight += lv
         return battleUnit
     }
 

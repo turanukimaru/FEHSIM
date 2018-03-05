@@ -53,8 +53,6 @@ class FightPlan(val attacker: BattleUnit, val target: BattleUnit) {
         for (fight in plan) {
             val s = last.source.copy()
             val t = last.target.copy()
-            s.enemy = t
-            t.enemy = s
             val result = fight(Pair(s, t), resultList)
             resultList.add(result)
 

@@ -839,13 +839,19 @@ enum class Name(val jp: String, val us: String, val tw: String) {
     SpurAtkSpd("攻撃速さの紋章", "Spur Atk Spd", "攻擊速度紋章"),
 
     FeliciasBlade("奥義カウント+1", "Special cooldown charge +1 if foe uses magic", "Special cooldown charge +1 if foe uses magic"),
-    BrazenDefRes("守備魔防の大覚醒","Brazen Def Res","防守魔防大覺醒"),
-    ChillSpd("速さの封印","Chill Spd","Chill Spd"),
-    Expiration("邪竜のブレス","Expiration","Expiration"),
-    BelovedZofia("宝剣ソフィア","Beloved Zofia","Beloved Zofia"),
-    セリカ__闇_("セリカ（闇）","Celica (Fallen Heroes)","賽莉卡 (Fallen Heroes)"),
-    ハーディン__闇_("ハーディン（闇）","Hardin (Fallen Heroes)","Hardin"),
-    ルフレ__闇_("ルフレ（闇）","Robin (M) (Fallen Heroes)","魯弗萊(M) (Fallen Heroes)"),
+    BrazenDefRes("守備魔防の大覚醒", "Brazen Def Res", "防守魔防大覺醒"),
+    ChillSpd("速さの封印", "Chill Spd", "Chill Spd"),
+    Expiration("邪竜のブレス", "Expiration", "Expiration"),
+    BelovedZofia("宝剣ソフィア", "Beloved Zofia", "Beloved Zofia"),
+    セリカ__闇_("セリカ（闇）", "Celica (Fallen Heroes)", "賽莉卡 (Fallen Heroes)"),
+    ハーディン__闇_("ハーディン（闇）", "Hardin (Fallen Heroes)", "Hardin"),
+    ルフレ__闇_("ルフレ（闇）", "Robin (M) (Fallen Heroes)", "魯弗萊(M) (Fallen Heroes)"),
+    タクミ__闇_("タクミ（闇）","Takumi (Fallen Heroes)","拓海 (Fallen Heroes)"),
+    エフラム__伝承英雄_("エフラム（伝承英雄）","Ephraim (Legendary Lord)","艾夫拉姆 (Legendary Lord)"),
+    Skadi("スカディ","Skadi","Skadi"),
+    FlameSiegmund("炎槍ジークムント","Flame Siegmund","Flame Siegmund"),
+    SturdyStance("鬼神金剛の構え","Sturdy Stance","鬼神金剛架勢"),
+    SolarBrace("太陽の腕輪","Solar Brace","Solar Brace"),
     ;
 
     fun localeName(l: Locale): String =

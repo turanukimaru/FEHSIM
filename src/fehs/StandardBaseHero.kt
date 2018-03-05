@@ -473,13 +473,17 @@ object StandardBaseHero {
         createItem(Name.サザ, 0, WeaponType.DAGGER, MoveType.INFANTRY, 4, 17, 10, 9, 5, 4, 6, 8, 7, 4, 4,
                 Weapon.Peshkatz, null, Special.Glimmer, SkillA.LifeAndDeath.lv(3), Skill.NONE, SkillC.SpurAtkSpd.lv(2))
 
-        createItem(Name.セリカ__闇_, 1, WeaponType.SWORD, MoveType.INFANTRY,  5, 18, 9, 9, 5, 7, 6, 8, 8, 6, 5,
+        createItem(Name.セリカ__闇_, 1, WeaponType.SWORD, MoveType.INFANTRY, 5, 18, 9, 9, 5, 7, 6, 8, 8, 6, 5,
                 Weapon.BelovedZofia, null, Special.Luna, Skill.NONE, SkillB.ChillSpd.lv(3), SkillC.HoneAtk.lv(3))
-        createItem(Name.ハーディン__闇_, 2, WeaponType.LANCE, MoveType.ARMORED,  5, 23, 8, 6, 10, 8, 6, 8, 6, 8, 7,
-                Weapon.Gradivus, null, Special.Vengeance	, SkillA.BrazenDefRes.lv(3), SkillB.BoldFighter.lv(3), Skill.NONE)
-        createItem(Name.ルフレ__闇_, 3, WeaponType.DRAGON, MoveType.ARMORED,  5, 24, 10, 7, 9, 5, 7, 10, 4, 8, 6,
+        createItem(Name.ハーディン__闇_, 2, WeaponType.LANCE, MoveType.ARMORED, 5, 23, 8, 6, 10, 8, 6, 8, 6, 8, 7,
+                Weapon.Gradivus, null, Special.Vengeance, SkillA.BrazenDefRes.lv(3), SkillB.BoldFighter.lv(3), Skill.NONE)
+        createItem(Name.ルフレ__闇_, 3, WeaponType.DRAGON, MoveType.ARMORED, 5, 24, 10, 7, 9, 5, 7, 10, 4, 8, 6,
                 Weapon.Expiration, null, Special.Ignis, Skill.NONE, SkillB.VengefulFighter.lv(3), SkillC.WardDragons)
 
+        createItem(Name.タクミ__闇_, 0, WeaponType.BOW, MoveType.INFANTRY,  3, 15, 9, 10, 6, 5, 6, 6, 7, 5, 5,
+                Weapon.Skadi, null, Special.Vengeance	, SkillA.Furry.lv(3), Skill.NONE, SkillC.SpdSmoke.lv(3))
+        createItem(Name.エフラム__伝承英雄_, 2, WeaponType.LANCE, MoveType.CAVALRY,  5, 19, 10, 5, 9, 3, 7, 8, 6, 7, 3,
+                Weapon.FlameSiegmund, null, Special.Sol, SkillA.SturdyStance.lv(2), SkillB.SolarBrace, SkillC.FortifyDef.lv(3))
 //        createItem(Name., 1, WeaponType., MoveType.,  5, , , , , , , , , , ,
 //                Weapon., Assist., Special., SkillA..lv(), SkillB..lv(), SkillC..lv())
     }
