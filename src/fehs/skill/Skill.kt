@@ -8,7 +8,11 @@ interface Skill {
     val value: String get() = ""
     val jp: Name get() = Name.NONE
     val maxLevel: Int get() = 0
+    val mitMod: Int get() = 0
+    val offMlt: Int get() = 10
     val penetrate: Int get() = 0
+    val stateDamage: (BattleUnit) -> Int get() = { _ -> 0 }
+    val heal: Int get() = 0
     // nullオブジェクト。もっといいやり方があればいいのだが
     val preSkill: Skill get() = Skill.NONE
 
@@ -81,21 +85,16 @@ interface Skill {
     /**
      * ほぼ奥義専用。攻撃時のダメージ計算。デフォルトで奥義なしのダメージ
      */
-    fun damage(source: BattleUnit, target: BattleUnit, prevent: Int): Int = HandmaidMath.max(baseDamage(source, target) - prevent, 0)
+    fun damage(damage: Int, prevent: Int): Int = HandmaidMath.max(damage - prevent, 0) * offMlt / 10
 
-    /**
-     * 基本ダメージ。奥義でダメージを追加するときはここ
-     */
-    fun baseDamage(source: BattleUnit, target: BattleUnit): Int = source.colorAttack(target)
-
-    fun absorb(battleUnit: BattleUnit, target: BattleUnit, damage: Int): Int = damage
+    fun absorb(battleUnit: BattleUnit, target: BattleUnit, damage: Int) = battleUnit.heal(damage * heal / 100)
 
     /**
      * 装備時の能力値変化
      */
-    fun equip(armedHero: ArmedHero, level: Int = this.level): ArmedHero {
+    fun equip(armedHero: ArmedHero, lv: Int = this.level): ArmedHero {
         if (type.isWeapon) {
-            armedHero.atkEqp += level
+            armedHero.atkEqp += lv
         }
         return armedHero
     }
@@ -403,10 +402,18 @@ interface Skill {
         return battleUnit
     }
 
-    fun beorcsBlessing(battleUnit: BattleUnit, enemy: BattleUnit, thisLevel: Int): BattleUnit {
+    fun beorcsBlessing(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit {
         val enemyType = enemy.armedHero.baseHero.moveType
         if (enemyType == MoveType.CAVALRY || enemyType == MoveType.FLIER) {
             enemy.antiBuffBonus = true
+        }
+        return battleUnit
+    }
+
+    fun dullRanged(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit {
+        val enemyType = enemy.armedHero.baseHero.weaponType
+        if (enemyType == WeaponType.RTOME || enemyType == WeaponType.BTOME || enemyType == WeaponType.GTOME || enemyType == WeaponType.BOW || enemyType == WeaponType.DAGGER || enemyType == WeaponType.STAFF) {
+            enemy.cannotCcounter = true
         }
         return battleUnit
     }
@@ -448,14 +455,14 @@ interface Skill {
     }
 
 
-    fun equipBrave(armedHero: ArmedHero, level: Int): ArmedHero {
-        armedHero.atkEqp += level
+    fun equipBrave(armedHero: ArmedHero, lv: Int): ArmedHero {
+        armedHero.atkEqp += lv
         armedHero.spdEqp -= 5
         return armedHero
     }
 
-    fun equipBlade(armedHero: ArmedHero, level: Int): ArmedHero {
-        armedHero.atkEqp += level
+    fun equipBlade(armedHero: ArmedHero, lv: Int): ArmedHero {
+        armedHero.atkEqp += lv
         armedHero.reduceSpecialCooldown -= 1
         return armedHero
     }
@@ -496,8 +503,17 @@ interface Skill {
         return battleUnit
     }
 
+    fun notFullHpAllBonus(battleUnit: BattleUnit, i: Int): BattleUnit {
+        if (battleUnit.hp < battleUnit.armedHero.maxHp) {
+            battleUnit.atkEffect += i
+            battleUnit.spdEffect += i
+            battleUnit.defEffect += i
+            battleUnit.resEffect += i
+        }
+        return battleUnit
+    }
+
     fun debuffBonus(battleUnit: BattleUnit, enemy: BattleUnit): BattleUnit {
-        val enemy = enemy
         battleUnit.debuffBonus = enemy.atkDebuff + enemy.spdDebuff + enemy.defBuff + enemy.resDebuff
         return battleUnit
     }

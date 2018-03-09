@@ -126,7 +126,7 @@ enum class RefineSkill(override val jp: Name, val hp: Int, val atk: Int, val spd
     DancersFan2(Name.DancersFan2, 0, 2, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.DancersFan2, 10, SkillType.DAGGER),
 
     LightningBreath2(Name.LightningBreath2, 0, 1, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.LightningBreath2, 11, SkillType.PENETRATE_DRAGON) {
-        override fun equip(armedHero: ArmedHero, level: Int): ArmedHero = equipBlade(armedHero, level)
+        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipBlade(armedHero, lv)
         override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = counterAllRange(battleUnit)
     },
     DarkBreath2(Name.DarkBreath2, 0, 1, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.DarkBreath2, 13, SkillType.PENETRATE_DRAGON),
@@ -172,35 +172,35 @@ enum class RefineSkill(override val jp: Name, val hp: Int, val atk: Int, val spd
     ;
 
     //装備効果がある武器に必要になるのか・・・しくじったかな？
-    override fun equipBlade(armedHero: ArmedHero, level: Int): ArmedHero {
+    override fun equipBlade(armedHero: ArmedHero, lv: Int): ArmedHero {
         //println("$jp hp:$hp")
         equipHp(armedHero, hp)
         equipAtk(armedHero, atk)
         equipSpd(armedHero, spd)
         equipDef(armedHero, def)
         equipRes(armedHero, res)
-        return super.equipBlade(armedHero, level)
+        return super.equipBlade(armedHero, lv)
     }
 
-    override fun equipKiller(armedHero: ArmedHero, level: Int): ArmedHero {
+    override fun equipKiller(armedHero: ArmedHero, lv: Int): ArmedHero {
         //println("$jp hp:$hp")
         equipHp(armedHero, hp)
         equipAtk(armedHero, atk)
         equipSpd(armedHero, spd)
         equipDef(armedHero, def)
         equipRes(armedHero, res)
-        return super.equipKiller(armedHero, level)
+        return super.equipKiller(armedHero, lv)
     }
 
 
-    override fun equip(armedHero: ArmedHero, level: Int): ArmedHero {
+    override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero {
         //println("$jp hp:$hp")
         equipHp(armedHero, hp)
         equipAtk(armedHero, atk)
         equipSpd(armedHero, spd)
         equipDef(armedHero, def)
         equipRes(armedHero, res)
-        return super.equip(armedHero, level)
+        return super.equip(armedHero, lv)
     }
 
     /**

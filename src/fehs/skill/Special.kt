@@ -1,127 +1,51 @@
 package jp.blogspot.turanukimaru.fehs.skill
 
 import jp.blogspot.turanukimaru.fehs.BattleUnit
+import jp.blogspot.turanukimaru.fehs.HandmaidMath
 import jp.blogspot.turanukimaru.fehs.Name
 import jp.blogspot.turanukimaru.fehs.SkillType
-import jp.blogspot.turanukimaru.fehs.HandmaidMath
 
 /**
  * スキル。武器/補助/奥義
  */
-enum class Special(override val jp: Name, override val type: SkillType, override val level: Int = 0, override val preSkill: Skill = Skill.NONE) : Skill {
-
-
-    DayLight(Name.Daylight, SkillType.SPECIAL_A, 3) {
-        override fun absorb(battleUnit: BattleUnit, target: BattleUnit, damage: Int): Int {
-            battleUnit.heal(damage * 3 / 10)
-            return damage
-        }
-    },
-    Noontime(Name.Noontime, SkillType.SPECIAL_A, 2) {
-        override fun absorb(battleUnit: BattleUnit, target: BattleUnit, damage: Int): Int {
-            battleUnit.heal(damage * 3 / 10)
-            return damage
-        }
-    },
-    Sol(Name.Sol, SkillType.SPECIAL_A, 3) {
-        override fun absorb(battleUnit: BattleUnit, target: BattleUnit, damage: Int): Int {
-            battleUnit.heal(damage * 5 / 10)
-            return damage
-        }
-    },
-    NightSky(Name.NightSky, SkillType.SPECIAL_A, 3) {
-        override fun damage(source: BattleUnit, target: BattleUnit, prevent: Int): Int = super.damage(source, target, prevent) * 15 / 10
-
-    },
-    Glimmer(Name.Glimmer, SkillType.SPECIAL_A, 2) {
-        override fun damage(source: BattleUnit, target: BattleUnit, prevent: Int): Int = super.damage(source, target, prevent) * 15 / 10
-
-    },
-    Astra(Name.Astra, SkillType.SPECIAL_A, 4) {
-        override fun damage(source: BattleUnit, target: BattleUnit, prevent: Int): Int = super.damage(source, target, prevent) * 25 / 10
-
-    },
-    RegnalAstra(Name.RegnalAstra, SkillType.SPECIAL_A, 2) {
-        override fun baseDamage(source: BattleUnit, target: BattleUnit): Int = source.colorAttack(target) + source.effectedSpd * 4 / 10
-    },
-    DraconicAura(Name.DraconicAura, SkillType.SPECIAL_A, 3) {
-        override fun baseDamage(source: BattleUnit, target: BattleUnit): Int = source.colorAttack(target) + source.effectedAtk * 3 / 10
-    },
-    DragonGaze(Name.DragonGaze, SkillType.SPECIAL_A, 4) {
-        override fun baseDamage(source: BattleUnit, target: BattleUnit): Int = source.colorAttack(target) + source.effectedAtk * 3 / 10
-    },
-    DragonFang(Name.DragonFang, SkillType.SPECIAL_A, 4) {
-        override fun baseDamage(source: BattleUnit, target: BattleUnit): Int = source.colorAttack(target) + source.effectedAtk * 5 / 10
-    },
-    GlowingEmber(Name.GlowingEmber, SkillType.SPECIAL_A, 4) {
-        override fun baseDamage(source: BattleUnit, target: BattleUnit): Int = source.colorAttack(target) + source.effectedDef * 5 / 10
-    },
-    Bonfire(Name.Bonfire, SkillType.SPECIAL_A, 3) {
-        override fun baseDamage(source: BattleUnit, target: BattleUnit): Int = source.colorAttack(target) + source.effectedDef * 5 / 10
-    },
-    Ignis(Name.Ignis, SkillType.SPECIAL_A, 4) {
-        override fun baseDamage(source: BattleUnit, target: BattleUnit): Int = source.colorAttack(target) + source.effectedDef * 8 / 10
-    },
-    ChillingWind(Name.ChillingWind, SkillType.SPECIAL_A, 4) {
-        override fun baseDamage(source: BattleUnit, target: BattleUnit): Int = source.colorAttack(target) + source.effectedRes * 5 / 10
-    },
-    Iceberg(Name.Iceberg, SkillType.SPECIAL_A, 3) {
-        override fun baseDamage(source: BattleUnit, target: BattleUnit): Int = source.colorAttack(target) + source.effectedRes * 5 / 10
-    },
-    Glacies(Name.Glacies, SkillType.SPECIAL_A, 4) {
-        override fun baseDamage(source: BattleUnit, target: BattleUnit): Int = source.colorAttack(target) + source.effectedRes * 8 / 10
-    },
-
-    Aether(Name.Aether, SkillType.SPECIAL_A, 5) {
-        override val penetrate: Int get() = 50
-
-        override fun absorb(battleUnit: BattleUnit, target: BattleUnit, damage: Int): Int {
-            battleUnit.heal(damage * 5 / 10)
-            return damage
-        }
-    },
-    RadiantAether(Name.RadiantAether, SkillType.SPECIAL_A, 4) {
-        override val penetrate: Int get() = 50
-
-        override fun absorb(battleUnit: BattleUnit, target: BattleUnit, damage: Int): Int {
-            battleUnit.heal(damage * 5 / 10)
-            return damage
-        }
-    },
-    NewMoon(Name.NewMoon, SkillType.SPECIAL_A, 3) {
-        override val penetrate: Int get() = 30
-    },
-    Moonbow(Name.Moonbow, SkillType.SPECIAL_A, 2) {
-        override val penetrate: Int get() = 30
-    },
-    Luna(Name.Luna, SkillType.SPECIAL_A, 3) {
-        override val penetrate: Int get() = 50
-    },
-    BlackLuna(Name.BlackLuna, SkillType.SPECIAL_A, 3) {
-        override val penetrate: Int get() = 80
-    },
-
-    Retribution(Name.Retribution, SkillType.SPECIAL_A, 3) {
-        override fun baseDamage(source: BattleUnit, target: BattleUnit): Int = source.colorAttack(target) + (source.armedHero.maxHp - source.hp) * 3 / 10
-    },
-    Reprisal(Name.Reprisal, SkillType.SPECIAL_A, 2) {
-        override fun baseDamage(source: BattleUnit, target: BattleUnit): Int = source.colorAttack(target) + (source.armedHero.maxHp - source.hp) * 3 / 10
-    },
-    Vengeance(Name.Vengeance, SkillType.SPECIAL_A, 3) {
-        override fun baseDamage(source: BattleUnit, target: BattleUnit): Int = source.colorAttack(target) + (source.armedHero.maxHp - source.hp) * 5 / 10
-    },
+enum class Special(override val jp: Name, override val type: SkillType, override val level: Int = 0, override val preSkill: Skill = Skill.NONE, override val mitMod: Int = 0, override val penetrate: Int = 0, override val heal: Int = 0, override val offMlt: Int = 10, override val stateDamage: (BattleUnit) -> Int = { _ -> 0 }) : Skill {
+    DayLight(Name.Daylight, SkillType.SPECIAL_A, 3, heal = 30),
+    Noontime(Name.Noontime, SkillType.SPECIAL_A, 2, heal = 30),
+    Sol(Name.Sol, SkillType.SPECIAL_A, 3, heal = 50),
+    NightSky(Name.NightSky, SkillType.SPECIAL_A, 3, offMlt = 15),
+    Glimmer(Name.Glimmer, SkillType.SPECIAL_A, 2, offMlt = 15),
+    Astra(Name.Astra, SkillType.SPECIAL_A, 4, offMlt = 25),
+    RegnalAstra(Name.RegnalAstra, SkillType.SPECIAL_A, 2, stateDamage = { source -> source.effectedSpd * 4 / 10 }),
+    DraconicAura(Name.DraconicAura, SkillType.SPECIAL_A, 3, stateDamage = { source -> source.effectedAtk * 3 / 10 }),
+    DragonGaze(Name.DragonGaze, SkillType.SPECIAL_A, 4, stateDamage = { source -> source.effectedAtk * 3 / 10 }),
+    DragonFang(Name.DragonFang, SkillType.SPECIAL_A, 4, stateDamage = { source -> source.effectedAtk * 5 / 10 }),
+    GlowingEmber(Name.GlowingEmber, SkillType.SPECIAL_A, 4, stateDamage = { source -> source.effectedDef * 5 / 10 }),
+    Bonfire(Name.Bonfire, SkillType.SPECIAL_A, 3, stateDamage = { source -> source.effectedDef * 5 / 10 }),
+    Ignis(Name.Ignis, SkillType.SPECIAL_A, 4, stateDamage = { source -> source.effectedDef * 8 / 10 }),
+    ChillingWind(Name.ChillingWind, SkillType.SPECIAL_A, 4, stateDamage = { source -> source.effectedRes * 5 / 10 }),
+    Iceberg(Name.Iceberg, SkillType.SPECIAL_A, 3, stateDamage = { source -> source.effectedRes * 5 / 10 }),
+    Glacies(Name.Glacies, SkillType.SPECIAL_A, 4, stateDamage = { source -> source.effectedRes * 8 / 10 }),
+    Aether(Name.Aether, SkillType.SPECIAL_A, 5, penetrate = 50, heal = 50),
+    RadiantAether(Name.RadiantAether, SkillType.SPECIAL_A, 4, penetrate = 50, heal = 50),
+    NewMoon(Name.NewMoon, SkillType.SPECIAL_A, 3, penetrate = 30),
+    Moonbow(Name.Moonbow, SkillType.SPECIAL_A, 2, penetrate = 30),
+    Luna(Name.Luna, SkillType.SPECIAL_A, 3, penetrate = 50),
+    BlackLuna(Name.BlackLuna, SkillType.SPECIAL_A, 3, penetrate = 80),
+    Retribution(Name.Retribution, SkillType.SPECIAL_A, 3, stateDamage = { source -> (source.armedHero.maxHp - source.hp) * 3 / 10 }),
+    Reprisal(Name.Reprisal, SkillType.SPECIAL_A, 2, stateDamage = { source -> (source.armedHero.maxHp - source.hp) * 3 / 10 }),
+    Vengeance(Name.Vengeance, SkillType.SPECIAL_A, 3, stateDamage = { source -> (source.armedHero.maxHp - source.hp) * 5 / 10 }),
 
     Miracle(Name.Miracle, SkillType.SPECIAL_C, 5) {
         override fun specialPrevent(battleUnit: BattleUnit, damage: Int, source: BattleUnit, lv: Int): Pair<Int, Skill> = if (battleUnit.hp in 2..damage) Pair(battleUnit.hp - 1, this) else super.specialPrevent(battleUnit, damage, source, lv)
     },
     HolyVestments(Name.HolyVestments, SkillType.SPECIAL_C, 3) {
-        override fun specialPrevent(battleUnit: BattleUnit, damage: Int, source: BattleUnit, lv: Int): Pair<Int, Skill> = if (source.armedHero.baseHero.weapon.type.weaponType!!.range == 2) Pair(HandmaidMath.max(0, damage - damage * 3 / 10+lv), this) else super.specialPrevent(battleUnit, damage, source, lv)
+        override fun specialPrevent(battleUnit: BattleUnit, damage: Int, source: BattleUnit, lv: Int): Pair<Int, Skill> = if (source.armedHero.baseHero.weapon.type.weaponType!!.range == 2) Pair(HandmaidMath.max(0, damage - damage * 3 / 10 + lv), this) else super.specialPrevent(battleUnit, damage, source, lv)
     },
     SacredCowl(Name.SacredCowl, SkillType.SPECIAL_C, 2) {
-        override fun specialPrevent(battleUnit: BattleUnit, damage: Int, source: BattleUnit, lv: Int): Pair<Int, Skill> = if (source.armedHero.baseHero.weapon.type.weaponType!!.range == 2) Pair(HandmaidMath.max(0, damage - damage * 3 / 10+lv), this) else super.specialPrevent(battleUnit, damage, source, lv)
+        override fun specialPrevent(battleUnit: BattleUnit, damage: Int, source: BattleUnit, lv: Int): Pair<Int, Skill> = if (source.armedHero.baseHero.weapon.type.weaponType!!.range == 2) Pair(HandmaidMath.max(0, damage - damage * 3 / 10 + lv), this) else super.specialPrevent(battleUnit, damage, source, lv)
     },
     IceMirror(Name.IceMirror, SkillType.SPECIAL_C, 2) {
-        override fun specialPrevent(battleUnit: BattleUnit, damage: Int, source: BattleUnit, lv: Int): Pair<Int, Skill> = if (source.armedHero.baseHero.weapon.type.weaponType!!.range == 2) Pair(HandmaidMath.max(0, damage - damage * 3 / 10+lv), this) else super.specialPrevent(battleUnit, damage, source, lv)
+        override fun specialPrevent(battleUnit: BattleUnit, damage: Int, source: BattleUnit, lv: Int): Pair<Int, Skill> = if (source.armedHero.baseHero.weapon.type.weaponType!!.range == 2) Pair(HandmaidMath.max(0, damage - damage * 3 / 10 + lv), this) else super.specialPrevent(battleUnit, damage, source, lv)
 
         override fun preventedDamage(battleUnit: BattleUnit, damage: Int, lv: Int): BattleUnit {
             battleUnit.oneTimeOnlyAdditionalDamage = damage
@@ -130,16 +54,16 @@ enum class Special(override val jp: Name, override val type: SkillType, override
 
     },
     Aegis(Name.Aegis, SkillType.SPECIAL_C, 3) {
-        override fun specialPrevent(battleUnit: BattleUnit, damage: Int, source: BattleUnit, lv: Int): Pair<Int, Skill> = if (source.armedHero.baseHero.weapon.type.weaponType!!.range == 2) Pair(HandmaidMath.max(0, damage - damage * 5 / 10+lv), this) else super.specialPrevent(battleUnit, damage, source, lv)
+        override fun specialPrevent(battleUnit: BattleUnit, damage: Int, source: BattleUnit, lv: Int): Pair<Int, Skill> = if (source.armedHero.baseHero.weapon.type.weaponType!!.range == 2) Pair(HandmaidMath.max(0, damage - damage * 5 / 10 + lv), this) else super.specialPrevent(battleUnit, damage, source, lv)
     },
     Buckler(Name.Buckler, SkillType.SPECIAL_C, 3) {
-        override fun specialPrevent(battleUnit: BattleUnit, damage: Int, source: BattleUnit, lv: Int): Pair<Int, Skill> = if (source.armedHero.baseHero.weapon.type.weaponType!!.range == 1) Pair(HandmaidMath.max(0, damage - damage * 3 / 10+lv), this) else super.specialPrevent(battleUnit, damage, source, lv)
+        override fun specialPrevent(battleUnit: BattleUnit, damage: Int, source: BattleUnit, lv: Int): Pair<Int, Skill> = if (source.armedHero.baseHero.weapon.type.weaponType!!.range == 1) Pair(HandmaidMath.max(0, damage - damage * 3 / 10 + lv), this) else super.specialPrevent(battleUnit, damage, source, lv)
     },
     Escutcheon(Name.Escutcheon, SkillType.SPECIAL_C, 2) {
-        override fun specialPrevent(battleUnit: BattleUnit, damage: Int, source: BattleUnit, lv: Int): Pair<Int, Skill> = if (source.armedHero.baseHero.weapon.type.weaponType!!.range == 1) Pair(HandmaidMath.max(0, damage - damage * 3 / 10+lv), this) else super.specialPrevent(battleUnit, damage, source, lv)
+        override fun specialPrevent(battleUnit: BattleUnit, damage: Int, source: BattleUnit, lv: Int): Pair<Int, Skill> = if (source.armedHero.baseHero.weapon.type.weaponType!!.range == 1) Pair(HandmaidMath.max(0, damage - damage * 3 / 10 + lv), this) else super.specialPrevent(battleUnit, damage, source, lv)
     },
     Pavise(Name.Pavise, SkillType.SPECIAL_C, 3) {
-        override fun specialPrevent(battleUnit: BattleUnit, damage: Int, source: BattleUnit, lv: Int): Pair<Int, Skill> = if (source.armedHero.baseHero.weapon.type.weaponType!!.range == 1) Pair(HandmaidMath.max(0, damage - damage * 5 / 10+lv), this) else super.specialPrevent(battleUnit, damage, source, lv)
+        override fun specialPrevent(battleUnit: BattleUnit, damage: Int, source: BattleUnit, lv: Int): Pair<Int, Skill> = if (source.armedHero.baseHero.weapon.type.weaponType!!.range == 1) Pair(HandmaidMath.max(0, damage - damage * 5 / 10 + lv), this) else super.specialPrevent(battleUnit, damage, source, lv)
     },
     Galeforce(Name.Galeforce, SkillType.SPECIAL_D, 5),
     Imbue(Name.Imbue, SkillType.SPECIAL_D, 1),

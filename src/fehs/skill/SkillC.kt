@@ -102,7 +102,7 @@ enum class SkillC(override val jp: Name, override val type: SkillType, override 
                 if (itemMap.isEmpty()) {
                     values().forEach { e -> itemMap.put(e.value, e);itemMap.put(e.jp.jp, e);itemMap.put(e.jp.us, e);itemMap.put(e.jp.tw, e) }
                 }
-                val regex = " \\baseDamage".toRegex()
+                val regex = " \\d".toRegex()
 
                 val lv = regex.find(key)
                 if (lv != null) {

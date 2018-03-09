@@ -68,7 +68,7 @@ enum class SkillA(override val jp: Name, override val type: SkillType, override 
     LifeAndDeath(Name.LifeAndDeath, SkillType.A) {
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = lifeAndDeath(armedHero, lv + 2)
     },
-    Furry(Name.Furry, SkillType.A) {
+    Fury(Name.Fury, SkillType.A) {
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = furry(armedHero, lv)
         override fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = attackHpLoss(battleUnit, lv * 2)
     },
@@ -128,6 +128,9 @@ enum class SkillA(override val jp: Name, override val type: SkillType, override 
     },
     WardingStance(Name.WardingStance, SkillType.A) {
         override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = blowRes(battleUnit, lv * 2)
+    },
+    MirrorStance(Name.MirrorStance, SkillType.A) {
+        override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = blowAtk(blowRes(battleUnit, lv * 2), lv * 2)
     },
     WardingBreath(Name.WardingBreath, SkillType.A, maxLevel = 0) {
         override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit {
@@ -238,7 +241,7 @@ enum class SkillA(override val jp: Name, override val type: SkillType, override 
                 if (itemMap.isEmpty()) {
                     values().forEach { e -> itemMap.put(e.value, e);itemMap.put(e.jp.jp, e);itemMap.put(e.jp.us, e);itemMap.put(e.jp.tw, e) }
                 }
-                val regex = " \\baseDamage".toRegex()
+                val regex = " \\d".toRegex()
 
                 val lv = regex.find(key)
                 if (lv != null) {

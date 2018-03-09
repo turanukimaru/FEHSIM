@@ -600,7 +600,7 @@ enum class Name(val jp: String, val us: String, val tw: String) {
     FlashingBlade("柔剣", "Flashing Blade", "柔劍"),
     FortressDef("守備の城塞", "Fortress Def", "防守堡壘"),
     FortressRes("魔防の城塞", "Fortress Res", "魔防堡壘"),
-    Furry("獅子奮迅", "Furry", "獅子奮迅"),
+    Fury("獅子奮迅", "Fury", "獅子奮迅"),
     GranisShield("グラニの盾", "Grani's Shield", "〇〇〇之盾"),
     HeavyBlade("剛剣", "Heavy Blade", "剛劍"),
     Hp("HP", "Hp", "HP"),
@@ -840,18 +840,31 @@ enum class Name(val jp: String, val us: String, val tw: String) {
 
     FeliciasBlade("奥義カウント+1", "Special cooldown charge +1 if foe uses magic", "Special cooldown charge +1 if foe uses magic"),
     BrazenDefRes("守備魔防の大覚醒", "Brazen Def Res", "防守魔防大覺醒"),
+    ChillDef("守備の封印", "Chill Def", "Chill Def"),
     ChillSpd("速さの封印", "Chill Spd", "Chill Spd"),
     Expiration("邪竜のブレス", "Expiration", "Expiration"),
     BelovedZofia("宝剣ソフィア", "Beloved Zofia", "Beloved Zofia"),
     セリカ__闇_("セリカ（闇）", "Celica (Fallen Heroes)", "賽莉卡 (Fallen Heroes)"),
     ハーディン__闇_("ハーディン（闇）", "Hardin (Fallen Heroes)", "Hardin"),
     ルフレ__闇_("ルフレ（闇）", "Robin (M) (Fallen Heroes)", "魯弗萊(M) (Fallen Heroes)"),
-    タクミ__闇_("タクミ（闇）","Takumi (Fallen Heroes)","拓海 (Fallen Heroes)"),
-    エフラム__伝承英雄_("エフラム（伝承英雄）","Ephraim (Legendary Lord)","艾夫拉姆 (Legendary Lord)"),
-    Skadi("スカディ","Skadi","Skadi"),
-    FlameSiegmund("炎槍ジークムント","Flame Siegmund","Flame Siegmund"),
-    SturdyStance("鬼神金剛の構え","Sturdy Stance","鬼神金剛架勢"),
-    SolarBrace("太陽の腕輪","Solar Brace","Solar Brace"),
+    タクミ__闇_("タクミ（闇）", "Takumi (Fallen Heroes)", "拓海 (Fallen Heroes)"),
+    エフラム__伝承英雄_("エフラム（伝承英雄）", "Ephraim (Legendary Lord)", "艾夫拉姆 (Legendary Lord)"),
+    Skadi("スカディ", "Skadi", "Skadi"),
+    FlameSiegmund("炎槍ジークムント", "Flame Siegmund", "Flame Siegmund"),
+    SturdyStance("鬼神金剛の構え", "Sturdy Stance", "鬼神金剛架勢"),
+    クロム__聖痕_("クロム（聖痕）", "Chrom (The Branded King)", "庫洛武(The Branded King)"),
+
+    マーク__男_("マーク（男）", "Morgan (M)", "Morgan (M)"),
+
+    マーク__女_("マーク（女）", "Morgan (F)", "Morgan (F)"),
+
+    SolarBrace("太陽の腕輪", "Solar Brace", "Solar Brace"),
+    SealedFalchion("封剣ファルシオン", "Sealed Falchion", "Sealed Falchion"),
+    GrimasTruth("魔書ギムレー", "GrimasTruth", "GrimasTruth"),
+    DullRanged("強化無効・遠距離", "Dull Ranged", "Dull Ranged"),
+    Blarserpent("ブラーサーペント", "Blárserpent", "Blárserpent"),
+    Blarserpent2("ブラーサーペント＋", "Blárserpent+", "Blárserpent+"),
+    MirrorStance("鬼神明鏡の構え", "MirrorStance", "鬼神明鏡架勢"),
     ;
 
     fun localeName(l: Locale): String =
@@ -861,7 +874,5 @@ enum class Name(val jp: String, val us: String, val tw: String) {
                 else -> us
             }
 
-    override fun toString(): String {
-        return jp
-    }
+    override fun toString(): String = jp
 }
