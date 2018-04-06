@@ -35,9 +35,12 @@ class FightPlan(val attacker: BattleUnit, val target: BattleUnit) {
     /**
      * 戦闘結果のリスト。攻撃ごとにHPが減ったりダメージを表示するために途中経過も含む
      */
-    val resultList = arrayListOf<AttackResult>()
+    private val resultList = arrayListOf<AttackResult>()
 
-    fun planning(): FightPlan {
+    /**
+     * 攻撃準に影響するスキルを発動させる
+     */
+    fun activatePlanningSkills(): FightPlan {
         attacker.attackPlan(this)
         target.counterPlan(this)
         return this

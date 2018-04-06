@@ -11,6 +11,392 @@
   }
 }(this, function (Kotlin) {
   var _ = Kotlin;
+  if (typeof String.prototype.startsWith === 'undefined') {
+    String.prototype.startsWith = function (searchString, position) {
+      position = position || 0;
+      return this.lastIndexOf(searchString, position) === position;
+    };
+  }
+  if (typeof String.prototype.endsWith === 'undefined') {
+    String.prototype.endsWith = function (searchString, position) {
+      var subjectString = this.toString();
+      if (position === undefined || position > subjectString.length) {
+        position = subjectString.length;
+      }
+      position -= searchString.length;
+      var lastIndex = subjectString.indexOf(searchString, position);
+      return lastIndex !== -1 && lastIndex === position;
+    };
+  }
+  if (typeof Math.sign === 'undefined') {
+    Math.sign = function (x) {
+      x = +x;
+      if (x === 0 || isNaN(x)) {
+        return Number(x);
+      }
+      return x > 0 ? 1 : -1;
+    };
+  }
+  if (typeof Math.trunc === 'undefined') {
+    Math.trunc = function (x) {
+      if (isNaN(x)) {
+        return NaN;
+      }
+      if (x > 0) {
+        return Math.floor(x);
+      }
+      return Math.ceil(x);
+    };
+  }
+  (function () {
+    var epsilon = 2.220446049250313E-16;
+    var taylor_2_bound = Math.sqrt(epsilon);
+    var taylor_n_bound = Math.sqrt(taylor_2_bound);
+    var upper_taylor_2_bound = 1 / taylor_2_bound;
+    var upper_taylor_n_bound = 1 / taylor_n_bound;
+    if (typeof Math.sinh === 'undefined') {
+      Math.sinh = function (x) {
+        if (Math.abs(x) < taylor_n_bound) {
+          var result = x;
+          if (Math.abs(x) > taylor_2_bound) {
+            result += x * x * x / 6;
+          }
+          return result;
+        }
+         else {
+          var y = Math.exp(x);
+          var y1 = 1 / y;
+          if (!isFinite(y))
+            return Math.exp(x - Math.LN2);
+          if (!isFinite(y1))
+            return -Math.exp(-x - Math.LN2);
+          return (y - y1) / 2;
+        }
+      };
+    }
+    if (typeof Math.cosh === 'undefined') {
+      Math.cosh = function (x) {
+        var y = Math.exp(x);
+        var y1 = 1 / y;
+        if (!isFinite(y) || !isFinite(y1))
+          return Math.exp(Math.abs(x) - Math.LN2);
+        return (y + y1) / 2;
+      };
+    }
+    if (typeof Math.tanh === 'undefined') {
+      Math.tanh = function (x) {
+        if (Math.abs(x) < taylor_n_bound) {
+          var result = x;
+          if (Math.abs(x) > taylor_2_bound) {
+            result -= x * x * x / 3;
+          }
+          return result;
+        }
+         else {
+          var a = Math.exp(+x), b = Math.exp(-x);
+          return a === Infinity ? 1 : b === Infinity ? -1 : (a - b) / (a + b);
+        }
+      };
+    }
+    if (typeof Math.asinh === 'undefined') {
+      var asinh = function (x) {
+        if (x >= +taylor_n_bound) {
+          if (x > upper_taylor_n_bound) {
+            if (x > upper_taylor_2_bound) {
+              return Math.log(x) + Math.LN2;
+            }
+             else {
+              return Math.log(x * 2 + 1 / (x * 2));
+            }
+          }
+           else {
+            return Math.log(x + Math.sqrt(x * x + 1));
+          }
+        }
+         else if (x <= -taylor_n_bound) {
+          return -asinh(-x);
+        }
+         else {
+          var result = x;
+          if (Math.abs(x) >= taylor_2_bound) {
+            var x3 = x * x * x;
+            result -= x3 / 6;
+          }
+          return result;
+        }
+      };
+      Math.asinh = asinh;
+    }
+    if (typeof Math.acosh === 'undefined') {
+      Math.acosh = function (x) {
+        if (x < 1) {
+          return NaN;
+        }
+         else if (x - 1 >= taylor_n_bound) {
+          if (x > upper_taylor_2_bound) {
+            return Math.log(x) + Math.LN2;
+          }
+           else {
+            return Math.log(x + Math.sqrt(x * x - 1));
+          }
+        }
+         else {
+          var y = Math.sqrt(x - 1);
+          var result = y;
+          if (y >= taylor_2_bound) {
+            var y3 = y * y * y;
+            result -= y3 / 12;
+          }
+          return Math.sqrt(2) * result;
+        }
+      };
+    }
+    if (typeof Math.atanh === 'undefined') {
+      Math.atanh = function (x) {
+        if (Math.abs(x) < taylor_n_bound) {
+          var result = x;
+          if (Math.abs(x) > taylor_2_bound) {
+            result += x * x * x / 3;
+          }
+          return result;
+        }
+        return Math.log((1 + x) / (1 - x)) / 2;
+      };
+    }
+    if (typeof Math.log1p === 'undefined') {
+      Math.log1p = function (x) {
+        if (Math.abs(x) < taylor_n_bound) {
+          var x2 = x * x;
+          var x3 = x2 * x;
+          var x4 = x3 * x;
+          return -x4 / 4 + x3 / 3 - x2 / 2 + x;
+        }
+        return Math.log(x + 1);
+      };
+    }
+    if (typeof Math.expm1 === 'undefined') {
+      Math.expm1 = function (x) {
+        if (Math.abs(x) < taylor_n_bound) {
+          var x2 = x * x;
+          var x3 = x2 * x;
+          var x4 = x3 * x;
+          return x4 / 24 + x3 / 6 + x2 / 2 + x;
+        }
+        return Math.exp(x) - 1;
+      };
+    }
+  }());
+  if (typeof Math.hypot === 'undefined') {
+    Math.hypot = function () {
+      var y = 0;
+      var length = arguments.length;
+      for (var i = 0; i < length; i++) {
+        if (arguments[i] === Infinity || arguments[i] === -Infinity) {
+          return Infinity;
+        }
+        y += arguments[i] * arguments[i];
+      }
+      return Math.sqrt(y);
+    };
+  }
+  if (typeof Math.log10 === 'undefined') {
+    Math.log10 = function (x) {
+      return Math.log(x) * Math.LOG10E;
+    };
+  }
+  if (typeof Math.log2 === 'undefined') {
+    Math.log2 = function (x) {
+      return Math.log(x) * Math.LOG2E;
+    };
+  }
+  if (typeof ArrayBuffer.isView === 'undefined') {
+    ArrayBuffer.isView = function (a) {
+      return a != null && a.__proto__ != null && a.__proto__.__proto__ === Int8Array.prototype.__proto__;
+    };
+  }
+  (function () {
+    function normalizeOffset(offset, length) {
+      if (offset < 0)
+        return Math.max(0, offset + length);
+      return Math.min(offset, length);
+    }
+    function typedArraySlice(begin, end) {
+      if (typeof end === 'undefined') {
+        end = this.length;
+      }
+      begin = normalizeOffset(begin || 0, this.length);
+      end = Math.max(begin, normalizeOffset(end, this.length));
+      return new this.constructor(this.subarray(begin, end));
+    }
+    var arrays = [Int8Array, Int16Array, Uint16Array, Int32Array, Float32Array, Float64Array];
+    for (var i = 0; i < arrays.length; ++i) {
+      var TypedArray = arrays[i];
+      if (typeof TypedArray.prototype.slice === 'undefined') {
+        Object.defineProperty(TypedArray.prototype, 'slice', {value: typedArraySlice});
+      }
+    }
+    try {
+      (function () {
+      }.apply(null, new Int32Array(0)));
+    }
+     catch (e) {
+      var apply = Function.prototype.apply;
+      Object.defineProperty(Function.prototype, 'apply', {value: function (self, array) {
+        return apply.call(this, self, [].slice.call(array));
+      }});
+    }
+    for (var i = 0; i < arrays.length; ++i) {
+      var TypedArray = arrays[i];
+      if (typeof TypedArray.prototype.map === 'undefined') {
+        Object.defineProperty(TypedArray.prototype, 'map', {value: function (callback, self) {
+          return [].slice.call(this).map(callback, self);
+        }});
+      }
+    }
+    for (var i = 0; i < arrays.length; ++i) {
+      var TypedArray = arrays[i];
+      if (typeof TypedArray.prototype.sort === 'undefined') {
+        Object.defineProperty(TypedArray.prototype, 'sort', {value: function (compareFunction) {
+          return Array.prototype.sort.call(this, compareFunction);
+        }});
+      }
+    }
+  }());
+  Kotlin.getCallableRef = function (name, f) {
+    f.callableName = name;
+    return f;
+  };
+  Kotlin.getPropertyCallableRef = function (name, paramCount, getter, setter) {
+    getter.get = getter;
+    getter.set = setter;
+    getter.callableName = name;
+    return getPropertyRefClass(getter, setter, propertyRefClassMetadataCache[paramCount]);
+  };
+  function getPropertyRefClass(obj, setter, cache) {
+    obj.$metadata$ = getPropertyRefMetadata(typeof setter === 'function' ? cache.mutable : cache.immutable);
+    obj.constructor = obj;
+    return obj;
+  }
+  var propertyRefClassMetadataCache = [{mutable: {value: null, implementedInterface: function () {
+    return Kotlin.kotlin.reflect.KMutableProperty0;
+  }}, immutable: {value: null, implementedInterface: function () {
+    return Kotlin.kotlin.reflect.KProperty0;
+  }}}, {mutable: {value: null, implementedInterface: function () {
+    return Kotlin.kotlin.reflect.KMutableProperty1;
+  }}, immutable: {value: null, implementedInterface: function () {
+    return Kotlin.kotlin.reflect.KProperty1;
+  }}}];
+  function getPropertyRefMetadata(cache) {
+    if (cache.value === null) {
+      cache.value = {interfaces: [cache.implementedInterface()], baseClass: null, functions: {}, properties: {}, types: {}, staticMembers: {}};
+    }
+    return cache.value;
+  }
+  Kotlin.toShort = function (a) {
+    return (a & 65535) << 16 >> 16;
+  };
+  Kotlin.toByte = function (a) {
+    return (a & 255) << 24 >> 24;
+  };
+  Kotlin.toChar = function (a) {
+    return a & 65535;
+  };
+  Kotlin.numberToLong = function (a) {
+    return a instanceof Kotlin.Long ? a : Kotlin.Long.fromNumber(a);
+  };
+  Kotlin.numberToInt = function (a) {
+    return a instanceof Kotlin.Long ? a.toInt() : Kotlin.doubleToInt(a);
+  };
+  Kotlin.numberToShort = function (a) {
+    return Kotlin.toShort(Kotlin.numberToInt(a));
+  };
+  Kotlin.numberToByte = function (a) {
+    return Kotlin.toByte(Kotlin.numberToInt(a));
+  };
+  Kotlin.numberToDouble = function (a) {
+    return +a;
+  };
+  Kotlin.numberToChar = function (a) {
+    return Kotlin.toChar(Kotlin.numberToInt(a));
+  };
+  Kotlin.doubleToInt = function (a) {
+    if (a > 2147483647)
+      return 2147483647;
+    if (a < -2147483648)
+      return -2147483648;
+    return a | 0;
+  };
+  Kotlin.toBoxedChar = function (a) {
+    if (a == null)
+      return a;
+    if (a instanceof Kotlin.BoxedChar)
+      return a;
+    return new Kotlin.BoxedChar(a);
+  };
+  Kotlin.unboxChar = function (a) {
+    if (a == null)
+      return a;
+    return Kotlin.toChar(a);
+  };
+  Kotlin.defineModule = function (id, declaration) {
+  };
+  Kotlin.defineInlineFunction = function (tag, fun) {
+    return fun;
+  };
+  Kotlin.wrapFunction = function (fun) {
+    var f = function () {
+      f = fun();
+      return f.apply(this, arguments);
+    };
+    return function () {
+      return f.apply(this, arguments);
+    };
+  };
+  Kotlin.isTypeOf = function (type) {
+    return function (object) {
+      return typeof object === type;
+    };
+  };
+  Kotlin.isInstanceOf = function (klass) {
+    return function (object) {
+      return Kotlin.isType(object, klass);
+    };
+  };
+  Kotlin.orNull = function (fn) {
+    return function (object) {
+      return object == null || fn(object);
+    };
+  };
+  Kotlin.andPredicate = function (a, b) {
+    return function (object) {
+      return a(object) && b(object);
+    };
+  };
+  Kotlin.kotlinModuleMetadata = function (abiVersion, moduleName, data) {
+  };
+  Kotlin.suspendCall = function (value) {
+    return value;
+  };
+  Kotlin.coroutineResult = function (qualifier) {
+    throwMarkerError();
+  };
+  Kotlin.coroutineController = function (qualifier) {
+    throwMarkerError();
+  };
+  Kotlin.coroutineReceiver = function (qualifier) {
+    throwMarkerError();
+  };
+  Kotlin.setCoroutineResult = function (value, qualifier) {
+    throwMarkerError();
+  };
+  function throwMarkerError() {
+    throw new Error('This marker function should never been called. ' + 'Looks like compiler did not eliminate it properly. ' + 'Please, report an issue if you caught this exception.');
+  }
+  Kotlin.getFunctionById = function (id, defaultValue) {
+    return function () {
+      return defaultValue;
+    };
+  };
   Kotlin.Long = function (low, high) {
     this.low_ = low | 0;
     this.high_ = high | 0;
@@ -455,287 +841,94 @@
   Kotlin.Long.prototype.rangeTo = function (other) {
     return new Kotlin.kotlin.ranges.LongRange(this, other);
   };
-  Kotlin.getCallableRef = function (name, f) {
-    f.callableName = name;
-    return f;
+  Kotlin.Kind = {CLASS: 'class', INTERFACE: 'interface', OBJECT: 'object'};
+  Kotlin.callGetter = function (thisObject, klass, propertyName) {
+    var propertyDescriptor = Object.getOwnPropertyDescriptor(klass, propertyName);
+    if (propertyDescriptor != null && propertyDescriptor.get != null) {
+      return propertyDescriptor.get.call(thisObject);
+    }
+    propertyDescriptor = Object.getOwnPropertyDescriptor(thisObject, propertyName);
+    if (propertyDescriptor != null && 'value' in propertyDescriptor) {
+      return thisObject[propertyName];
+    }
+    return Kotlin.callGetter(thisObject, Object.getPrototypeOf(klass), propertyName);
   };
-  Kotlin.getPropertyCallableRef = function (name, paramCount, getter, setter) {
-    getter.get = getter;
-    getter.set = setter;
-    getter.callableName = name;
-    return getPropertyRefClass(getter, setter, propertyRefClassMetadataCache[paramCount]);
+  Kotlin.callSetter = function (thisObject, klass, propertyName, value) {
+    var propertyDescriptor = Object.getOwnPropertyDescriptor(klass, propertyName);
+    if (propertyDescriptor != null && propertyDescriptor.set != null) {
+      propertyDescriptor.set.call(thisObject, value);
+      return;
+    }
+    propertyDescriptor = Object.getOwnPropertyDescriptor(thisObject, propertyName);
+    if (propertyDescriptor != null && 'value' in propertyDescriptor) {
+      thisObject[propertyName] = value;
+      return;
+    }
+    Kotlin.callSetter(thisObject, Object.getPrototypeOf(klass), propertyName, value);
   };
-  function getPropertyRefClass(obj, setter, cache) {
-    obj.$metadata$ = getPropertyRefMetadata(typeof setter === 'function' ? cache.mutable : cache.immutable);
-    obj.constructor = obj;
-    return obj;
-  }
-  var propertyRefClassMetadataCache = [{mutable: {value: null, implementedInterface: function () {
-    return Kotlin.kotlin.reflect.KMutableProperty0;
-  }}, immutable: {value: null, implementedInterface: function () {
-    return Kotlin.kotlin.reflect.KProperty0;
-  }}}, {mutable: {value: null, implementedInterface: function () {
-    return Kotlin.kotlin.reflect.KMutableProperty1;
-  }}, immutable: {value: null, implementedInterface: function () {
-    return Kotlin.kotlin.reflect.KProperty1;
-  }}}];
-  function getPropertyRefMetadata(cache) {
-    if (cache.value === null) {
-      cache.value = {interfaces: [cache.implementedInterface()], baseClass: null, functions: {}, properties: {}, types: {}, staticMembers: {}};
-    }
-    return cache.value;
-  }
-  if (typeof String.prototype.startsWith === 'undefined') {
-    String.prototype.startsWith = function (searchString, position) {
-      position = position || 0;
-      return this.lastIndexOf(searchString, position) === position;
-    };
-  }
-  if (typeof String.prototype.endsWith === 'undefined') {
-    String.prototype.endsWith = function (searchString, position) {
-      var subjectString = this.toString();
-      if (position === undefined || position > subjectString.length) {
-        position = subjectString.length;
-      }
-      position -= searchString.length;
-      var lastIndex = subjectString.indexOf(searchString, position);
-      return lastIndex !== -1 && lastIndex === position;
-    };
-  }
-  if (typeof Math.sign === 'undefined') {
-    Math.sign = function (x) {
-      x = +x;
-      if (x === 0 || isNaN(x)) {
-        return Number(x);
-      }
-      return x > 0 ? 1 : -1;
-    };
-  }
-  if (typeof Math.trunc === 'undefined') {
-    Math.trunc = function (x) {
-      if (isNaN(x)) {
-        return NaN;
-      }
-      if (x > 0) {
-        return Math.floor(x);
-      }
-      return Math.ceil(x);
-    };
-  }
-  (function () {
-    var epsilon = 2.220446049250313E-16;
-    var taylor_2_bound = Math.sqrt(epsilon);
-    var taylor_n_bound = Math.sqrt(taylor_2_bound);
-    var upper_taylor_2_bound = 1 / taylor_2_bound;
-    var upper_taylor_n_bound = 1 / taylor_n_bound;
-    if (typeof Math.sinh === 'undefined') {
-      Math.sinh = function (x) {
-        if (Math.abs(x) < taylor_n_bound) {
-          var result = x;
-          if (Math.abs(x) > taylor_2_bound) {
-            result += x * x * x / 6;
-          }
-          return result;
+  function isInheritanceFromInterface(ctor, iface) {
+    if (ctor === iface)
+      return true;
+    var metadata = ctor.$metadata$;
+    if (metadata != null) {
+      var interfaces = metadata.interfaces;
+      for (var i = 0; i < interfaces.length; i++) {
+        if (isInheritanceFromInterface(interfaces[i], iface)) {
+          return true;
         }
-         else {
-          var y = Math.exp(x);
-          var y1 = 1 / y;
-          if (!isFinite(y))
-            return Math.exp(x - Math.LN2);
-          if (!isFinite(y1))
-            return -Math.exp(-x - Math.LN2);
-          return (y - y1) / 2;
-        }
-      };
-    }
-    if (typeof Math.cosh === 'undefined') {
-      Math.cosh = function (x) {
-        var y = Math.exp(x);
-        var y1 = 1 / y;
-        if (!isFinite(y) || !isFinite(y1))
-          return Math.exp(Math.abs(x) - Math.LN2);
-        return (y + y1) / 2;
-      };
-    }
-    if (typeof Math.tanh === 'undefined') {
-      Math.tanh = function (x) {
-        if (Math.abs(x) < taylor_n_bound) {
-          var result = x;
-          if (Math.abs(x) > taylor_2_bound) {
-            result -= x * x * x / 3;
-          }
-          return result;
-        }
-         else {
-          var a = Math.exp(+x), b = Math.exp(-x);
-          return a === Infinity ? 1 : b === Infinity ? -1 : (a - b) / (a + b);
-        }
-      };
-    }
-    if (typeof Math.asinh === 'undefined') {
-      var asinh = function (x) {
-        if (x >= +taylor_n_bound) {
-          if (x > upper_taylor_n_bound) {
-            if (x > upper_taylor_2_bound) {
-              return Math.log(x) + Math.LN2;
-            }
-             else {
-              return Math.log(x * 2 + 1 / (x * 2));
-            }
-          }
-           else {
-            return Math.log(x + Math.sqrt(x * x + 1));
-          }
-        }
-         else if (x <= -taylor_n_bound) {
-          return -asinh(-x);
-        }
-         else {
-          var result = x;
-          if (Math.abs(x) >= taylor_2_bound) {
-            var x3 = x * x * x;
-            result -= x3 / 6;
-          }
-          return result;
-        }
-      };
-      Math.asinh = asinh;
-    }
-    if (typeof Math.acosh === 'undefined') {
-      Math.acosh = function (x) {
-        if (x < 1) {
-          return NaN;
-        }
-         else if (x - 1 >= taylor_n_bound) {
-          if (x > upper_taylor_2_bound) {
-            return Math.log(x) + Math.LN2;
-          }
-           else {
-            return Math.log(x + Math.sqrt(x * x - 1));
-          }
-        }
-         else {
-          var y = Math.sqrt(x - 1);
-          var result = y;
-          if (y >= taylor_2_bound) {
-            var y3 = y * y * y;
-            result -= y3 / 12;
-          }
-          return Math.sqrt(2) * result;
-        }
-      };
-    }
-    if (typeof Math.atanh === 'undefined') {
-      Math.atanh = function (x) {
-        if (Math.abs(x) < taylor_n_bound) {
-          var result = x;
-          if (Math.abs(x) > taylor_2_bound) {
-            result += x * x * x / 3;
-          }
-          return result;
-        }
-        return Math.log((1 + x) / (1 - x)) / 2;
-      };
-    }
-    if (typeof Math.log1p === 'undefined') {
-      Math.log1p = function (x) {
-        if (Math.abs(x) < taylor_n_bound) {
-          var x2 = x * x;
-          var x3 = x2 * x;
-          var x4 = x3 * x;
-          return -x4 / 4 + x3 / 3 - x2 / 2 + x;
-        }
-        return Math.log(x + 1);
-      };
-    }
-    if (typeof Math.expm1 === 'undefined') {
-      Math.expm1 = function (x) {
-        if (Math.abs(x) < taylor_n_bound) {
-          var x2 = x * x;
-          var x3 = x2 * x;
-          var x4 = x3 * x;
-          return x4 / 24 + x3 / 6 + x2 / 2 + x;
-        }
-        return Math.exp(x) - 1;
-      };
-    }
-  }());
-  if (typeof Math.hypot === 'undefined') {
-    Math.hypot = function () {
-      var y = 0;
-      var length = arguments.length;
-      for (var i = 0; i < length; i++) {
-        if (arguments[i] === Infinity || arguments[i] === -Infinity) {
-          return Infinity;
-        }
-        y += arguments[i] * arguments[i];
-      }
-      return Math.sqrt(y);
-    };
-  }
-  if (typeof Math.log10 === 'undefined') {
-    Math.log10 = function (x) {
-      return Math.log(x) * Math.LOG10E;
-    };
-  }
-  if (typeof Math.log2 === 'undefined') {
-    Math.log2 = function (x) {
-      return Math.log(x) * Math.LOG2E;
-    };
-  }
-  if (typeof ArrayBuffer.isView === 'undefined') {
-    ArrayBuffer.isView = function (a) {
-      return a != null && a.__proto__ != null && a.__proto__.__proto__ === Int8Array.prototype.__proto__;
-    };
-  }
-  (function () {
-    function normalizeOffset(offset, length) {
-      if (offset < 0)
-        return Math.max(0, offset + length);
-      return Math.min(offset, length);
-    }
-    function typedArraySlice(begin, end) {
-      if (typeof end === 'undefined') {
-        end = this.length;
-      }
-      begin = normalizeOffset(begin || 0, this.length);
-      end = Math.max(begin, normalizeOffset(end, this.length));
-      return new this.constructor(this.subarray(begin, end));
-    }
-    var arrays = [Int8Array, Int16Array, Uint16Array, Int32Array, Float32Array, Float64Array];
-    for (var i = 0; i < arrays.length; ++i) {
-      var TypedArray = arrays[i];
-      if (typeof TypedArray.prototype.slice === 'undefined') {
-        Object.defineProperty(TypedArray.prototype, 'slice', {value: typedArraySlice});
       }
     }
-    try {
-      (function () {
-      }.apply(null, new Int32Array(0)));
-    }
-     catch (e) {
-      var apply = Function.prototype.apply;
-      Object.defineProperty(Function.prototype, 'apply', {value: function (self, array) {
-        return apply.call(this, self, [].slice.call(array));
-      }});
-    }
-    for (var i = 0; i < arrays.length; ++i) {
-      var TypedArray = arrays[i];
-      if (typeof TypedArray.prototype.map === 'undefined') {
-        Object.defineProperty(TypedArray.prototype, 'map', {value: function (callback, self) {
-          return [].slice.call(this).map(callback, self);
-        }});
+    var superPrototype = ctor.prototype != null ? Object.getPrototypeOf(ctor.prototype) : null;
+    var superConstructor = superPrototype != null ? superPrototype.constructor : null;
+    return superConstructor != null && isInheritanceFromInterface(superConstructor, iface);
+  }
+  Kotlin.isType = function (object, klass) {
+    if (klass === Object) {
+      switch (typeof object) {
+        case 'string':
+        case 'number':
+        case 'boolean':
+        case 'function':
+          return true;
+        default:return object instanceof Object;
       }
     }
-    for (var i = 0; i < arrays.length; ++i) {
-      var TypedArray = arrays[i];
-      if (typeof TypedArray.prototype.sort === 'undefined') {
-        Object.defineProperty(TypedArray.prototype, 'sort', {value: function (compareFunction) {
-          return Array.prototype.sort.call(this, compareFunction);
-        }});
+    if (object == null || klass == null || (typeof object !== 'object' && typeof object !== 'function')) {
+      return false;
+    }
+    if (typeof klass === 'function' && object instanceof klass) {
+      return true;
+    }
+    var proto = Object.getPrototypeOf(klass);
+    var constructor = proto != null ? proto.constructor : null;
+    if (constructor != null && '$metadata$' in constructor) {
+      var metadata = constructor.$metadata$;
+      if (metadata.kind === Kotlin.Kind.OBJECT) {
+        return object === klass;
       }
     }
-  }());
+    var klassMetadata = klass.$metadata$;
+    if (klassMetadata == null) {
+      return object instanceof klass;
+    }
+    if (klassMetadata.kind === Kotlin.Kind.INTERFACE && object.constructor != null) {
+      return isInheritanceFromInterface(object.constructor, klass);
+    }
+    return false;
+  };
+  Kotlin.isNumber = function (a) {
+    return typeof a == 'number' || a instanceof Kotlin.Long;
+  };
+  Kotlin.isChar = function (value) {
+    return value instanceof Kotlin.BoxedChar;
+  };
+  Kotlin.isComparable = function (value) {
+    var type = typeof value;
+    return type === 'string' || type === 'boolean' || Kotlin.isNumber(value) || Kotlin.isType(value, Kotlin.kotlin.Comparable);
+  };
+  Kotlin.isCharSequence = function (value) {
+    return typeof value === 'string' || Kotlin.isType(value, Kotlin.kotlin.CharSequence);
+  };
   Kotlin.isBooleanArray = function (a) {
     return (Array.isArray(a) || a instanceof Int8Array) && a.$type$ === 'BooleanArray';
   };
@@ -917,199 +1110,6 @@
   }());
   Kotlin.ensureNotNull = function (x) {
     return x != null ? x : Kotlin.throwNPE();
-  };
-  Kotlin.defineModule = function (id, declaration) {
-  };
-  Kotlin.defineInlineFunction = function (tag, fun) {
-    return fun;
-  };
-  Kotlin.wrapFunction = function (fun) {
-    var f = function () {
-      f = fun();
-      return f.apply(this, arguments);
-    };
-    return function () {
-      return f.apply(this, arguments);
-    };
-  };
-  Kotlin.isTypeOf = function (type) {
-    return function (object) {
-      return typeof object === type;
-    };
-  };
-  Kotlin.isInstanceOf = function (klass) {
-    return function (object) {
-      return Kotlin.isType(object, klass);
-    };
-  };
-  Kotlin.orNull = function (fn) {
-    return function (object) {
-      return object == null || fn(object);
-    };
-  };
-  Kotlin.andPredicate = function (a, b) {
-    return function (object) {
-      return a(object) && b(object);
-    };
-  };
-  Kotlin.kotlinModuleMetadata = function (abiVersion, moduleName, data) {
-  };
-  Kotlin.suspendCall = function (value) {
-    return value;
-  };
-  Kotlin.coroutineResult = function (qualifier) {
-    throwMarkerError();
-  };
-  Kotlin.coroutineController = function (qualifier) {
-    throwMarkerError();
-  };
-  Kotlin.coroutineReceiver = function (qualifier) {
-    throwMarkerError();
-  };
-  Kotlin.setCoroutineResult = function (value, qualifier) {
-    throwMarkerError();
-  };
-  function throwMarkerError() {
-    throw new Error('This marker function should never been called. ' + 'Looks like compiler did not eliminate it properly. ' + 'Please, report an issue if you caught this exception.');
-  }
-  Kotlin.getFunctionById = function (id, defaultValue) {
-    return function () {
-      return defaultValue;
-    };
-  };
-  Kotlin.Kind = {CLASS: 'class', INTERFACE: 'interface', OBJECT: 'object'};
-  Kotlin.callGetter = function (thisObject, klass, propertyName) {
-    var propertyDescriptor = Object.getOwnPropertyDescriptor(klass, propertyName);
-    if (propertyDescriptor != null && propertyDescriptor.get != null) {
-      return propertyDescriptor.get.call(thisObject);
-    }
-    propertyDescriptor = Object.getOwnPropertyDescriptor(thisObject, propertyName);
-    if (propertyDescriptor != null && 'value' in propertyDescriptor) {
-      return thisObject[propertyName];
-    }
-    return Kotlin.callGetter(thisObject, Object.getPrototypeOf(klass), propertyName);
-  };
-  Kotlin.callSetter = function (thisObject, klass, propertyName, value) {
-    var propertyDescriptor = Object.getOwnPropertyDescriptor(klass, propertyName);
-    if (propertyDescriptor != null && propertyDescriptor.set != null) {
-      propertyDescriptor.set.call(thisObject, value);
-      return;
-    }
-    propertyDescriptor = Object.getOwnPropertyDescriptor(thisObject, propertyName);
-    if (propertyDescriptor != null && 'value' in propertyDescriptor) {
-      thisObject[propertyName] = value;
-      return;
-    }
-    Kotlin.callSetter(thisObject, Object.getPrototypeOf(klass), propertyName, value);
-  };
-  function isInheritanceFromInterface(ctor, iface) {
-    if (ctor === iface)
-      return true;
-    var metadata = ctor.$metadata$;
-    if (metadata != null) {
-      var interfaces = metadata.interfaces;
-      for (var i = 0; i < interfaces.length; i++) {
-        if (isInheritanceFromInterface(interfaces[i], iface)) {
-          return true;
-        }
-      }
-    }
-    var superPrototype = ctor.prototype != null ? Object.getPrototypeOf(ctor.prototype) : null;
-    var superConstructor = superPrototype != null ? superPrototype.constructor : null;
-    return superConstructor != null && isInheritanceFromInterface(superConstructor, iface);
-  }
-  Kotlin.isType = function (object, klass) {
-    if (klass === Object) {
-      switch (typeof object) {
-        case 'string':
-        case 'number':
-        case 'boolean':
-        case 'function':
-          return true;
-        default:return object instanceof Object;
-      }
-    }
-    if (object == null || klass == null || (typeof object !== 'object' && typeof object !== 'function')) {
-      return false;
-    }
-    if (typeof klass === 'function' && object instanceof klass) {
-      return true;
-    }
-    var proto = Object.getPrototypeOf(klass);
-    var constructor = proto != null ? proto.constructor : null;
-    if (constructor != null && '$metadata$' in constructor) {
-      var metadata = constructor.$metadata$;
-      if (metadata.kind === Kotlin.Kind.OBJECT) {
-        return object === klass;
-      }
-    }
-    var klassMetadata = klass.$metadata$;
-    if (klassMetadata == null) {
-      return object instanceof klass;
-    }
-    if (klassMetadata.kind === Kotlin.Kind.INTERFACE && object.constructor != null) {
-      return isInheritanceFromInterface(object.constructor, klass);
-    }
-    return false;
-  };
-  Kotlin.isNumber = function (a) {
-    return typeof a == 'number' || a instanceof Kotlin.Long;
-  };
-  Kotlin.isChar = function (value) {
-    return value instanceof Kotlin.BoxedChar;
-  };
-  Kotlin.isComparable = function (value) {
-    var type = typeof value;
-    return type === 'string' || type === 'boolean' || Kotlin.isNumber(value) || Kotlin.isType(value, Kotlin.kotlin.Comparable);
-  };
-  Kotlin.isCharSequence = function (value) {
-    return typeof value === 'string' || Kotlin.isType(value, Kotlin.kotlin.CharSequence);
-  };
-  Kotlin.toShort = function (a) {
-    return (a & 65535) << 16 >> 16;
-  };
-  Kotlin.toByte = function (a) {
-    return (a & 255) << 24 >> 24;
-  };
-  Kotlin.toChar = function (a) {
-    return a & 65535;
-  };
-  Kotlin.numberToLong = function (a) {
-    return a instanceof Kotlin.Long ? a : Kotlin.Long.fromNumber(a);
-  };
-  Kotlin.numberToInt = function (a) {
-    return a instanceof Kotlin.Long ? a.toInt() : Kotlin.doubleToInt(a);
-  };
-  Kotlin.numberToShort = function (a) {
-    return Kotlin.toShort(Kotlin.numberToInt(a));
-  };
-  Kotlin.numberToByte = function (a) {
-    return Kotlin.toByte(Kotlin.numberToInt(a));
-  };
-  Kotlin.numberToDouble = function (a) {
-    return +a;
-  };
-  Kotlin.numberToChar = function (a) {
-    return Kotlin.toChar(Kotlin.numberToInt(a));
-  };
-  Kotlin.doubleToInt = function (a) {
-    if (a > 2147483647)
-      return 2147483647;
-    if (a < -2147483648)
-      return -2147483648;
-    return a | 0;
-  };
-  Kotlin.toBoxedChar = function (a) {
-    if (a == null)
-      return a;
-    if (a instanceof Kotlin.BoxedChar)
-      return a;
-    return new Kotlin.BoxedChar(a);
-  };
-  Kotlin.unboxChar = function (a) {
-    if (a == null)
-      return a;
-    return Kotlin.toChar(a);
   };
   Kotlin.equals = function (obj1, obj2) {
     if (obj1 == null) {

@@ -1,6 +1,7 @@
 package jp.blogspot.turanukimaru.fehs
 
 /**
+ * ロケールで使い分ける名前
  * Created by turanukimaru on 2017/12/23.
  *
  **/
@@ -846,7 +847,7 @@ enum class Name(val jp: String, val us: String, val tw: String) {
     BelovedZofia("宝剣ソフィア", "Beloved Zofia", "Beloved Zofia"),
     セリカ__闇_("セリカ（闇）", "Celica (Fallen Heroes)", "賽莉卡 (Fallen Heroes)"),
     ハーディン__闇_("ハーディン（闇）", "Hardin (Fallen Heroes)", "Hardin"),
-    ルフレ__闇_("ルフレ（闇）", "Robin (M) (Fallen Heroes)", "魯弗萊(M) (Fallen Heroes)"),
+    ルフレ__闇_("ルフレ（男闇）", "Robin (M) (Fallen Heroes)", "魯弗萊(M) (Fallen Heroes)"),
     タクミ__闇_("タクミ（闇）", "Takumi (Fallen Heroes)", "拓海 (Fallen Heroes)"),
     エフラム__伝承英雄_("エフラム（伝承英雄）", "Ephraim (Legendary Lord)", "艾夫拉姆 (Legendary Lord)"),
     Skadi("スカディ", "Skadi", "Skadi"),
@@ -864,9 +865,40 @@ enum class Name(val jp: String, val us: String, val tw: String) {
     DullRanged("強化無効・遠距離", "Dull Ranged", "Dull Ranged"),
     Blarserpent("ブラーサーペント", "Blárserpent", "Blárserpent"),
     Blarserpent2("ブラーサーペント＋", "Blárserpent+", "Blárserpent+"),
+    WindsBrand("深き印の風","Wind's Brand","Wind's Brand"),
+
+    カゲロウ__春_("カゲロウ（春）", "Kagero (Hares at the Fair)", "陽炎 (Spring)"),
+    シャロン__春_("シャロン（春）", "Sharena (Hares at the Fair)", "夏蓉 (Spring)"),
+    カチュア__春_("カチュア（春）", "Catria (Hares at the Fair)", "卡秋雅 (Spring)"),
+    アルフォンス__春_("アルフォンス（春）", "Alfonse (Hares at the Fair)", "阿爾馮斯 (Spring)"),
+
+    HuginnsEgg("フギンの魔卵","Huginn's Egg",""),
+    ChillRes("魔防の封印","Chill Res",""),
+    MuninnsEgg("ムニンの魔卵","Muninn's Egg",""),
+    SwiftStance("飛燕明鏡の構え","Swift Stance",""),
+    GiantSpoon("ビッグスプーン","Giant Spoon",""),
+    GiantSpoon2("ビッグスプーン＋","Giant Spoon+",""),
+    DefSmoke ("守備の紫煙","Def Smoke",""),
+    LethalCarrot("ベビーキャロット","Lethal Carrot",""),
+    LethalCarrot2("ベビーキャロット＋","Lethal Carrot+",""),
+    SpdResBond("速さ魔防の絆","Spd/Res Bond",""),
+
+    セネリオ2("セネリオ＋", "Soren+", "賽涅里歐＋"),
+
     MirrorStance("鬼神明鏡の構え", "MirrorStance", "鬼神明鏡架勢"),
+    Owl("Atk/Spd/Def/Res + 隣接ユニットx2", "Atk/Spd/Def/Res + allies × 2", "Atk/Spd/Def/Res + allies × 2"),
+
+    ジェローム("ジェローム", "Gerome", ""),
+    Poleaxe("ポールアクス","Poleaxe",""),
+    Poleaxe2("ポールアクス＋","Poleaxe+",""),
+    ルフレ__女闇_("ルフレ（女闇）", "Robin(F)(Fell Vessel)", "魯弗萊(F)(Fell Vessel)"),
+    Dragonskin("邪竜の鱗","Dragonskin",""),
+    ResSmoke("魔防の紫煙","Res Smoke",""),
     ;
 
+    /**
+     * ロケールから対応する文字列を出す
+     */
     fun localeName(l: Locale): String =
             when (l) {
                 Locale.JAPANESE -> jp

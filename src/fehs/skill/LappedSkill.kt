@@ -2,6 +2,9 @@ package jp.blogspot.turanukimaru.fehs.skill
 
 import jp.blogspot.turanukimaru.fehs.Locale
 
+/**
+ * レベルを変更したスキル。
+ */
 class LappedSkill(val skill: Skill, override val level: Int) : Skill by skill {
 
     override fun localeName(locale: Locale): String = skill.jp.localeName(locale) + if (level > 0) " " + level else ""

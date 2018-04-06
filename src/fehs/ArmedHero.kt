@@ -31,8 +31,12 @@ data class ArmedHero(
         var defSpur: Int = 0,
         var resSpur: Int = 0
 ) {
+    /**
+     * 武器。錬成してるときは錬成武器
+     */
     val weapon
-        get() = if (refinedWeapon != Skill.NONE) RefineSkill.valueOfWeapon(baseWeapon) ?: baseWeapon else baseWeapon
+        get() = if (refinedWeapon != Skill.NONE) RefineSkill.valueOfWeapon(baseWeapon)
+                ?: baseWeapon else baseWeapon
     /**
      * スキルのリスト。戦闘時などにすべてのスキルをなめるのに使う。読み取り専用プロパティにすることで毎回その時のプロパティからリストを作れるはず
      * 個体が編集されているときは編集後のスキルを使う
@@ -105,7 +109,7 @@ data class ArmedHero(
     /**
      * 得意不得意の能力値。最大が0なのはダミーデータ。アーダンの能力値↑は設定限界を超えるため
      */
-    val growths = baseHero.growths
+   private val growths = baseHero.growths
     val specialCoolDownTime: Int get() = special.level - reduceSpecialCooldown
     val statusText: String get() = "H" + maxHp + " A" + atk + " S" + spd + " D" + def + " R" + res
 
@@ -172,29 +176,19 @@ data class ArmedHero(
      */
     fun reducedDamage(battleUnit: BattleUnit, damage: Int): BattleUnit = skills.fold(battleUnit, { b, skill -> skill.preventedDamage(b, damage) })
 
-
-    /**
-     * 攻撃が物理か。物理でないなら魔法。武器種類側に持たせるのもあり
-     */
-//    fun isMaterialWeapon(): Boolean = baseHero.weaponType.isMaterial
-
     /**
      * 攻撃が魔法か。魔法特効って杖にも効くのかな？
      */
     fun isMagicWeapon(): Boolean = baseHero.isMagicWeapon()
 
     /**
-     * 攻撃が魔法か。魔法特効って杖にも効くのかな？
+     * 武器と移動タイプが両方同じか。nullのときは無視する
      */
-//    fun isMeleeWeapon(): Boolean = baseHero.isMeleeWeapon()
-
-    /**
-     * 攻撃が魔法か。魔法特効って杖にも効くのかな？
-     */
-//    fun isMissileWeapon(): Boolean = baseHero.isMissileWeapon()
-
     fun have(weaponType: WeaponType?, moveType: MoveType?): Boolean = (weaponType == null || baseHero.weaponType == weaponType) && (moveType == null || baseHero.moveType == moveType)
 
+    /**
+     * レベル40＋Xのときの能力値計算
+     */
     private fun lvUpStatus() {
         hpBoost = 0
         atkBoost = 0
@@ -235,6 +229,9 @@ data class ArmedHero(
         })
     }
 
+    /**
+     * 装備計算。レベル計算も含む
+     */
     fun equip() {
         hpEqp = 0
         atkEqp = 0
@@ -247,7 +244,7 @@ data class ArmedHero(
     }
 
     /**
-     *
+     * LV1の時の能力値計算。武器以外装備してない・杖は武器も装備してないのでABCスキルは計算しない
      */
     fun lv1equip(): BattleParam {
         hpEqp = 0
@@ -271,6 +268,9 @@ data class ArmedHero(
 
     }
 
+    /**
+     * 得意は1不得意は-1他は0にした能力値
+     */
     fun goodStatus(): BattleParam =
             BattleParam(growths[rarity - 1][baseHero.hpGrowth + 1] + growths[rarity - 1][baseHero.hpGrowth - 1] - growths[rarity - 1][baseHero.hpGrowth] * 2,
                     growths[rarity - 1][baseHero.atkGrowth + 1] + growths[rarity - 1][baseHero.atkGrowth - 1] - growths[rarity - 1][baseHero.atkGrowth] * 2,
@@ -278,6 +278,9 @@ data class ArmedHero(
                     growths[rarity - 1][baseHero.defGrowth + 1] + growths[rarity - 1][baseHero.defGrowth - 1] - growths[rarity - 1][baseHero.defGrowth] * 2,
                     growths[rarity - 1][baseHero.resGrowth + 1] + growths[rarity - 1][baseHero.resGrowth - 1] - growths[rarity - 1][baseHero.resGrowth] * 2)
 
+    /**
+     * 名称。DB保存名かロケールの名前
+     */
     fun localeName(locale: Locale): String {
         if (name.isNotEmpty()) return name
         return baseHero.name.localeName(locale)

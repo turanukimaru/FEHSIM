@@ -188,9 +188,12 @@ data class BattleUnit(val armedHero: ArmedHero
     /**
      * 能力値計算後に適応する必要のある受け側戦闘効果
      */
-    fun effectedCcounterEffect(enemy: BattleUnit): BattleUnit = armedHero.effectedCcounterEffect(this, enemy)
+    private fun effectedCcounterEffect(enemy: BattleUnit): BattleUnit = armedHero.effectedCcounterEffect(this, enemy)
 
-    fun afterFightEffect() {
+    /**
+     * 戦闘後効果。HP減らしてからスキル総なめ。
+     */
+    private fun afterFightEffect() {
         lossHp(hpLossAtEndOfFight)
         armedHero.afterFightEffect(this)
     }
@@ -213,7 +216,7 @@ data class BattleUnit(val armedHero: ArmedHero
         //スキルのattackplan内で能力値の再計算すりゃいいか
         val effectedAttacker = attacker.bothEffect(target).attackEffect(target)
         val effectedTarget = target.bothEffect(attacker).counterEffect(attacker)
-        return FightPlan(effectedAttacker.effectedAttackEffect(target), effectedTarget.effectedCcounterEffect(attacker)).planning()
+        return FightPlan(effectedAttacker.effectedAttackEffect(target), effectedTarget.effectedCcounterEffect(attacker)).activatePlanningSkills()
     }
 
 
@@ -227,6 +230,9 @@ data class BattleUnit(val armedHero: ArmedHero
      */
     fun counterPlan(fightPlan: FightPlan): FightPlan = if (disableChangePlan) fightPlan else armedHero.counterPlan(fightPlan)
 
+    /**
+     * 攻撃とそのあとの効果。攻撃時効果と戦闘時効果があるんだよな…
+     */
     fun fightAndAfterEffect(targetUnit: BattleUnit): List<AttackResult> {
         val result = fight(targetUnit)
         result.last().source.afterFightEffect()
@@ -252,7 +258,10 @@ data class BattleUnit(val armedHero: ArmedHero
 
     }
 
-    fun buildDamage(results: List<AttackResult>): Damage {
+    /**
+     * 奥義が発動したか判定してダメージを構築する
+     */
+    private fun buildDamage(results: List<AttackResult>): Damage {
         //攻撃時に発動するかの条件がある奥義が出たらどうしよう…
         if (specialCount >= armedHero.specialCoolDownTime && armedHero.special.type == SkillType.SPECIAL_A) {
             specialCount = 0

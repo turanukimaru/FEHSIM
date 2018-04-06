@@ -19,6 +19,9 @@ interface ModelObjectRepository<T> {
      */
     fun delete(item: T): Int
 
+    /**
+     * 削除
+     */
     fun deleteById(id: String): Int
 
     /**
@@ -26,7 +29,13 @@ interface ModelObjectRepository<T> {
      */
     fun complexQuery(item: T): List<T>
 
+    /**
+     * 全部リスト
+     */
     fun allItems(): List<T>
 
+    /**
+     * Id指定して取得
+     */
     fun getById(id: String): T?
 }

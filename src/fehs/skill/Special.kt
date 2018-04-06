@@ -6,7 +6,7 @@ import jp.blogspot.turanukimaru.fehs.Name
 import jp.blogspot.turanukimaru.fehs.SkillType
 
 /**
- * スキル。武器/補助/奥義
+ * スキル。奥義
  */
 enum class Special(override val jp: Name, override val type: SkillType, override val level: Int = 0, override val preSkill: Skill = Skill.NONE, override val mitMod: Int = 0, override val penetrate: Int = 0, override val heal: Int = 0, override val offMlt: Int = 10, override val stateDamage: (BattleUnit) -> Int = { _ -> 0 }) : Skill {
     DayLight(Name.Daylight, SkillType.SPECIAL_A, 3, heal = 30),
@@ -102,7 +102,7 @@ enum class Special(override val jp: Name, override val type: SkillType, override
 
         fun valueOfOrNONE(key: String?): Skill = if (key == null) Skill.NONE else try {
             if (itemMap.isEmpty()) {
-                values().forEach { e -> itemMap.put(e.jp.jp, e);itemMap.put(e.value, e);itemMap.put(e.jp.us, e);itemMap.put(e.jp.tw, e) }
+                values().forEach { e -> itemMap[e.jp.jp] = e;itemMap[e.value] = e;itemMap[e.jp.us] = e;itemMap[e.jp.tw] = e }
             }
             itemMap[key] ?: valueOf(key)
         } catch (e: Exception) {

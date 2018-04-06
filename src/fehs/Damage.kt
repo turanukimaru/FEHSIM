@@ -3,8 +3,7 @@ package jp.blogspot.turanukimaru.fehs
 import jp.blogspot.turanukimaru.fehs.skill.Skill
 
 /**
- * これテスト死ぬほど大変だな…
- * Created by turanukimaru on 2018/02/20.
+ * ダメージを分離したもの
  */
 class Damage(source: BattleUnit, val special: Skill, weaponType: SkillType, flat: Int, staff: Int, results: List<AttackResult>) {
     val deal: (BattleUnit) -> DamageResult = {

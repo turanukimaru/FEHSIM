@@ -21,6 +21,9 @@ data class AttackResult(val source: BattleUnit, val target: BattleUnit, val dama
             } + if (sourceSpecial != null || targetSpecial != null) " wakeup ${sourceSpecial?.value
                     ?: ""} ${targetSpecial?.value ?: ""}" else ""
 
+    /**
+     * やり取りの文字列表現
+     */
     fun detailsShort(baseSide: SIDES, locale: Locale): String =
             when (baseSide) {
                 side -> "↓$damage "

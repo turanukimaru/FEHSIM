@@ -66,6 +66,8 @@ enum class SkillC(override val jp: Name, override val type: SkillType, override 
     InfantryPulse(Name.InfantryPulse, SkillType.C),
     AtkSmoke(Name.AtkSmoke, SkillType.C),
     SpdSmoke(Name.SpdSmoke, SkillType.C),
+    DefSmoke(Name.DefSmoke, SkillType.C),
+    ResSmoke(Name.ResSmoke, SkillType.C),
     ArmorMarch(Name.ArmorMarch, SkillType.C),
     Guidance(Name.Guidance, SkillType.C),
     AtkTactic(Name.AtkTactic, SkillType.C),
@@ -100,7 +102,7 @@ enum class SkillC(override val jp: Name, override val type: SkillType, override 
         else {
             try {
                 if (itemMap.isEmpty()) {
-                    values().forEach { e -> itemMap.put(e.value, e);itemMap.put(e.jp.jp, e);itemMap.put(e.jp.us, e);itemMap.put(e.jp.tw, e) }
+                    values().forEach { e -> itemMap[e.value] = e;itemMap[e.jp.jp] = e;itemMap[e.jp.us] = e;itemMap[e.jp.tw] = e }
                 }
                 val regex = " \\d".toRegex()
 

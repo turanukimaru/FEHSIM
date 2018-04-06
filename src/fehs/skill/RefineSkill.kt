@@ -4,7 +4,7 @@ import jp.blogspot.turanukimaru.fehs.*
 
 
 /**
- * スキル。補助
+ * 錬成武器
  */
 enum class RefineSkill(override val jp: Name, val hp: Int, val atk: Int, val spd: Int, val def: Int, val res: Int, val refineSkillType: RefineSkill.RefineType = RefineSkill.RefineType.NONE, override val preSkill: Skill = Skill.NONE, override val level: Int = 0, override val type: SkillType = SkillType.REFINERY) : Skill {
     //基本ルール
@@ -12,7 +12,6 @@ enum class RefineSkill(override val jp: Name, val hp: Int, val atk: Int, val spd
     Range1Spd(Name.Range1Spd, 5, 0, 3, 0, 0, RefineType.Range1),
     Range1Def(Name.Range1Def, 5, 0, 0, 4, 0, RefineType.Range1),
     Range1Res(Name.Range1Res, 5, 0, 0, 0, 4, RefineType.Range1),
-
 
     Range2Atk(Name.Range2Atk, 2, 1, 0, 0, 0, RefineType.Range2),
     Range2Spd(Name.Range2Spd, 2, 0, 2, 0, 0, RefineType.Range2),
@@ -169,7 +168,15 @@ enum class RefineSkill(override val jp: Name, val hp: Int, val atk: Int, val spd
     FeliciasPlate(Name.FeliciasBlade, 0, 0, 0, 0, 0, RefineType.DependWeapon, Weapon.FeliciasPlate) {
         override fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = feliciasBlade(battleUnit, enemy)
     },
-    ;
+
+    Sieglinde(Name.Sieglinde, 0, 0, 0, 0, 0, RefineType.DependWeapon, Weapon.Sieglinde),
+    WindsBrand(Name.Owl, 0, 0, 0, 0, 0, RefineType.DependWeapon, Weapon.WindsBrand) {
+        override fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = allBonus(battleUnit, battleUnit.adjacentUnits * 2)
+        },
+    Brynhildr(Name.Brynhildr, 0, 0, 0, 0, 0, RefineType.DependWeapon, Weapon.Brynhildr) {
+        override fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = antiFollowupRangedDef(battleUnit, enemy)
+    },
+            ;
 
     //装備効果がある武器に必要になるのか・・・しくじったかな？
     override fun equipBlade(armedHero: ArmedHero, lv: Int): ArmedHero {
@@ -207,15 +214,6 @@ enum class RefineSkill(override val jp: Name, val hp: Int, val atk: Int, val spd
      * nameは誤動作するので共通処理としてはvalueを使う。ただしこのスキルに限りスキル名はそのままは使わない
      */
     override val value get() = name
-    //private val paramString = "${if (hp > 0) "HP+$hp " else ""}${if (spd > 0) "速さ+$spd " else ""}${if (def > 0) "守備+$def " else ""}${if (res > 0) "魔防+$res " else ""}"
-    //val paramStringJp = paramString + jp
-    //val paramStringUs = paramString + us
-    /**
-     * 武器名は使えないのでUSを格納してそれを使う
-     */
-    // override fun localeName(locale: Locale): String = jp.localeName(locale)
-
-//    fun totalAtk(weapon: Skill): String = "威力" + (weapon.level  + atk).toString() + " "
 
     companion object {
 
@@ -226,7 +224,7 @@ enum class RefineSkill(override val jp: Name, val hp: Int, val atk: Int, val spd
         fun valueOfWeapon(weapon: Skill) = values().find { e -> e.refineSkillType == RefineType.ReplaceWeapon && e.preSkill == weapon }
         fun valueOfOrNONE(key: String?): Skill = if (key == null || key.isEmpty()) Skill.NONE else try {
             if (itemMap.isEmpty()) {
-                values().forEach { e -> itemMap.put(e.value, e);itemMap.put(e.jp.jp, e); itemMap.put(e.jp.us, e); itemMap.put(e.jp.tw, e) }
+                values().forEach { e -> itemMap[e.value] = e;itemMap[e.jp.jp] = e; itemMap[e.jp.us] = e; itemMap[e.jp.tw] = e }
             }
             //println(key)
             itemMap[key] ?: valueOf(key)
@@ -235,6 +233,9 @@ enum class RefineSkill(override val jp: Name, val hp: Int, val atk: Int, val spd
         }
     }
 
+    /**
+     * 錬成タイプ。種類によって基本的なルールが異なる。でもこれ使い道の違うタイプが混ざってるんだよな分けたほうがいいかなあ
+     */
     enum class RefineType {
         NONE,
         Range1,
