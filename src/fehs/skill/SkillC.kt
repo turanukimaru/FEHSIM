@@ -16,6 +16,7 @@ enum class SkillC(override val jp: Name, override val type: SkillType, override 
     SpurDefRes(Name.SpurDefRes, SkillType.C, maxLevel = 2),
     SpurSpdDef(Name.SpurSpdDef, SkillType.C, maxLevel = 2),
     SpurAtkSpd(Name.SpurAtkSpd, SkillType.C, maxLevel = 2),
+    SpurAtkDef(Name.SpurAtkDef, SkillType.C, maxLevel = 2),
     ThreatenAtk(Name.ThreatenAtk, SkillType.C),
     ThreatenSpd(Name.ThreatenSpd, SkillType.C),
     ThreatenDef(Name.ThreatenDef, SkillType.C),
@@ -58,6 +59,7 @@ enum class SkillC(override val jp: Name, override val type: SkillType, override 
     RTomeExperience(Name.RTomeExperience, SkillType.C),
     BTomeValor(Name.BTomeValor, SkillType.C),
     GTomeValor(Name.GTomeValor, SkillType.C),
+    GTomeExperience(Name.GTomeExperience, SkillType.C),
     PanicPloy(Name.PanicPloy, SkillType.C),
     AtkPloy(Name.AtkPloy, SkillType.C),
     SpdPloy(Name.SpdPloy, SkillType.C),
@@ -113,7 +115,7 @@ enum class SkillC(override val jp: Name, override val type: SkillType, override 
                     (itemMap[skill] ?: valueOf(skill)).lv(lv.value.trim().toInt())
                 } else itemMap[key] ?: valueOf(key)
             } catch (e: Exception) {
-                println(e)
+//                println(e)
                 Skill.NONE
             }
         }

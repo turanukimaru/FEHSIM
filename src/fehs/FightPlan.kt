@@ -102,10 +102,18 @@ class FightPlan(val attacker: BattleUnit, val target: BattleUnit) {
         }
         //勇者の時は2回攻撃
         if (attacker.doubleAttack) {
-
             plan.add(plan.indexOf(firstAttack), firstAttack)
             if (plan.indexOf(secondAttack) > 0) {
                 plan.add(plan.indexOf(secondAttack), secondAttack)
+            }
+        }
+        //受けの時も2回攻撃する武器ができた…反撃はそもそもできないこともあるので両方チェック
+        if (target.doubleAttack) {
+            if (plan.indexOf(firstCounter) > 0) {
+                plan.add(plan.indexOf(firstCounter), firstCounter)
+            }
+            if (plan.indexOf(secondCounter) > 0) {
+                plan.add(plan.indexOf(secondCounter), secondCounter)
             }
         }
     }

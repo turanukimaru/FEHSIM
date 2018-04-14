@@ -732,6 +732,11 @@ interface Skill {
         return battleUnit
     }
 
+    fun defHigherThanResBonus(battleUnit: BattleUnit, enemy: BattleUnit): BattleUnit {
+        if(enemy.def-5>= enemy.res) battleUnit.atkEffect+=7
+        return battleUnit
+    }
+
     /**
      * 相手のデバフ分攻撃に追加。デバフボーナスに変数用意してるけどエフェクトに統合すべきかなあ
      */

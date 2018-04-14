@@ -156,7 +156,10 @@ enum class SkillB(override val jp: Name, override val type: SkillType, override 
     ChillSpd(Name.ChillSpd, SkillType.B),
     ChillDef(Name.ChillDef, SkillType.B),
     ChillRes(Name.ChillRes, SkillType.B),
+SDrink(Name.SDrink,SkillType.B, maxLevel = 0){
+    override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipKiller(armedHero, lv)
 
+},
     ;
 
     /**
@@ -196,7 +199,7 @@ enum class SkillB(override val jp: Name, override val type: SkillType, override 
                     (itemMap[skill] ?: valueOf(skill)).lv(lv.value.trim().toInt())
                 } else itemMap[key] ?: valueOf(key)
             } catch (e: Exception) {
-                println(e)
+//                println(e)
                 Skill.NONE
             }
         }

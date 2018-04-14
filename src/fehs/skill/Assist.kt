@@ -28,6 +28,7 @@ enum class Assist(override val jp: Name, override val type: SkillType, override 
     Rehabilitate(Name.Rehabilitate, SkillType.ASSIST),
     Mend(Name.Mend, SkillType.ASSIST),
     Recover(Name.Recover, SkillType.ASSIST),
+    Restore(Name.Restore, SkillType.ASSIST),
     Physic(Name.Physic, SkillType.ASSIST),
     Martyr(Name.Martyr, SkillType.ASSIST),
     ArdentSacrifice(Name.ArdentSacrifice, SkillType.ASSIST),

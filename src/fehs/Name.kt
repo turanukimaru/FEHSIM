@@ -709,6 +709,7 @@ enum class Name(val jp: String, val us: String, val tw: String) {
     FortifyFliers("飛盾の鼓舞", "Fortify Fliers", "飛盾鼓舞"),
     FortifyRes("魔防の鼓舞", "Fortify Res", "魔防鼓舞"),
     GTomeValor("緑魔の技量", "G Tome Valor", "緑魔之技巧"),
+    GTomeExperience("緑魔の経験", "G Tome Experience", "緑魔之經驗"),
     GoadArmor("重刃の紋章", "Goad Armor", "重刃紋章"),
     GoadCavalry("騎刃の紋章", "Goad Cavalry", "騎刃紋章"),
     GoadFliers("飛刃の紋章", "Goad Fliers", "飛刃紋章"),
@@ -894,6 +895,20 @@ enum class Name(val jp: String, val us: String, val tw: String) {
     ルフレ__女闇_("ルフレ（女闇）", "Robin(F)(Fell Vessel)", "魯弗萊(F)(Fell Vessel)"),
     Dragonskin("邪竜の鱗","Dragonskin",""),
     ResSmoke("魔防の紫煙","Res Smoke",""),
+
+    リーフ("リーフ","Leif","Leif"),
+    ナンナ("ナンナ","Nanna","Nanna"),
+    ラインハルト__トラキア_("ラインハルト（トラキア）","Reinhardt (World of Thracia)","萊茵哈特 (World of Thracia)"),
+    オルエン__トラキア_("オルエン（トラキア）","Olwen (World of Thracia)","歐爾玟 (World of Thracia)"),
+    フィン("フィン","Finn","Finn"),
+    サイアス("サイアス","Saias","Saias"),
+    LightBrand("光の剣","Light Brand","Light Brand"),
+    SDrink("Sドリンク","S Drink","S Drink"),
+    Meisterschwert("マスターソード","Meisterschwert","Meisterschwert"),
+    SpurAtkDef("攻撃守備の紋章","Spur Atk/Def","Spur Atk/Def"),
+    WargodsTome("Wargod's Tome","Wargod's Tome","Wargod's Tome"),
+    Restore("レスト","Restore","Restore"),
+    Thunderhead("雷旋の書","Thunderhead","Thunderhead"),
     ;
 
     /**
