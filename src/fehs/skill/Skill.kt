@@ -819,9 +819,9 @@ interface Skill {
     /**
      * 特効無効化
      */
-    fun antiEffectiveAgainst(battleUnit: BattleUnit, type: EffectiveAgainst): BattleUnit {
-        if (battleUnit.effectiveAgainst == type) {
-            battleUnit.effectiveAgainst = EffectiveAgainst.NONE
+    fun antiEffectiveAgainst(battleUnit: BattleUnit, enemy: BattleUnit, type: EffectiveAgainst): BattleUnit {
+        if (enemy.effectiveAgainst == type) {
+            enemy.effectiveAgainst = EffectiveAgainst.NONE
         }
         return battleUnit
 

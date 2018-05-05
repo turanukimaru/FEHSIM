@@ -39,6 +39,7 @@ enum class SkillC(override val jp: Name, override val type: SkillType, override 
     HoneFliers(Name.HoneFliers, SkillType.C, maxLevel = 0),
     GoadArmor(Name.GoadArmor, SkillType.C, maxLevel = 0),
     GoadCavalry(Name.GoadCavalry, SkillType.C, maxLevel = 0),
+    GoadDragons(Name.GoadDragons, SkillType.C, maxLevel = 0),
     GoadFliers(Name.GoadFliers, SkillType.C, maxLevel = 0),
     WardArmor(Name.WardArmor, SkillType.C, maxLevel = 0),
     WardCavalry(Name.WardCavalry, SkillType.C, maxLevel = 0),
@@ -73,8 +74,10 @@ enum class SkillC(override val jp: Name, override val type: SkillType, override 
     ArmorMarch(Name.ArmorMarch, SkillType.C),
     Guidance(Name.Guidance, SkillType.C),
     AtkTactic(Name.AtkTactic, SkillType.C),
+    SpdTactic(Name.SpdTactic, SkillType.C),
     DefTactic(Name.DefTactic, SkillType.C),
     ResTactic(Name.ResTactic, SkillType.C),
+    FlierGuidance(Name.FlierGuidance, SkillType.C),
 
     ;
 

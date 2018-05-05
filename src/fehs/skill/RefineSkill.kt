@@ -132,10 +132,7 @@ enum class RefineSkill(override val jp: Name, val hp: Int, val atk: Int, val spd
     BerkutsLance2(Name.BerkutsLance2, 0, 1, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.BerkutsLance2, 16, SkillType.LANCE) {
         override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = blowRes(battleUnit, 4)
     },
-    //錬成時じゃなくてグレードアップする奴だから錬成枠から外す。今頃開発側もルールが統一できなくて焦ってるに違いない
-//    GuardBow2(Name.GuardBow2, 0, 1, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.AssassinsBow2, 11, SkillType.BOW) {
-//        override fun counterEffect(battleUnit: BattleUnit, lv: Int): BattleUnit = distantDef(battleUnit, 6)
-//    },
+
     DeathlyDagger(Name.DeathlyDagger, 0, 3, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.DeathlyDagger, 11, SkillType.DAGGER) {
         override fun attackEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = attackPain(battleUnit, enemy, 10)
     },
@@ -176,7 +173,20 @@ enum class RefineSkill(override val jp: Name, val hp: Int, val atk: Int, val spd
     Brynhildr(Name.Brynhildr, 0, 0, 0, 0, 0, RefineType.DependWeapon, Weapon.Brynhildr) {
         override fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = antiFollowupRangedDef(battleUnit, enemy)
     },
-            ;
+
+    Forblaze(Name.DeathBlow, 0, 0, 0, 0, 0, RefineType.DependWeapon, Weapon.Forblaze) {
+        override fun attackEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = blowAtk(battleUnit, 6)
+    },
+    BindingBlade(Name.BindingBlade, 0, 0, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.BindingBlade,16 , SkillType.SWORD) {
+        override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = blowDef(blowRes(battleUnit, 4), 4)
+    },
+    BindingBlade2(Name.QuickRiposte, 3, 0, 0, 0, 0, RefineType.DependWeapon, Weapon.BindingBlade) {
+        override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = followupable(battleUnit,  5)
+    },
+    NamelessBlade(Name.SpecialDamage, 3, 0, 0, 0, 0, RefineType.DependWeapon, Weapon.NamelessBlade) {
+        override fun specialTriggered(battleUnit: BattleUnit, damage: Int): Int = damage + 10
+    },
+    ;
 
     //装備効果がある武器に必要になるのか・・・しくじったかな？
     override fun equipBlade(armedHero: ArmedHero, lv: Int): ArmedHero {

@@ -76,7 +76,7 @@ enum class Weapon(override val jp: Name, override val type: SkillType, override 
     FalchionC(Name.FalchionC, SkillType.SWORD, 16, SilverSword, RefineSkill.RefineType.Range1) {
         override fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = effectiveAgainst(WeaponType.DRAGON, battleUnit, enemy)
     },
-    BindingBlade(Name.BindingBlade, SkillType.SWORD, 16, SilverSword) {
+    BindingBlade(Name.BindingBlade, SkillType.SWORD, 16, SilverSword, RefineSkill.RefineType.Range1) {
         override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = blowDef(blowRes(battleUnit, 2), 2)
     },
     Durandal(Name.Durandal, SkillType.SWORD, 16, SilverSword) {
@@ -157,13 +157,16 @@ enum class Weapon(override val jp: Name, override val type: SkillType, override 
     SealedFalchion(Name.SealedFalchion, SkillType.SWORD, 16, SilverSword) {
         override fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = notFullHpAllBonus(effectiveAgainst(WeaponType.DRAGON, battleUnit, enemy), 5)
     },
-    LightBrand(Name.LightBrand,SkillType.SWORD,16, SilverSword) {
+    LightBrand(Name.LightBrand, SkillType.SWORD, 16, SilverSword) {
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = super.equip(equipDef(armedHero, 3), lv)
         override fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = defHigherThanResBonus(battleUnit, enemy)
     },
-    Meisterschwert(Name.Meisterschwert,SkillType.SWORD,11, SilverSword) {
+    Meisterschwert(Name.Meisterschwert, SkillType.SWORD, 11, SilverSword) {
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipBrave(armedHero, lv)
         override fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = doubleAttack(battleUnit)
+    },
+    NamelessBlade(Name.NamelessBlade, SkillType.SWORD, 16, Weapon.KillingEdge2, RefineSkill.RefineType.Range1) {
+        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipKiller(armedHero, lv)
     },
 
     IronLance(Name.IronLance, SkillType.LANCE, 6),
@@ -287,7 +290,12 @@ enum class Weapon(override val jp: Name, override val type: SkillType, override 
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = super.equip(equipAtk(armedHero, 3), lv)
         override fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = followupable(battleUnit, 10)
     },
-
+    HarmonicLance(Name.HarmonicLance, SkillType.LANCE, 9, SteelLance, RefineSkill.RefineType.Range1) {
+        override fun specialTriggered(battleUnit: BattleUnit, damage: Int): Int = damage + 10
+    },
+    HarmonicLance2(Name.HarmonicLance2, SkillType.LANCE, 13, HarmonicLance, RefineSkill.RefineType.Range1) {
+        override fun specialTriggered(battleUnit: BattleUnit, damage: Int): Int = damage + 10
+    },
 
     IronAxe(Name.IronAxe, SkillType.AXE, 6),
     SteelAxe(Name.SteelAxe, SkillType.AXE, 8, IronAxe),
@@ -469,6 +477,18 @@ enum class Weapon(override val jp: Name, override val type: SkillType, override 
     Skadi(Name.Skadi, SkillType.BOW, 14, SilverBow) {
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = super.equip(equipSpd(armedHero, 3), lv)
     },
+    WarriorPrincess(Name.WarriorPrincess, SkillType.BOW, 14, SilverBow) {
+        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = super.equip(equipSpd(armedHero, 3), lv)
+        override fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = super.bothEffect(effectiveAgainst(MoveType.ARMORED, battleUnit, enemy), enemy, lv)
+
+    },
+    SwiftMulagir(Name.SwiftMulagir, SkillType.BOW, 14, SilverBow) {
+        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = super.equip(equipRes(armedHero, 3), lv)
+        //マップ実装時には敵ユニット数との判定が必要
+        override fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = super.bothEffect(if (battleUnit.adjacentUnits > 0) {
+            blowAtk(blowSpd(battleUnit, 5), 5)
+        } else battleUnit, enemy, lv)
+    },
 
 
     IronDagger(Name.IronDagger, SkillType.DAGGER, 3),
@@ -502,8 +522,12 @@ enum class Weapon(override val jp: Name, override val type: SkillType, override 
     KittyPaddle2(Name.KittyPaddle2, SkillType.DAGGER, 8, KittyPaddle) {
         override fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = effectiveAgainstMagic(battleUnit, enemy)
     },
-    KagamiMochi(Name.KagamiMochi, SkillType.DAGGER, 8, SteelDagger, RefineSkill.RefineType.Range2),
-    KagamiMochi2(Name.KagamiMochi2, SkillType.DAGGER, 12, KagamiMochi, RefineSkill.RefineType.Range2),
+    KagamiMochi(Name.KagamiMochi, SkillType.DAGGER, 8, SteelDagger) {
+            override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipKiller(armedHero, lv)
+        },
+    KagamiMochi2(Name.KagamiMochi2, SkillType.DAGGER, 12, KagamiMochi, RefineSkill.RefineType.Range2){
+        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipKiller(armedHero, lv)
+    },
     FeliciasPlate(Name.FeliciasPlate, SkillType.PENETRATE_DAGGER, 14, SilverDagger2, RefineSkill.RefineType.Range2),
     Peshkatz(Name.Peshkatz, SkillType.DAGGER, 14, SilverDagger),
     LethalCarrot(Name.LethalCarrot, SkillType.DAGGER, 8, SteelDagger) {
@@ -511,6 +535,12 @@ enum class Weapon(override val jp: Name, override val type: SkillType, override 
     },
     LethalCarrot2(Name.LethalCarrot2, SkillType.DAGGER, 12, LethalCarrot, RefineSkill.RefineType.Range2) {
         override fun specialTriggered(battleUnit: BattleUnit, damage: Int): Int = damage + 10
+    },
+    BarbShuriken(Name.BarbShuriken, SkillType.DAGGER, 8, SteelDagger) {
+        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipKiller(armedHero, lv)
+    },
+    BarbShuriken2(Name.BarbShuriken2, SkillType.DAGGER, 12, BarbShuriken, RefineSkill.RefineType.Range2){
+        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipKiller(armedHero, lv)
     },
 
     Assault(Name.Assault, SkillType.STAFF, 10),
@@ -596,7 +626,7 @@ enum class Weapon(override val jp: Name, override val type: SkillType, override 
     Naglfar(Name.Naglfar, SkillType.RTOME, 14, Bolganone) {
         override fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = equipRaven(battleUnit)
     },
-
+    Forblaze(Name.Forblaze, SkillType.RTOME, 14, Bolganone2, RefineSkill.RefineType.Range2),
 
     Thunder(Name.Thunder, SkillType.BTOME, 4),
     Elthunder(Name.Elthunder, SkillType.BTOME, 6, Thunder),
@@ -762,7 +792,7 @@ enum class Weapon(override val jp: Name, override val type: SkillType, override 
 
     FireBreath(Name.FireBreath, SkillType.DRAGON, 6),
     FireBreath2(Name.FireBreath2, SkillType.DRAGON, 8, FireBreath),
-    LightningBreath(Name.LightningBreath, SkillType.DRAGON, 8, FireBreath2) {
+    LightningBreath(Name.LightningBreath, SkillType.DRAGON, 7, FireBreath2) {
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipBlade(armedHero, lv)
         override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = counterAllRange(battleUnit)
     },
@@ -783,6 +813,13 @@ enum class Weapon(override val jp: Name, override val type: SkillType, override 
 
     Expiration(Name.Expiration, SkillType.PENETRATE_DRAGON, 16, Flametongue) {
         override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = counterAllRange(battleUnit)
+    },
+
+    WaterBreath(Name.WaterBreath, SkillType.PENETRATE_DRAGON, 10, FireBreath2) {
+        override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = blowDef(blowRes(battleUnit, 4), 4)
+    },
+    WaterBreath2(Name.WaterBreath2, SkillType.PENETRATE_DRAGON, 14, WaterBreath, RefineSkill.RefineType.Range1) {
+        override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = blowDef(blowRes(battleUnit, 4), 4)
     },
     ;
 

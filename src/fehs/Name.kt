@@ -3,6 +3,8 @@ package jp.blogspot.turanukimaru.fehs
 /**
  * ロケールで使い分ける名前
  * Created by turanukimaru on 2017/12/23.
+ * 注意！！NONE以外に空文字を設定するとなんかの拍子にそれが出てくる
+ * Mapに突っ込むときにテストするかなあ
  *
  **/
 
@@ -56,6 +58,7 @@ enum class Name(val jp: String, val us: String, val tw: String) {
     カムイ__男_("カムイ（男）", "Corrin(M)", "神威(M)"),
 
     カレル("カレル", "Karel", "卡列爾"),
+    カレル2("カレル＋", "Karel+", "卡列爾+"),
     ガイア("ガイア", "Gaius", "蓋亞"),
     ガイア__夏_("ガイア（夏）", "Gaius (Summer)", "蓋亞 (Summer)"),
     ギュンター("ギュンター", "Gunter", "君特"),
@@ -145,6 +148,7 @@ enum class Name(val jp: String, val us: String, val tw: String) {
     ファ("ファ", "Fae", "法"),
     フィヨルム("フィヨルム", "Fjorm", "菲約爾姆"),
     フィル("フィル", "Fir", "菲爾"),
+    フィル2("フィル＋", "Fir+", "菲爾+"),
     フェリシア("フェリシア", "Felicia", "菲利西亞"),
     フェリシア2("フェリシア＋", "Felicia+", "菲利西亞＋"),
     フレデリク("フレデリク", "Frederick", "弗雷德里克"),
@@ -181,6 +185,7 @@ enum class Name(val jp: String, val us: String, val tw: String) {
     リフ("リフ", "Wrys", "利夫"),
     リョウマ("リョウマ", "Ryoma", "龍馬"),
     リリーナ("リリーナ", "Lilina", "莉莉娜"),
+    リリーナ2("リリーナ＋", "Lilina+", "莉莉娜+"),
     リン("リン", "Lyn", "琳"),
     リンダ("リンダ", "Linde", "琳達"),
     リン__総選挙_("リン（総選挙）", "Lyn (Brave Heroes)", "琳"),
@@ -597,6 +602,7 @@ enum class Name(val jp: String, val us: String, val tw: String) {
     DistantDef("遠距離防御", "Distant Def", "遠距離防禦"),
     EarthBoost("生命の大地", "Earth Boost", "生命的大地"),
     FierceStance("鬼神の構え", "Fierce Stance", "鬼神架勢"),
+    DartingStance("飛燕の構え3","Darting Stance","飛燕架勢"),
     FireBoost("生命の業火", "Fire Boost", "生命的業火"),
     FlashingBlade("柔剣", "Flashing Blade", "柔劍"),
     FortressDef("守備の城塞", "Fortress Def", "防守堡壘"),
@@ -686,6 +692,7 @@ enum class Name(val jp: String, val us: String, val tw: String) {
     AtkPloy("攻撃の謀策", "Attack Ploy", "攻擊謀策"),
     AtkSmoke("攻撃の紫煙", "Attack Smoke", "攻擊紫煙"),
     AtkTactic("攻撃の指揮", "Atk Tactic", "攻擊指揮"),
+    SpdTactic("速さの指揮", "Spd Tactic", "速度指揮"),
     AxeExperience("斧の経験", "Axe Experience", "斧之經驗"),
     AxeValor("斧の技量", "Axe Valor", "斧之技巧"),
     RTomeExperience("赤魔の経験", "R Tome Experience", "赤魔之經驗"),
@@ -712,6 +719,7 @@ enum class Name(val jp: String, val us: String, val tw: String) {
     GTomeExperience("緑魔の経験", "G Tome Experience", "緑魔之經驗"),
     GoadArmor("重刃の紋章", "Goad Armor", "重刃紋章"),
     GoadCavalry("騎刃の紋章", "Goad Cavalry", "騎刃紋章"),
+    GoadDragons("竜刃の紋章", "Goad Dragons", "竜刃紋章"),
     GoadFliers("飛刃の紋章", "Goad Fliers", "飛刃紋章"),
     Guidance("空からの先導", "Guidance", "空中前導"),
     HoneArmor("重刃の鼓舞", "Hone Armor", "重刃鼓舞"),
@@ -873,31 +881,31 @@ enum class Name(val jp: String, val us: String, val tw: String) {
     カチュア__春_("カチュア（春）", "Catria (Hares at the Fair)", "卡秋雅 (Spring)"),
     アルフォンス__春_("アルフォンス（春）", "Alfonse (Hares at the Fair)", "阿爾馮斯 (Spring)"),
 
-    HuginnsEgg("フギンの魔卵","Huginn's Egg",""),
-    ChillRes("魔防の封印","Chill Res",""),
-    MuninnsEgg("ムニンの魔卵","Muninn's Egg",""),
-    SwiftStance("飛燕明鏡の構え","Swift Stance",""),
-    GiantSpoon("ビッグスプーン","Giant Spoon",""),
-    GiantSpoon2("ビッグスプーン＋","Giant Spoon+",""),
-    DefSmoke ("守備の紫煙","Def Smoke",""),
-    LethalCarrot("ベビーキャロット","Lethal Carrot",""),
-    LethalCarrot2("ベビーキャロット＋","Lethal Carrot+",""),
-    SpdResBond("速さ魔防の絆","Spd/Res Bond",""),
+    HuginnsEgg("フギンの魔卵","Huginn's Egg","Huginn's Egg"),
+    ChillRes("魔防の封印","Chill Res","Chill Res"),
+    MuninnsEgg("ムニンの魔卵","Muninn's Egg","Muninn's Egg"),
+    SwiftStance("飛燕明鏡の構え","Swift Stance","Swift Stance"),
+    GiantSpoon("ビッグスプーン","Giant Spoon","Giant Spoon"),
+    GiantSpoon2("ビッグスプーン＋","Giant Spoon+","Giant Spoon+"),
+    DefSmoke ("守備の紫煙","Def Smoke","Def Smoke"),
+    LethalCarrot("ベビーキャロット","Lethal Carrot","Lethal Carrot"),
+    LethalCarrot2("ベビーキャロット＋","Lethal Carrot+","Lethal Carrot+"),
+    SpdResBond("速さ魔防の絆","Spd/Res Bond","Spd/Res Bond"),
 
     セネリオ2("セネリオ＋", "Soren+", "賽涅里歐＋"),
 
     MirrorStance("鬼神明鏡の構え", "MirrorStance", "鬼神明鏡架勢"),
     Owl("Atk/Spd/Def/Res + 隣接ユニットx2", "Atk/Spd/Def/Res + allies × 2", "Atk/Spd/Def/Res + allies × 2"),
 
-    ジェローム("ジェローム", "Gerome", ""),
-    Poleaxe("ポールアクス","Poleaxe",""),
-    Poleaxe2("ポールアクス＋","Poleaxe+",""),
+    ジェローム("ジェローム", "Gerome", "Gerome"),
+    Poleaxe("ポールアクス","Poleaxe","Poleaxe"),
+    Poleaxe2("ポールアクス＋","Poleaxe+","Poleaxe+"),
     ルフレ__女闇_("ルフレ（女闇）", "Robin(F)(Fell Vessel)", "魯弗萊(F)(Fell Vessel)"),
-    Dragonskin("邪竜の鱗","Dragonskin",""),
-    ResSmoke("魔防の紫煙","Res Smoke",""),
+    Dragonskin("邪竜の鱗","Dragonskin","Dragonskin"),
+    ResSmoke("魔防の紫煙","Res Smoke","Res Smoke"),
 
-    リーフ("リーフ","Leif","Leif"),
-    ナンナ("ナンナ","Nanna","Nanna"),
+    リーフ("リーフ","Leif","里弗"),
+    ナンナ("ナンナ","Nanna","南娜"),
     ラインハルト__トラキア_("ラインハルト（トラキア）","Reinhardt (World of Thracia)","萊茵哈特 (World of Thracia)"),
     オルエン__トラキア_("オルエン（トラキア）","Olwen (World of Thracia)","歐爾玟 (World of Thracia)"),
     フィン("フィン","Finn","Finn"),
@@ -909,6 +917,25 @@ enum class Name(val jp: String, val us: String, val tw: String) {
     WargodsTome("Wargod's Tome","Wargod's Tome","Wargod's Tome"),
     Restore("レスト","Restore","Restore"),
     Thunderhead("雷旋の書","Thunderhead","Thunderhead"),
+
+    ヒノカ__白き翼_("ヒノカ（白き翼）", "Hinoka (Wing of Fate)", "火乃香 (Wing of Fate)"),
+    シグレ__白き翼_("シグレ（白き翼）", "Shigure (Wing of Fate)", "詩格萊 (Wing of Fate)"),
+    カンナ__女_("カンナ（女）", "Kana (F)", "神流 (F)"),
+    WarriorPrincess("戦姫の和弓","Warrior Princess","Warrior Princess"),
+    FlierGuidance("飛行の先導","Flier Guidance","Flier Guidance"),
+    HarmonicLance("倭鉾","Harmonic Lance","Harmonic Lance"),
+    HarmonicLance2("倭鉾＋","Harmonic Lance+","Harmonic Lance+"),
+    WaterBreath("水のブレス","Water Breath","Water Breath"),
+    WaterBreath2("水のブレス＋","Water Breath+","Water Breath+"),
+    リン__伝承英雄_("リン（伝承英雄）", "Lyn (Legendary Lord)", "琳 (Legendary Lord)"),
+    SwiftMulagir("疾弓ミュルグレ", "Swift Mulagir", "Swift Mulagir"),
+    LawsOfSacae("サカの掟", "Laws of Sacae", "Laws of Sacae"),
+    スズカゼ("スズカゼ", "Kaze", "涼風"),
+    カンナ__男_("カンナ（男）", "Kana (M)", "神流 (M)"),
+    BarbShuriken("暗殺手裏剣＋", "Barb Shuriken", "Barb Shuriken"),
+    BarbShuriken2("暗殺手裏剣＋", "Barb Shuriken+", "Barb Shuriken+"),
+    Forblaze("フォルブレイズ","Forblaze","Forblaze"),
+    NamelessBlade("無名の一門の剣","Nameless Blade","Nameless Blade")
     ;
 
     /**
