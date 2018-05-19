@@ -51,6 +51,9 @@ interface Skill {
      */
     val preSkill: Skill get() = Skill.NONE
 
+    val effectiveAgainstMoveType: Array<MoveType> get() = arrayOf()
+    val effectiveAgainstWeaponType: Array<WeaponType> get() = arrayOf()
+
     /**
      * nullおぶじぇくと。そうかNoneからNone参照するときはthisでいいのか
      */
@@ -72,12 +75,8 @@ interface Skill {
 
     /**
      * 戦闘時の効果。基本的にunitの能力値を上下したり
-     * 弓だけはここで特効のチェックするか…
      */
-    fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int = level): BattleUnit {
-        if (type == SkillType.BOW && enemy.armedHero.baseHero.moveType == MoveType.FLIER) battleUnit.effectiveAgainst = EffectiveAgainst.FLIER
-        return battleUnit
-    }
+    fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int = level): BattleUnit = battleUnit
 
     /**
      * 攻撃時の効果。基本的にunitの能力値を上下したり
@@ -387,7 +386,7 @@ interface Skill {
      */
     fun effectiveAgainst(moveType: MoveType, battleUnit: BattleUnit, enemy: BattleUnit): BattleUnit {
         if (enemy.armedHero.baseHero.moveType == moveType) {
-            battleUnit.effectiveAgainst = EffectiveAgainst.Companion.valueOfMoveType(moveType)
+            battleUnit.effectiveAgainst = EffectiveAgainst.valueOfMoveType(moveType)
         }
         return battleUnit
     }
@@ -397,7 +396,7 @@ interface Skill {
      */
     fun effectiveAgainst(weaponType: WeaponType, battleUnit: BattleUnit, enemy: BattleUnit): BattleUnit {
         if (enemy.armedHero.baseHero.weaponType == weaponType) {
-            battleUnit.effectiveAgainst = EffectiveAgainst.Companion.valueOfWeaponType(weaponType)
+            battleUnit.effectiveAgainst = EffectiveAgainst.valueOfWeaponType(weaponType)
         }
         return battleUnit
     }
@@ -407,7 +406,7 @@ interface Skill {
      */
     fun effectiveAgainstMagic(battleUnit: BattleUnit, enemy: BattleUnit): BattleUnit {
         if (enemy.armedHero.isMagicWeapon()) {
-            battleUnit.effectiveAgainst = EffectiveAgainst.Companion.valueOfWeaponType(enemy.armedHero.baseHero.weaponType)
+            battleUnit.effectiveAgainst = EffectiveAgainst.valueOfWeaponType(enemy.armedHero.baseHero.weaponType)
         }
         return battleUnit
     }
@@ -703,7 +702,7 @@ interface Skill {
     }
 
     /**
-    * HP満タン時にすべてにボーナス
+     * HP満タン時にすべてにボーナス
      */
     fun fullHpAllBonus(battleUnit: BattleUnit, i: Int): BattleUnit {
         if (battleUnit.hp == battleUnit.armedHero.maxHp) {
@@ -733,7 +732,7 @@ interface Skill {
     }
 
     fun defHigherThanResBonus(battleUnit: BattleUnit, enemy: BattleUnit): BattleUnit {
-        if(enemy.def-5>= enemy.res) battleUnit.atkEffect+=7
+        if (enemy.def - 5 >= enemy.res) battleUnit.atkEffect += 7
         return battleUnit
     }
 

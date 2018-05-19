@@ -139,12 +139,14 @@ enum class SkillB(override val jp: Name, override val type: SkillType, override 
     SealRes(Name.SealRes, SkillType.B),
     SealAtkSpd(Name.SealAtkSpd, SkillType.B, maxLevel = 2),
     SealAtkDef(Name.SealAtkDef, SkillType.B, maxLevel = 2),
+    SealDefRes(Name.SealDefRes, SkillType.B, maxLevel = 2),
     FlierFormation(Name.FlierFormation, SkillType.B),
     BlazeDance(Name.BlazeDance, SkillType.B),
     GaleDance(Name.GaleDance, SkillType.B),
     TorrentDance(Name.TorrentDance, SkillType.B),
     EarthDance(Name.EarthDance, SkillType.B),
     GeyserDance(Name.GeyserDance, SkillType.B, maxLevel = 2),
+    FirestormDance(Name.FirestormDance, SkillType.B, maxLevel = 2),
     KnockBack(Name.KnockBack, SkillType.B, maxLevel = 0),
     DragBack(Name.DragBack, SkillType.B, maxLevel = 0),
     Lunge(Name.Lunge, SkillType.B, maxLevel = 0),
@@ -156,10 +158,10 @@ enum class SkillB(override val jp: Name, override val type: SkillType, override 
     ChillSpd(Name.ChillSpd, SkillType.B),
     ChillDef(Name.ChillDef, SkillType.B),
     ChillRes(Name.ChillRes, SkillType.B),
-SDrink(Name.SDrink,SkillType.B, maxLevel = 0){
-    override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipKiller(armedHero, lv)
+    SDrink(Name.SDrink, SkillType.B, maxLevel = 0) {
+        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipKiller(armedHero, lv)
 
-},
+    },
     ;
 
     /**

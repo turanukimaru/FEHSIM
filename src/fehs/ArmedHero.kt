@@ -109,7 +109,7 @@ data class ArmedHero(
     /**
      * 得意不得意の能力値。最大が0なのはダミーデータ。アーダンの能力値↑は設定限界を超えるため
      */
-   private val growths = baseHero.growths
+    private val growths = baseHero.growths
     val specialCoolDownTime: Int get() = special.level - reduceSpecialCooldown
     val statusText: String get() = "H" + maxHp + " A" + atk + " S" + spd + " D" + def + " R" + res
 

@@ -4,6 +4,7 @@ import jp.blogspot.turanukimaru.fehs.*
 
 
 /**
+ * あーテキストが一意になるようにしないと保存できないか。これはうかつだったな。武器名で統一するか…？追加効果だから困るわけではないのだが。
  * 錬成武器
  */
 enum class RefineSkill(override val jp: Name, val hp: Int, val atk: Int, val spd: Int, val def: Int, val res: Int, val refineSkillType: RefineSkill.RefineType = RefineSkill.RefineType.NONE, override val preSkill: Skill = Skill.NONE, override val level: Int = 0, override val type: SkillType = SkillType.REFINERY) : Skill {
@@ -141,6 +142,9 @@ enum class RefineSkill(override val jp: Name, val hp: Int, val atk: Int, val spd
                 if (source.armedHero.isMagicWeapon()
                         && (!results.any { r -> r.side != battleUnit.side })) damage - damage * 3 / 10 else damage
     },
+    Yato(Name.Yato, 0, 0, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.Yato, 16, SkillType.SWORD) {
+        override fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = allBonus(battleUnit, 2)
+    },
 
     FalchionM(Name.AtkSpdDefRes2ToAllies, 3, 0, 0, 0, 0, RefineType.DependWeapon, Weapon.FalchionM) {
         override fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = effectiveAgainst(WeaponType.DRAGON, battleUnit, enemy)
@@ -166,10 +170,10 @@ enum class RefineSkill(override val jp: Name, val hp: Int, val atk: Int, val spd
         override fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = feliciasBlade(battleUnit, enemy)
     },
 
-    Sieglinde(Name.Sieglinde, 0, 0, 0, 0, 0, RefineType.DependWeapon, Weapon.Sieglinde),
+    Sieglinde(Name.Sieglinde, 3, 0, 0, 0, 0, RefineType.DependWeapon, Weapon.Sieglinde),
     WindsBrand(Name.Owl, 0, 0, 0, 0, 0, RefineType.DependWeapon, Weapon.WindsBrand) {
         override fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = allBonus(battleUnit, battleUnit.adjacentUnits * 2)
-        },
+    },
     Brynhildr(Name.Brynhildr, 0, 0, 0, 0, 0, RefineType.DependWeapon, Weapon.Brynhildr) {
         override fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = antiFollowupRangedDef(battleUnit, enemy)
     },
@@ -177,15 +181,22 @@ enum class RefineSkill(override val jp: Name, val hp: Int, val atk: Int, val spd
     Forblaze(Name.DeathBlow, 0, 0, 0, 0, 0, RefineType.DependWeapon, Weapon.Forblaze) {
         override fun attackEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = blowAtk(battleUnit, 6)
     },
-    BindingBlade(Name.BindingBlade, 0, 0, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.BindingBlade,16 , SkillType.SWORD) {
+    BindingBlade(Name.BindingBlade, 0, 0, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.BindingBlade, 16, SkillType.SWORD) {
         override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = blowDef(blowRes(battleUnit, 4), 4)
+        override fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = effectiveAgainst(WeaponType.DRAGON, battleUnit, enemy)
     },
     BindingBlade2(Name.QuickRiposte, 3, 0, 0, 0, 0, RefineType.DependWeapon, Weapon.BindingBlade) {
-        override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = followupable(battleUnit,  5)
+        override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = followupable(battleUnit, 5)
     },
     NamelessBlade(Name.SpecialDamage, 3, 0, 0, 0, 0, RefineType.DependWeapon, Weapon.NamelessBlade) {
         override fun specialTriggered(battleUnit: BattleUnit, damage: Int): Int = damage + 10
     },
+    Rhomphaia(Name.FlashingBlade, 3, 0, 0, 0, 0, RefineType.DependWeapon, Weapon.Rhomphaia) {
+        override fun effectedAttackEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = flashingBlade(battleUnit, enemy, 1)
+        override fun effectedCounterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = flashingBlade(battleUnit, enemy, 1)
+    },
+    CamillasAxe(Name.CamillasAxe, 3, 0, 0, 0, 0, RefineType.DependWeapon, Weapon.CamillasAxe),
+    Yato2(Name.Yato, 3, 0, 0, 0, 0, RefineType.DependWeapon, Weapon.Yato),
     ;
 
     //装備効果がある武器に必要になるのか・・・しくじったかな？
