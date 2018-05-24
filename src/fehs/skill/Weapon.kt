@@ -379,6 +379,8 @@ enum class Weapon(override val jp: Name, override val type: SkillType, override 
     CamillasAxe(Name.CamillasAxe, SkillType.AXE, 16, BraveAxe2, RefineSkill.RefineType.Range1) {
         override fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = if (battleUnit.adjacentUnits > 0) blowAtk(blowSpd(battleUnit, 4), 4) else battleUnit
     },
+    ArdentService(Name.ArdentService, SkillType.AXE, 10, SteelAxe),
+    ArdentService2(Name.ArdentService2, SkillType.AXE, 14, ArdentService, RefineSkill.RefineType.Range1),
 
     //BOW
     IronBow(Name.IronBow, SkillType.BOW, 4, effectiveAgainstMoveType = arrayOf(MoveType.FLIER)),
@@ -602,6 +604,10 @@ enum class Weapon(override val jp: Name, override val type: SkillType, override 
             return battleUnit
         }
     },
+    MuspellFireposy(Name.MuspellFireposy, SkillType.RTOME, 14, Bolganone) {
+        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = super.equip(equipSpd(armedHero, 3), lv)
+        override fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = blowAtk(blowSpd(battleUnit, battleUnit.adjacentUnits * 2), battleUnit.adjacentUnits * 2)
+    },
 
     //BTOME
     Thunder(Name.Thunder, SkillType.BTOME, 4),
@@ -671,7 +677,7 @@ enum class Weapon(override val jp: Name, override val type: SkillType, override 
     BlueGift(Name.BlueGift, SkillType.BTOME, 8, Thoron) {
         override fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = antiRangedWeaponBuffBonus(battleUnit, enemy)
     },
-    BlueGift2(Name.BlueGift2, SkillType.BTOME, 12, BlueGift) {
+    BlueGift2(Name.BlueGift2, SkillType.BTOME, 12, BlueGift, RefineSkill.RefineType.Range2) {
         override fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = antiRangedWeaponBuffBonus(battleUnit, enemy)
     },
     HuginnsEgg(Name.HuginnsEgg, SkillType.BTOME, 14, Thoron) {
@@ -682,6 +688,8 @@ enum class Weapon(override val jp: Name, override val type: SkillType, override 
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipKiller(armedHero, lv)
         override fun attackEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = blowSpd(battleUnit, 6)
     },
+    FreshBouquet(Name.FreshBouquet, SkillType.BTOME, 8, Thoron),
+    FreshBouquet2(Name.FreshBouquet2, SkillType.BTOME, 12, FreshBouquet, RefineSkill.RefineType.Range2),
 
     //GTOME
     Wind(Name.Wind, SkillType.GTOME, 4),
@@ -753,6 +761,10 @@ enum class Weapon(override val jp: Name, override val type: SkillType, override 
     },
     Thunderhead(Name.Thunderhead, SkillType.GTOME, 14, Rexcalibur) {
         override fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = bladeEffect(battleUnit)
+    },
+    NiflFrostflowers(Name.NiflFrostflowers, SkillType.GTOME, 14, Rexcalibur) {
+        override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = super.equip(equipAtk(armedHero, 3), lv)
+        override fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = blowAtk(blowSpd(battleUnit, battleUnit.adjacentUnits * 2), battleUnit.adjacentUnits * 2)
     },
 
     //DRAGON

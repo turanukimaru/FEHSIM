@@ -264,6 +264,19 @@ interface Skill {
     }
 
     /**
+     * 色固定殺し
+     */
+    fun weaponBreaker(battleUnit: BattleUnit, enemy: BattleUnit, weapon: WeaponType, lv: Int, color:Int): BattleUnit {
+        log("HP:${battleUnit.hp}")
+        log("threashold:${battleUnit.armedHero.maxHp * (lv * 20 - 10) / 100}")
+        if ((battleUnit.hp >= battleUnit.armedHero.maxHp * (lv * 20 - 10) / 100) && enemy.armedHero.baseHero.weaponType == weapon && enemy.armedHero.baseHero.color == color) {
+            battleUnit.followupable = true
+            enemy.antiFollowup = true
+        }
+        return battleUnit
+    }
+
+    /**
      * 生命の
      */
     fun boostDef(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit {

@@ -951,6 +951,20 @@ enum class Name(val jp: String, val us: String, val tw: String) {
     OddAtkWave("攻撃の波・奇数", "Odd Atk Wave", "Odd Atk Wave"),
     ユリウス("ユリウス", "Julius", "尤利烏斯"),
     Loptous("ロプトウス", "Loptous", "Loptous"),
+
+    マルス__花婿_("マルス（花婿）", "Marth (Bridal Bloom)", "馬爾斯 (Bridal Bloom)"),
+    サナキ__花嫁_("サナキ（花嫁）", "Sanaki (Bridal Bloom)", "莎娜琪 (Bridal Bloom)"),
+    サーリャ__花嫁_("サーリャ（花嫁）", "Tharja (Bridal Bloom)", "撒拉 (Bridal Bloom)"),
+    ニニアン__花嫁_("ニニアン（花嫁）", "Ninian (Bridal Bloom)", "尼尼安 (Bridal Bloom)"),
+    MuspellFireposy("ムスペルの炎花","Múspell Fireposy","Múspell Fireposy"),
+    SpdFeint("速さの共謀","Spd Feint","Spd Feint"),
+    FreshBouquet("清らかなブーケ","Fresh Bouquet","Fresh Bouquet"),
+    FreshBouquet2("清らかなブーケ＋","Fresh Bouquet+","Fresh Bouquet+"),
+    ChillAtk ("攻撃の封印","Chill Atk","Chill Atk"),
+    NiflFrostflowers("ニフルの氷花","Nifl Frostflowers","Nifl Frostflowers"),
+    DefResLink("守備魔防の連携","Def/Res Link","Def/Res Link"),
+    ArdentService("愛のケーキサーバ","Ardent Service","Ardent Service"),
+    ArdentService2("愛のケーキサーバ＋","Ardent Service+","Ardent Service+"),
     ;
 
     /**

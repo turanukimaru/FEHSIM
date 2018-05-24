@@ -15,8 +15,9 @@ enum class SkillB(override val jp: Name, override val type: SkillType, override 
     AxeBreaker(Name.AxeBreaker, SkillType.B) {
         override fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = weaponBreaker(battleUnit, enemy, WeaponType.AXE, lv)
     },
+    //弓殺しは無色限定
     BowBreaker(Name.BowBreaker, SkillType.B) {
-        override fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = weaponBreaker(battleUnit, enemy, WeaponType.BOW, lv)
+        override fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = weaponBreaker(battleUnit, enemy, WeaponType.BOW, lv,0)
     },
     DaggerBreaker(Name.DaggerBreaker, SkillType.B) {
         override fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = weaponBreaker(battleUnit, enemy, WeaponType.DAGGER, lv)
@@ -155,6 +156,7 @@ enum class SkillB(override val jp: Name, override val type: SkillType, override 
     LiveForHonor(Name.LiveForHonor, SkillType.B, maxLevel = 0),
     WarpPowder(Name.WarpPowder, SkillType.B),
     ChillingSeal(Name.ChillingSeal, SkillType.B),
+    ChillAtk(Name.ChillAtk, SkillType.B),
     ChillSpd(Name.ChillSpd, SkillType.B),
     ChillDef(Name.ChillDef, SkillType.B),
     ChillRes(Name.ChillRes, SkillType.B),
@@ -162,6 +164,8 @@ enum class SkillB(override val jp: Name, override val type: SkillType, override 
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipKiller(armedHero, lv)
 
     },
+    SpdFeint(Name.SpdFeint, SkillType.B),
+    DefResLink(Name.DefResLink, SkillType.B),
     ;
 
     /**

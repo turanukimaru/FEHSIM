@@ -7,7 +7,7 @@ import jp.blogspot.turanukimaru.fehs.*
  * あーテキストが一意になるようにしないと保存できないか。これはうかつだったな。武器名で統一するか…？追加効果だから困るわけではないのだが。
  * 錬成武器
  */
-enum class RefineSkill(override val jp: Name, val hp: Int, val atk: Int, val spd: Int, val def: Int, val res: Int, val refineSkillType: RefineSkill.RefineType = RefineSkill.RefineType.NONE, override val preSkill: Skill = Skill.NONE, override val level: Int = 0, override val type: SkillType = SkillType.REFINERY) : Skill {
+enum class RefineSkill(override val jp: Name, val hp: Int, val atk: Int, val spd: Int, val def: Int, val res: Int, val refineSkillType: RefineSkill.RefineType = RefineSkill.RefineType.NONE, override val preSkill: Skill = Skill.NONE, override val level: Int = 0, override val type: SkillType = SkillType.REFINERY, override val effectiveAgainstWeaponType: Array<WeaponType> = arrayOf()) : Skill {
     //基本ルール
     Range1Atk(Name.Range1Atk, 5, 2, 0, 0, 0, RefineType.Range1),
     Range1Spd(Name.Range1Spd, 5, 0, 3, 0, 0, RefineType.Range1),
@@ -181,9 +181,8 @@ enum class RefineSkill(override val jp: Name, val hp: Int, val atk: Int, val spd
     Forblaze(Name.DeathBlow, 0, 0, 0, 0, 0, RefineType.DependWeapon, Weapon.Forblaze) {
         override fun attackEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = blowAtk(battleUnit, 6)
     },
-    BindingBlade(Name.BindingBlade, 0, 0, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.BindingBlade, 16, SkillType.SWORD) {
+    BindingBlade(Name.BindingBlade, 0, 0, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.BindingBlade, 16, SkillType.SWORD, effectiveAgainstWeaponType = arrayOf(WeaponType.DRAGON)) {
         override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = blowDef(blowRes(battleUnit, 4), 4)
-        override fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = effectiveAgainst(WeaponType.DRAGON, battleUnit, enemy)
     },
     BindingBlade2(Name.QuickRiposte, 3, 0, 0, 0, 0, RefineType.DependWeapon, Weapon.BindingBlade) {
         override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = followupable(battleUnit, 5)

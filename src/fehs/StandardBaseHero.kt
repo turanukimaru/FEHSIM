@@ -554,6 +554,14 @@ object StandardBaseHero {
         createItem(Name.ユリウス, 1, WeaponType.RTOME, MoveType.INFANTRY, 3, 16, 9, 8, 3, 9, 6, 8, 5, 2, 8,
                 Weapon.Loptous, null, Special.DraconicAura, null, SkillB.Guard.lv(3), SkillC.AtkPloy.lv(3))
 
+        createItem(Name.サーリャ__花嫁_, 1, WeaponType.RTOME, MoveType.INFANTRY,  5, 17, 9, 9, 6, 4, 6, 8, 8, 3, 4,
+                Weapon.MuspellFireposy, Assist.RallyAtkSpd, null, SkillA.AtkSpdBond.lv(3), SkillB.SpdFeint.lv(3), null)
+        createItem(Name.ニニアン__花嫁_, 2, WeaponType.BTOME, MoveType.FLIER,  5, 15, 6, 7, 3, 5, 5, 6, 8, 3, 6,
+                Weapon.FreshBouquet2, Assist.Dance, null, null, SkillB.ChillAtk.lv(3), SkillC.DriveSpd.lv(2))
+        createItem(Name.サナキ__花嫁_, 3, WeaponType.GTOME, MoveType.FLIER,  5, 16, 10, 8, 3, 7, 5, 8, 6, 2, 8,
+                Weapon.NiflFrostflowers, Assist.DrawBack, null, SkillA.AtkResBond.lv(3), SkillB.DefResLink.lv(3), null)
+        createItem(Name.マルス__花婿_, 3, WeaponType.AXE, MoveType.CAVALRY,  4, 18, 7, 10, 6, 5, 6, 7, 8, 7, 3,
+                Weapon.ArdentService2, Assist.RallySpdDef, null, null, SkillB.WingsOfMercy.lv(3), SkillC.DriveAtk.lv(2))
 //        createItem(Name., 1, WeaponType., MoveType.,  5, , , , , , , , , , ,
 //                Weapon., Assist., Special., SkillA..lv(), SkillB..lv(), SkillC..lv())
     }
