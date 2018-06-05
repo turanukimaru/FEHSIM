@@ -20,7 +20,7 @@ class Damage(source: BattleUnit, val special: Skill, weaponType: SkillType, flat
 //    }
 }
 
-data class DamageResult(val damage: Int, val preventSkill: Skill, val lossHp: Int)
+data class DamageResult(val damage: Int, val preventSkill: Skill, val lossHp: Int, val overkill: Int?)
 ////等価
 ////fun damageCodeBlock(source: BattleUnit, special: Skill, weaponType: SkillType, flat: Int, staff: Int, results: List<AttackResult>): (BattleUnit) -> Pair<Int, Skill?> = { target ->
 ////    target.damaged(special.damage(source, target.preventByDefResTerrain(weaponType, special.penetrate)) * staff + flat)

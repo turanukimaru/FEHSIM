@@ -100,6 +100,9 @@ enum class SkillB(override val jp: Name, override val type: SkillType, override 
     Wrath(Name.Wrath, SkillType.B) {
         override fun specialTriggered(battleUnit: BattleUnit, damage: Int): Int = wrath(battleUnit, damage, level * 25)
     },
+    Bushido(Name.Bushido, SkillType.B, maxLevel = 0) {
+        override fun specialTriggered(battleUnit: BattleUnit, damage: Int): Int = wrath(battleUnit, damage, 100)
+    },
     PoisonStrike(Name.PoisonStrike, SkillType.B) {
         override fun attackEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = attackPain(battleUnit, enemy, lv * 3 + 1)
     },
@@ -117,7 +120,7 @@ enum class SkillB(override val jp: Name, override val type: SkillType, override 
         override fun prevent(battleUnit: BattleUnit, damage: Int, source: BattleUnit, results: List<AttackResult>, lv: Int): Int =
                 if (source.effectiveRange == 2 && results.isNotEmpty() && results.last().side != battleUnit.side) damage - damage * 8 / 10 else damage
     },
-    SolarBrace(Name.SolarBrace, SkillType.B) {
+    SolarBrace(Name.SolarBrace, SkillType.B, maxLevel = 0) {
         override fun absorb(battleUnit: BattleUnit, target: BattleUnit, damage: Int): Int {
             battleUnit.heal(damage * 3 / 10)
             return damage

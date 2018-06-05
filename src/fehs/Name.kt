@@ -965,6 +965,9 @@ enum class Name(val jp: String, val us: String, val tw: String) {
     DefResLink("守備魔防の連携","Def/Res Link","Def/Res Link"),
     ArdentService("愛のケーキサーバ","Ardent Service","Ardent Service"),
     ArdentService2("愛のケーキサーバ＋","Ardent Service+","Ardent Service+"),
+    リョウマ__伝承英雄_("リョウマ（伝承英雄）", "Ryoma (Vanguard Legend)", "龍馬 (Vanguard Legend)"),
+    Bushido("武士道","Bushido","Bushido"),
+    KestrelStance("鬼神飛燕の構え","Kestrel Stance","Kestrel Stance"),
     ;
 
     /**

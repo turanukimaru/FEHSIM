@@ -51,7 +51,7 @@ class FightPlan(val attacker: BattleUnit, val target: BattleUnit) {
      */
     fun fight(): List<AttackResult> {
         buildFightPlan(attacker, target)
-        var last = AttackResult(attacker, target, 0, null, null)
+        var last = AttackResult(attacker, target, 0,null, null, null)
         //foldに書き直すべきかなあ
         for (fight in plan) {
             val s = last.source.copy()

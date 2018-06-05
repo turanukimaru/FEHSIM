@@ -126,17 +126,20 @@ enum class SkillA(override val jp: Name, override val type: SkillType, override 
     SteadyStance(Name.SteadyStance, SkillType.A) {
         override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = blowDef(battleUnit, lv * 2)
     },
-    SturdyStance(Name.SturdyStance, SkillType.A) {
-        override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = blowAtk(blowDef(battleUnit, lv * 2), lv * 2)
-    },
     WardingStance(Name.WardingStance, SkillType.A) {
         override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = blowRes(battleUnit, lv * 2)
     },
-    MirrorStance(Name.MirrorStance, SkillType.A) {
+    SturdyStance(Name.SturdyStance, SkillType.A, maxLevel = 2) {
+        override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = blowAtk(blowDef(battleUnit, lv * 2), lv * 2)
+    },
+    MirrorStance(Name.MirrorStance, SkillType.A, maxLevel = 2) {
         override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = blowAtk(blowRes(battleUnit, lv * 2), lv * 2)
     },
-    SwiftStance(Name.SwiftStance, SkillType.A) {
+    SwiftStance(Name.SwiftStance, SkillType.A, maxLevel = 2) {
         override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = blowSpd(blowRes(battleUnit, lv * 2), lv * 2)
+    },
+    KestrelStance(Name.KestrelStance, SkillType.A, maxLevel = 2) {
+        override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = blowAtk(blowSpd(battleUnit, lv * 2), lv * 2)
     },
     WardingBreath(Name.WardingBreath, SkillType.A, maxLevel = 0) {
         override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit {

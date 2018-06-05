@@ -254,7 +254,7 @@ data class BattleUnit(val armedHero: ArmedHero
         if (damage.special != Skill.NONE)
             armedHero.skills.forEach { it.absorb(this, target, preventedDamage.lossHp) }
 
-        return AttackResult(this, target, preventedDamage.damage, damage.special, preventedDamage.preventSkill)
+        return AttackResult(this, target, preventedDamage.damage, preventedDamage.overkill, damage.special, preventedDamage.preventSkill)
 
     }
 
@@ -294,16 +294,16 @@ data class BattleUnit(val armedHero: ArmedHero
             specialCount = 0
             val loss = damageToHp(specialPrevented.first)
             armedHero.skills.forEach { e -> e.preventedDamage(this, damage - specialPrevented.first) }
-            return DamageResult(specialPrevented.first, specialPrevented.second, loss)
+            return DamageResult(specialPrevented.first, specialPrevented.second, loss.first, loss.second)
         }
         specialCount += if (accelerateTargetCooldown + 1 > InflictCooldown) accelerateTargetCooldown + 1 - InflictCooldown else 0
         specialCount = if (specialCount > armedHero.specialCoolDownTime) armedHero.specialCoolDownTime else specialCount
         val loss = damageToHp(damage)
-        return DamageResult(damage, Skill.NONE, loss)
+        return DamageResult(damage, Skill.NONE, loss.first, loss.second)
     }
 
-    private fun damageToHp(damage: Int): Int {
-        val result = HandmaidMath.min(hp, damage)
+    private fun damageToHp(damage: Int): Pair<Int,Int?> {
+        val result = if(hp > damage) Pair(damage, null) else Pair(hp, damage - hp)
         hp = if (hp > damage) hp - damage else 0
         return result
     }

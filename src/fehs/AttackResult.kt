@@ -5,7 +5,7 @@ import jp.blogspot.turanukimaru.fehs.skill.Skill
 /**
  * 戦闘結果
  */
-data class AttackResult(val source: BattleUnit, val target: BattleUnit, val damage: Int, val sourceSpecial: Skill?, val targetSpecial: Skill?, val side: SIDES = SIDES.ATTACKER) {
+data class AttackResult(val source: BattleUnit, val target: BattleUnit, val damage: Int, val overkill: Int?, val sourceSpecial: Skill?, val targetSpecial: Skill?, val side: SIDES = SIDES.ATTACKER) {
     /**
      * 攻撃側と防御側を入れ替える。戦闘の途中経過を表示するなら攻撃を仕掛けた側を固定するほうが扱いやすかった…
      */
@@ -28,7 +28,8 @@ data class AttackResult(val source: BattleUnit, val target: BattleUnit, val dama
             when (baseSide) {
                 side -> "↓$damage "
                 else -> "↑$damage "
-            } + (if (sourceSpecial != null && sourceSpecial != Skill.NONE) "☆${sourceSpecial.localeName(locale)} " else "") + if (targetSpecial != null && targetSpecial != Skill.NONE) "☆${targetSpecial.localeName(locale)} " else ""
+            } + sourceSpecialFire(locale) + targetSpecialFire(locale) + (if (overkill != null) " over $overkill" else "")
 
-
+    private fun sourceSpecialFire(locale: Locale) = (if (sourceSpecial != null && sourceSpecial != Skill.NONE) "☆${sourceSpecial.localeName(locale)} " else "")
+    private fun targetSpecialFire(locale: Locale) = (if (targetSpecial != null && targetSpecial != Skill.NONE) "☆${targetSpecial.localeName(locale)} " else "")
 }
