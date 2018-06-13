@@ -138,6 +138,11 @@ interface Skill {
      */
     fun absorb(battleUnit: BattleUnit, target: BattleUnit, damage: Int) = battleUnit.heal(damage * heal / 100)
 
+
+    /**
+     * 能力値差による固定ダメージ。取り敢えず武器だけ見るので必要に応じて全部のスキルを通す
+     */
+    fun stateFlat(battleUnit: BattleUnit, enemy: BattleUnit): Int = 0
     /**
      * 装備時の能力値変化
      */
@@ -607,9 +612,9 @@ interface Skill {
     }
 
     /**
-     * 2射程武器反撃不可
+     * 2射程武器反撃不可。バフ無効を勘違いして反撃不可にしてしまっていた…
      */
-    fun dullRanged(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit {
+    fun antiRanged(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit {
         val enemyType = enemy.armedHero.baseHero.weaponType
         if (enemyType == WeaponType.RTOME || enemyType == WeaponType.BTOME || enemyType == WeaponType.GTOME || enemyType == WeaponType.BOW || enemyType == WeaponType.DAGGER || enemyType == WeaponType.STAFF) {
             enemy.cannotCcounter = true
@@ -750,10 +755,10 @@ interface Skill {
     }
 
     /**
-     * 相手のデバフ分攻撃に追加。デバフボーナスに変数用意してるけどエフェクトに統合すべきかなあ
+     * 相手のデバフ分攻撃に追加。
      */
     fun debuffBonus(battleUnit: BattleUnit, enemy: BattleUnit): BattleUnit {
-        battleUnit.debuffBonus = enemy.atkDebuff + enemy.spdDebuff + enemy.defBuff + enemy.resDebuff
+        battleUnit.debuffBonus = enemy.atkBuff + enemy.spdBuff + enemy.defBuff + enemy.resBuff
         return battleUnit
     }
 
@@ -778,8 +783,8 @@ interface Skill {
     /**
      * 相手が2射程武器の時バフ無効か
      */
-    fun antiRangedWeaponBuffBonus(battleUnit: BattleUnit, enemy: BattleUnit): BattleUnit {
-        if (enemy.armedHero.baseHero.weaponType.range == 2) {
+    fun antiRangedWeaponBuffBonus(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int = 3): BattleUnit {
+        if (enemy.armedHero.baseHero.weaponType.range == 2 && battleUnit.hp * 100 >= battleUnit.armedHero.maxHp * (150 - lv * 50) ) {
             enemy.antiBuffBonus = true
         }
         return battleUnit
@@ -917,5 +922,9 @@ interface Skill {
      * 怒り
      */
     fun wrath(battleUnit: BattleUnit, damage: Int, percentile: Int): Int = if (battleUnit.hp * 100 <= battleUnit.armedHero.maxHp * percentile) damage + 10 else damage
+
+    fun spdFlat(battleUnit: BattleUnit, enemy: BattleUnit): Int = if (battleUnit.effectedPhantomSpd > enemy.effectedPhantomSpd) {
+        HandmaidMath.min((battleUnit.effectedPhantomSpd - enemy.effectedPhantomSpd) * 7 / 10, 7)
+    } else 0
 
 }

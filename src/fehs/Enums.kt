@@ -144,7 +144,7 @@ enum class SkillType(val jp: String, val weaponType: WeaponType? = null, val pre
     SWORD("剣", WeaponType.SWORD),
     LANCE("槍", WeaponType.LANCE),
     AXE("斧", WeaponType.AXE),
-    DRAGON("竜", WeaponType.DRAGON),
+    DRAGON("竜", WeaponType.DRAGON, PreventType.magicPrevent),
     PENETRATE_DRAGON("竜", WeaponType.DRAGON, PreventType.dragonPrevent),
     PENETRATE_DAGGER("竜", WeaponType.DRAGON, PreventType.feliciaPrevent),
     RTOME("赤魔", WeaponType.RTOME, PreventType.magicPrevent),

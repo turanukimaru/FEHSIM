@@ -7,7 +7,7 @@ import jp.blogspot.turanukimaru.fehs.skill.Skill
  */
 class Damage(source: BattleUnit, val special: Skill, weaponType: SkillType, flat: Int, staff: Int, results: List<AttackResult>) {
     val deal: (BattleUnit) -> DamageResult = {
-        val damage = it.prevent(special.damage(source.colorAttack(it) + special.stateDamage(source), it.preventByDefResTerrain(weaponType, special.penetrate)) * staff + flat, source, results)
+        val damage = it.prevent(special.damage(source.colorAttack(it) + special.stateDamage(source), it.preventByDefResTerrain(weaponType, special.penetrate)) * staff + source.stateFlat(it)+flat, source, results)
 
         val specialPrevented = it.specialPrevent(source, damage)
         it.damaged(damage, specialPrevented)

@@ -7,7 +7,7 @@ import jp.blogspot.turanukimaru.fehs.*
  * あーテキストが一意になるようにしないと保存できないか。これはうかつだったな。武器名で統一するか…？追加効果だから困るわけではないのだが。
  * 錬成武器
  */
-enum class RefineSkill(override val jp: Name, val hp: Int, val atk: Int, val spd: Int, val def: Int, val res: Int, val refineSkillType: RefineSkill.RefineType = RefineSkill.RefineType.NONE, override val preSkill: Skill = Skill.NONE, override val level: Int = 0, override val type: SkillType = SkillType.REFINERY, override val effectiveAgainstWeaponType: Array<WeaponType> = arrayOf()) : Skill {
+enum class RefinedSkill(override val jp: Name, val hp: Int, val atk: Int, val spd: Int, val def: Int, val res: Int, val refinedSkillType: RefinedSkill.RefineType = RefinedSkill.RefineType.NONE, override val preSkill: Skill = Skill.NONE, override val level: Int = 0, override val type: SkillType = SkillType.REFINERY, override val effectiveAgainstMoveType: Array<MoveType> = arrayOf(), override val effectiveAgainstWeaponType: Array<WeaponType> = arrayOf()) : Skill {
     //基本ルール
     Range1Atk(Name.Range1Atk, 5, 2, 0, 0, 0, RefineType.Range1),
     Range1Spd(Name.Range1Spd, 5, 0, 3, 0, 0, RefineType.Range1),
@@ -137,7 +137,7 @@ enum class RefineSkill(override val jp: Name, val hp: Int, val atk: Int, val spd
     DeathlyDagger(Name.DeathlyDagger, 0, 3, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.DeathlyDagger, 11, SkillType.DAGGER) {
         override fun attackEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = attackPain(battleUnit, enemy, 10)
     },
-    Parthia(Name.Parthia, 0, 0, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.Parthia, 14, SkillType.BOW) {
+    Parthia(Name.Parthia, 0, 0, 0, 0, 0, RefineType.ReplaceWeapon, Weapon.Parthia, 14, SkillType.BOW, effectiveAgainstMoveType = arrayOf(MoveType.FLIER)) {
         override fun prevent(battleUnit: BattleUnit, damage: Int, source: BattleUnit, results: List<AttackResult>, lv: Int): Int =
                 if (source.armedHero.isMagicWeapon()
                         && (!results.any { r -> r.side != battleUnit.side })) damage - damage * 3 / 10 else damage
@@ -196,7 +196,18 @@ enum class RefineSkill(override val jp: Name, val hp: Int, val atk: Int, val spd
     },
     CamillasAxe(Name.CamillasAxe, 3, 0, 0, 0, 0, RefineType.DependWeapon, Weapon.CamillasAxe),
     Yato2(Name.Yato, 3, 0, 0, 0, 0, RefineType.DependWeapon, Weapon.Yato),
+    Aura(Name.RefinedAura, 0, 0, 0, 0, 0, RefineType.DependWeapon, Weapon.Aura) {
+        override fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = if (battleUnit.adjacentUnits > 0) blowAtk(blowSpd(battleUnit, 5), 5) else battleUnit
+    },
+    Excalibur(Name.RefinedAura, 0, 0, 0, 0, 0, RefineType.DependWeapon, Weapon.Excalibur) {
+        override fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = if (battleUnit.adjacentUnits > 0) blowAtk(blowSpd(battleUnit, 5), 5) else battleUnit
+    },
+    BreathOfFog(Name.RefinedBreathOfFog, 3, 0, 0, 0, 0, RefineType.DependWeapon, Weapon.BreathOfFog) {
+        override fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = if (battleUnit.adjacentUnits > 0) blowAtk(blowDef(battleUnit, 5), 5) else battleUnit
+    },
+
     ;
+
 
     //装備効果がある武器に必要になるのか・・・しくじったかな？
     override fun equipBlade(armedHero: ArmedHero, lv: Int): ArmedHero {
@@ -238,10 +249,10 @@ enum class RefineSkill(override val jp: Name, val hp: Int, val atk: Int, val spd
     companion object {
 
         private val itemMap = mutableMapOf<String, Skill>()
-        fun spreadItems(weapon: Skill, range: RefineType = (weapon as? Weapon)?.refineSkillType
-                ?: RefineType.NOT_WEAPON): List<Skill> = values().fold(arrayListOf<Skill>(Skill.NONE), { list, e -> if (e.refineSkillType == range || (e.refineSkillType == RefineType.DependWeapon && (e.preSkill == weapon || e.preSkill == weapon.preSkill))) list.add(e);list })
+        fun spreadItems(weapon: Skill, range: RefineType = (weapon as? Weapon)?.refinedSkillType
+                ?: RefineType.NOT_WEAPON): List<Skill> = values().fold(arrayListOf<Skill>(Skill.NONE), { list, e -> if (e.refinedSkillType == range || (e.refinedSkillType == RefineType.DependWeapon && (e.preSkill == weapon || e.preSkill == weapon.preSkill))) list.add(e);list })
 
-        fun valueOfWeapon(weapon: Skill) = values().find { e -> e.refineSkillType == RefineType.ReplaceWeapon && e.preSkill == weapon }
+        fun valueOfWeapon(weapon: Skill) = values().find { e -> e.refinedSkillType == RefineType.ReplaceWeapon && e.preSkill == weapon }
         fun valueOfOrNONE(key: String?): Skill = if (key == null || key.isEmpty()) Skill.NONE else try {
             if (itemMap.isEmpty()) {
                 values().forEach { e -> itemMap[e.value] = e;itemMap[e.jp.jp] = e; itemMap[e.jp.us] = e; itemMap[e.jp.tw] = e }

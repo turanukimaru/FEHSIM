@@ -120,6 +120,8 @@ enum class Name(val jp: String, val us: String, val tw: String) {
     チキ__夏_("チキ（夏）", "Tiki(A) (Summer)", "琪姬(A) (Summer)"),
     チキ__大人_("チキ（大人）", "Tiki(A)", "琪姬(A)"),
     チキ__幼_("チキ（幼）", "Tiki(Y)", "琪姬(Y)"),
+    チキ__大人_2("チキ（大人）＋", "Tiki(A)+", "琪姬(A)+"),
+    チキ__幼_2("チキ（幼）＋", "Tiki(Y)+", "琪姬(Y)+"),
     ツバキ("ツバキ", "Subaki", "椿"),
     ティアマト("ティアマト", "Titania", "狄亞馬特"),
     ティアモ("ティアモ", "Cordelia", "蒂亞莫"),
@@ -968,6 +970,19 @@ enum class Name(val jp: String, val us: String, val tw: String) {
     リョウマ__伝承英雄_("リョウマ（伝承英雄）", "Ryoma (Vanguard Legend)", "龍馬 (Vanguard Legend)"),
     Bushido("武士道","Bushido","Bushido"),
     KestrelStance("鬼神飛燕の構え","Kestrel Stance","Kestrel Stance"),
+ カアラ("カアラ","Karla","卡菈"),
+    ニノ__失われし牙_("ニノ（失われし牙）","Nino (Scattered Fangs)","妮諾 (Scattered Fangs)"),
+    ラガルト("ラガルト","Legault","拉加爾托"),
+    VassalsBlade	("剣姫の刀","Vassal's Blade	","Vassal's Blade"),
+    EvenSpdWave  ("速さの波・偶数","Even Spd Wave ","Even Spd Wave"),
+    GigaExcalibur("ギガスカリバー","Giga Excalibur","Giga Excalibur"),
+    Aerobatics ("曲技飛行","Aerobatics","Aerobatics"),
+    TheCleaner("粛清の暗器","The Cleaner","The Cleaner"),
+    TheCleaner2("粛清の暗器＋","The Cleaner+","The Cleaner+"),
+    RefinedAura("杖か魔法の味方がいるときAtk/Spd+5","a magic or staff ally, Atk/Spd+5","a magic or staff ally, Atk/Spd+5"),
+    BreathOfFog("霧のブレス","Breath of Fog","Breath of Fog"),
+    RefinedBreathOfFog("剣か竜の味方がいるときAtk/Def+5","a sword or dragon ally, Atk/Def+5","a sword or dragon ally, Atk/Def+5"),
+    ライナス("ライナス","Linus","莢納斯"),
     ;
 
     /**

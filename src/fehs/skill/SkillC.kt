@@ -79,6 +79,7 @@ enum class SkillC(override val jp: Name, override val type: SkillType, override 
     ResTactic(Name.ResTactic, SkillType.C),
     FlierGuidance(Name.FlierGuidance, SkillType.C),
     OddAtkWave(Name.OddAtkWave, SkillType.C),
+    EvenSpdWave(Name.EvenSpdWave, SkillType.C),
     ;
 
     /**

@@ -131,6 +131,7 @@ data class BattleUnit(val armedHero: ArmedHero
     val effectedRes: Int get() = res + resEffect
     val effectedBladeAtk: Int get() = effectedAtk + if (blade && !antiBuffBonus) atkBuff + spdBuff + defBuff + resBuff else 0 + debuffBonus
     val effectedPhantomSpd: Int get() = effectedSpd + phantomSpeed
+    val totalBuff: Int get() = atkBuff+spdBuff + defBuff+resBuff
 
     /** マップ上で戦う際には必要になると思われる*/
     fun clearEffect() {
@@ -338,6 +339,8 @@ data class BattleUnit(val armedHero: ArmedHero
 
         effectiveDamage + effectiveDamage * colorPow / 100
     }
+
+    val stateFlat: (BattleUnit) -> Int = {armedHero.weapon.stateFlat(this, it)}
 
     fun heal(life: Int): Int {
         hp += life
