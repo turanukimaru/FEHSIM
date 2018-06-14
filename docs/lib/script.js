@@ -112,12 +112,12 @@ var readParams = function (target) {
         , skillB: sb ? fehs.skill.SkillB.Companion.valueOfOrNONE_pdl1vj$(sb) : void 0
         , skillC: sc ? fehs.skill.SkillC.Companion.valueOfOrNONE_pdl1vj$(sc) : void 0
         , seal: sl ? fehs.skill.Seal.Companion.valueOfOrNONE_pdl1vj$(sl) : void 0
-        , refine: re ? fehs.skill.RefineSkill.valueOf_61zpoe$(re) : void 0
+        , refine: re ? fehs.skill.RefinedSkill.valueOf_61zpoe$(re) : void 0
     }
 
 }
 
-var spreadRefines = function(weapon){return fehs.skill.RefineSkill.Companion.spreadItems_3o6c2a$(weapon).toArray().map(function (e, i, a) {
+var spreadRefines = function(weapon){return fehs.skill.RefinedSkill.Companion.spreadItems_3o6c2a$(weapon).toArray().map(function (e, i, a) {
         return $('<option>', {value: e.name, text: e.jp.localeName_miixs2$(locale)})
 })}
 var spreadWeapons = function(weaponType){
