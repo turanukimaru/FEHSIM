@@ -117,7 +117,7 @@ var readParams = function (target) {
 
 }
 
-var spreadRefines = function(weapon){return fehs.skill.RefinedSkill.Companion.spreadItems_3o6c2a$(weapon).toArray().map(function (e, i, a) {
+var spreadRefines = function(weapon){return fehs.skill.RefinedSkill.Companion.spreadItems_lzlt1e$(weapon).toArray().map(function (e, i, a) {
         return $('<option>', {value: e.name, text: e.jp.localeName_miixs2$(locale)})
 })}
 var spreadWeapons = function(weaponType){
