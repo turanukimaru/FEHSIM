@@ -23,19 +23,19 @@ class FightPlan(val attacker: BattleUnit, val target: BattleUnit) {
         pair.first.attack(pair.second, results)
     }
     /**
-     * 反撃側追撃
+     * 反撃側追撃.今のところこれの順番を変えるスキルはないからプライベート。まあ他のも操作メソッドをここに移せばいいのだが
      */
-    val secondCounter = { pair: Pair<BattleUnit, BattleUnit>, results: List<AttackResult> ->
+    private val secondCounter = { pair: Pair<BattleUnit, BattleUnit>, results: List<AttackResult> ->
         pair.second.attack(pair.first, results).flip()
     }
     /**
      * 攻撃順
      */
-    val plan = arrayListOf(firstAttack, firstCounter, secondAttack, secondCounter)
+    val plan = mutableListOf(firstAttack, firstCounter, secondAttack, secondCounter)
     /**
      * 戦闘結果のリスト。攻撃ごとにHPが減ったりダメージを表示するために途中経過も含む
      */
-    private val resultList = arrayListOf<AttackResult>()
+    private val resultList = mutableListOf<AttackResult>()
 
     /**
      * 攻撃準に影響するスキルを発動させる
@@ -51,7 +51,7 @@ class FightPlan(val attacker: BattleUnit, val target: BattleUnit) {
      */
     fun fight(): List<AttackResult> {
         buildFightPlan(attacker, target)
-        var last = AttackResult(attacker, target, 0,null, null, null)
+        var last = AttackResult(attacker, target, 0, null, null, null)
         //foldに書き直すべきかなあ
         for (fight in plan) {
             val s = last.source.copy()
@@ -73,19 +73,19 @@ class FightPlan(val attacker: BattleUnit, val target: BattleUnit) {
     private fun buildFightPlan(attacker: BattleUnit, target: BattleUnit) {
         attacker.side = SIDES.ATTACKER
         target.side = SIDES.COUNTER
-        //速度が足りないか追撃不可の時は追撃梨
+        //速度が足りないか追撃不可の時は追撃除去
 //        log("attack")
 //        log(attacker.armedHero.baseHero)
 //        log(attacker)
 //        log(attacker.effectedSpd)
-        if ((attacker.followupable == attacker.antiFollowup && attacker.effectedSpd - target.effectedSpd < 5) || (!attacker.followupable && attacker.antiFollowup)) {
+        if ((attacker.followupable == attacker.antiFollowup && attacker.effectedSpd - target.effectedSpd < 5) || (attacker.followupable < attacker.antiFollowup)) {
 
             plan.remove(secondAttack)
         }
 //        log(target.armedHero.baseHero)
 //        log(target)
 //        log(target.effectedSpd)
-        if ((target.followupable == target.antiFollowup && target.effectedSpd - attacker.effectedSpd < 5) || (!target.followupable && target.antiFollowup)) {
+        if ((target.followupable == target.antiFollowup && target.effectedSpd - attacker.effectedSpd < 5) || (target.followupable < target.antiFollowup)) {
 
             plan.remove(secondCounter)
         }
@@ -96,7 +96,7 @@ class FightPlan(val attacker: BattleUnit, val target: BattleUnit) {
             plan.remove(secondCounter)
         }
         //薙ぎもカウンターを抜く
-        if (target.cannotCcounter) {
+        if (target.cannotCounter) {
             plan.remove(firstCounter)
             plan.remove(secondCounter)
         }

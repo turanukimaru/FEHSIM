@@ -1,26 +1,31 @@
 //何度も使うのでグローバル
 var fehs = FEHSIM.jp.blogspot.turanukimaru.fehs
-
+var i = 0
 //全てのヒーローを取り出してソートする。toArray()でJSのArrayになる。
+console.log(0)
 var allHeroes = fehs.StandardBaseHero.allItems().toArray().sort(function (a, b) {
-    if (a.name > b.name) {
+    if (a.heroName > b.heroName) {
         return 1
-    } else if (a.name < b.name) {
+    } else if (a.heroName < b.heroName) {
         return -1
     } else {
         return 0
     }
 })
 var locale = fehs.Locale.JAPANESE
+console.log(1)
+
 var changeLanguage = function(){
+console.log("changeLanguage")
+console.log("")
 var val =$('input[name=language]:checked').val()
 locale=fehs.Locale.valueOf_61zpoe$(val)
 
     var heroNames = allHeroes.map(function (e, i, a) {
-        return $('<option>', {value: e.name, text: e.name.localeName_miixs2$(locale)})
+        return $('<option>', {value: e.name, text: e.heroName.localeName_miixs2$(locale)})
     })
 
-    var weapons = fehs.skill.Weapon.values().map(function (e, i, a) {
+    var weapons = fehs.skill.Weapon.Companion.allWeapons_0.toArray().map(function (e, i, a) {
         return $('<option>', {value: e.name, text: e.localeName_miixs2$(locale)})
     })
 
@@ -74,8 +79,10 @@ $("#showSkillOptions").prop("checked",false)
     calculateAll()
 }
 $(document).ready(function(){changeLanguage()})
+console.log(2)
 
 var readParams = function (target) {
+console.log("readParams")
     var wp = target.find(".weapon").val()
     var as = target.find(".assist").val()
     var sp = target.find(".special").val()
@@ -116,31 +123,44 @@ var readParams = function (target) {
     }
 
 }
+console.log(3)
 
 var spreadRefines = function(weapon){return fehs.skill.RefinedSkill.Companion.spreadItems_lzlt1e$(weapon).toArray().map(function (e, i, a) {
+console.log("spreadRefines")
         return $('<option>', {value: e.name, text: e.jp.localeName_miixs2$(locale)})
 })}
+console.log(4)
 var spreadWeapons = function(weaponType){
+console.log("spreadWeapons")
     if(weaponType){
-        return fehs.skill.Weapon.values().filter(function (e, i, a){
+        return fehs.skill.Weapon.Companion.allWeapons_0.toArray().filter(function (e, i, a){
 //        console.log(e.type.name+"/"+weaponType)
           return e.type.name == weaponType}).map(function (e, i, a) {return $('<option>', {value: e.name, text: e.jp.localeName_miixs2$(locale)})
     })
     }
-    return fehs.skill.Weapon.values().map(function (e, i, a) {
+    return fehs.skill.Weapon.Companion.allWeapons_0.toArray().map(function (e, i, a) {
         return $('<option>', {value: e.name, text: e.localeName_miixs2$(locale)})})
 }
 
+console.log(5)
 var paramSpan = function (hero) {
+console.log("paramSpan")
+console.log(hero)
+console.log(hero.maxHp)
+console.log(hero.atk)
     var params = $("#Params").clone()
     params.find(".hp").text(hero.maxHp)
     params.find(".atk").text(hero.atk)
     params.find(".spd").text(hero.spd)
     params.find(".def").text(hero.def)
     params.find(".res").text(hero.res)
+console.log("paramSpan ok")
     return params
 }
+console.log(6)
 var calculateAll = function () {
+console.log("calculateAll")
+
     var switched = !!$("#switch:checked").val()
     var enemyWeaponType = $("#enemyWeaponType").val()
     var enemyMoveType = $("#enemyMoveType").val()
@@ -160,18 +180,18 @@ var calculateAll = function () {
             , params.skillA ? params.skillA : base.aSkill, params.skillB ? params.skillB : base.bSkill, params.skillC ? params.skillC : base.cSkill, params.seal, params.rarity, params.level, params.boon, params.bane, params.defensive, params.atkBuff, params.spdBuff, params.defBuff, params.resBuff, params.atkSpur, params.spdSpur, params.defSpur, params.resSpur)
     })
     var heroNames = enemies.map(function (e, i, a) {
-        return $('<option>', {value: e.baseHero.name, text: e.baseHero.name.localeName_miixs2$(locale)})
+        return $('<option>', {value: e.baseHero.name, text: e.baseHero.heroName.localeName_miixs2$(locale)})
     })
     $("#enemyAttacker").children().remove()
     $("#enemyAttacker").append($('<option>', {value: "", text: "敵選択"})).append(heroNames)
     if(enemyName){
         var target = enemies.filter(function (e, i, a) {
             //コンパニオンオブジェクトはあてにならない。ローカライズの命名ルール統一しておくんだったな・・・
-            return e.baseHero.name == enemyName
+            return e.baseHero.heroName == enemyName
         })
         if(target.length > 0){
             enemies = target
-            $("#enemyAttacker").val(target[0].baseHero.name.localeName_miixs2$(locale))
+            $("#enemyAttacker").val(target[0].baseHero.heroName.localeName_miixs2$(locale))
         }
     }
 
@@ -179,9 +199,11 @@ var calculateAll = function () {
             var base = fehs.StandardBaseHero.get_61zpoe$(this.value)
             var params = readParams($(this).closest("td"))
             var hero = new fehs.ArmedHero(base, "new hero", params.weapon ? params.weapon : base.weapon, params.refine, params.assist ? params.assist : base.assist, params.special ? params.special : base.special
-                , params.skillA ? params.skillA : base.aSkill, params.skillB ? params.skillB : base.bSkill, params.skillC ? params.skillC : base.cSkill, params.seal, params.rarity, params.level, params.boon, params.bane, params.defensive, params.atkBuff, params.spdBuff, params.defBuff, params.resBuff, params.atkSpur, params.spdSpur, params.defSpur, params.resSpur)
+                , params.skillA ? params.skillA : base.aSkill, params.skillB ? params.skillB : base.bSkill, params.skillC ? params.skillC : base.cSkill, params.seal, params.rarity, params.level, params.boon, params.bane
+                , params.defensive, params.atkBuff, params.spdBuff, params.defBuff, params.resBuff, params.atkSpur, params.spdSpur, params.defSpur, params.resSpur, 0, false)
             var para = $(this).closest("td").find(".Params")
             para.contents().remove()
+            console.log(hero)
             para.append(paramSpan(hero))
 
             var weaponSelector=$(this).closest("td").find(".weapon")
@@ -200,7 +222,6 @@ var calculateAll = function () {
         }
     ).get()
 //    console.log(heroes)
-
     var results = []
     enemies.forEach(function (e) {
         var tr = $("<tr>")
@@ -226,13 +247,15 @@ var calculateAll = function () {
             }
 //            results.push(fightResults)
         })
-        tr.append('<th><span class="name">' + e.baseHero.name.localeName_miixs2$(locale)+ "<br /></th>")
+        tr.append('<th><span class="name">' + e.baseHero.heroName.localeName_miixs2$(locale)+ "<br /></th>")
         tr.find("th").append(paramSpan(e))
         body.append(tr)
     })
 //    console.log(results)
 }
+console.log(8)
 var filterHeroes = function (v) {
+console.log("filterHeroes")
     var params = $(v).closest("td")
     var weaponType = params.find(".weaponType").val()
     var moveType = params.find(".moveType").val()
@@ -242,14 +265,16 @@ var filterHeroes = function (v) {
         //コンパニオンオブジェクトはあてにならない。ローカライズの命名ルール統一しておくんだったな・・・
         return (!weaponType || e.weaponType.name == weaponType) && (!moveType || e.moveType.name == moveType)
     }).map(function (e, i, a) {
-        return $("<option>", {value: e.name, text: e.name})
+        return $("<option>", {value: e.heroName, text: e.heroName})
     })
 //    console.log(heroNames)
     params.find(".attacker").children().remove()
     params.find(".attacker").append(heroNames)
 
 }
+console.log(9)
 var cloneHero = function (v) {
+console.log("cloneHero")
     var td = $(v).closest("td")
     var clone = td.clone()
     clone.find(".attacker").val(td.find(".attacker").val())
@@ -259,8 +284,11 @@ var cloneHero = function (v) {
     td.after(clone)
     calculateAll()
 }
+console.log(10)
 var closeHero = function (v) {
+console.log("closeHero")
     var td = $(v).closest("td")
     td.remove()
     calculateAll()
 }
+console.log(11)

@@ -12,4 +12,5 @@ object ArmedHeroRepository {
     fun isStandardBattleClass(id: String): Boolean = StandardBaseHero.containsKey(id)
     fun createItem(battleHero: ArmedHero) = repo!!.createOrUpdate(battleHero)
 
+    fun registeredItems(): List<ArmedHero> = repo!!.allItems()
 }

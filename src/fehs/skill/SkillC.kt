@@ -1,85 +1,109 @@
 package jp.blogspot.turanukimaru.fehs.skill
 
-import jp.blogspot.turanukimaru.fehs.Name
+import jp.blogspot.turanukimaru.fehs.SkillName
 import jp.blogspot.turanukimaru.fehs.SkillType
+import jp.blogspot.turanukimaru.fehs.SpType
 
 /**
  * スキル。C
  */
-enum class SkillC(override val jp: Name, override val type: SkillType, override val level: Int = 0, override val preSkill: Skill = Skill.Companion.NONE, override val maxLevel: Int = 3) : Skill {
+enum class SkillC(override val jp: SkillName, override val type: SkillType = SkillType.C, override val level: Int = 0, override val preSkill: Skill = Skill.NONE, override val maxLevel: Int = 3, override val spType: SpType = SpType.BASE50) : Skill {
 
 
-    SpurAtk(Name.SpurAtk, SkillType.C),
-    SpurSpd(Name.SpurSpd, SkillType.C),
-    SpurDef(Name.SpurDef, SkillType.C),
-    SpurRes(Name.SpurRes, SkillType.C),
-    SpurDefRes(Name.SpurDefRes, SkillType.C, maxLevel = 2),
-    SpurSpdDef(Name.SpurSpdDef, SkillType.C, maxLevel = 2),
-    SpurAtkSpd(Name.SpurAtkSpd, SkillType.C, maxLevel = 2),
-    SpurAtkDef(Name.SpurAtkDef, SkillType.C, maxLevel = 2),
-    ThreatenAtk(Name.ThreatenAtk, SkillType.C),
-    ThreatenSpd(Name.ThreatenSpd, SkillType.C),
-    ThreatenDef(Name.ThreatenDef, SkillType.C),
-    ThreatenRes(Name.ThreatenRes, SkillType.C),
-    FortifyDef(Name.FortifyDef, SkillType.C),
-    FortifyRes(Name.FortifyRes, SkillType.C),
-    FortifyArmor(Name.FortifyArmor, SkillType.C, maxLevel = 0),
-    FortifyCavalry(Name.FortifyCavalry, SkillType.C, maxLevel = 0),
-    FortifyFliers(Name.FortifyFliers, SkillType.C, maxLevel = 0),
-    FortifyDragons(Name.FortifyDragons, SkillType.C, maxLevel = 0),
-    HoneAtk(Name.HoneAtk, SkillType.C),
-    HoneSpd(Name.HoneSpd, SkillType.C),
-    DriveAtk(Name.DriveAtk, SkillType.C, maxLevel = 2),
-    DriveDef(Name.DriveDef, SkillType.C, maxLevel = 2),
-    DriveSpd(Name.DriveSpd, SkillType.C, maxLevel = 2),
-    DriveRes(Name.DriveRes, SkillType.C, maxLevel = 2),
-    HoneArmor(Name.HoneArmor, SkillType.C, maxLevel = 0),
-    HoneCavalry(Name.HoneCavalry, SkillType.C, maxLevel = 0),
-    HoneDragons(Name.HoneDragons, SkillType.C, maxLevel = 0),
-    HoneFliers(Name.HoneFliers, SkillType.C, maxLevel = 0),
-    GoadArmor(Name.GoadArmor, SkillType.C, maxLevel = 0),
-    GoadCavalry(Name.GoadCavalry, SkillType.C, maxLevel = 0),
-    GoadDragons(Name.GoadDragons, SkillType.C, maxLevel = 0),
-    GoadFliers(Name.GoadFliers, SkillType.C, maxLevel = 0),
-    WardArmor(Name.WardArmor, SkillType.C, maxLevel = 0),
-    WardCavalry(Name.WardCavalry, SkillType.C, maxLevel = 0),
-    WardDragons(Name.WardDragons, SkillType.C, maxLevel = 0),
-    WardFliers(Name.WardFliers, SkillType.C, maxLevel = 0),
-    SavageBlow(Name.SavageBlow, SkillType.C),
-    BreathOfLife(Name.BreathOfLife, SkillType.C),
-    SwordExperience(Name.SwordExperience, SkillType.C),
-    AxeExperience(Name.AxeExperience, SkillType.C),
-    BowExperience(Name.BowExperience, SkillType.C),
-    BTomeExperience(Name.BTomeExperience, SkillType.C),
-    SwordValor(Name.SwordValor, SkillType.C),
-    LanceValor(Name.LanceValor, SkillType.C),
-    AxeValor(Name.AxeValor, SkillType.C),
-    BowValor(Name.BowValor, SkillType.C),
-    DaggerValor(Name.DaggerValor, SkillType.C),
-    RTomeValor(Name.RTomeValor, SkillType.C),
-    RTomeExperience(Name.RTomeExperience, SkillType.C),
-    BTomeValor(Name.BTomeValor, SkillType.C),
-    GTomeValor(Name.GTomeValor, SkillType.C),
-    GTomeExperience(Name.GTomeExperience, SkillType.C),
-    PanicPloy(Name.PanicPloy, SkillType.C),
-    AtkPloy(Name.AtkPloy, SkillType.C),
-    SpdPloy(Name.SpdPloy, SkillType.C),
-    DefPloy(Name.DefPloy, SkillType.C),
-    ResPloy(Name.ResPloy, SkillType.C),
-    InfantryPulse(Name.InfantryPulse, SkillType.C),
-    AtkSmoke(Name.AtkSmoke, SkillType.C),
-    SpdSmoke(Name.SpdSmoke, SkillType.C),
-    DefSmoke(Name.DefSmoke, SkillType.C),
-    ResSmoke(Name.ResSmoke, SkillType.C),
-    ArmorMarch(Name.ArmorMarch, SkillType.C),
-    Guidance(Name.Guidance, SkillType.C),
-    AtkTactic(Name.AtkTactic, SkillType.C),
-    SpdTactic(Name.SpdTactic, SkillType.C),
-    DefTactic(Name.DefTactic, SkillType.C),
-    ResTactic(Name.ResTactic, SkillType.C),
-    FlierGuidance(Name.FlierGuidance, SkillType.C),
-    OddAtkWave(Name.OddAtkWave, SkillType.C),
-    EvenSpdWave(Name.EvenSpdWave, SkillType.C),
+    SpurAtk(SkillName.SpurAtk),
+    SpurSpd(SkillName.SpurSpd),
+    SpurDef(SkillName.SpurDef),
+    SpurRes(SkillName.SpurRes),
+    SpurSpdDef(SkillName.SpurSpdDef, maxLevel = 2, spType = SpType.BASE60),
+    SpurSpdRes(SkillName.SpurSpdRes, maxLevel = 2, spType = SpType.BASE60),
+    SpurDefRes(SkillName.SpurDefRes, maxLevel = 2, spType = SpType.BASE60),
+    SpurAtkSpd(SkillName.SpurAtkSpd, maxLevel = 2, spType = SpType.BASE60),
+    SpurAtkDef(SkillName.SpurAtkDef, maxLevel = 2, spType = SpType.BASE60),
+    SpurAtkRes(SkillName.SpurAtkRes, maxLevel = 2, spType = SpType.BASE60),
+    ThreatenAtk(SkillName.ThreatenAtk),
+    ThreatenSpd(SkillName.ThreatenSpd),
+    ThreatenDef(SkillName.ThreatenDef),
+    ThreatenRes(SkillName.ThreatenRes),
+    FortifyDef(SkillName.FortifyDef),
+    FortifyRes(SkillName.FortifyRes),
+    FortifyBeasts(SkillName.FortifyBeasts, maxLevel = 0, spType = SpType.SHIELD),
+    FortifyArmor(SkillName.FortifyArmor, maxLevel = 0, spType = SpType.SHIELD),
+    FortifyCavalry(SkillName.FortifyCavalry, maxLevel = 0, spType = SpType.SHIELD),
+    FortifyFliers(SkillName.FortifyFliers, maxLevel = 0, spType = SpType.SHIELD),
+    FortifyDragons(SkillName.FortifyDragons, maxLevel = 0, spType = SpType.SHIELD),
+    HoneAtk(SkillName.HoneAtk, maxLevel = 4),
+    HoneSpd(SkillName.HoneSpd),
+    JointHoneSpd(SkillName.JointHoneSpd, maxLevel = 0, spType = SpType.LEGEND_S),
+    DriveAtk(SkillName.DriveAtk, maxLevel = 2, spType = SpType.BASE60),
+    DriveDef(SkillName.DriveDef, maxLevel = 2, spType = SpType.BASE60),
+    DriveSpd(SkillName.DriveSpd, maxLevel = 2, spType = SpType.BASE60),
+    DriveRes(SkillName.DriveRes, maxLevel = 2, spType = SpType.BASE60),
+    HoneBeasts(SkillName.HoneBeasts, maxLevel = 0, spType = SpType.SHIELD),
+    HoneArmor(SkillName.HoneArmor, maxLevel = 0, spType = SpType.SHIELD),
+    HoneCavalry(SkillName.HoneCavalry, maxLevel = 0, spType = SpType.SHIELD),
+    HoneDragons(SkillName.HoneDragons, maxLevel = 0, spType = SpType.SHIELD),
+    HoneFliers(SkillName.HoneFliers, maxLevel = 0, spType = SpType.SHIELD),
+    GoadArmor(SkillName.GoadArmor, maxLevel = 0, spType = SpType.SHIELD),
+    GoadCavalry(SkillName.GoadCavalry, maxLevel = 0, spType = SpType.SHIELD),
+    GoadDragons(SkillName.GoadDragons, maxLevel = 0, spType = SpType.SHIELD),
+    GoadFliers(SkillName.GoadFliers, maxLevel = 0, spType = SpType.SHIELD),
+    WardArmor(SkillName.WardArmor, maxLevel = 0, spType = SpType.SHIELD),
+    WardCavalry(SkillName.WardCavalry, maxLevel = 0, spType = SpType.SHIELD),
+    WardDragons(SkillName.WardDragons, maxLevel = 0, spType = SpType.SHIELD),
+    WardFliers(SkillName.WardFliers, maxLevel = 0, spType = SpType.SHIELD),
+    SavageBlow(SkillName.SavageBlow),
+    BreathOfLife(SkillName.BreathOfLife),
+    SwordExperience(SkillName.SwordExperience, spType = SpType.BASE30),
+    SwordValor(SkillName.SwordValor, spType = SpType.BASE30),
+    AxeExperience(SkillName.AxeExperience, spType = SpType.BASE30),
+    AxeValor(SkillName.AxeValor, spType = SpType.BASE30),
+    BowExperience(SkillName.BowExperience, spType = SpType.BASE30),
+    LanceValor(SkillName.LanceValor, spType = SpType.BASE30),
+    BowValor(SkillName.BowValor, spType = SpType.BASE30),
+    DaggerValor(SkillName.DaggerValor, spType = SpType.BASE30),
+    RTomeExperience(SkillName.RTomeExperience, spType = SpType.BASE30),
+    RTomeValor(SkillName.RTomeValor, spType = SpType.BASE30),
+    BTomeExperience(SkillName.BTomeExperience, spType = SpType.BASE30),
+    BTomeValor(SkillName.BTomeValor, spType = SpType.BASE30),
+    GTomeExperience(SkillName.GTomeExperience, spType = SpType.BASE30),
+    GTomeValor(SkillName.GTomeValor, spType = SpType.BASE30),
+    DragonValor(SkillName.DragonValor, spType = SpType.BASE30),
+    StaffValor(SkillName.StaffValor, spType = SpType.BASE30),
+    PanicPloy(SkillName.PanicPloy, spType = SpType.BASE60),
+    AtkPloy(SkillName.AtkPloy, spType = SpType.BASE60),
+    SpdPloy(SkillName.SpdPloy, spType = SpType.BASE60),
+    DefPloy(SkillName.DefPloy, spType = SpType.BASE60),
+    ResPloy(SkillName.ResPloy, spType = SpType.BASE60),
+    InfantryPulse(SkillName.InfantryPulse, spType = SpType.BASE60),
+    AtkSmoke(SkillName.AtkSmoke, spType = SpType.BASE60),
+    SpdSmoke(SkillName.SpdSmoke, spType = SpType.BASE60),
+    DefSmoke(SkillName.DefSmoke, spType = SpType.BASE60),
+    ResSmoke(SkillName.ResSmoke, spType = SpType.BASE60),
+    ArmorMarch(SkillName.ArmorMarch, spType = SpType.BASE60),
+    Guidance(SkillName.Guidance, spType = SpType.BASE60),
+    AtkTactic(SkillName.AtkTactic, spType = SpType.BASE60),
+    SpdTactic(SkillName.SpdTactic, spType = SpType.BASE60),
+    DefTactic(SkillName.DefTactic, spType = SpType.BASE60),
+    ResTactic(SkillName.ResTactic, spType = SpType.BASE60),
+    FlierGuidance(SkillName.FlierGuidance, spType = SpType.BASE60),
+    OddAtkWave(SkillName.OddAtkWave, spType = SpType.BASE60),
+    OddSpdWave(SkillName.OddSpdWave, spType = SpType.BASE60),
+    OddDefWave(SkillName.OddDefWave, spType = SpType.BASE60),
+    OddResWave(SkillName.OddResWave, spType = SpType.BASE60),
+    EvenAtkWave(SkillName.EvenAtkWave, spType = SpType.BASE60),
+    EvenSpdWave(SkillName.EvenSpdWave, spType = SpType.BASE60),
+    EvenDefWave(SkillName.EvenDefWave, spType = SpType.BASE60),
+    EvenResWave(SkillName.EvenResWave, spType = SpType.BASE60),
+    InfantryRush(SkillName.InfantryRush, spType = SpType.BASE60),
+    DistantGuard(SkillName.DistantGuard, spType = SpType.BASE60),
+    CloseGuard(SkillName.CloseGuard, spType = SpType.BASE60),
+    InfantryFlash(SkillName.InfantryFlash, spType = SpType.BASE60),
+    OstiasPulse(SkillName.OstiasPulse, maxLevel = 0, spType = SpType.LEGEND_S),
+    WithEveryone(SkillName.WithEveryone, maxLevel = 0, spType = SpType.LEGEND_S),
+    SurtrsMenace(SkillName.SurtrsMenace, maxLevel = 0, spType = SpType.LEGEND_S),
+    SparklingBoost(SkillName.SparklingBoost, maxLevel = 0, spType = SpType.LEGEND_S),
+    AtkOpening(SkillName.AtkOpening, spType = SpType.BASE60),
+    Glare(SkillName.Glare, maxLevel = 0, spType = SpType.LEGEND_S)
     ;
 
     /**
@@ -96,11 +120,17 @@ enum class SkillC(override val jp: Name, override val type: SkillType, override 
     //   override fun localeName(locale: Locale): String =jp.localeName(locale)
 
     companion object {
-        fun spreadItems(none: Boolean = false): List<Skill> = values().fold(if (none) arrayListOf<Skill>(Skill.NONE) else arrayListOf(), { list, e ->
+        fun spreadItems(none: Boolean = false): List<Skill> = values().fold(if (none) mutableListOf<Skill>(Skill.NONE) else mutableListOf()) { list, e ->
             if (e.maxLevel == 0) {
                 list.add(e)
-            } else (1..e.maxLevel).forEach({ i -> list.add(e.lv(i)) });list
-        })
+            } else (1..e.maxLevel).forEach { i -> list.add(e.lv(i)) };list
+        }
+
+        fun spreadMaxLvItems(none: Boolean = false): List<Skill> = values().fold(if (none) mutableListOf<Skill>(Skill.NONE) else mutableListOf()) { list, e ->
+            if (e.maxLevel == 0) {
+                list.add(e)
+            } else list.add(e.lv(e.maxLevel));list
+        }
 
         private val itemMap = mutableMapOf<String, SkillC>()
 

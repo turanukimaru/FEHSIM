@@ -8,18 +8,19 @@ enum class WeaponType(val range: Int, val isMaterial: Boolean, val sortOrder: In
     LANCE(1, true, 0),
     AXE(1, true, 0),
     DRAGON(1, false, 1),
-    RTOME(2, false, 2),
-    BTOME(2, false, 2),
-    GTOME(2, false, 2),
-    BOW(2, true, 3),
+    BEAST(1, true, 2),
+    RTOME(2, false, 3),
+    BTOME(2, false, 3),
+    GTOME(2, false, 3),
+    BOW(2, true, 4),
 
-    DAGGER(2, true, 4),
-    STAFF(2, false, 5),
+    DAGGER(2, true, 5),
+    STAFF(2, false, 6),
 //    NONE(0, true, Skill.SkillType.NONE, 6),
     ;
 
     companion object {
-        private val weaponTypeMap = mapOf("剣" to WeaponType.SWORD, "槍" to WeaponType.LANCE, "斧" to WeaponType.AXE, "弓" to WeaponType.BOW, "暗器" to WeaponType.DAGGER, "赤魔" to WeaponType.RTOME, "緑魔" to WeaponType.GTOME, "青魔" to WeaponType.BTOME, "杖" to WeaponType.STAFF, "竜" to DRAGON)
+        private val weaponTypeMap = mapOf("剣" to WeaponType.SWORD, "槍" to WeaponType.LANCE, "斧" to WeaponType.AXE, "竜" to DRAGON, "獣" to WeaponType.BEAST, "弓" to WeaponType.BOW, "暗器" to WeaponType.DAGGER, "赤魔" to WeaponType.RTOME, "緑魔" to WeaponType.GTOME, "青魔" to WeaponType.BTOME, "杖" to WeaponType.STAFF)
         /**
          * 日本語の武器名を変換する。ここにあるべきかは疑問だが将来画面とのやり取り以外にも使うかもしれない
          */
@@ -131,6 +132,7 @@ object PreventType {
     val magicPrevent: (BattleUnit) -> Int = { battleUnit -> battleUnit.effectedRes }
     val dragonPrevent: (BattleUnit) -> Int = { battleUnit -> if (battleUnit.effectiveRange != 2) battleUnit.effectedRes else if (battleUnit.effectedDef < battleUnit.effectedRes) battleUnit.effectedDef else battleUnit.effectedRes }
     val feliciaPrevent: (BattleUnit) -> Int = { battleUnit -> if (battleUnit.effectedDef < battleUnit.effectedRes) battleUnit.effectedDef else battleUnit.effectedRes }
+    val sorceryPrevent: (BattleUnit) -> Int = { battleUnit -> if (battleUnit.effectedDef < battleUnit.effectedRes) battleUnit.effectedDef else battleUnit.effectedRes }
 }
 
 /**
@@ -144,9 +146,11 @@ enum class SkillType(val jp: String, val weaponType: WeaponType? = null, val pre
     SWORD("剣", WeaponType.SWORD),
     LANCE("槍", WeaponType.LANCE),
     AXE("斧", WeaponType.AXE),
+    BEAST("獣", WeaponType.BEAST),
     DRAGON("竜", WeaponType.DRAGON, PreventType.magicPrevent),
     PENETRATE_DRAGON("竜", WeaponType.DRAGON, PreventType.dragonPrevent),
-    PENETRATE_DAGGER("竜", WeaponType.DRAGON, PreventType.feliciaPrevent),
+    PENETRATE_DAGGER("暗器", WeaponType.DAGGER, PreventType.feliciaPrevent),
+    SORCERY_DAGGER("暗器", WeaponType.DAGGER, PreventType.sorceryPrevent),
     RTOME("赤魔", WeaponType.RTOME, PreventType.magicPrevent),
     BTOME("青魔", WeaponType.BTOME, PreventType.magicPrevent),
     GTOME("緑魔", WeaponType.GTOME, PreventType.magicPrevent),
@@ -161,6 +165,44 @@ enum class SkillType(val jp: String, val weaponType: WeaponType? = null, val pre
     SEAL(""),
     REFINERY("")
     ;
+}
 
-    val isWeapon get() = weaponType != null
+//シンプルな関数のリストをもつこともできそう。ENUMにはならんだろうが.コンストラクタに入れる関数はEnum内へのスコープを持たないからこうするしかないのか
+val spLevel2n: (n: Int) -> Int = { n ->
+    when (n) {
+        1 -> 1;2 -> 2;3 -> 4;4 -> 6;else -> 0
+    }
+}
+
+enum class SpType(val sp: (lv: Int) -> Int) {
+    NONE({ 0 }),
+    IRON({ 50 }),
+    STEEL({ 100 }),
+    SILVER({ 200 }),
+    PLUS({ 300 }),
+    LEGEND_W({ 400 }),
+    ASSIST({ 150 }),
+    ASSIST2({ 300 }),
+    ASSIST3({ 400 }),
+    SPECIAL3({ 100 }),
+    SPECIAL4({ 200 }),
+    SPECIAL_A({ 300 }),
+    SPECIAL5({ 500 }),
+    LEGEND_S({ 300 }),
+    SHIELD({ 200 }),
+    BREATH({ 240 }),
+    BASE30({ lv -> 30 * spLevel2n(lv) }),//能力値+3
+    BASE40({ lv -> 40 * spLevel2n(lv) }),//覚醒
+    BASE50({ lv -> 50 * spLevel2n(lv) }),//ほとんどこっち
+    BASE60({ lv -> 60 * spLevel2n(lv) }),//回復、蛇毒、紫煙
+    BASE70({ lv ->
+        when (lv) {
+            1 -> 70;2 -> 150;3 -> 300;else -> 0
+        }
+    }),//Duel査定系
+    BASE80({ lv -> 80 * spLevel2n(lv) }),//能力値+2x2
+    BASE100({ lv -> 100 * spLevel2n(lv) }),//最高2LV,Sealスキル
+    BASE120({ lv -> 120 * spLevel2n(lv) }),//最高2LV,高級スキル
+    ;
+
 }
