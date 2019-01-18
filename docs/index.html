@@ -67,6 +67,21 @@ span.enemyHp {
 font-weight:bold;
 color:#fe0101;
 }
+span.detail {
+display: none;
+position: absolute;
+z-index : 100;
+padding : 2px;
+border-radius: 0px 8px 8px 8px;
+background : #f0fff0;
+}
+
+
+
+
+
+
+
 
 
     </style>
@@ -80,12 +95,16 @@ color:#fe0101;
 
 <div>
     <div>
+        最終更新：2019/01/18<br>
         言語選択
-        <input type="radio" id="JAPANESE" name="language" class="language" onclick="changeLanguage()" value="JAPANESE" checked>
-        <label for="JAPANESE" >日本語</label>
-        <input type="radio" id="ENGLISH" name="language" class="language" onclick="changeLanguage()" value="OTHER">
-        <label for="ENGLISH" >English</label>
-        <input type="radio" id="TAIWAN" name="language" class="language" onclick="changeLanguage()" value="TAIWAN">
+        <input type="radio" id="JAPANESE" name="language" class="language"
+               onclick="changeLanguage()" value="JAPANESE" checked>
+        <label for="JAPANESE">日本語</label>
+        <input type="radio" id="ENGLISH" name="language" class="language" onclick="changeLanguage()"
+               value="OTHER">
+        <label for="ENGLISH">English</label>
+        <input type="radio" id="TAIWAN" name="language" class="language" onclick="changeLanguage()"
+               value="TAIWAN">
         <label for="TAIWAN">繫體</label>
     </div>
     <table id="heroes">
@@ -102,6 +121,7 @@ color:#fe0101;
                     <option value="LANCE">槍</option>
                     <option value="AXE">斧</option>
                     <option value="DRAGON">竜石</option>
+                    <option value="BEAST">獣</option>
                     <option value="RTOME">赤魔</option>
                     <option value="BTOME">青魔</option>
                     <option value="GTOME">緑魔</option>
@@ -121,6 +141,9 @@ color:#fe0101;
                 <span class="Params"></span><br>
                 <span class="CustomParams">
                 <span class="Buffs"></span><br>
+                <span class="DefTile"></span><br>
+                <span class="AdjUnits"></span><br>
+                <span class="BuffDebuffTrigger"></span><br>
                 <span class="BoonBane"></span><br><br>
                 <span class="Skills"></span>
                 </span>
@@ -183,8 +206,22 @@ color:#fe0101;
                 <input class="resSpur" type="text" value="0" size="2" onchange="calculateAll()"/>
                 </span>
                 <br>
+                <span id="DefTile">
+                    防御地形<input type="checkbox" class="defensive" value="true"
+                               onchange="calculateAll()"/>
+                </span>
+                <br>
+                <span id="AdjUnits">
+                    隣接ユニット数
+                    <input class="adjUnits" type="text" value="0" size="1" onchange="calculateAll()"/>
+                </span>
+                <br>
+                <span id="BuffDebuffTrigger">
+                    バフデバフ参照武器有効化
+                    <input type="checkbox" class="buffDebuffTrigger" value="true" onchange="calculateAll()"/>
+                </span>
+                <br>
                 <span id="BoonBane">
-                    防御地形<input type="checkbox" class="defensive" value="true" onchange="calculateAll()"/><br>
                 <select class="boon" onchange="calculateAll()">
                     <option value="">得意　</option>
                     <option value="HP">HP</option>
@@ -253,7 +290,8 @@ color:#fe0101;
 <div>
     ※スキル変更時には制限を無視して全てのユニットのスキルを変更します。<br>
     ※Android用の1キャラのみの簡易版（ただし編集したキャラが保存できる）もあります。<br>
-    <a href="https://play.google.com/store/apps/details?id=jp.blogspot.turanukimaru.fehbs" title="Android app">
+    <a href="https://play.google.com/store/apps/details?id=jp.blogspot.turanukimaru.fehbs"
+       title="Android app">
         https://play.google.com/store/apps/details?id=jp.blogspot.turanukimaru.fehbs
     </a>
 </div>

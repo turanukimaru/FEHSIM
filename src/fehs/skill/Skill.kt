@@ -548,7 +548,7 @@ interface Skill {
      * 相性激化
      */
     fun colorAdvantage(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int, s: Skill = Skill.NONE): BattleUnit {
-        battleUnit.addSkillText(SkillText(s, SkillBaseText.TriangleAdept, (lv * 5 + 5).toString()+"%"))
+        battleUnit.addSkillText(SkillText(s, SkillBaseText.TriangleAdept, (20 + lv * 5 + 5).toString()+"%"))
         battleUnit.colorAdvantageLevel = lv
         return battleUnit
     }

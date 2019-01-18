@@ -2368,7 +2368,10 @@ var FEHSIM = function (_, Kotlin) {
     }
   });
   BattleUnit.prototype.statusText_miixs2$ = function (l) {
-    return this.armedHero.localeName_miixs2$(l) + ' Total : H' + toString(this.hp) + ' A' + toString(this.effectedAtk) + ' S' + toString(this.effectedSpd) + ' D' + toString(this.effectedDef) + ' R' + toString(this.effectedRes);
+    if (equals(l, Locale$JAPANESE_getInstance()))
+      return this.armedHero.localeName_miixs2$(l) + ':HP' + toString(this.armedHero.maxHp) + ' \u653B\u6483' + toString(this.effectedAtk) + ' \u901F\u3055' + toString(this.effectedSpd) + ' \u5B88\u5099' + toString(this.effectedDef) + ' \u9B54\u9632' + toString(this.effectedRes);
+    else
+      return this.armedHero.localeName_miixs2$(l) + ':HP' + toString(this.armedHero.maxHp) + ' A' + toString(this.effectedAtk) + ' S' + toString(this.effectedSpd) + ' D' + toString(this.effectedDef) + ' R' + toString(this.effectedRes);
   };
   BattleUnit.prototype.activatedSkillText_miixs2$ = function (locale) {
     var tmp$;
@@ -18592,7 +18595,7 @@ var FEHSIM = function (_, Kotlin) {
     return callback$default ? callback$default(battleUnit, s) : this.doubleAttack_c0cgnw$$default(battleUnit, s);
   };
   Skill.prototype.colorAdvantage_4oqbgm$$default = function (battleUnit, enemy, lv, s) {
-    battleUnit.addSkillText_65o806$(new SkillText(s, SkillBaseText$TriangleAdept_getInstance(), ((lv * 5 | 0) + 5 | 0).toString() + '%'));
+    battleUnit.addSkillText_65o806$(new SkillText(s, SkillBaseText$TriangleAdept_getInstance(), ' +' + ((lv * 5 | 0) + 5 | 0).toString() + '%'));
     battleUnit.colorAdvantageLevel = lv;
     return battleUnit;
   };
@@ -43965,8 +43968,8 @@ var FEHSIM = function (_, Kotlin) {
   LappedSkill.prototype.boostSpd_4oqbgm$ = Skill.prototype.boostSpd_4oqbgm$;
   LappedSkill.prototype.boostDef_4oqbgm$ = Skill.prototype.boostDef_4oqbgm$;
   LappedSkill.prototype.boostRes_4oqbgm$ = Skill.prototype.boostRes_4oqbgm$;
-  LappedSkill.prototype.effectiveAgainst_eszruq$ = Skill.prototype.effectiveAgainst_eszruq$;
   LappedSkill.prototype.effectiveAgainst_3el88j$ = Skill.prototype.effectiveAgainst_3el88j$;
+  LappedSkill.prototype.effectiveAgainst_eszruq$ = Skill.prototype.effectiveAgainst_eszruq$;
   LappedSkill.prototype.effectiveAgainstMagic_y14lzk$ = Skill.prototype.effectiveAgainstMagic_y14lzk$;
   LappedSkill.prototype.doubleAttack_c0cgnw$ = Skill.prototype.doubleAttack_c0cgnw$;
   LappedSkill.prototype.colorAdvantage_4oqbgm$ = Skill.prototype.colorAdvantage_4oqbgm$;
