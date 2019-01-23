@@ -101,6 +101,8 @@ var readParams = function (target) {
     var bn = target.find(".boon").val()
     var be = target.find(".bane").val()
 
+//console.log(wp)
+//console.log(fehs.skill.Weapon.Companion.valueOfOrNONE_pdl1vj$(wp))
     return {
         rarity: target.find(".rarity").val()
         , level: target.find(".level").val()
@@ -119,7 +121,7 @@ var readParams = function (target) {
         , resSpur: target.find(".resSpur").val()-0
         , boon: bn ? fehs.BoonType.valueOf_61zpoe$(bn) : void 0
         , bane: be ? fehs.BoonType.valueOf_61zpoe$(be) : void 0
-        , weapon: wp ? fehs.skill.Weapon.valueOf_61zpoe$(wp) : void 0
+        , weapon: wp ? fehs.skill.Weapon.Companion.valueOfOrNONE_pdl1vj$(wp) : void 0
         , assist: as ? fehs.skill.Assist.valueOf_61zpoe$(as) : void 0
         , special: sp ? fehs.skill.Special.valueOf_61zpoe$(sp) : void 0
         , skillA: sa ? fehs.skill.SkillA.Companion.valueOfOrNONE_pdl1vj$(sa) : void 0
@@ -188,11 +190,11 @@ var calculateAll = function () {
         return (!enemyWeaponType || e.weaponType.name == enemyWeaponType) && (!enemyMoveType || e.moveType.name == enemyMoveType)
     }).map(function (base) {
         //ここでパラメータ設定かな
-        return new fehs.ArmedHero(base, base.name, params.weapon ? params.weapon : base.weapon, params.refine, params.assist ? params.assist : base.assist, params.special ? params.special : base.special
-            , params.skillA ? params.skillA : base.aSkill, params.skillB ? params.skillB : base.bSkill, params.skillC ? params.skillC : base.cSkill, params.seal, params.rarity, 5, params.level, params.boon,
-             params.bane, params.defensive, params.atkBuff, params.spdBuff, params.defBuff, params.resBuff, params.atkSpur, params.spdSpur, params.defSpur, params.resSpur, params.adjUnits, params.buffDebuffTrigger)
+        var foe = new fehs.ArmedHero(base, base.heroName, params.weapon ? params.weapon : base.weapon, params.refine, params.assist ? params.assist : base.assist, params.special ? params.special : base.special
+                              , params.skillA ? params.skillA : base.aSkill, params.skillB ? params.skillB : base.bSkill, params.skillC ? params.skillC : base.cSkill, params.seal, params.rarity, 5, params.level, params.boon,
+                               params.bane, params.defensive, params.atkBuff, params.spdBuff, params.defBuff, params.resBuff, params.atkSpur, params.spdSpur, params.defSpur, params.resSpur, params.adjUnits, params.buffDebuffTrigger)
+        return foe
     })
-//console.log("こっちか？")
     var heroNames = enemies.map(function (e, i, a) {
         return $('<option>', {value: e.baseHero.name, text: e.baseHero.heroName.localeName_miixs2$(locale)})
     })
@@ -214,12 +216,11 @@ var calculateAll = function () {
     var heroes = $("#heroes .attacker").map(function () {
             var base = fehs.StandardBaseHero.get_61zpoe$(this.value)
             var params = readParams($(this).closest("td"))
-            var hero = new fehs.ArmedHero(base, base.name, params.weapon ? params.weapon : base.weapon, params.refine, params.assist ? params.assist : base.assist, params.special ? params.special : base.special
+            var hero = new fehs.ArmedHero(base, base.heroName, params.weapon ? params.weapon : base.weapon, params.refine, params.assist ? params.assist : base.assist, params.special ? params.special : base.special
                 , params.skillA ? params.skillA : base.aSkill, params.skillB ? params.skillB : base.bSkill, params.skillC ? params.skillC : base.cSkill, params.seal, params.rarity, 5, params.level, params.boon, params.bane
                 , params.defensive, params.atkBuff, params.spdBuff, params.defBuff, params.resBuff, params.atkSpur, params.spdSpur, params.defSpur, params.resSpur, params.adjUnits, params.buffDebuffTrigger)
             var para = $(this).closest("td").find(".Params")
             para.contents().remove()
-//console.log("でてんのこっち？")
             //console.log(hero)
             para.append(paramSpan(hero))
 //console.log("でてんのこっち？？")
@@ -247,12 +248,12 @@ var calculateAll = function () {
         heroes.forEach(function (h) {
             var hero = new fehs.BattleUnit(h, h.maxHp,0,h.atkBuff,h.spdBuff,h.defBuff,h.resBuff,0,0,0,0,h.atkSpur,h.spdSpur,h.defSpur,h.resSpur)
             hero.defensiveTerrain = h.defensiveTerrain
-            console.log(h.adjacentUnits)
+//            console.log(h.adjacentUnits)
             hero.adjacentUnits = h.adjacentUnits
             hero.buffDebuffTrigger =  h.buffDebuffTrigger
             var enemy = new fehs.BattleUnit(e, e.maxHp,0,e.atkBuff,e.spdBuff,e.defBuff,e.resBuff,0,0,0,0,e.atkSpur,e.spdSpur,e.defSpur,e.resSpur)
             enemy.defensiveTerrain = e.defensiveTerrain
-            console.log(e.adjacentUnits)
+//            console.log(e.adjacentUnits)
             enemy.adjacentUnits = e.adjacentUnits
             enemy.buffDebuffTrigger =  e.buffDebuffTrigger
             var fightResults = (switched ? enemy.fightAndAfterEffect_trfvk0$(hero):hero.fightAndAfterEffect_trfvk0$(enemy)).toArray()
@@ -276,7 +277,7 @@ var calculateAll = function () {
                 var result = last.source.hp ? (last.target.hp ? "even" :"win") : "lose"
                 tr.append('<td class="result ' + result+'"><span class="myHp">' + last.source.hp + '</span> - <span class="enemyHp">' + last.target.hp + "</span><br />"  + resultText + detail + "</td>")
             }
-            console.log(fightResults[0].source)
+//            console.log(fightResults[0].source)
             tr.append()
 
 //            results.push(fightResults)
