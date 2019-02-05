@@ -28,10 +28,10 @@ enum class Rtome(override val jp: SkillName, override val type: SkillType, overr
         override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = bladeEffect(battleUnit)
     },
     Rauorowl(SkillName.Rauorowl, SkillType.RTOME, 6, Elfire, SpType.SILVER) {
-        override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = allBonus(battleUnit, battleUnit.adjacentUnits * 2,this)
+        override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = allBonus(battleUnit, battleUnit.adjacentUnits * 2, this)
     },
     Rauorowl2(SkillName.Rauorowl2, SkillType.RTOME, 10, Rauorowl, SpType.PLUS, RefinedWeapon.RefineType.Range2) {
-        override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = allBonus(battleUnit, battleUnit.adjacentUnits * 2,this)
+        override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = allBonus(battleUnit, battleUnit.adjacentUnits * 2, this)
     },
     Fenrir(SkillName.Fenrir, SkillType.RTOME, 9, Elfire, SpType.SILVER),
     Fenrir2(SkillName.Fenrir2, SkillType.RTOME, 13, Fenrir, SpType.PLUS, RefinedWeapon.RefineType.Range2),
@@ -42,19 +42,19 @@ enum class Rtome(override val jp: SkillName, override val type: SkillType, overr
     Brynhildr(SkillName.Brynhildr, SkillType.RTOME, 14, Bolganone, SpType.LEGEND_W, RefinedWeapon.RefineType.Range2),
     Cymbeline(SkillName.Cymbeline, SkillType.RTOME, 14, Bolganone, SpType.LEGEND_W, RefinedWeapon.RefineType.Range2),
     Ragnarok(SkillName.Ragnarok, SkillType.RTOME, 14, Bolganone) {
-        override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = fullHpAtkSpdBonus(battleUnit, 5, 5,this)
+        override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = fullHpAtkSpdBonus(battleUnit, 5, 5, this)
     },
     Valflame(SkillName.Valflame, SkillType.RTOME, 14, Bolganone),
     Grimoire(SkillName.Grimoire, SkillType.RTOME, 14, Bolganone),
     Candelabra(SkillName.Candelabra, SkillType.RTOME, 8, Elfire, SpType.SILVER) {
-        override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = allBonus(battleUnit, 2,this)
+        override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = allBonus(battleUnit, 2, this)
     },
     Candelabra2(SkillName.Candelabra2, SkillType.RTOME, 12, Candelabra, SpType.PLUS, RefinedWeapon.RefineType.Range2) {
-        override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = allBonus(battleUnit, 2,this)
+        override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = allBonus(battleUnit, 2, this)
     },
     Gleipnir(SkillName.Gleipnir, SkillType.RTOME, 14, Bolganone) {
         override fun localEquip(armedHero: ArmedHero, lv: Int): ArmedHero = equipRes(armedHero, 3)
-        override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = enemyFullHpBonus(battleUnit, enemy, 3,this)
+        override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = enemyFullHpBonus(battleUnit, enemy, 3, this)
     },
     Naglfar(SkillName.Naglfar, SkillType.RTOME, 14, Bolganone) {
         override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = equipRaven(battleUnit)
@@ -78,24 +78,24 @@ enum class Rtome(override val jp: SkillName, override val type: SkillType, overr
     },
     MuspellFireposy(SkillName.MuspellFireposy, SkillType.RTOME, 14, Bolganone) {
         override fun localEquip(armedHero: ArmedHero, lv: Int): ArmedHero = equipSpd(armedHero, 3)
-        override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = atkSpd(battleUnit, battleUnit.adjacentUnits * 2,this)
+        override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = atkSpd(battleUnit, battleUnit.adjacentUnits * 2, this)
     },
     FruitOfIdunn(SkillName.FruitOfIdunn, SkillType.RTOME, 14, Bolganone) {
         override fun localEquip(armedHero: ArmedHero, lv: Int): ArmedHero = equipSpd(armedHero, 3)
     },
     ReesesTome(SkillName.ReesesTome, SkillType.RTOME, 14, Bolganone2, SpType.LEGEND_W, RefinedWeapon.RefineType.Range2) {
-        override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = allBonus(battleUnit, battleUnit.adjacentUnits * 2,this)
+        override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = allBonus(battleUnit, battleUnit.adjacentUnits * 2, this)
     },
     DawnSuzu(SkillName.DawnSuzu, SkillType.RTOME, 14, Bolganone2, effectiveAgainstMoveType = arrayOf(MoveType.CAVALRY, MoveType.ARMORED)) {
         override fun localEquip(armedHero: ArmedHero, lv: Int): ArmedHero = equipAtk(armedHero, 3)
-        override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = hardyBearing(battleUnit, enemy, 3,this)
+        override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = hardyBearing(battleUnit, enemy, 3, this)
     },
     AversasNight(SkillName.AversasNight, SkillType.RTOME, 14, Bolganone2) {
         override fun localEquip(armedHero: ArmedHero, lv: Int): ArmedHero = equipRes(armedHero, 3)
     },
     BookOfDreams(SkillName.BookOfDreams, SkillType.RTOME, 14, Bolganone2) {
         override fun localEquip(armedHero: ArmedHero, lv: Int): ArmedHero = equipAtk(armedHero, 3)
-        override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = adjacentDebuff(battleUnit, enemy, 4,this)
+        override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = adjacentDebuff(battleUnit, enemy, 4, this)
     },
     Imhullu(SkillName.Imhullu, SkillType.BTOME, 14, Bolganone) {
         override fun localEquip(armedHero: ArmedHero, lv: Int): ArmedHero = equipRes(armedHero, 3)

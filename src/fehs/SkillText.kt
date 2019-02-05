@@ -68,7 +68,7 @@ class SkillText(val name: Skill, val text: SkillBaseText, var value: String = ""
     private fun localeText(l: Locale): String = when (l) {
         Locale.JAPANESE -> text.localeText(l) + value + (if (next != null) " , " else "") + (next?.localeText(l)
                 ?: "")
-        else -> if (value.isNotEmpty()) "gets +" + value +" "+ text.localeText(l) + (if (next != null) " and " else "") + (next?.localeText(l)
+        else -> if (value.isNotEmpty()) "gets +" + value + " " + text.localeText(l) + (if (next != null) " and " else "") + (next?.localeText(l)
                 ?: "")
         else text.localeText(l) + value + (if (next != null) " and " else "") + (next?.localeText(l)
                 ?: "")

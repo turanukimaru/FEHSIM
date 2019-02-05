@@ -272,7 +272,40 @@ enum class RefinedWeapon(override val jp: SkillName, val hp: Int, val atk: Int, 
     ScarletSword(SkillName.ScarletSword, 3, 0, 0, 0, 0, RefineType.DependWeapon, Sword.ScarletSword),//ターン開始時効果必要だな…
     TacticalBolt(SkillName.TacticalBolt, 0, 0, 0, 0, 0, RefineType.DependWeapon, Btome.TacticalBolt),
     TacticalGale(SkillName.TacticalGale, 0, 0, 0, 0, 0, RefineType.DependWeapon, Gtome.TacticalGale),
+    Naga(SkillName.Naga, 0, 0, 0, 0, 0, RefineType.DependWeapon, Gtome.Naga) {
+        //replace で守備魔防+4にしないとダメか…
+        override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = if (enemy.armedHero.weapon.type == SkillType.PENETRATE_DRAGON || enemy.armedHero.weapon.type == SkillType.DRAGON) counterAllRange(battleUnit, this) else battleUnit
 
+        override fun effectedAttackEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit {
+            if (enemy.armedHero.weapon.type == SkillType.PENETRATE_DRAGON) {
+                enemy.overrideDamageType = SkillType.DRAGON
+            }
+            return battleUnit
+        }
+
+        override fun effectedCounterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit {
+            if (enemy.armedHero.weapon.type == SkillType.PENETRATE_DRAGON) {
+                enemy.overrideDamageType = SkillType.DRAGON
+            }
+            return battleUnit
+        }
+    },
+    Naga2(SkillName.Naga, 0, 0, 0, 0, 0, RefineType.ReplaceWeapon, Gtome.Naga, 14, SkillType.GTOME) {
+        override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit {
+            return defRes(battleUnit, 4, this)
+        }
+    },
+
+    //戦闘開始時に何を見るか確認しないとなあ
+    DivineNaga(SkillName.DivineNaga, 0, 0, 0, 0, 0, RefineType.DependWeapon, Gtome.DivineNaga) {
+        override fun fightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = if (battleUnit.res >= enemy.res + 3) allBonus(battleUnit, 3, this) else battleUnit
+        override fun effectedAttackEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = antiPenetrate(battleUnit, enemy, lv, this)
+    },
+    TomeOfThoron(SkillName.DartingBlow, 0, 0, 0, 0, 0, RefineType.DependWeapon, Gtome.DivineNaga) {
+        override fun attackEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit {
+            return spd(battleUnit, 6, this)
+        }
+    },
     ;
 
     override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero {

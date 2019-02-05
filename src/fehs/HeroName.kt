@@ -178,7 +178,10 @@ enum class HeroName(val jp: String, val us: String, val tw: String) {
     ティアモ("ティアモ", "Cordelia", "蒂亞莫"),
     ティアモ__花嫁_("ティアモ（花嫁）", "Cordelia (Bride)", "蒂亞莫 (Bride)"),
     ティルテュ("ティルテュ", "Tailtiu", "提爾透"),
+    ティルテュ2("ティルテュ＋", "Tailtiu+", "提爾透+"),
+    ティルテュ3("ティルテュ＋（錬成）", "Tailtiu+ (Refined)", "提爾透+ (Refined)"),
     ディアドラ("ディアドラ", "Deirdre", "迪雅朵拉"),
+    ディアドラ3("ディアドラ（錬成）", "Deirdre (Refined)", "迪雅朵拉 (Refined)"),
     デューテ("デューテ", "Delthea", "迪優特"),
     ドニ("ドニ", "Donnel", "多尼"),
     ドルカス("ドルカス", "Dorcas", "多爾卡斯"),
@@ -247,6 +250,7 @@ enum class HeroName(val jp: String, val us: String, val tw: String) {
     ミネルバ3("ミネルバ（錬成）", "Minerva (Refined)", "米奈娃 (Refined)"),
     メイ("メイ", "Mae", "梅伊"),
     ユリア("ユリア", "Julia", "尤莉亞"),
+    ユリア3("ユリア（錬成）", "Julia (Refined)", "尤莉亞 (Refined)"),
     ヨシュア("ヨシュア", "Joshua", "約書亞"),
     ラインハルト("ラインハルト", "Reinhardt", "萊茵哈特"),
     ラケシス("ラケシス", "Lachesis", "拉克西絲"),
@@ -434,11 +438,18 @@ enum class HeroName(val jp: String, val us: String, val tw: String) {
     フリーズ__正月_("フリーズ（正月）", "Hríd (New Year)", "佛利茲 (New Year)"),
     スリーズ__正月_("スリーズ（正月）", "Gunnthrá (New Year)", "斯利茲 (New Year)"),
 
-    ティバーン("ティバーン","Tibarn","ティバーン"),
-    ニケ("ニケ","Nailah","妮凱"),
-    リュシオン("リュシオン","Reyson","琉希昂"),
-    リアーネ("リアーネ","Leanne","莉婭妮"),
-    ネサラ("ネサラ","Naesala","涅沙羅"),
+    ティバーン("ティバーン", "Tibarn", "ティバーン"),
+    ニケ("ニケ", "Nailah", "妮凱"),
+    リュシオン("リュシオン", "Reyson", "琉希昂"),
+    リアーネ("リアーネ", "Leanne", "莉婭妮"),
+    ネサラ("ネサラ", "Naesala", "涅沙羅"),
+
+    リョウマ__温泉_("リョウマ（温泉）", "Ryoma (Hostile Springs)", "龍馬 (Hostile Springs)"),
+    エリーゼ__温泉_("エリーゼ（温泉）", "Elise (Hostile Springs)", "艾麗澤 (Hostile Springs)"),
+    サクラ__温泉_("サクラ（温泉）", "Sakura (Hostile Springs)", "櫻 (Hostile Springs)"),
+    ヒノカ__温泉_("ヒノカ（温泉）", "Hinoka (Hostile Springs)", "火乃香 (Hostile Springs)"),
+    カミラ__温泉_("カミラ（温泉）", "Camilla (Hostile Springs)", "卡美拉 (Hostile Springs)"),
+    ドーマ("ドーマ", "Duma", "多瑪"),
     ;
 
     /**

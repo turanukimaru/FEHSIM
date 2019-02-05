@@ -79,7 +79,8 @@ enum class Seal(override val jp: SkillName, override val type: SkillType = Skill
     },
     PhantomSpeed(SkillName.PhantomSpeed) {
         override fun fightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit {
-            battleUnit.phantomSpeed = when (lv) {1 -> 5
+            battleUnit.phantomSpeed = when (lv) {
+                1 -> 5
                 2 -> 8
                 3 -> 10
                 else -> 0
