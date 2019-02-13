@@ -43,7 +43,7 @@ enum class Lance(override val jp: SkillName, override val type: SkillType, overr
     FirstBite(SkillName.FirstBite, SkillType.LANCE, 10, SteelLance, SpType.SILVER),
     FirstBite2(SkillName.FirstBite2, SkillType.LANCE, 14, FirstBite, SpType.PLUS, RefinedWeapon.RefineType.Range1),
     FiresweepLance(SkillName.FiresweepLance, SkillType.LANCE, 11, SteelLance, SpType.SILVER) {
-        override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = disableEachCounter(battleUnit, enemy,this)
+        override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = disableEachCounter(battleUnit, enemy, this)
     },
     FiresweepLance2(SkillName.FiresweepLance2, SkillType.LANCE, 15, FiresweepLance) {
         override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = disableEachCounter(battleUnit, enemy, this)
@@ -77,7 +77,7 @@ enum class Lance(override val jp: SkillName, override val type: SkillType, overr
         override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit {
             val weapon = enemy.armedHero.baseHero.weaponType
             if (weapon == WeaponType.SWORD || weapon == WeaponType.LANCE || weapon == WeaponType.AXE) {
-                def(battleUnit,7, this)
+                def(battleUnit, 7, this)
             }
             return battleUnit
         }
@@ -102,10 +102,10 @@ enum class Lance(override val jp: SkillName, override val type: SkillType, overr
         override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = allBonus(battleUnit, 2, this)
     },
     CasaBlanca(SkillName.CasaBlanca, SkillType.LANCE, 10, SteelLance, SpType.SILVER) {
-        override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = antiRangedWeaponBuffBonus(battleUnit, enemy,3, this)
+        override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = antiRangedWeaponBuffBonus(battleUnit, enemy, 3, this)
     },
     CasaBlanca2(SkillName.CasaBlanca2, SkillType.LANCE, 14, CasaBlanca, SpType.PLUS) {
-        override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = antiRangedWeaponBuffBonus(battleUnit, enemy,3, this)
+        override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = antiRangedWeaponBuffBonus(battleUnit, enemy, 3, this)
     },
     HinokasSpear(SkillName.HinokasSpear, SkillType.LANCE, 16, SilverLance, SpType.LEGEND_W, RefinedWeapon.RefineType.Range1) {
         override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = if (battleUnit.adjacentUnits > 0) atkSpd(battleUnit, 4, this) else battleUnit
@@ -156,7 +156,10 @@ enum class Lance(override val jp: SkillName, override val type: SkillType, overr
         override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = if (battleUnit.adjacentUnits == 0) allBonus(battleUnit, 4, this) else battleUnit
     },
     Wagasa(SkillName.Wagasa, SkillType.LANCE, 10, SteelLance, SpType.SILVER),
-    Wagasa2(SkillName.Wagasa2, SkillType.LANCE, 14, Tannenboom, SpType.PLUS, RefinedWeapon.RefineType.Range1),
+    Wagasa2(SkillName.Wagasa2, SkillType.LANCE, 14, Wagasa, SpType.PLUS, RefinedWeapon.RefineType.Range1),
+    ItsCurtains(SkillName.Wagasa, SkillType.LANCE, 10, SteelLance, SpType.SILVER),
+    ItsCurtains2(SkillName.Wagasa2, SkillType.LANCE, 14, ItsCurtains, SpType.PLUS, RefinedWeapon.RefineType.Range1),
+    OborosSpear(SkillName.OborosSpear, SkillType.LANCE, 16, HeavySpear, SpType.PLUS, RefinedWeapon.RefineType.Range1, effectiveAgainstMoveType = arrayOf(MoveType.ARMORED)),
     ;
 
 

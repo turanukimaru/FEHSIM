@@ -71,10 +71,10 @@ enum class Btome(override val jp: SkillName, override val type: SkillType, overr
         override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = enemyFullHpBonus(battleUnit, enemy, 3, this)
     },
     BlueGift(SkillName.BlueGift, SkillType.BTOME, 8, Thoron, SpType.SILVER) {
-        override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = antiRangedWeaponBuffBonus(battleUnit, enemy,3, this)
+        override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = antiRangedWeaponBuffBonus(battleUnit, enemy, 3, this)
     },
     BlueGift2(SkillName.BlueGift2, SkillType.BTOME, 12, BlueGift, SpType.PLUS, RefinedWeapon.RefineType.Range2) {
-        override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = antiRangedWeaponBuffBonus(battleUnit, enemy, 3,this)
+        override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = antiRangedWeaponBuffBonus(battleUnit, enemy, 3, this)
     },
     HuginnsEgg(SkillName.HuginnsEgg, SkillType.BTOME, 14, Thoron) {
         override fun localEquip(armedHero: ArmedHero, lv: Int): ArmedHero = equipRes(armedHero, 3)
@@ -108,6 +108,16 @@ enum class Btome(override val jp: SkillName, override val type: SkillType, overr
     },
     PrayerWheel(SkillName.WeirdingTome, SkillType.BTOME, 14, Thoron) {
         override fun localEquip(armedHero: ArmedHero, lv: Int): ArmedHero = equipSpd(armedHero, 3)
+    },
+    TomeOfThoron(SkillName.TomeOfThoron, SkillType.BTOME, 14, Thoron, SpType.LEGEND_W, RefinedWeapon.RefineType.Range2) {
+        override fun localEquip(armedHero: ArmedHero, lv: Int): ArmedHero = equipSpd(armedHero, 3)
+        override fun specialTriggered(battleUnit: BattleUnit, damage: Int): Int = wrath(battleUnit, damage, 3 * 25, this)
+    },
+    Blarblooms(SkillName.Blarblooms, SkillType.BTOME, 8, Thoron, SpType.SILVER){
+        override fun fightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = if (battleUnit.adjacentUnits > 0) allBonus(battleUnit, 3, this) else battleUnit
+    },
+    Blarblooms2(SkillName.Blarblooms2, SkillType.BTOME, 12, Blarblooms, SpType.PLUS, RefinedWeapon.RefineType.Range2){
+        override fun fightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = if (battleUnit.adjacentUnits > 0) allBonus(battleUnit, 3, this) else battleUnit
     },
     ;
 

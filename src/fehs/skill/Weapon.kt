@@ -25,8 +25,8 @@ interface Weapon : Skill {
      */
     override fun fightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit {
         //無効化回避能力は移動系に対する楯しかないので武器特効を上位にすればいいはず。竜特効無効とか出たらやだなあ。出たわ。移植不能な武器だからまだなんとかなるけど。
-        val effectiveAgainstMoved = effectiveAgainstMoveType.fold(battleUnit) { bu, mv -> effectiveAgainst(mv, bu, enemy,this) }
-        val effectiveAgainstWeapon = effectiveAgainstWeaponType.fold(effectiveAgainstMoved) { bu, wp -> effectiveAgainst(wp, bu, enemy,this) }
+        val effectiveAgainstMoved = effectiveAgainstMoveType.fold(battleUnit) { bu, mv -> effectiveAgainst(mv, bu, enemy, this) }
+        val effectiveAgainstWeapon = effectiveAgainstWeaponType.fold(effectiveAgainstMoved) { bu, wp -> effectiveAgainst(wp, bu, enemy, this) }
         return localFightEffect(effectiveAgainstWeapon, enemy, lv)
     }
 

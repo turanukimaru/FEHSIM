@@ -24,27 +24,29 @@ enum class Staff(override val jp: SkillName, override val type: SkillType, overr
     Panic(SkillName.Panic, SkillType.STAFF, 6, Assault, SpType.SILVER),
     Panic2(SkillName.Panic2, SkillType.STAFF, 11, Panic, SpType.PLUS, RefinedWeapon.RefineType.Staff),
     Pain(SkillName.Pain, SkillType.STAFF, 3, Assault, SpType.SILVER) {
-        override fun attackEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = attackPain(battleUnit, enemy, 10,this)
+        override fun attackEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = attackPain(battleUnit, enemy, 10, this)
     },
     Pain2(SkillName.Pain2, SkillType.STAFF, 10, Pain, SpType.PLUS, RefinedWeapon.RefineType.Staff) {
-        override fun attackEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = attackPain(battleUnit, enemy, 10,this)
+        override fun attackEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = attackPain(battleUnit, enemy, 10, this)
     },
     Trilemma(SkillName.Trilemma, SkillType.STAFF, 8, Assault, SpType.SILVER),
     Trilemma2(SkillName.Trilemma2, SkillType.STAFF, 12, Trilemma, SpType.PLUS, RefinedWeapon.RefineType.Staff),
     Thokk(SkillName.Thokk, SkillType.STAFF, 14, Assault, SpType.PLUS) {
-        override fun fightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = wrathfulStaff(battleUnit, enemy, lv,this)
+        override fun fightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = wrathfulStaff(battleUnit, enemy, lv, this)
     },
     Hliðskjálf(SkillName.Hliðskjálf, SkillType.STAFF, 14, Assault, SpType.PLUS) {
-        override fun attackEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = dazzling(battleUnit, enemy, 3,this)
+        override fun attackEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = dazzling(battleUnit, enemy, 3, this)
     },
     WitchyWand(SkillName.WitchyWand, SkillType.STAFF, 8, Assault, SpType.SILVER),
     WitchyWand2(SkillName.WitchyWand2, SkillType.STAFF, 12, WitchyWand, SpType.PLUS, RefinedWeapon.RefineType.Staff),
     Flash(SkillName.Flash, SkillType.STAFF, 7, Assault, SpType.STEEL),
-    Flash2(SkillName.Flash2, SkillType.STAFF, 11, Assault, SpType.PLUS, RefinedWeapon.RefineType.Staff),
+    Flash2(SkillName.Flash2, SkillType.STAFF, 11, Flash, SpType.PLUS, RefinedWeapon.RefineType.Staff),
     JoyousLantern(SkillName.JoyousLantern, SkillType.STAFF, 8, Assault, SpType.STEEL),
-    JoyousLantern2(SkillName.JoyousLantern2, SkillType.STAFF, 12, Assault, SpType.PLUS, RefinedWeapon.RefineType.Staff),
+    JoyousLantern2(SkillName.JoyousLantern2, SkillType.STAFF, 12, JoyousLantern, SpType.PLUS, RefinedWeapon.RefineType.Staff),
     Kumade(SkillName.Kumade, SkillType.STAFF, 8, Assault, SpType.STEEL),
-    Kumade2(SkillName.Kumade2, SkillType.STAFF, 12, Assault, SpType.PLUS, RefinedWeapon.RefineType.Staff),
+    Kumade2(SkillName.Kumade2, SkillType.STAFF, 12, Kumade, SpType.PLUS, RefinedWeapon.RefineType.Staff),
+    Grandscratcher(SkillName.Grandscratcher, SkillType.STAFF, 8, Assault, SpType.SILVER),
+    Grandscratcher2(SkillName.Grandscratcher2, SkillType.STAFF, 12, Grandscratcher, SpType.SILVER, RefinedWeapon.RefineType.Staff),
     ;
 
     /**

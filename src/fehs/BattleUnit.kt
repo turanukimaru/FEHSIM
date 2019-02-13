@@ -139,11 +139,13 @@ data class BattleUnit(val armedHero: ArmedHero
     val effectedPhantomSpd: Int get() = effectedSpd + phantomSpeed
     val totalBuff: Int get() = atkBuff + spdBuff + defBuff + resBuff
     fun statusText(l: Locale): String = when (l) {
-        Locale.JAPANESE -> armedHero.localeName(l) + ":HP" +armedHero.maxHp +" 攻撃" + effectedAtk + " 速さ" + effectedSpd + " 守備" + effectedDef + " 魔防" + effectedRes
-        else -> armedHero.localeName(l) + ":HP" +armedHero.maxHp + " A" + effectedAtk + " S" + effectedSpd + " D" + effectedDef + " R" + effectedRes
+        Locale.JAPANESE -> armedHero.localeName(l) + ":HP" + armedHero.maxHp + " 攻撃" + effectedAtk + " 速さ" + effectedSpd + " 守備" + effectedDef + " 魔防" + effectedRes
+        else -> armedHero.localeName(l) + ":HP" + armedHero.maxHp + " A" + effectedAtk + " S" + effectedSpd + " D" + effectedDef + " R" + effectedRes
     }
 
+    // \n を入れるタイミングがびみょい
     fun activatedSkillText(locale: Locale) = if (activatedSkills.size > 0) activatedSkills.fold("") { s, n -> s + armedHero.localeName(locale) + " " + n.toText(locale) + "\n" } else ""
+
     /** マップ上で戦う際には必要になると思われる*/
     fun clearEffect() {
         atkEffect = 0

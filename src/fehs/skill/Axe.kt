@@ -138,6 +138,15 @@ enum class Axe(override val jp: SkillName, override val type: SkillType, overrid
         override fun attackEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = doubleAttack(battleUnit, this)
     },
     AxeOfVirility(SkillName.AxeOfVirility, SkillType.AXE, 16, Hammer2, SpType.LEGEND_W, RefinedWeapon.RefineType.Range1, effectiveAgainstMoveType = arrayOf(MoveType.ARMORED)),
+    FaithfulAxe(SkillName.FaithfulAxe, SkillType.AXE, 10, SteelAxe, SpType.SILVER) {
+        override fun fightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = if (battleUnit.adjacentUnits > 0) allBonus(battleUnit, 3, this) else battleUnit
+    },
+    FaithfulAxe2(SkillName.FaithfulAxe2, SkillType.AXE, 14, FaithfulAxe, SpType.PLUS, RefinedWeapon.RefineType.Range1){
+        override fun fightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = if (battleUnit.adjacentUnits > 0) allBonus(battleUnit, 3, this) else battleUnit
+    },
+    GradoPoleax(SkillName.GradoPoleax, SkillType.AXE, 16, SilverAxe,SpType.LEGEND_W, RefinedWeapon.RefineType.Range1) {
+        override fun localEquip(armedHero: ArmedHero, lv: Int): ArmedHero = equipKiller(armedHero)
+    },
     ;
 
     /**

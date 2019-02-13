@@ -20,7 +20,7 @@ enum class SkillBaseText(val jp: String, val us: String) {
     SweepB("相手は反撃不能", " and foe cannot counter attack"),
     FireSweep("どちらも反撃不能", "prevents counterattack"),
     NeutralizeBuffBonus("相手の強化を無効化", "neutralizes foe's bonuses "),
-    Blade("攻撃に + を加算", "adds total bonuses on unit to damage dealt"),
+    Blade("攻撃に強化を加算", "adds total bonuses on unit to damage dealt"),
     Dazzling("相手は反撃不能", "prevents foe's counterattack"),
     WrathfulStaff("杖も通常のダメージ", "calculates damage from staff like other weapons"),
     NoFollowupAttackEach("どちらも追撃不可", "prevents follow-up attack"),
@@ -68,7 +68,7 @@ class SkillText(val name: Skill, val text: SkillBaseText, var value: String = ""
     private fun localeText(l: Locale): String = when (l) {
         Locale.JAPANESE -> text.localeText(l) + value + (if (next != null) " , " else "") + (next?.localeText(l)
                 ?: "")
-        else -> if (value.isNotEmpty()) "gets +" + value +" "+ text.localeText(l) + (if (next != null) " and " else "") + (next?.localeText(l)
+        else -> if (value.isNotEmpty()) "gets +" + value + " " + text.localeText(l) + (if (next != null) " and " else "") + (next?.localeText(l)
                 ?: "")
         else text.localeText(l) + value + (if (next != null) " and " else "") + (next?.localeText(l)
                 ?: "")

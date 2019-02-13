@@ -68,6 +68,11 @@ enum class Breath(override val jp: SkillName, override val type: SkillType, over
     GlitteringBreath2(SkillName.GlitteringBreath2, SkillType.PENETRATE_DRAGON, 14, GlitteringBreath, SpType.PLUS, RefinedWeapon.RefineType.Range1) {
         override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = defRes(battleUnit, battleUnit.adjacentUnits * 2, this)
     },
+    FellBreath(SkillName.FellBreath, SkillType.PENETRATE_DRAGON, 16, Flametongue) {
+        override fun localEquip(armedHero: ArmedHero, lv: Int): ArmedHero = equipAtk(armedHero,3)
+        //これミュルグレと同じだな。真面目にカウントするなら一本化するか…
+        override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = if (enemy.hp < enemy.armedHero.maxHp) atkRes(antiFollowup(battleUnit,enemy,this), 6, this) else battleUnit
+    },
     ;
 
     /**

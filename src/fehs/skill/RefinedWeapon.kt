@@ -9,7 +9,7 @@ import jp.blogspot.turanukimaru.fehs.*
  */
 enum class RefinedWeapon(override val jp: SkillName, val hp: Int, val atk: Int, val spd: Int, val def: Int, val res: Int, override val refinedWeaponType: RefinedWeapon.RefineType = RefinedWeapon.RefineType.NONE, override val preSkill: Skill = Skill.NONE, override val level: Int = 0, override val type: SkillType = SkillType.REFINERY, override val effectiveAgainstMoveType: Array<MoveType> = arrayOf(), override val effectiveAgainstWeaponType: Array<WeaponType> = arrayOf(), override val spType: SpType = SpType.LEGEND_W) : Weapon {
     //基本ルール
-    RefinedAny(SkillName.RefinedWeapon, 5, 2, 0, 0, 0),
+    RefinedAny(SkillName.RefinedWeapon, 0, 0, 0, 0, 0),
     Range1Atk(SkillName.Range1Atk, 5, 2, 0, 0, 0, RefineType.Range1),
     Range1Spd(SkillName.Range1Spd, 5, 0, 3, 0, 0, RefineType.Range1),
     Range1Def(SkillName.Range1Def, 5, 0, 0, 4, 0, RefineType.Range1),
@@ -272,7 +272,57 @@ enum class RefinedWeapon(override val jp: SkillName, val hp: Int, val atk: Int, 
     ScarletSword(SkillName.ScarletSword, 3, 0, 0, 0, 0, RefineType.DependWeapon, Sword.ScarletSword),//ターン開始時効果必要だな…
     TacticalBolt(SkillName.TacticalBolt, 0, 0, 0, 0, 0, RefineType.DependWeapon, Btome.TacticalBolt),
     TacticalGale(SkillName.TacticalGale, 0, 0, 0, 0, 0, RefineType.DependWeapon, Gtome.TacticalGale),
+    Naga(SkillName.Naga, 0, 0, 0, 0, 0, RefineType.DependWeapon, Gtome.Naga) {
+        //replace で守備魔防+4にしないとダメか…
+        override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = if (enemy.armedHero.weapon.type == SkillType.PENETRATE_DRAGON || enemy.armedHero.weapon.type == SkillType.DRAGON) counterAllRange(battleUnit, this) else battleUnit
 
+        override fun effectedAttackEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit {
+            if (enemy.armedHero.weapon.type == SkillType.PENETRATE_DRAGON) {
+                antiPenetrate(battleUnit, enemy, this)
+            }
+            return battleUnit
+        }
+
+        override fun effectedCounterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit {
+            if (enemy.armedHero.weapon.type == SkillType.PENETRATE_DRAGON) {
+                antiPenetrate(battleUnit, enemy, this)
+            }
+            return battleUnit
+        }
+    },
+    Naga2(SkillName.RefinedNaga, 0, 0, 0, 0, 0, RefineType.ReplaceWeapon, Gtome.Naga, 14, SkillType.GTOME) {
+        override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit {
+            return defRes(battleUnit, 4, this)
+        }
+    },
+
+    //戦闘開始時に何を見るか確認しないとなあ
+    DivineNaga(SkillName.RefinedDivineNaga, 0, 0, 0, 0, 0, RefineType.DependWeapon, Gtome.DivineNaga) {
+        override fun fightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = if (battleUnit.res >= enemy.res + 3) allBonus(battleUnit, 3, this) else battleUnit
+        override fun effectedAttackEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = antiPenetrate(battleUnit, enemy, this)
+    },
+    TomeOfThoron(SkillName.DartingBlow, 0, 0, 0, 0, 0, RefineType.DependWeapon, Gtome.DivineNaga) {
+        override fun attackEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit {
+            return spd(battleUnit, 6, this)
+        }
+    },
+    Silverbrand(SkillName.SpdTactic, 3, 0, 0, 0, 0, RefineType.DependWeapon, Sword.Silverbrand),
+    GradoPoleax(SkillName.RefinedGradoPoleax, 3, 0, 0, 0, 0, RefineType.DependWeapon, Axe.GradoPoleax) {
+        override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = if (battleUnit.buffDebuffTrigger) spdDef(battleUnit, 5, this) else battleUnit
+    },
+    IrissTome(SkillName.EvenAtkWave, 0, 0, 0, 0, 0, RefineType.DependWeapon, Gtome.IrissTome),
+    OborosSpear(SkillName.CloseCounter, 3, 0, 0, 0, 0, RefineType.DependWeapon, Lance.OborosSpear) {
+        override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = closeAllBonus(battleUnit, enemy, 4, RefinedAny)
+    },
+    TharjasHex(SkillName.RefinedTharjasHex, 0, 0, 0, 0, 0, RefineType.DependWeapon),
+    NilessBow(SkillName.FlashingBlade, 0, 0, 0, 0, 0, RefineType.DependWeapon, Bow.NilessBow) {
+        override fun effectedAttackEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = flashingBlade(battleUnit, enemy, 1, RefinedAny)
+        override fun effectedCounterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = flashingBlade(battleUnit, enemy, 1, RefinedAny)
+    },
+    HinatasKatana(SkillName.Fury, 3, 0, 0, 0, 0, RefineType.DependWeapon, Sword.HinatasKatana) {
+        override fun localEquip(armedHero: ArmedHero, lv: Int): ArmedHero = fury(armedHero, 3)
+        override fun fightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = fightHpLoss(battleUnit, 6, RefinedAny)
+    },
     ;
 
     override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero {

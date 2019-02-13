@@ -45,13 +45,13 @@ enum class Gtome(override val jp: SkillName, override val type: SkillType, overr
     DancersRing2(SkillName.DancersRing2, SkillType.GTOME, 12, DancersRing, SpType.PLUS, RefinedWeapon.RefineType.Range2),
     Elivagar(SkillName.Elivagar, SkillType.GTOME, 14, Rexcalibur),
     Excalibur(SkillName.Excalibur, SkillType.GTOME, 14, Rexcalibur, SpType.LEGEND_W, RefinedWeapon.RefineType.Range2, effectiveAgainstMoveType = arrayOf(MoveType.FLIER)),
-    Naga(SkillName.Naga, SkillType.GTOME, 14, Rexcalibur, effectiveAgainstWeaponType = arrayOf(WeaponType.DRAGON)) {
+    Naga(SkillName.Naga, SkillType.GTOME, 14, Rexcalibur, SpType.LEGEND_W, RefinedWeapon.RefineType.Range2, effectiveAgainstWeaponType = arrayOf(WeaponType.DRAGON)) {
         override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = defRes(battleUnit, 2, this)
     },
     DarkExcalibur(SkillName.DarkExcalibur, SkillType.GTOME, 14, Rexcalibur) {
         override fun specialTriggered(battleUnit: BattleUnit, damage: Int): Int = damage + 10
     },
-    DivineNaga(SkillName.DivineNaga, SkillType.GTOME, 14, Rexcalibur, effectiveAgainstWeaponType = arrayOf(WeaponType.DRAGON)) {
+    DivineNaga(SkillName.DivineNaga, SkillType.GTOME, 14, Rexcalibur, SpType.LEGEND_W, RefinedWeapon.RefineType.Range2, effectiveAgainstWeaponType = arrayOf(WeaponType.DRAGON)) {
         override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = neutralizeBuffBonus(battleUnit, enemy, this)
     },
     SpectralTome(SkillName.SpectralTome, SkillType.GTOME, 8, Elwind, SpType.SILVER),
@@ -95,6 +95,15 @@ enum class Gtome(override val jp: SkillName, override val type: SkillType, overr
     },
     TacticalGale(SkillName.TacticalGale, SkillType.GTOME, 14, Gronnwolf, SpType.PLUS) {
         override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = equipRaven(battleUnit)
+    },
+    Gronnblooms(SkillName.Gronnblooms, SkillType.GTOME, 8, Elwind, SpType.SILVER){
+        override fun fightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = if (battleUnit.adjacentUnits > 0) allBonus(battleUnit, 3, this) else battleUnit
+    },
+    Gronnblooms2(SkillName.Gronnblooms2, SkillType.GTOME, 12, Gronnblooms, SpType.PLUS, RefinedWeapon.RefineType.Range2){
+        override fun fightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = if (battleUnit.adjacentUnits > 0) allBonus(battleUnit, 3, this) else battleUnit
+    },
+    IrissTome(SkillName.IrissTome, SkillType.GTOME, 14, Gronnblade2, SpType.LEGEND_W, RefinedWeapon.RefineType.Range2) {
+        override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = bladeEffect(battleUnit)
     },
     ;
 
