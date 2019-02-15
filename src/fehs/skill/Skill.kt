@@ -853,7 +853,7 @@ interface Skill {
      * 戦闘時のブレードの効果。これEquipに統合してもいいか…
      */
     fun bladeEffect(battleUnit: BattleUnit, s: Skill = Skill.NONE): BattleUnit {
-        battleUnit.addSkillText(SkillText(s, SkillBaseText.Blade, 2.toString()))
+        battleUnit.addSkillText(SkillText(s, SkillBaseText.Blade, battleUnit.totalBuff.toString()))
         battleUnit.blade = true
         return battleUnit
     }

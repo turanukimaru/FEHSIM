@@ -190,7 +190,8 @@ var calculateAll = function () {
         return (!enemyWeaponType || e.weaponType.name == enemyWeaponType) && (!enemyMoveType || e.moveType.name == enemyMoveType)
     }).map(function (base) {
         //ここでパラメータ設定かな
-        var foe = new fehs.ArmedHero(base, base.heroName, params.weapon ? params.weapon : base.weapon, params.refine, params.assist ? params.assist : base.assist, params.special ? params.special : base.special
+//        console.log(base)
+        var foe = new fehs.ArmedHero(base, base.heroName, params.weapon ? params.weapon : base.weapon, params.refine ? params.refine : base.refinedWeapon, params.assist ? params.assist : base.assist, params.special ? params.special : base.special
                               , params.skillA ? params.skillA : base.aSkill, params.skillB ? params.skillB : base.bSkill, params.skillC ? params.skillC : base.cSkill, params.seal, params.rarity, 5, params.level, params.boon,
                                params.bane, params.defensive, params.atkBuff, params.spdBuff, params.defBuff, params.resBuff, params.atkSpur, params.spdSpur, params.defSpur, params.resSpur, params.adjUnits, params.buffDebuffTrigger)
         return foe
@@ -216,7 +217,7 @@ var calculateAll = function () {
     var heroes = $("#heroes .attacker").map(function () {
             var base = fehs.StandardBaseHero.get_61zpoe$(this.value)
             var params = readParams($(this).closest("td"))
-            var hero = new fehs.ArmedHero(base, base.heroName, params.weapon ? params.weapon : base.weapon, params.refine, params.assist ? params.assist : base.assist, params.special ? params.special : base.special
+            var hero = new fehs.ArmedHero(base, base.heroName, params.weapon ? params.weapon : base.weapon, params.refine ? params.refine : base.refinedWeapon, params.assist ? params.assist : base.assist, params.special ? params.special : base.special
                 , params.skillA ? params.skillA : base.aSkill, params.skillB ? params.skillB : base.bSkill, params.skillC ? params.skillC : base.cSkill, params.seal, params.rarity, 5, params.level, params.boon, params.bane
                 , params.defensive, params.atkBuff, params.spdBuff, params.defBuff, params.resBuff, params.atkSpur, params.spdSpur, params.defSpur, params.resSpur, params.adjUnits, params.buffDebuffTrigger)
             var para = $(this).closest("td").find(".Params")

@@ -469,18 +469,6 @@ enum class HeroName(val jp: String, val us: String, val tw: String) {
     グレイル__傭兵団_("グレイル（傭兵団）", "Greil (Greil's Devoted)", " (Greil's Devoted)"),
     ミスト__傭兵団_("ミスト（傭兵団）", "Mist (Greil's Devoted)", "密絲特 (Greil's Devoted)"),
     ティアマト__傭兵団_("ティアマト（傭兵団）", "Titania (Greil's Devoted)", "狄亞馬特 (Greil's Devoted)"),
-    ティバーン("ティバーン", "Tibarn", "ティバーン"),
-    ニケ("ニケ", "Nailah", "妮凱"),
-    リュシオン("リュシオン", "Reyson", "琉希昂"),
-    リアーネ("リアーネ", "Leanne", "莉婭妮"),
-    ネサラ("ネサラ", "Naesala", "涅沙羅"),
-
-    リョウマ__温泉_("リョウマ（温泉）", "Ryoma (Hostile Springs)", "龍馬 (Hostile Springs)"),
-    エリーゼ__温泉_("エリーゼ（温泉）", "Elise (Hostile Springs)", "艾麗澤 (Hostile Springs)"),
-    サクラ__温泉_("サクラ（温泉）", "Sakura (Hostile Springs)", "櫻 (Hostile Springs)"),
-    ヒノカ__温泉_("ヒノカ（温泉）", "Hinoka (Hostile Springs)", "火乃香 (Hostile Springs)"),
-    カミラ__温泉_("カミラ（温泉）", "Camilla (Hostile Springs)", "卡美拉 (Hostile Springs)"),
-    ドーマ("ドーマ", "Duma", "多瑪"),
     ;
 
     /**

@@ -160,9 +160,6 @@ enum class Lance(override val jp: SkillName, override val type: SkillType, overr
     ItsCurtains(SkillName.Wagasa, SkillType.LANCE, 10, SteelLance, SpType.SILVER),
     ItsCurtains2(SkillName.Wagasa2, SkillType.LANCE, 14, ItsCurtains, SpType.PLUS, RefinedWeapon.RefineType.Range1),
     OborosSpear(SkillName.OborosSpear, SkillType.LANCE, 16, HeavySpear, SpType.PLUS, RefinedWeapon.RefineType.Range1, effectiveAgainstMoveType = arrayOf(MoveType.ARMORED)),
-    Wagasa2(SkillName.Wagasa2, SkillType.LANCE, 14, Wagasa, SpType.PLUS, RefinedWeapon.RefineType.Range1),
-    ItsCurtains(SkillName.Wagasa, SkillType.LANCE, 10, SteelLance, SpType.SILVER),
-    ItsCurtains2(SkillName.Wagasa2, SkillType.LANCE, 14, ItsCurtains, SpType.PLUS, RefinedWeapon.RefineType.Range1),
     ;
 
 
