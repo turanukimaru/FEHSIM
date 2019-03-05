@@ -157,6 +157,7 @@ enum class SkillB(override val jp: SkillName, override val type: SkillType = Ski
         override fun effectedAttackEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = nullCDisrupt(battleUnit, enemy, lv, this)
         override fun effectedCounterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = nullCDisrupt(battleUnit, enemy, lv, this)
     },
+
     SpecialSpiral(SkillName.SpecialSpiral, spType = SpType.BASE60),//戦闘後効果だからまだ要らないといえば要らないが…
     EscapeRoute(SkillName.EscapeRoute, spType = SpType.BASE60),
     RecoverRing(SkillName.RecoverRing, maxLevel = 0, spType = SpType.SHIELD),
@@ -208,6 +209,7 @@ enum class SkillB(override val jp: SkillName, override val type: SkillType = Ski
     SpdResLink(SkillName.SpdResLink, spType = SpType.BASE60),
     DefResLink(SkillName.DefResLink, spType = SpType.BASE60),
     Aerobatics(SkillName.Aerobatics, spType = SpType.BASE60),
+    SabotageAtk(SkillName.SabotageAtk, spType = SpType.BASE60),
     ;
 
     /**

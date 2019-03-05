@@ -314,6 +314,7 @@ enum class HeroName(val jp: String, val us: String, val tw: String) {
     ロイド("ロイド", "Lloyd", "洛伊德"),
     ロイド3("ロイド（錬成）", "Lloyd (Refined)", "洛伊德 (Refined)"),
     ロイ__総選挙_("ロイ（総選挙）", "Roy (Brave Heroes)", "羅伊 (Brave Heroes)"),
+    ロイ__伝承英雄_("ロイ（伝承英雄）", "Roy (Vanguard Legend)", "羅伊 (Vanguard Legend)"),
     ロディ("ロディ", "Roderick", "羅迪"),
     ロビン("ロビン", "Tobin", "羅賓"),
     ロンクー("ロンクー", "Lonqu", "隆克"),
@@ -469,6 +470,10 @@ enum class HeroName(val jp: String, val us: String, val tw: String) {
     グレイル__傭兵団_("グレイル（傭兵団）", "Greil (Greil's Devoted)", " (Greil's Devoted)"),
     ミスト__傭兵団_("ミスト（傭兵団）", "Mist (Greil's Devoted)", "密絲特 (Greil's Devoted)"),
     ティアマト__傭兵団_("ティアマト（傭兵団）", "Titania (Greil's Devoted)", "狄亞馬特 (Greil's Devoted)"),
+    ニシキ("ニシキ","Kaden","錦"),
+    キヌ("キヌ","Selkie","絹"),
+    フランネル("フランネル","Keaton","弗朗諾"),
+    ベロア("ベロア","Velouria","蓓羅亞"),
     ;
 
     /**

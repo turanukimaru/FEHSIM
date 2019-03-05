@@ -47,10 +47,12 @@ enum class SkillC(override val jp: SkillName, override val type: SkillType = Ski
     GoadCavalry(SkillName.GoadCavalry, maxLevel = 0, spType = SpType.SHIELD),
     GoadDragons(SkillName.GoadDragons, maxLevel = 0, spType = SpType.SHIELD),
     GoadFliers(SkillName.GoadFliers, maxLevel = 0, spType = SpType.SHIELD),
+    GoadBeasts(SkillName.GoadBeasts, maxLevel = 0, spType = SpType.SHIELD),
     WardArmor(SkillName.WardArmor, maxLevel = 0, spType = SpType.SHIELD),
     WardCavalry(SkillName.WardCavalry, maxLevel = 0, spType = SpType.SHIELD),
     WardDragons(SkillName.WardDragons, maxLevel = 0, spType = SpType.SHIELD),
     WardFliers(SkillName.WardFliers, maxLevel = 0, spType = SpType.SHIELD),
+    WardBeasts(SkillName.WardBeasts, maxLevel = 0, spType = SpType.SHIELD),
     SavageBlow(SkillName.SavageBlow),
     BreathOfLife(SkillName.BreathOfLife),
     SwordExperience(SkillName.SwordExperience, spType = SpType.BASE30),
@@ -69,6 +71,7 @@ enum class SkillC(override val jp: SkillName, override val type: SkillType = Ski
     GTomeValor(SkillName.GTomeValor, spType = SpType.BASE30),
     DragonValor(SkillName.DragonValor, spType = SpType.BASE30),
     StaffValor(SkillName.StaffValor, spType = SpType.BASE30),
+    BeastValor(SkillName.BeastValor, spType = SpType.BASE30),
     PanicPloy(SkillName.PanicPloy, spType = SpType.BASE60),
     AtkPloy(SkillName.AtkPloy, spType = SpType.BASE60),
     SpdPloy(SkillName.SpdPloy, spType = SpType.BASE60),
@@ -109,6 +112,7 @@ enum class SkillC(override val jp: SkillName, override val type: SkillType = Ski
     Glare(SkillName.Glare, maxLevel = 0, spType = SpType.LEGEND_S),
     AirOrders(SkillName.AirOrders, spType = SpType.BASE60),
     Upheaval(SkillName.Upheaval, maxLevel = 0, spType = SpType.LEGEND_S),
+    HumanVirtue(SkillName.HumanVirtue, maxLevel = 0, spType = SpType.LEGEND_S),
     ;
 
     /**

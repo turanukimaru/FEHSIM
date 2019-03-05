@@ -58,7 +58,7 @@ enum class SkillA(override val jp: SkillName, override val type: SkillType = Ski
     LifeAndDeath(SkillName.LifeAndDeath) {
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = lifeAndDeath(armedHero, lv + 2)
     },
-    Fury(SkillName.Fury,maxLevel = 4) {
+    Fury(SkillName.Fury, maxLevel = 4) {
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = fury(armedHero, lv)
         override fun fightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = fightHpLoss(battleUnit, lv * 2, this)
     },
@@ -288,6 +288,13 @@ enum class SkillA(override val jp: SkillName, override val type: SkillType = Ski
     LawsOfSacae(SkillName.LawsOfSacae, maxLevel = 0) {
         //実際は2以上。これ比較対象をユニットに持たせなきゃだめだな
         override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = if (battleUnit.adjacentUnits > 0) allBonus(battleUnit, 4, this) else battleUnit
+    },
+    BonusDoubler(SkillName.BonusDoubler) {
+        //新たな状態を作らないとダメか…
+        override fun fightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit {
+            battleUnit.bonusPow = 125 + lv * 25//他にも増えるか強化無効とぶつかったら1になるかしたらBattleUnitの関数にしよう…
+            return battleUnit
+        }
     },
     ;
 

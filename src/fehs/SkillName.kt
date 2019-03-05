@@ -522,7 +522,8 @@ enum class SkillName(val jp: String, val us: String, val tw: String) {
     GoadCavalry("騎刃の紋章", "Goad Cavalry", "騎刃紋章"),
     GoadDragons("竜刃の紋章", "Goad Dragons", "竜刃紋章"),
     GoadFliers("飛刃の紋章", "Goad Fliers", "飛刃紋章"),
-    Guidance("空からの先導", "Guidance", "空中前導"),
+    GoadBeasts("獣刃の紋章", "Goad Beasts", "獸刃紋章"),
+        Guidance("空からの先導", "Guidance", "空中前導"),
     HoneBeasts("の鼓舞", "Hone Beasts", "鼓舞"),
     HoneArmor("重刃の鼓舞", "Hone Armor", "重刃鼓舞"),
     HoneAtk("攻撃の鼓舞", "Hone Atk", "攻擊鼓舞"),
@@ -553,6 +554,7 @@ enum class SkillName(val jp: String, val us: String, val tw: String) {
     WardCavalry("騎盾の紋章", "Ward Cavalry", "騎盾紋章"),
     WardDragons("竜盾の紋章", "Ward Dragons", "竜盾紋章"),
     WardFliers("飛盾の紋章", "Ward Fliers", "飛盾紋章"),
+    WardBeasts("獣盾の紋章","Ward Beasts","獸盾紋章"),
 
     SquadAceA("第1迷宮の覇者", "Squad Ace A", "第1迷宮的霸王"),
     SquadAceB("第2迷宮の覇者", "Squad Ace B", "第2迷宮的霸王"),
@@ -750,6 +752,7 @@ enum class SkillName(val jp: String, val us: String, val tw: String) {
     Trilemma("トリレンマ", "Trilemma", "Trilemma"),
     Trilemma2("トリレンマ＋", "Trilemma+", "Trilemma+"),
     StaffValor("杖の技量", "Staff Valor", "Staff Valor"),
+    BeastValor("獣の技量", "Beast Valor", "獸之技巧"),
     Skuld("スクルド", "Skuld", "Skuld"),
     BracingStance("金剛明鏡の構え", "Bracing Stance", "Bracing Stance"),
     WoGun("倭棍", "Wo Gùn", "Wo Gùn"),
@@ -896,6 +899,9 @@ enum class SkillName(val jp: String, val us: String, val tw: String) {
     WhelpInfantry("幼獣の化身・歩行", "Welp (Infantry)", "幼獸化身・步行"),
     YearlingInfantry("若獣の化身・歩行", "Yearling (Infantry)", "若獸化身・步行"),
     AdultInfantry("成獣の化身・歩行", "Adult (Infantry)", "成獸化身・步行"),
+    WhelpCavalry("幼獣の化身・騎兵", "Welp (Cavalry)", "幼獸化身・步行"),
+    YearlingCavalry("若獣の化身・騎兵", "Yearling (Cavalry)", "若獸化身・騎兵"),
+    AdultCavalry("成獣の化身・騎兵", "Adult (Cavalry)", "成獸化身・騎兵"),
     WolfQueenFang("狼女王の牙", "Wolf Queen Fang", "狼女王之牙"),
     NullCDisrupt("見切り・反撃不可", "Null C-Disrupt", "識破・無法反擊"),
     Glare("邪眼", "Glare", "邪眼"),
@@ -926,8 +932,8 @@ enum class SkillName(val jp: String, val us: String, val tw: String) {
     Gronnblooms2("緑の花かご＋","Gronnblooms+","綠之花籃＋"),
     Blarblooms("青の花かご","Blárblooms","青之花籃"),
     Blarblooms2("青の花かご＋","Blárblooms+","青之花籃＋"),
-    LoyalWreath("花輪","Loyal Wreath","Loyal Wreath"),
-    LoyalWreath2("花輪＋","Loyal Wreath+","Loyal Wreath+"),
+    LoyalWreath("花輪","Loyal Wreath","花圈"),
+    LoyalWreath2("花輪＋","Loyal Wreath+","花圈＋"),
     GradoPoleax("グラドの戦斧","Grado Poleax","格拉多的戰斧"),
     RefinedGradoPoleax("グラドの戦斧","Grado Poleax","格拉多的戰斧"),
     Silverbrand("真銀の聖剣","Silverbrand","純銀的聖劍"),
@@ -937,8 +943,15 @@ enum class SkillName(val jp: String, val us: String, val tw: String) {
     RefinedTharjasHex("サーリャの禁呪","Tharja's Hex","撒拉的禁咒"),
     NilessBow("ゼロの虐弓","Niles's Bow","零的虐弓"),
     HinatasKatana("ヒナタの猛刀","Hinata's Katana","日向的猛刀"),
+    WolfskinFang("人狼王の爪牙","Wolfskin Fang","狼人王的爪牙"),
+WolfpupFang("人狼娘の爪牙","Wolfpup Fang","狼人之女的爪牙"),
+    KitsuneFang("妖狐王の爪牙","Kitsune Fang","妖狐王的爪牙"),
+    FoxkitFang("妖狐娘の爪牙","Foxkit Fang","妖狐之女的爪牙"),
+    SabotageAtk("攻撃の混乱","Sabotage Atk","攻擊擾亂"),
+    Dragonbind("魔竜封印の剣","Dragonbind","封印魔龍之劍"),
+    BonusDoubler("強化増幅","Bonus Doubler","強化增幅"),
+    HumanVirtue("人の可能性を！","Human Virtue","發揮人類的潛能！"),
     ;
-
     /**
      * ロケールから対応する文字列を出す
      */

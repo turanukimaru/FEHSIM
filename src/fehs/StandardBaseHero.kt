@@ -938,6 +938,16 @@ object StandardBaseHero {
                 Gtome.Gronnblooms2, Assist.RallyDefRes2, null, SkillA.SwiftSparrow.lv(2), SkillB.ResFeint.lv(3), SkillC.GTomeValor.lv(3))
         createItem(HeroName.ティアマト__傭兵団_, 1, WeaponType.RTOME, MoveType.CAVALRY, 5, 16, 8, 9, 4, 6, g45, g50, g55, g30, g55,
                 Rtome.LoyalWreath2, Assist.Swap, null, SkillA.TriangleAdept.lv(3), SkillB.AtkResLink.lv(3), null)
+             createItem(HeroName.フランネル, 1, WeaponType.BEAST, MoveType.INFANTRY,  5, 19, 11, 7, 8, 4, g60, g70, g40, g70, g35,
+                        Beast.WolfSkinFang, null, Special.DraconicAura, null, SkillB.SpecialSpiral.lv(3), SkillC.BeastValor.lv(3))
+        createItem(HeroName.ベロア, 0, WeaponType.BEAST, MoveType.INFANTRY,  5, 18, 9, 9, 7, 6, g50, g60, g65, g60, g40,
+                Beast.WolfpupFang, null, Special.Luna, SkillA.CloseDef.lv(3), null, SkillC.WardBeasts)
+        createItem(HeroName.ニシキ, 3, WeaponType.BEAST, MoveType.CAVALRY,  5, 16, 8, 10, 6, 6, g50, g55, g60, g45, g45,
+                Beast.KitsuneFang, Assist.Pivot, null, null, SkillB.SpdResLink.lv(3), SkillC.GoadBeasts)
+        createItem(HeroName.キヌ, 2, WeaponType.BEAST, MoveType.CAVALRY,  5, 16, 7, 10, 4, 9, g45, g50, g65, g35, g60,
+                Beast.FoxkitFang, null, Special.Iceberg, SkillA.AtkSpdBond.lv(3), SkillB.SabotageAtk.lv(3), SkillC.EvenResWave.lv(3))
+            createItem(HeroName.ロイ__伝承英雄_, 1, WeaponType.SWORD, MoveType.INFANTRY,  5, 17, 10, 10, 8, 4, g50, g55, g65, g55, g50,
+                        Sword.Dragonbind, null, Special.DragonFang, SkillA.BonusDoubler.lv(3), SkillB.Renewal.lv(3), SkillC.HumanVirtue)
 //              createItem(HeroName., 1, WeaponType., MoveType.,  5, , , , , , , , , , ,
 //                        Sword., Assist., Special., SkillA..lv(), SkillB..lv(), SkillC..lv())
 //        createItem(HeroName.スルト, 3, WeaponType.AXE, MoveType.ARMORED, 5, 20, 11, 4, 12, 9, g75, g65, g25, g65, g60,

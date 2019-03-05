@@ -120,15 +120,20 @@ data class BattleUnit(val armedHero: ArmedHero
          * ダメージタイプ置き換え…これブレスとかどうすりゃいいんだ？判定を戻して戦闘時効果で置き換えるか。
          */
                       , var overrideDamageType: SkillType = SkillType.NONE
+        /**
+         * バフのダメージ倍率…
+         */
+                      , var bonusPow: Int = 100
                       , val activatedSkills: MutableList<SkillText> = mutableListOf()//ひょっとしてこれコピーされてるのか
 ) {
+  private  fun bonus(i:Int) = i * bonusPow / 100
     //射程はともかく移動距離は制限を受ける可能性がある。いやそれを言うなら全てのステータスがそうであるが・・・これDelegateでできれば楽だと思ったけどBuff考えるとできないな
     val movableSteps: Int get() = armedHero.movableSteps
     val effectiveRange: Int get() = armedHero.effectiveRange
-    val atk: Int get() = armedHero.atk + atkDebuff + if (!neutralizeBuffBonus) atkBuff else 0
-    val spd: Int get() = armedHero.spd + spdDebuff + if (!neutralizeBuffBonus) spdBuff else 0
-    val def: Int get() = armedHero.def + defDebuff + if (!neutralizeBuffBonus) defBuff else 0
-    val res: Int get() = armedHero.res + resDebuff + if (!neutralizeBuffBonus) resBuff else 0
+    val atk: Int get() = armedHero.atk + atkDebuff + if (!neutralizeBuffBonus) bonus(atkBuff) else 0
+    val spd: Int get() = armedHero.spd + spdDebuff + if (!neutralizeBuffBonus) bonus(spdBuff) else 0
+    val def: Int get() = armedHero.def + defDebuff + if (!neutralizeBuffBonus) bonus(defBuff) else 0
+    val res: Int get() = armedHero.res + resDebuff + if (!neutralizeBuffBonus) bonus(resBuff) else 0
     // 他人や自分のスキルにより戦闘中のみ変化する能力値
     val effectedAtk: Int get() = atk + atkEffect
     val effectedSpd: Int get() = spd + spdEffect

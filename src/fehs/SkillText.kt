@@ -46,7 +46,8 @@ enum class SkillBaseText(val jp: String, val us: String) {
     SpdDef("速さ守備 + ", "Spd/Def"),
     SpdRes("速さ魔防 + ", "Spd/Res"),
     DefRes("守備魔防 + ", "Def/Res"),
-    AtkReduce6("相手の攻撃 - ", "reduces foe's Atk by 6"),
+    AtkReduce6("相手の攻撃 - ", "reduces foe's Atk by 6"),//数字の語順を末尾にするのしんどい…
+    AtkDefReduce4("相手の攻撃守備 - ", "reduces foe's Atk / Def by 4"),
     AtkSpdDefRes("攻撃速さ守備魔防 + ", "Atk/Spd/Def/Res"),
     AtkSpdDefResReduce4("相手の攻撃速さ守備魔防 - ", "reduces foe's Atk/Spd/Def/Res by 4"),
     Penetrate("守備と魔防の低いほうを適用", "calculates damage using the lower of foe's Def or Res"),

@@ -254,6 +254,9 @@ enum class Sword(override val jp: SkillName, override val type: SkillType, overr
     HinatasKatana(SkillName.HinatasKatana, SkillType.SWORD, 16, RubySword, SpType.PLUS, RefinedWeapon.RefineType.Range1) {
         override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = atkDef(battleUnit, 4, this)
     },
+    Dragonbind(SkillName.Dragonbind, SkillType.SWORD, 16, SilverSword, effectiveAgainstWeaponType = arrayOf(WeaponType.DRAGON)) {
+        override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = counterAllRange(battleUnit, this)
+    },
     ;
 
     /**
