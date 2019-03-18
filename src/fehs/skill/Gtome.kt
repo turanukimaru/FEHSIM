@@ -105,6 +105,12 @@ enum class Gtome(override val jp: SkillName, override val type: SkillType, overr
     IrissTome(SkillName.IrissTome, SkillType.GTOME, 14, Gronnblade2, SpType.LEGEND_W, RefinedWeapon.RefineType.Range2) {
         override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = bladeEffect(battleUnit)
     },
+    Gronnserpent(SkillName.Gronnserpent, SkillType.GTOME, 8, Elwind, SpType.SILVER) {
+        override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = distantDef(battleUnit, enemy, 6, this)
+    },
+    Gronnserpent2(SkillName.Gronnserpent2, SkillType.GTOME, 12, Gronnserpent, SpType.PLUS, RefinedWeapon.RefineType.Range2) {
+        override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = distantDef(battleUnit, enemy, 6, this)
+    },
     ;
 
     /**

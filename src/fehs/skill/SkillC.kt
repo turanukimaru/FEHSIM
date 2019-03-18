@@ -32,7 +32,7 @@ enum class SkillC(override val jp: SkillName, override val type: SkillType = Ski
     FortifyFliers(SkillName.FortifyFliers, maxLevel = 0, spType = SpType.SHIELD),
     FortifyDragons(SkillName.FortifyDragons, maxLevel = 0, spType = SpType.SHIELD),
     HoneAtk(SkillName.HoneAtk, maxLevel = 4),
-    HoneSpd(SkillName.HoneSpd),
+    HoneSpd(SkillName.HoneSpd, maxLevel = 4),
     JointHoneSpd(SkillName.JointHoneSpd, maxLevel = 0, spType = SpType.LEGEND_S),
     DriveAtk(SkillName.DriveAtk, maxLevel = 2, spType = SpType.BASE60),
     DriveDef(SkillName.DriveDef, maxLevel = 2, spType = SpType.BASE60),

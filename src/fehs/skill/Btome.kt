@@ -53,7 +53,7 @@ enum class Btome(override val jp: SkillName, override val type: SkillType, overr
     },
     Aura(SkillName.Aura, SkillType.BTOME, 14, Thoron, SpType.LEGEND_W, RefinedWeapon.RefineType.Range2),
     DireThunder(SkillName.DireThunder, SkillType.BTOME, 9, Thoron) {
-        override fun localEquip(armedHero: ArmedHero, lv: Int): ArmedHero = equipBrave(armedHero, lv)
+        override fun localEquip(armedHero: ArmedHero, lv: Int): ArmedHero = equipBrave(armedHero)
         override fun attackEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = doubleAttack(battleUnit)
     },
     WeirdingTome(SkillName.WeirdingTome, SkillType.BTOME, 14, Thoron) {

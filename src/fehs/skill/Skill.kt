@@ -828,7 +828,7 @@ interface Skill {
     /**
      * 勇者装備。速さ-5
      */
-    fun equipBrave(armedHero: ArmedHero, lv: Int): ArmedHero {
+    fun equipBrave(armedHero: ArmedHero): ArmedHero {
         armedHero.spdEqp -= 5
         return armedHero
     }
@@ -937,6 +937,15 @@ interface Skill {
      * 相手のバフ無効化
      */
     fun neutralizeBuffBonus(battleUnit: BattleUnit, enemy: BattleUnit, s: Skill = Skill.NONE): BattleUnit {
+        battleUnit.addSkillText(SkillText(s, SkillBaseText.NeutralizeBuffBonus))
+        enemy.neutralizeBuffBonus = true
+        return battleUnit
+    }
+
+    /**
+     * 自分のデバフ無効化
+     */
+    fun neutralizePenalties(battleUnit: BattleUnit, enemy: BattleUnit, s: Skill = Skill.NONE): BattleUnit {
         battleUnit.addSkillText(SkillText(s, SkillBaseText.NeutralizeBuffBonus))
         enemy.neutralizeBuffBonus = true
         return battleUnit

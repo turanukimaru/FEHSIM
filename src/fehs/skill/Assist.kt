@@ -21,6 +21,7 @@ enum class Assist(override val jp: SkillName, override val type: SkillType, over
     RallySpdRes(SkillName.RallySpdRes, SkillType.ASSIST, spType = SpType.ASSIST2),
     RallyUpAtk(SkillName.RallyUpAtk, SkillType.ASSIST, spType = SpType.ASSIST2),
     RallyUpAtk2(SkillName.RallyUpAtk2, SkillType.ASSIST, spType = SpType.ASSIST3),
+    RallyUpRes2(SkillName.RallyUpRes2, SkillType.ASSIST, spType = SpType.ASSIST3),
     RallySpdDef2(SkillName.RallySpdDef2, SkillType.ASSIST, spType = SpType.ASSIST3),
     RallyAtkSpd2(SkillName.RallyAtkSpd2, SkillType.ASSIST, spType = SpType.ASSIST3),
     RallyDefRes2(SkillName.RallyDefRes2, SkillType.ASSIST, spType = SpType.ASSIST3),

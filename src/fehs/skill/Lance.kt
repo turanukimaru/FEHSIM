@@ -17,11 +17,11 @@ enum class Lance(override val jp: SkillName, override val type: SkillType, overr
         override fun localEquip(armedHero: ArmedHero, lv: Int): ArmedHero = equipKiller(armedHero)
     },
     BraveLance(SkillName.BraveLance, SkillType.LANCE, 5, SteelLance, SpType.SILVER) {
-        override fun localEquip(armedHero: ArmedHero, lv: Int): ArmedHero = equipBrave(armedHero, lv)
+        override fun localEquip(armedHero: ArmedHero, lv: Int): ArmedHero = equipBrave(armedHero)
         override fun attackEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = doubleAttack(battleUnit, this)
     },
     BraveLance2(SkillName.BraveLance2, SkillType.LANCE, 8, BraveLance, SpType.PLUS) {
-        override fun localEquip(armedHero: ArmedHero, lv: Int): ArmedHero = equipBrave(armedHero, lv)
+        override fun localEquip(armedHero: ArmedHero, lv: Int): ArmedHero = equipBrave(armedHero)
         override fun attackEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = doubleAttack(battleUnit, this)
     },
     SapphireLance(SkillName.SapphireLance, SkillType.LANCE, 8, SteelLance, SpType.SILVER) {
@@ -160,6 +160,12 @@ enum class Lance(override val jp: SkillName, override val type: SkillType, overr
     ItsCurtains(SkillName.Wagasa, SkillType.LANCE, 10, SteelLance, SpType.SILVER),
     ItsCurtains2(SkillName.Wagasa2, SkillType.LANCE, 14, ItsCurtains, SpType.PLUS, RefinedWeapon.RefineType.Range1),
     OborosSpear(SkillName.OborosSpear, SkillType.LANCE, 16, HeavySpear, SpType.PLUS, RefinedWeapon.RefineType.Range1, effectiveAgainstMoveType = arrayOf(MoveType.ARMORED)),
+    Vanguard(SkillName.Vanguard, SkillType.LANCE, 10, SteelLance, SpType.SILVER) {
+        override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = def(battleUnit, 7, this)
+    },
+    Vanguard2(SkillName.Vanguard2, SkillType.LANCE, 14, Vanguard, SpType.PLUS, RefinedWeapon.RefineType.Range1) {
+        override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = def(battleUnit, 7, this)
+    },
     ;
 
 

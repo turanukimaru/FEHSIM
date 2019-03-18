@@ -269,7 +269,7 @@ enum class RefinedWeapon(override val jp: SkillName, val hp: Int, val atk: Int, 
     GladiatorsBlade(SkillName.GladiatorsBlade, 3, 0, 0, 0, 0, RefineType.DependWeapon, Sword.GladiatorsBlade) {
         override fun fightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = if (battleUnit.adjacentUnits > 0) atkSpd(battleUnit, 4, RefinedAny) else battleUnit
     },
-    ScarletSword(SkillName.ScarletSword, 3, 0, 0, 0, 0, RefineType.DependWeapon, Sword.ScarletSword),//ターン開始時効果必要だな…
+    ScarletSword(SkillName.QuickenedPulse, 3, 0, 0, 0, 0, RefineType.DependWeapon, Sword.ScarletSword),//ターン開始時効果必要だな…
     TacticalBolt(SkillName.TacticalBolt, 0, 0, 0, 0, 0, RefineType.DependWeapon, Btome.TacticalBolt),
     TacticalGale(SkillName.TacticalGale, 0, 0, 0, 0, 0, RefineType.DependWeapon, Gtome.TacticalGale),
     Naga(SkillName.Naga, 0, 0, 0, 0, 0, RefineType.DependWeapon, Gtome.Naga) {
@@ -323,6 +323,15 @@ enum class RefinedWeapon(override val jp: SkillName, val hp: Int, val atk: Int, 
         override fun localEquip(armedHero: ArmedHero, lv: Int): ArmedHero = fury(armedHero, 3)
         override fun fightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = fightHpLoss(battleUnit, 6, RefinedAny)
     },
+    EternalTome(SkillName.BracingStance, 0, 0, 0, 0, 0, RefineType.DependWeapon, Rtome.EternalTome) {
+        override fun localEquip(armedHero: ArmedHero, lv: Int): ArmedHero = fury(armedHero, 3)
+        override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = defRes(battleUnit, 4, RefinedAny)
+    },
+    ArgentBow(SkillName.ChillDef, 0, 0, 0, 0, 0, RefineType.DependWeapon, Bow.ArgentBow),
+    DarkAura(SkillName.DarkAura, 0, 0, 0, 0, 0, RefineType.DependWeapon, Btome.DarkAura) {
+        override fun fightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = if (battleUnit.adjacentUnits > 0) atkSpd(battleUnit, 5, RefinedAny) else battleUnit
+    },
+    DarkExcalibur(SkillName.QuickenedPulse, 0, 0, 0, 0, 0, RefineType.DependWeapon, Gtome.DarkExcalibur)
     ;
 
     override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero {

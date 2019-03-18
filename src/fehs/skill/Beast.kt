@@ -57,7 +57,7 @@ enum class Beast(override val jp: SkillName, override val type: SkillType, overr
         }
     },
     WolfSkinFang(SkillName.WolfskinFang, SkillType.BEAST, 9, Fledgling) {
-        override fun localEquip(armedHero: ArmedHero, lv: Int): ArmedHero = equipBrave(armedHero, lv)
+        override fun localEquip(armedHero: ArmedHero, lv: Int): ArmedHero = equipBrave(armedHero)
         override fun specialTriggered(battleUnit: BattleUnit, damage: Int): Int = damage + 10
         override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = doubleAttack(atk(battleUnit, 2, this), this)
     },

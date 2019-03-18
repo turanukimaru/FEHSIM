@@ -73,6 +73,11 @@ enum class Breath(override val jp: SkillName, override val type: SkillType, over
         //これミュルグレと同じだな。真面目にカウントするなら一本化するか…
         override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = if (enemy.hp < enemy.armedHero.maxHp) atkRes(antiFollowup(battleUnit,enemy,this), 6, this) else battleUnit
     },
+    DemonicBreath(SkillName.DemonicBreath, SkillType.PENETRATE_DRAGON, 16, Flametongue, effectiveAgainstMoveType = arrayOf(MoveType.ARMORED)) {
+        override fun localEquip(armedHero: ArmedHero, lv: Int): ArmedHero = equipDef(armedHero,3)
+        override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = if (battleUnit.hp < battleUnit.armedHero.maxHp) allBonus(neutralizeBuffBonus(battleUnit,enemy,this), 4, this) else battleUnit
+
+    }
     ;
 
     /**

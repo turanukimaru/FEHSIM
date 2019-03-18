@@ -68,7 +68,7 @@ enum class SkillA(override val jp: SkillName, override val type: SkillType = Ski
     FortressRes(SkillName.FortressRes) {
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipAtk(equipRes(armedHero, lv + 2), -3)
     },
-    FortressDefRes(SkillName.FortressDef) {
+    FortressDefRes(SkillName.FortDefRes) {
         override fun equip(armedHero: ArmedHero, lv: Int): ArmedHero = equipAtk(equipDef(equipRes(armedHero, if (lv == 3) 6 else lv + 2), if (lv == 3) 6 else lv + 2), if (lv == 3) -2 else -3)
     },
 

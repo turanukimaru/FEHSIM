@@ -109,6 +109,9 @@ enum class Rtome(override val jp: SkillName, override val type: SkillType, overr
     TharjasHex(SkillName.TharjasHex, SkillType.RTOME, 14, Rauorblade2, SpType.LEGEND_W, RefinedWeapon.RefineType.Range2) {
         override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = bladeEffect(battleUnit)
     },
+    EternalTome(SkillName.EternalTome, SkillType.RTOME, 14, Bolganone, SpType.LEGEND_W, RefinedWeapon.RefineType.Range2) {
+        override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = equipRaven(battleUnit)
+    },
     ;
 
     /**

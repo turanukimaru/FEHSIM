@@ -172,6 +172,7 @@ enum class SkillB(override val jp: SkillName, override val type: SkillType = Ski
     SealRes(SkillName.SealRes),
     SealAtkSpd(SkillName.SealAtkSpd, maxLevel = 2, spType = SpType.BASE100),
     SealAtkDef(SkillName.SealAtkDef, maxLevel = 2, spType = SpType.BASE100),
+    SealSpdDef(SkillName.SealDefRes, maxLevel = 2, spType = SpType.BASE100),
     SealDefRes(SkillName.SealDefRes, maxLevel = 2, spType = SpType.BASE100),
     FlierFormation(SkillName.FlierFormation),
     BlazeDance(SkillName.BlazeDance),

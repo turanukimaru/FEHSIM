@@ -17,11 +17,11 @@ enum class Axe(override val jp: SkillName, override val type: SkillType, overrid
         override fun localEquip(armedHero: ArmedHero, lv: Int): ArmedHero = equipKiller(armedHero)
     },
     BraveAxe(SkillName.BraveAxe, SkillType.AXE, 5, SteelAxe, SpType.SILVER) {
-        override fun localEquip(armedHero: ArmedHero, lv: Int): ArmedHero = equipBrave(armedHero, lv)
+        override fun localEquip(armedHero: ArmedHero, lv: Int): ArmedHero = equipBrave(armedHero)
         override fun attackEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = doubleAttack(battleUnit)
     },
     BraveAxe2(SkillName.BraveAxe2, SkillType.AXE, 8, BraveAxe, SpType.PLUS) {
-        override fun localEquip(armedHero: ArmedHero, lv: Int): ArmedHero = equipBrave(armedHero, lv)
+        override fun localEquip(armedHero: ArmedHero, lv: Int): ArmedHero = equipBrave(armedHero)
         override fun attackEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = doubleAttack(battleUnit)
     },
     Hammer(SkillName.Hammer, SkillType.AXE, 8, SteelAxe, SpType.SILVER, effectiveAgainstMoveType = arrayOf(MoveType.ARMORED)),
@@ -134,7 +134,7 @@ enum class Axe(override val jp: SkillName, override val type: SkillType, overrid
         override fun localEquip(armedHero: ArmedHero, lv: Int): ArmedHero = equipDef(armedHero, 3)
     },
     CherchesAxe(SkillName.CherchesAxe, SkillType.AXE, 11, Hammer2, SpType.PLUS, RefinedWeapon.RefineType.Range1) {
-        override fun localEquip(armedHero: ArmedHero, lv: Int): ArmedHero = equipBrave(armedHero, lv)
+        override fun localEquip(armedHero: ArmedHero, lv: Int): ArmedHero = equipBrave(armedHero)
         override fun attackEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = doubleAttack(battleUnit, this)
     },
     AxeOfVirility(SkillName.AxeOfVirility, SkillType.AXE, 16, Hammer2, SpType.LEGEND_W, RefinedWeapon.RefineType.Range1, effectiveAgainstMoveType = arrayOf(MoveType.ARMORED)),

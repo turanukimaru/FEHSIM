@@ -11,11 +11,11 @@ enum class Bow(override val jp: SkillName, override val type: SkillType, overrid
     SilverBow(SkillName.SilverBow, SkillType.BOW, 9, SteelBow, SpType.SILVER, effectiveAgainstMoveType = arrayOf(MoveType.FLIER)),
     SilverBow2(SkillName.SilverBow2, SkillType.BOW, 13, SilverBow, SpType.PLUS, RefinedWeapon.RefineType.Range2, effectiveAgainstMoveType = arrayOf(MoveType.FLIER)),
     BraveBow(SkillName.BraveBow, SkillType.BOW, 4, SteelBow, SpType.SILVER, effectiveAgainstMoveType = arrayOf(MoveType.FLIER)) {
-        override fun localEquip(armedHero: ArmedHero, lv: Int): ArmedHero = equipBrave(armedHero, lv)
+        override fun localEquip(armedHero: ArmedHero, lv: Int): ArmedHero = equipBrave(armedHero)
         override fun attackEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = doubleAttack(battleUnit, this)
     },
     BraveBow2(SkillName.BraveBow2, SkillType.BOW, 7, BraveBow, SpType.PLUS, effectiveAgainstMoveType = arrayOf(MoveType.FLIER)) {
-        override fun localEquip(armedHero: ArmedHero, lv: Int): ArmedHero = equipBrave(armedHero, lv)
+        override fun localEquip(armedHero: ArmedHero, lv: Int): ArmedHero = equipBrave(armedHero)
         override fun attackEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = doubleAttack(battleUnit, this)
     },
     KillerBow(SkillName.KillerBow, SkillType.BOW, 5, SteelBow, SpType.SILVER, effectiveAgainstMoveType = arrayOf(MoveType.FLIER)) {
@@ -122,6 +122,17 @@ enum class Bow(override val jp: SkillName, override val type: SkillType, overrid
         override fun localEquip(armedHero: ArmedHero, lv: Int): ArmedHero = equipKiller(armedHero)
         override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = defHigherThanResBonus(battleUnit, enemy, this)
     },
+    ShortBow(SkillName.ShortBow, SkillType.SWORD, 8, SteelBow, SpType.SILVER) {
+        override fun specialTriggered(battleUnit: BattleUnit, damage: Int): Int = damage + 10
+    },
+    ShortBow2(SkillName.ShortBow2, SkillType.SWORD, 12, ShortBow, SpType.PLUS, RefinedWeapon.RefineType.Range2) {
+        override fun specialTriggered(battleUnit: BattleUnit, damage: Int): Int = damage + 10
+    },
+    ArgentBow(SkillName.ArgentBow, SkillType.BOW, 8, BraveBow, SpType.PLUS, effectiveAgainstMoveType = arrayOf(MoveType.FLIER)) {
+        override fun localEquip(armedHero: ArmedHero, lv: Int): ArmedHero = equipSpd(equipBrave(armedHero),3)
+        override fun attackEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = doubleAttack(battleUnit, this)
+    },
+
     ;
 
     /**
