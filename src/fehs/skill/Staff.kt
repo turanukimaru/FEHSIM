@@ -47,6 +47,8 @@ enum class Staff(override val jp: SkillName, override val type: SkillType, overr
     Kumade2(SkillName.Kumade2, SkillType.STAFF, 12, Kumade, SpType.PLUS, RefinedWeapon.RefineType.Staff),
     Grandscratcher(SkillName.Grandscratcher, SkillType.STAFF, 8, Assault, SpType.SILVER),
     Grandscratcher2(SkillName.Grandscratcher2, SkillType.STAFF, 12, Grandscratcher, SpType.SILVER, RefinedWeapon.RefineType.Staff),
+    OvoidStaff(SkillName.OvoidStaff, SkillType.STAFF, 8, Grandscratcher),
+    OvoidStaff2(SkillName.OvoidStaff2, SkillType.STAFF, 12, OvoidStaff, SpType.SILVER, RefinedWeapon.RefineType.Staff),
     ;
 
     /**

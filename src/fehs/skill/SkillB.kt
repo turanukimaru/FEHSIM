@@ -207,10 +207,12 @@ enum class SkillB(override val jp: SkillName, override val type: SkillType = Ski
     AtkSpdLink(SkillName.AtkSpdLink, spType = SpType.BASE60),
     AtkDefLink(SkillName.AtkDefLink, spType = SpType.BASE60),
     AtkResLink(SkillName.AtkResLink, spType = SpType.BASE60),
+    SpdDefLink(SkillName.SpdDefLink, spType = SpType.BASE60),
     SpdResLink(SkillName.SpdResLink, spType = SpType.BASE60),
     DefResLink(SkillName.DefResLink, spType = SpType.BASE60),
     Aerobatics(SkillName.Aerobatics, spType = SpType.BASE60),
     SabotageAtk(SkillName.SabotageAtk, spType = SpType.BASE60),
+    DisarmTrap(SkillName.DisarmTrap, spType = SpType.BASE60),
     ;
 
     /**

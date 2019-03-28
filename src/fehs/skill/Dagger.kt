@@ -130,15 +130,31 @@ enum class Dagger(override val jp: SkillName, override val type: SkillType, over
         }
     },
     SplashyBucket(SkillName.SplashyBucket, SkillType.DAGGER, 8, SteelDagger, SpType.SILVER, effectiveAgainstWeaponType = arrayOf(WeaponType.DRAGON)) {
-        override fun effectedAttackEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = antiPenetrate(battleUnit, enemy,  this)
-        override fun effectedCounterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = antiPenetrate(battleUnit, enemy, this)
+        override fun effectedFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = antiPenetrate(battleUnit, enemy,  this)
     },
     SplashyBucket2(SkillName.SplashyBucket2, SkillType.DAGGER, 12, SplashyBucket, SpType.PLUS, RefinedWeapon.RefineType.Range2, effectiveAgainstWeaponType = arrayOf(WeaponType.DRAGON)) {
-        override fun effectedAttackEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = antiPenetrate(battleUnit, enemy,  this)
-        override fun effectedCounterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = antiPenetrate(battleUnit, enemy, this)
+        override fun effectedFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = antiPenetrate(battleUnit, enemy, this)
     },
     OuchPouch(SkillName.OuchPouch, SkillType.DAGGER, 8, SteelDagger, SpType.PLUS),
     OuchPouch2(SkillName.OuchPouch2, SkillType.DAGGER, 12, OuchPouch, SpType.PLUS, RefinedWeapon.RefineType.Range2),
+    PegasusCarrot(SkillName.PegasusCarrot, SkillType.DAGGER, 8, SteelDagger, SpType.PLUS, RefinedWeapon.RefineType.Range2, effectiveAgainstMoveType = arrayOf(MoveType.ARMORED)) {
+        override fun effectedFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit {
+            if(battleUnit.colorAdvantage(enemy) == 1){
+                battleUnit.addSkillText(SkillText(this, SkillBaseText.NullAntiFollowupAttack))
+                battleUnit.antiFollowup = 0
+            }
+            return battleUnit
+        }
+    },
+    PegasusCarrot2(SkillName.PegasusCarrot2, SkillType.DAGGER, 12, SteelDagger, SpType.PLUS, RefinedWeapon.RefineType.Range2, effectiveAgainstMoveType = arrayOf(MoveType.ARMORED)) {
+        override fun effectedFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit {
+            if(battleUnit.colorAdvantage(enemy) == 1){
+                battleUnit.addSkillText(SkillText(this, SkillBaseText.NullAntiFollowupAttack))
+                battleUnit.antiFollowup = 0
+            }
+            return battleUnit
+        }
+    },
     ;
 
     /**

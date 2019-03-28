@@ -157,8 +157,7 @@ data class ArmedHero(
     /**
      * 戦闘効果。スキルの攻撃効果を再帰でなめて攻撃時効果を計算する。主に能力値変化
      */
-    fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit): BattleUnit =
-            skills.fold(battleUnit) { b, skill -> skill.fightEffect(b, enemy) }
+    fun bothEffect(battleUnit: BattleUnit, enemy: BattleUnit): BattleUnit = skills.fold(battleUnit) { b, skill -> skill.fightEffect(b, enemy) }
 
     /**
      * 攻撃側戦闘効果。スキルの攻撃効果を再帰でなめて攻撃時効果を計算する。主に能力値変化
@@ -169,6 +168,11 @@ data class ArmedHero(
      * 受け側戦闘効果。スキルの反撃効果を再帰でなめて受け時効果を計算する。主に能力値変化
      */
     fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit): BattleUnit = skills.fold(battleUnit) { b, skill -> skill.counterEffect(b, enemy) }
+
+    /**
+     * 戦闘効果。スキルの攻撃効果を再帰でなめて攻撃時効果を計算する。主に能力値変化
+     */
+    fun effectedBothEffect(battleUnit: BattleUnit, enemy: BattleUnit): BattleUnit = skills.fold(battleUnit) { b, skill -> skill.effectedFightEffect(b, enemy) }
 
     /**
      * 能力値計算後に適応する必要のある攻撃側戦闘効果。

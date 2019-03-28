@@ -166,6 +166,12 @@ enum class Lance(override val jp: SkillName, override val type: SkillType, overr
     Vanguard2(SkillName.Vanguard2, SkillType.LANCE, 14, Vanguard, SpType.PLUS, RefinedWeapon.RefineType.Range1) {
         override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = def(battleUnit, 7, this)
     },
+    FlashingCarrot(SkillName.FlashingCarrot, SkillType.LANCE, 10, SteelLance, SpType.SILVER) {
+        override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = if (enemy.hp == enemy.armedHero.maxHp) allBonus(battleUnit, 2, this) else battleUnit
+    },
+    FlashingCarrot2(SkillName.FlashingCarrot2, SkillType.LANCE, 14, FlashingCarrot, SpType.PLUS, RefinedWeapon.RefineType.Range1) {
+        override fun localFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = if (enemy.hp == enemy.armedHero.maxHp) allBonus(battleUnit, 2, this) else battleUnit
+    },
     ;
 
 

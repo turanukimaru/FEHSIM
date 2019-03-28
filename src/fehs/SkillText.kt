@@ -25,6 +25,7 @@ enum class SkillBaseText(val jp: String, val us: String) {
     WrathfulStaff("杖も通常のダメージ", "calculates damage from staff like other weapons"),
     NoFollowupAttackEach("どちらも追撃不可", "prevents follow-up attack"),
     NullFollowupAttack("追撃を無効化", "disables foe's skills that guarantee/prevent follow-up attack"),
+    NullAntiFollowupAttack("追撃不可を無効化", "neutralizes status effects and disables skills that prevent follow-up attacks"),
     NullCDisrupt("反撃不可を無効化", "disables skills that prevent counterattacks"),
     AntiFollowupAttack("相手は追撃不可", " prevents foe's follow-up attack"),
     HpLoss("戦闘後HP減少 -", "deals damage to unit after combat "),

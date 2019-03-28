@@ -219,8 +219,7 @@ enum class RefinedWeapon(override val jp: SkillName, val hp: Int, val atk: Int, 
         override fun fightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = if (battleUnit.adjacentUnits > 0) allBonus(battleUnit, 3, RefinedAny) else battleUnit
     },
     Rhomphaia(SkillName.FlashingBlade, 3, 0, 0, 0, 0, RefineType.DependWeapon, Lance.Rhomphaia) {
-        override fun effectedAttackEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = flashingBlade(battleUnit, enemy, 1, RefinedAny)
-        override fun effectedCounterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = flashingBlade(battleUnit, enemy, 1, RefinedAny)
+        override fun effectedFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = flashingBlade(battleUnit, enemy, 1, RefinedAny)
     },
     Sieglinde(SkillName.RefinedSieglinde, 3, 0, 0, 0, 0, RefineType.DependWeapon, Sword.Sieglinde),//周りのバフ分捨てアップはこの形式だと書けないよなあ
     Siegmund(SkillName.Pursuit, 3, 0, 0, 0, 0, RefineType.DependWeapon, Lance.Siegmund) {
@@ -234,8 +233,7 @@ enum class RefinedWeapon(override val jp: SkillName, val hp: Int, val atk: Int, 
         override fun fightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = allBonus(battleUnit, battleUnit.adjacentUnits * 2, RefinedAny)
     },
     WingSword(SkillName.FlashingBlade, 3, 0, 0, 0, 0, RefineType.DependWeapon, Sword.WingSword) {
-        override fun effectedAttackEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = flashingBlade(battleUnit, enemy, 1, RefinedAny)
-        override fun effectedCounterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = flashingBlade(battleUnit, enemy, 1, RefinedAny)
+        override fun effectedFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = flashingBlade(battleUnit, enemy, 1, RefinedAny)
     },
     Yato(SkillName.Yato, 0, 0, 0, 0, 0, RefineType.ReplaceWeapon, Sword.Yato, 16, SkillType.SWORD) {
         override fun fightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = allBonus(battleUnit, 2, RefinedAny)
@@ -273,17 +271,9 @@ enum class RefinedWeapon(override val jp: SkillName, val hp: Int, val atk: Int, 
     TacticalBolt(SkillName.TacticalBolt, 0, 0, 0, 0, 0, RefineType.DependWeapon, Btome.TacticalBolt),
     TacticalGale(SkillName.TacticalGale, 0, 0, 0, 0, 0, RefineType.DependWeapon, Gtome.TacticalGale),
     Naga(SkillName.Naga, 0, 0, 0, 0, 0, RefineType.DependWeapon, Gtome.Naga) {
-        //replace で守備魔防+4にしないとダメか…
         override fun counterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = if (enemy.armedHero.weapon.type == SkillType.PENETRATE_DRAGON || enemy.armedHero.weapon.type == SkillType.DRAGON) counterAllRange(battleUnit, this) else battleUnit
 
-        override fun effectedAttackEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit {
-            if (enemy.armedHero.weapon.type == SkillType.PENETRATE_DRAGON) {
-                antiPenetrate(battleUnit, enemy, this)
-            }
-            return battleUnit
-        }
-
-        override fun effectedCounterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit {
+        override fun effectedFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit {
             if (enemy.armedHero.weapon.type == SkillType.PENETRATE_DRAGON) {
                 antiPenetrate(battleUnit, enemy, this)
             }
@@ -316,8 +306,7 @@ enum class RefinedWeapon(override val jp: SkillName, val hp: Int, val atk: Int, 
     },
     TharjasHex(SkillName.RefinedTharjasHex, 0, 0, 0, 0, 0, RefineType.DependWeapon),
     NilessBow(SkillName.FlashingBlade, 0, 0, 0, 0, 0, RefineType.DependWeapon, Bow.NilessBow) {
-        override fun effectedAttackEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = flashingBlade(battleUnit, enemy, 1, RefinedAny)
-        override fun effectedCounterEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = flashingBlade(battleUnit, enemy, 1, RefinedAny)
+        override fun effectedFightEffect(battleUnit: BattleUnit, enemy: BattleUnit, lv: Int): BattleUnit = flashingBlade(battleUnit, enemy, 1, RefinedAny)
     },
     HinatasKatana(SkillName.Fury, 3, 0, 0, 0, 0, RefineType.DependWeapon, Sword.HinatasKatana) {
         override fun localEquip(armedHero: ArmedHero, lv: Int): ArmedHero = fury(armedHero, 3)

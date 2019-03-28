@@ -970,6 +970,16 @@ object StandardBaseHero {
                 Gtome.Gronnserpent2, Assist.RallyUpAtk, null, SkillA.MirrorStance.lv(2), SkillB.AtkFeint.lv(3),null )
         createItem(HeroName.スー, 3, WeaponType.BOW, MoveType.CAVALRY,  5, 17, 8, 10, 4, 5, g45, g55, g65, g45, g35,
                 Bow.ShortBow2, null, Special.Moonbow, SkillA.SwiftSparrow.lv(2), SkillB.ChillDef.lv(3), SkillC.HoneSpd.lv(4))
+              createItem(HeroName.マリカ, 1, WeaponType.SWORD, MoveType.INFANTRY,  4, 18, 8, 10, 6, 6, g65, g50, g60, g55, g35,
+                        Sword.WaoDao2, null, Special.Glimmer, SkillA.HpDef.lv(2), null, SkillC.InfantryPulse.lv(3))
+        createItem(HeroName.マリカ__春_, 2, WeaponType.LANCE, MoveType.FLIER,  5, 18, 9, 8, 6, 6, g55, g55, g70, g50, g35,
+                Lance.FlashingCarrot2, Assist.Reposition, null, null, SkillB.SpdDefLink.lv(3), SkillC.FlierGuidance.lv(3))
+        createItem(HeroName.パオラ__春_, 1, WeaponType.DAGGER, MoveType.FLIER,  5, 19, 7, 10, 4, 5, g45, g70, g55, g30, g55,
+                Dagger.PegasusCarrot2, null, Special.DraconicAura, SkillA.SwiftSparrow.lv(3), SkillB.DisarmTrap.lv(3), SkillC.HoneFliers)
+        createItem(HeroName.ブルーノ__春_, 0, WeaponType.STAFF, MoveType.CAVALRY,  5, 17, 8, 5, 9, 4, g55, g50, g45, g60, g25,
+                Staff.OvoidStaff2, Assist.Martyr2, Special.Miracle, SkillA.AtkDefPush.lv(3), SkillB.DazzlingStaff.lv(3),null)
+        createItem(HeroName.ヴェロニカ__春_, 3, WeaponType.GTOME, MoveType.FLIER,  5, 16, 9, 10, 3, 6, g50, g60, g60, g30, g45,
+                Gtome.VeðrfölnirsEgg, null, Special.Glimmer, SkillA.GDuelFlying.lv(3), SkillB.ChillRes.lv(3),null)
 //              createItem(HeroName., 1, WeaponType., MoveType.,  5, , , , , , , , , , ,
 //                        Sword., Assist., Special., SkillA..lv(), SkillB..lv(), SkillC..lv())
 //        createItem(HeroName.スルト, 3, WeaponType.AXE, MoveType.ARMORED, 5, 20, 11, 4, 12, 9, g75, g65, g25, g65, g60,

@@ -724,6 +724,7 @@ enum class SkillName(val jp: String, val us: String, val tw: String) {
     RefinedBreathOfFog("剣か竜の味方がいるときAtk/Def+5", "a sword or dragon ally, Atk/Def+5", "a sword or dragon ally, Atk/Def+5"),
     FruitOfIdunn("イズンの果実", "Fruit of Iðunn", "Fruit of Iðunn"),
     AtkSpdPush("攻撃速さの渾身", "Atk/Spd Push", "Atk/Spd Push"),
+    AtkDefPush("攻撃守備の渾身", "Atk/Def Push", "Atk/Def Push"),
     ShellLance("貝殻の槍", "Shell Lance", "Shell Lance"),
     ShellLance2("貝殻の槍＋", "Shell Lance+", "Shell Lance+"),
     DullClose("強化無効・近距離", "Dull Close", "Dull Close"),
@@ -807,6 +808,7 @@ enum class SkillName(val jp: String, val us: String, val tw: String) {
     AtkDefSolo("攻撃守備の孤軍", "Atk/Def Solo", "攻擊防守孤軍"),
     AtkResSolo("攻撃魔防の孤軍", "Atk/Res Solo", "攻擊魔防孤軍"),
     DefResSolo("守備魔防の孤軍", "Def/Res Solo", "防守魔防孤軍"),
+    SpdDefLink("速さ守備の連携", "Spd/Def Link", "速度防守連動"),
     SpdResLink("速さ魔防の連携", "Spd/Res Link", "速度魔防連動"),
     ShiningBow("シャイニングボウ", "Shining Bow", "閃耀弓"),
     ShiningBow2("シャイニングボウ＋", "Shining Bow+", "閃耀弓＋"),
@@ -815,6 +817,7 @@ enum class SkillName(val jp: String, val us: String, val tw: String) {
     Niu("ニーウ", "Níu", "尼烏"),
     Laevatein("レーヴァテイン", "Laevatein", "瑞瓦提恩"),
     RDuelFlying("赤の死闘・飛行", "R Duel Flying", "赤色死鬥・飛行"),
+    GDuelFlying("緑の死闘・飛行", "G Duel Flying", "綠色死鬥・飛行"),
     GDuelInfantry("緑の死闘・歩行", "G Duel Infantry", "綠色死鬥・步行"),
     CDuelInfantry("無の死闘・歩行", "C Duel Infantry", "無色死鬥・步行"),
     Byleistr("ビューレイスト", "Býleistr", "貝萊斯特"),
@@ -963,6 +966,16 @@ WolfpupFang("人狼娘の爪牙","Wolfpup Fang","狼人之女的爪牙"),
     ShortBow2 ("短弓＋","Short Bow2","短弓＋"),
     EternalTome("悠久の書","Eternal Tome","悠久之書"),
     ArgentBow("銀の宝弓","Argent Bow","銀之寶弓"),
+
+
+    FlashingCarrot("緋閃のニンジン槍","Flashing Carrot","緋閃胡蘿蔔槍"),
+    FlashingCarrot2("緋閃のニンジン槍＋","Flashing Carrot+","緋閃胡蘿蔔槍＋"),
+    VeðrfölnirsEgg    ("フェルニルの妖卵","Veðrfölnir's Egg","佛爾尼爾的妖卵"),
+    DisarmTrap("罠解除","Disarm Trap","解除陷阱"),
+    PegasusCarrot("天馬のニンジン","Pegasus Carrot","天馬胡蘿蔔"),
+    PegasusCarrot2("天馬のニンジン＋","Pegasus Carrot+","天馬胡蘿蔔＋"),
+    OvoidStaff("卵の杖","Ovoid Staff","卵之杖"),
+    OvoidStaff2("卵の杖＋","Ovoid Staff+","卵之杖＋"),
     ;
     /**
      * ロケールから対応する文字列を出す

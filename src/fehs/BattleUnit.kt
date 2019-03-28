@@ -134,10 +134,10 @@ data class BattleUnit(val armedHero: ArmedHero
     //射程はともかく移動距離は制限を受ける可能性がある。いやそれを言うなら全てのステータスがそうであるが・・・これDelegateでできれば楽だと思ったけどBuff考えるとできないな
     val movableSteps: Int get() = armedHero.movableSteps
     val effectiveRange: Int get() = armedHero.effectiveRange
-    val atk: Int get() = armedHero.atk + if (!neutralizePenalties) atkDebuff else 0 + if (!neutralizeBuffBonus) bonus(atkBuff) else 0
-    val spd: Int get() = armedHero.spd + if (!neutralizePenalties) spdDebuff else 0 + if (!neutralizeBuffBonus) bonus(spdBuff) else 0
-    val def: Int get() = armedHero.def + if (!neutralizePenalties) defDebuff else 0 + if (!neutralizeBuffBonus) bonus(defBuff) else 0
-    val res: Int get() = armedHero.res + if (!neutralizePenalties) resDebuff else 0 + if (!neutralizeBuffBonus) bonus(resBuff) else 0
+    val atk: Int get() = armedHero.atk + (if (!neutralizePenalties) atkDebuff else 0) + if (!neutralizeBuffBonus) bonus(atkBuff) else 0
+    val spd: Int get() = armedHero.spd + (if (!neutralizePenalties) spdDebuff else 0) + if (!neutralizeBuffBonus) bonus(spdBuff) else 0
+    val def: Int get() = armedHero.def + (if (!neutralizePenalties) defDebuff else 0) + if (!neutralizeBuffBonus) bonus(defBuff) else 0
+    val res: Int get() = armedHero.res + (if (!neutralizePenalties) resDebuff else 0) + if (!neutralizeBuffBonus) bonus(resBuff) else 0
     // 他人や自分のスキルにより戦闘中のみ変化する能力値
     val effectedAtk: Int get() = atk + atkEffect
     val effectedSpd: Int get() = spd + spdEffect
@@ -203,6 +203,11 @@ data class BattleUnit(val armedHero: ArmedHero
     private fun counterEffect(enemy: BattleUnit): BattleUnit = armedHero.counterEffect(this, enemy)
 
     /**
+     * 能力値計算後に適応する必要のある戦闘効果。スキルの攻撃効果を再帰でなめて攻撃時効果を計算する。主に能力値変化
+     */
+    private fun effectedBothEffect(enemy: BattleUnit): BattleUnit = armedHero.effectedBothEffect(this, enemy)
+
+    /**
      * 能力値計算後に適応する必要のある攻撃側戦闘効果。
      */
     private fun effectedAttackEffect(enemy: BattleUnit): BattleUnit = armedHero.effectedAttackEffect(this, enemy)
@@ -238,7 +243,7 @@ data class BattleUnit(val armedHero: ArmedHero
         //スキルのattackplan内で能力値の再計算すりゃいいか
         val effectedAttacker = attacker.bothEffect(target).attackEffect(target)
         val effectedTarget = target.bothEffect(attacker).counterEffect(attacker)
-        return FightPlan(effectedAttacker.effectedAttackEffect(target), effectedTarget.effectedCounterEffect(attacker)).activatePlanningSkills()
+        return FightPlan(effectedAttacker.effectedBothEffect(target).effectedAttackEffect(target), effectedTarget.effectedBothEffect(target).effectedCounterEffect(attacker)).activatePlanningSkills()
     }
 
     /**
@@ -339,11 +344,14 @@ data class BattleUnit(val armedHero: ArmedHero
     fun colorAdvantage(enemy: BattleUnit): Int {
         val colorDiff = enemy.armedHero.baseHero.color - armedHero.baseHero.color
 
-        return if (colorlessAdvantage && enemy.armedHero.baseHero.color == 0) 1
-        else if (enemy.colorlessAdvantage && armedHero.baseHero.color == 0) -1
-        else if (enemy.armedHero.baseHero.color == 0 || armedHero.baseHero.color == 0 || colorDiff == 0) 0
-        else if (colorDiff == -1 || colorDiff == 2) 1
-        else if (colorDiff == 1 || colorDiff == -2) -1 else 0
+        return when {
+            colorlessAdvantage && enemy.armedHero.baseHero.color == 0 -> 1
+            enemy.colorlessAdvantage && armedHero.baseHero.color == 0 -> -1
+            enemy.armedHero.baseHero.color == 0 || armedHero.baseHero.color == 0 || colorDiff == 0 -> 0
+            colorDiff == -1 || colorDiff == 2 -> 1
+            colorDiff == 1 || colorDiff == -2 -> -1
+            else -> 0
+        }
     }
 
     val colorAttack: (BattleUnit) -> Int = {

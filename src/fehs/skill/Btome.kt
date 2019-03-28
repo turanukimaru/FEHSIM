@@ -110,7 +110,6 @@ enum class Btome(override val jp: SkillName, override val type: SkillType, overr
         override fun localEquip(armedHero: ArmedHero, lv: Int): ArmedHero = equipSpd(armedHero, 3)
     },
     TomeOfThoron(SkillName.TomeOfThoron, SkillType.BTOME, 14, Thoron, SpType.LEGEND_W, RefinedWeapon.RefineType.Range2) {
-        override fun localEquip(armedHero: ArmedHero, lv: Int): ArmedHero = equipSpd(armedHero, 3)
         override fun specialTriggered(battleUnit: BattleUnit, damage: Int): Int = wrath(battleUnit, damage, 3 * 25, this)
     },
     Blarblooms(SkillName.Blarblooms, SkillType.BTOME, 8, Thoron, SpType.SILVER){
